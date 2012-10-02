@@ -6,7 +6,7 @@ class UserTest < Test::Unit::TestCase
 
   # Fake test
   def test_user_item_create
-    owner = Trading::User.created( "testuser", "password" )
+    owner = Models::User.created( "testuser", "password" )
     assert( owner.list_items.size == 0, "Item list length should be 0" )
     assert( owner.list_items_inactive.size == 0, "Item list inactive length should be 0" )
     owner.create_item("testobject", 10)

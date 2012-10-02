@@ -11,6 +11,9 @@ require_relative('controllers/sites')
 module App
 class App #< Sinatra::Base
 
+  userA = Models::User.created( "user", "password" )
+  userA.save
+
   enable :sessions
   set :views, relative('app/views')
   use Controllers::Authentication

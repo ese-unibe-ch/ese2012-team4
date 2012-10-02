@@ -16,7 +16,7 @@ module Controllers
     helpers Sinatra::ContentFor
 
     post "/authenticate" do
-      halt 401, "No such login" unless User.login params[:username], params[:userpassword]
+      halt 401, "No such login" unless User.login params[:username], params[:password]
 
       session[:username] = params[:username]
 

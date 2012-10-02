@@ -1,5 +1,7 @@
+require 'rubygems'
+require 'bcrypt'
+
 module Models
-  require 'rubygems'
 
   class User
     #Users have a name.
@@ -13,16 +15,27 @@ module Models
     #  fails if the buyer has not enough credits.
 
     # generate getter and setter for name and price
-    attr_accessor :name, :credits, :item_list, :password
+    attr_accessor :name, :credits, :item_list, :pw_salt, :pw_hash
+    attr_reader :password_hash, :password_salt
+
+    @@users = {}
 
     # factory method (constructor) on the class
     def self.created( name, password)
       item = self.new
       item.name = name
-      item.password = password
       item.credits = 100
       item.item_list = Array.new
+      item.pw_salt = BCrypt::Engine.generate_salt
+      item.pw_hash = BCrypt::Engine.hash_secret(password, item.pw_salt)
+      @password_salt = item.pw_salt
+      @password_hash = item.pw_hash
       item
+    end
+
+    def save
+      raise "Duplicated user" if @@users.has_key? name and @@users[name] != self
+      @@users[name] = self
     end
 
     # get string representation of users name
@@ -88,8 +101,10 @@ module Models
       self.item_list.delete(item_to_remove)
     end
 
-    def correct_password?(pw)
-      return (self.password == pw)
+    def self.login name, password
+      user = @@users[name]
+      return false if user.nil?
+      user.password_hash == BCrypt::Engine.hash_secret(password, user.password_salt)
     end
 
   end
