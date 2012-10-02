@@ -19,7 +19,7 @@ module Controllers
     post '/create' do
       if session['auth']
         user = session['user']
-        User.get_user(user).create_item(params[:name], params[:price])
+        User.get_user(user).create_item(params[:name], Integer(params[:price]))
         redirect "/home/inactive"
       else
         redirect "/"
@@ -39,7 +39,23 @@ module Controllers
     get '/changestate/:id/setinactive' do
       if session['auth']
         id = params[:id]
-        Item.get_item_by_id(id).to_inactive
+        Item.get_item(id).to_inactive
+        redirect "/home/active"
+      else
+        redirect "/"
+      end
+    end
+
+    get '/buy/:id' do
+      if session['auth']
+        id = params[:id]
+        item = Item.get_item(id)
+        old_user = item.get_owner
+        user = session['user']
+        new_user = User.get_user(user)
+        if new_user.buy_new_item?(item)
+          old_user.remove_item(item)
+        end
         redirect "/home/active"
       else
         redirect "/"

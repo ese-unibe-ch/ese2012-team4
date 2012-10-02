@@ -74,19 +74,29 @@ module Controllers
     end
 
     get '/users' do
-      haml :users
+      if session['auth']
+        viewer = session['user']
+        haml :users, :locals => {:all_users => User.get_all(viewer)}
+      else
+        redirect "/"
+      end
     end
 
     get '/users/:id' do
-      haml :users_id
+      if session['auth']
+        user = params[:id]
+        haml :users_id, :locals => {:active_items => User.get_user(user).list_items}
+      else
+        redirect "/"
+      end
     end
 
     get '/items' do
-      haml :items
-    end
-
-    get '/items/:id' do
-      haml :items_id
+      if session['auth']
+        haml :items
+      else
+        redirect "/"
+      end
     end
 
   end

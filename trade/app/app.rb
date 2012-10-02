@@ -14,6 +14,8 @@ class App #< Sinatra::Base
 
   userA = Models::User.created( "user", "password" )
   userA.save
+  userB = Models::User.created( "userB", "passwordB" )
+  userB.save
 
   enable :sessions
   #session['user'] = nil
