@@ -1,6 +1,9 @@
 module Trading
+  require 'rubygems'
+  require 'bcrypt'
 
   class User
+    include BCrypt
     #Users have a name.
     #Users have an amount of credits.
     #A new user has originally 100 credit.
@@ -15,9 +18,10 @@ module Trading
     attr_accessor :name, :credits, :item_list
 
     # factory method (constructor) on the class
-    def self.created( name )
+    def self.created( name, password)
       item = self.new
       item.name = name
+      item.password = BCrypt(password)
       item.credits = 100
       item.item_list = Array.new
       item
@@ -84,6 +88,11 @@ module Trading
     def remove_item(item_to_remove)
       self.credits = self.credits + item_to_remove.get_price
       self.item_list.delete(item_to_remove)
+    end
+
+    def correct_password(pw)
+      puts BCrypt(pw)
+      return (self.password == BCrypt(pw))
     end
 
   end

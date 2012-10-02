@@ -6,7 +6,7 @@ class ItemTest < Test::Unit::TestCase
 
   # Fake test
   def test_item_create_by_user
-    owner = Trading::User.created( "testuser" )
+    owner = Trading::User.created( "testuser", "password" )
     assert( owner.list_items.size == 0, "Item list length should be 0" )
     assert( owner.list_items_inactive.size == 0, "Item list inactive length should be 0" )
     owner.create_item("testobject", 10)
@@ -22,7 +22,7 @@ class ItemTest < Test::Unit::TestCase
 
   #test if item is initialized correctly
   def test_item_initialisation
-    owner = Trading::User.created( "testuser" )
+    owner = Trading::User.created( "testuser", "password" )
     item = owner.create_item("testobject", 50)
     assert(item.get_name == "testobject", "Name should be returned")
     assert(item.get_price == 50, "Should return price")
@@ -31,7 +31,7 @@ class ItemTest < Test::Unit::TestCase
 
   #test for item activation
   def test_item_activation
-    owner = Trading::User.created( "testuser" )
+    owner = Trading::User.created( "testuser", "password" )
     item = owner.create_item("testobject", 50)
     assert(item.get_name == "testobject", "Name should be returned")
     assert(item.get_price == 50, "Should return price")
@@ -44,7 +44,7 @@ class ItemTest < Test::Unit::TestCase
 
   # test for items owner
   def test_item_owner
-    owner = Trading::User.created( "testuser" )
+    owner = Trading::User.created( "testuser", "password" )
     item = owner.create_item("testobject", 50)
     assert(item.get_owner == owner, "Owner not set correctly")
     assert(item.get_owner.get_name == "testuser", "Owner not set correctly")
@@ -52,8 +52,8 @@ class ItemTest < Test::Unit::TestCase
 
   # test for items owner after selling
   def test_item_owner_after_selling
-    old_owner = Trading::User.created("Old")
-    new_owner = Trading::User.created("New")
+    old_owner = Trading::User.created("Old", "password")
+    new_owner = Trading::User.created("New", "password")
     item = old_owner.create_item("sock",10)
     assert(item.get_owner == old_owner, "Owner not set correctly")
     assert(item.get_owner.get_name == "Old", "Owner not set correctly")
