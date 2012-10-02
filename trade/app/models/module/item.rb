@@ -1,4 +1,4 @@
-module Trading
+module Models
 
   class Item
     #Items have a name.

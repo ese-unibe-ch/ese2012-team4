@@ -1,9 +1,7 @@
-module Trading
+module Models
   require 'rubygems'
-  require 'bcrypt'
 
   class User
-    include BCrypt
     #Users have a name.
     #Users have an amount of credits.
     #A new user has originally 100 credit.
@@ -15,13 +13,13 @@ module Trading
     #  fails if the buyer has not enough credits.
 
     # generate getter and setter for name and price
-    attr_accessor :name, :credits, :item_list
+    attr_accessor :name, :credits, :item_list, :password
 
     # factory method (constructor) on the class
     def self.created( name, password)
       item = self.new
       item.name = name
-      item.password = BCrypt(password)
+      item.password = password
       item.credits = 100
       item.item_list = Array.new
       item
@@ -90,9 +88,8 @@ module Trading
       self.item_list.delete(item_to_remove)
     end
 
-    def correct_password(pw)
-      puts BCrypt(pw)
-      return (self.password == BCrypt(pw))
+    def correct_password?(pw)
+      return (self.password == pw)
     end
 
   end
