@@ -21,7 +21,7 @@
       %br
       %a(href="/logout") - Logout
     %td
-      %h2 Users Active Items
+      %h2= "Users (#{params[:id]}) Active Items"
       %br
       - content_for :name do
         Active_items

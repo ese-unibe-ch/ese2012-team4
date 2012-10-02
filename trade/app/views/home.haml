@@ -23,5 +23,12 @@
     %td
       %h2 Content
       %br
+      = "Currently logged in User: #{User.get_user(session['user']).name}"
+      %br
+      = "Your Credits: #{User.get_user(session['user']).credits}"
+      %br
+      = "You have #{User.get_user(session['user']).list_items.size} active Items"
+      %br
+      = "You have #{User.get_user(session['user']).list_items_inactive.size} inactive Items"
   %tr
     %td(colspan="2")
