@@ -18,13 +18,15 @@ module Controllers
     post "/authenticate" do
       halt 401, "No such login" unless User.login params[:username], params[:password]
 
-      session[:username] = params[:username]
+      session['user'] = params[:username]
+      session['auth'] = true
 
       redirect "/home"
     end
 
     post "/unauthenticate" do
-      session[:username] = nil
+      session['user'] = nil
+      session['auth'] = false
       redirect "/"
     end
 

@@ -21,7 +21,11 @@
       %br
       %a(href="/logout") - Logout
     %td
-      %h2 Content
+      %h2 My Active Items
       %br
+      - content_for :name do
+        = active_items.name
+      = active_items.name
+      = active_items.price
   %tr
     %td(colspan="2")

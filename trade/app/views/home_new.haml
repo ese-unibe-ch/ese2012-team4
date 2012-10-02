@@ -21,7 +21,17 @@
       %br
       %a(href="/logout") - Logout
     %td
-      %h2 Content
+      %h2 Create Item
       %br
+      %form(action="/create" action="POST")
+        %label Name of Item:
+        %br
+        %input(type="text" name="name" value="")
+        %br
+        %label Price:
+        %br
+        %input(type="text" name="price" value="")
+        %br
+        %input(type="submit" value="Create")
   %tr
     %td(colspan="2")

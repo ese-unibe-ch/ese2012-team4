@@ -16,19 +16,61 @@ module Controllers
     helpers Sinatra::ContentFor
 
     get '/' do
-      haml :index
+      if session['auth']
+        redirect "/home"
+      else
+        haml :index
+      end
     end
 
     get '/login' do
-      haml :login
+      if session['auth']
+        redirect "/home"
+      else
+        haml :login
+      end
     end
 
     get '/logout' do
-      haml :logout
+      if session['auth']
+        haml :logout
+      else
+        redirect "/"
+      end
     end
 
     get '/home' do
-      haml :home
+      if session['auth']
+        haml :home
+      else
+        redirect "/"
+      end
+    end
+
+    get '/home/active' do
+      if session['auth']
+        user = session['user']
+        haml :home_active, :locals => {:active_items => User.get_user(user).list_items}
+      else
+        redirect "/"
+      end
+    end
+
+    get '/home/inactive' do
+      if session['auth']
+        user = session['user']
+        haml :home_inactive, :locals => {:inactive_items => User.get_user(user).list_items_inactive}
+      else
+        redirect "/"
+      end
+    end
+
+    get '/home/new' do
+      if session['auth']
+        haml :home_new
+      else
+        redirect "/"
+      end
     end
 
     get '/users' do

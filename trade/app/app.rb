@@ -15,11 +15,13 @@ class App #< Sinatra::Base
   userA.save
 
   enable :sessions
+  #session['user'] = nil
+  #session['auth'] = false
   set :views, relative('app/views')
   use Controllers::Authentication
   use Controllers::Sites
 
-  get '/' do
+  get '/hi' do
     "Hello World"
   end
 

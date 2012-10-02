@@ -15,7 +15,7 @@ module Models
     #  fails if the buyer has not enough credits.
 
     # generate getter and setter for name and price
-    attr_accessor :name, :credits, :item_list, :pw_salt, :pw_hash
+    attr_accessor :name, :credits, :item_list, :pw
     attr_reader :password_hash, :password_salt
 
     @@users = {}
@@ -26,10 +26,11 @@ module Models
       item.name = name
       item.credits = 100
       item.item_list = Array.new
-      item.pw_salt = BCrypt::Engine.generate_salt
-      item.pw_hash = BCrypt::Engine.hash_secret(password, item.pw_salt)
-      @password_salt = item.pw_salt
-      @password_hash = item.pw_hash
+      item.pw = password
+      pw_salt = BCrypt::Engine.generate_salt
+      pw_hash = BCrypt::Engine.hash_secret(password, pw_salt)
+      @password_salt = pw_salt
+      @password_hash = pw_hash
       item
     end
 
@@ -104,7 +105,12 @@ module Models
     def self.login name, password
       user = @@users[name]
       return false if user.nil?
-      user.password_hash == BCrypt::Engine.hash_secret(password, user.password_salt)
+      #user.password_hash == BCrypt::Engine.hash_secret(password, user.password_salt)
+      user.pw == password
+    end
+
+    def self.get_user(username)
+      return @@users[username]
     end
 
   end
