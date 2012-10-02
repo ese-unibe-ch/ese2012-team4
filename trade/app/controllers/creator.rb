@@ -7,6 +7,7 @@ require 'sinatra/base'
 require 'haml'
 require 'sinatra/content_for'
 require_relative('../models/module/user')
+require_relative('../models/module/item')
 
 include Models
 
@@ -27,9 +28,8 @@ module Controllers
 
     get '/changestate/:id/setactive' do
       if session['auth']
-        user = session['user']
         id = params[:id]
-        User.get_user(user).get_item_by_id(id)[0].to_active
+        Item.get_item(id).to_active
         redirect "/home/inactive"
       else
         redirect "/"
@@ -38,9 +38,8 @@ module Controllers
 
     get '/changestate/:id/setinactive' do
       if session['auth']
-        user = session['user']
         id = params[:id]
-        User.get_user(user).get_item_by_id(id)[0].to_inactive
+        Item.get_item_by_id(id).to_inactive
         redirect "/home/active"
       else
         redirect "/"

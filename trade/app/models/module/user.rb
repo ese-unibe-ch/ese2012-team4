@@ -37,8 +37,8 @@ module Models
     end
 
     def save
-      raise "Duplicated user" if @@users.has_key? name and @@users[name] != self
-      @@users[name] = self
+      raise "Duplicated user" if @@users.has_key? self.name and @@users[self.name] != self
+      @@users[self.name] = self
     end
 
     # get string representation of users name
@@ -60,6 +60,7 @@ module Models
     def create_item(name, price)
       new_item = Models::Item.created( name, price, self )
       self.item_list.push(new_item)
+      new_item.save
       return new_item
     end
 
@@ -113,10 +114,6 @@ module Models
 
     def self.get_user(username)
       return @@users[username]
-    end
-
-    def get_item_by_id(id)
-      return self.item_list.select {|s| s.id == id}
     end
 
   end

@@ -7,16 +7,26 @@ module Models
     #An item has an owner.
 
     # generate getter and setter for name and price
-    attr_accessor :name, :price, :active, :owner
+    attr_accessor :name, :price, :active, :owner, :id
+
+    @@item_list = {}
+    @@count = 0
 
     # factory method (constructor) on the class
     def self.created( name, price, owner )
       item = self.new
+      item.id = @@count + 1
       item.name = name
       item.price = price
       item.active = false
       item.owner = owner
       item
+    end
+
+    def save
+      raise "Duplicated item" if @@item_list.has_key? self.id and @@item_list[self.id] != self
+      @@item_list["#{self.id}.#{self.name}"] = self
+      @@count += 1
     end
 
     # get state
@@ -31,7 +41,6 @@ module Models
 
     # to String-method
     def to_s
-      # string interpolation
       "#{self.get_name}, #{self.get_price}"
     end
 
@@ -60,6 +69,10 @@ module Models
     # return the owner
     def get_owner
       self.owner
+    end
+
+    def self.get_item(itemid)
+      return @@item_list[itemid]
     end
 
   end
