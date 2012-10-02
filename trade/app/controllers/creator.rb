@@ -21,7 +21,29 @@ module Controllers
         User.get_user(user).create_item(params[:name], params[:price])
         redirect "/home/inactive"
       else
-        redirect "/home"
+        redirect "/"
+      end
+    end
+
+    get '/changestate/:id/setactive' do
+      if session['auth']
+        user = session['user']
+        id = params[:id]
+        User.get_user(user).get_item_by_id(id)[0].to_active
+        redirect "/home/inactive"
+      else
+        redirect "/"
+      end
+    end
+
+    get '/changestate/:id/setinactive' do
+      if session['auth']
+        user = session['user']
+        id = params[:id]
+        User.get_user(user).get_item_by_id(id)[0].to_inactive
+        redirect "/home/active"
+      else
+        redirect "/"
       end
     end
 

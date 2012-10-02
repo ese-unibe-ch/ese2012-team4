@@ -30,5 +30,7 @@
           %li
             %em= item.name
             %em= item.price
+            \:
+            %a(href="/changestate/#{item.id}/setinactive" ) Set Inactive
   %tr
     %td(colspan="2")

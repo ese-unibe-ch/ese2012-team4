@@ -115,6 +115,10 @@ module Models
       return @@users[username]
     end
 
+    def get_item_by_id(id)
+      return self.item_list.select {|s| s.id == id}
+    end
+
   end
 
 end
