@@ -1,5 +1,7 @@
 require 'rubygems'
 require 'bcrypt'
+require 'require_relative'
+require_relative('item')
 
 module Models
 
@@ -22,16 +24,16 @@ module Models
 
     # factory method (constructor) on the class
     def self.created( name, password)
-      item = self.new
-      item.name = name
-      item.credits = 100
-      item.item_list = Array.new
-      item.pw = password
+      user = self.new
+      user.name = name
+      user.credits = 100
+      user.item_list = Array.new
+      user.pw = password
       pw_salt = BCrypt::Engine.generate_salt
       pw_hash = BCrypt::Engine.hash_secret(password, pw_salt)
       @password_salt = pw_salt
       @password_hash = pw_hash
-      item
+      user
     end
 
     def save
@@ -56,7 +58,7 @@ module Models
 
     #let the user create a new item
     def create_item(name, price)
-      new_item = Trading::Item.created( name, price, self )
+      new_item = Models::Item.created( name, price, self )
       self.item_list.push(new_item)
       return new_item
     end

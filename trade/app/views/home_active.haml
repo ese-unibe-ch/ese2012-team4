@@ -24,8 +24,11 @@
       %h2 My Active Items
       %br
       - content_for :name do
-        = active_items.name
-      = active_items.name
-      = active_items.price
+        Active_items
+      %ul
+        - for item in active_items
+          %li
+            %em= item.name
+            %em= item.price
   %tr
     %td(colspan="2")

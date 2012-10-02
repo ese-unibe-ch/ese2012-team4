@@ -7,6 +7,7 @@ require 'sinatra'
 require 'haml'
 require_relative('controllers/authentication')
 require_relative('controllers/sites')
+require_relative('controllers/creator')
 
 module App
 class App #< Sinatra::Base
@@ -20,6 +21,7 @@ class App #< Sinatra::Base
   set :views, relative('app/views')
   use Controllers::Authentication
   use Controllers::Sites
+  use Controllers::Creator
 
   get '/hi' do
     "Hello World"

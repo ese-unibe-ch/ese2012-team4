@@ -23,5 +23,12 @@
     %td
       %h2 My Inactive Items
       %br
+      - content_for :name do
+        Inactive_items
+      %ul
+        - for item in inactive_items
+          %li
+            %em= item.name
+            %em= item.price
   %tr
     %td(colspan="2")
