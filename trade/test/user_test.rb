@@ -1,6 +1,11 @@
+def relative(path)
+  File.join(File.expand_path(File.dirname(__FILE__)), path)
+end
 require 'test/unit'
-require '../../trade/app/models/module/item'
-require '../../trade/app/models/module/user'
+require 'rubygems'
+require 'require_relative'
+require_relative('../app/models/module/user')
+require_relative('../app/models/module/item')
 
 class UserTest < Test::Unit::TestCase
 
@@ -21,15 +26,15 @@ class UserTest < Test::Unit::TestCase
   end
 
   def test_create_user
-    owner = Trading::User.created( "testuser", "password" )
+    owner = Models::User.created( "testuser", "password" )
     assert( owner.get_name == "testuser", "Name should be correct")
     assert( owner.get_credits == 100, "Credits should be 100 first")
     assert( owner.to_s == "testuser has currently 100 credits, 0 active and 0 inactive items", "String representation is wrong generated")
   end
 
   def test_sales
-    old_owner = Trading::User.created("Old", "password")
-    new_owner = Trading::User.created("New", "password")
+    old_owner = Models::User.created("Old", "password")
+    new_owner = Models::User.created("New", "password")
 
     sock = old_owner.create_item("sock",10)
     assert( !sock.is_active?, "item should not be active, is")
@@ -56,8 +61,8 @@ class UserTest < Test::Unit::TestCase
   end
 
   def test_sales_not_possible_because_of_price
-    old_owner = Trading::User.created("Old", "password")
-    new_owner = Trading::User.created("New", "password")
+    old_owner = Models::User.created("Old", "password")
+    new_owner = Models::User.created("New", "password")
 
     sock = old_owner.create_item("sock",210)
     assert( !sock.is_active?, "item should not be active, is")
@@ -81,7 +86,7 @@ class UserTest < Test::Unit::TestCase
   end
 
   def test_method_list_active
-    owner = Trading::User.created( "testuser", "password" )
+    owner = Models::User.created( "testuser", "password" )
     owner.create_item("testobject", 10)
     owner.create_item("testobject2", 50)
     owner.list_items_inactive[0].to_active
@@ -91,7 +96,7 @@ class UserTest < Test::Unit::TestCase
   end
 
   def test_method_list_inactive
-    owner = Trading::User.created( "testuser", "password" )
+    owner = Models::User.created( "testuser", "password" )
     owner.create_item("testobject", 10)
     owner.create_item("testobject2", 50)
     assert(owner.list_items_inactive[0].to_s == "testobject, 10")
@@ -107,8 +112,9 @@ class UserTest < Test::Unit::TestCase
   end
 
   def test_auth
-    owner = Trading::User.created( "testuser", "password" )
-    assert (owner.correct_password?("password"))
+    owner = Models::User.created( "testuser", "password" )
+    owner.save
+    assert (Models::User.login "testuser", "password")
   end
 
 end

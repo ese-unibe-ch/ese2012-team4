@@ -75,6 +75,18 @@ module Models
       return @@item_list[itemid]
     end
 
+    #def self.get_all(viewer)
+    #  return @@item_list.select {|s| s.owner.name !=  viewer}
+    #end
+    def self.get_all(viewer)
+      new_array = @@item_list.to_a
+      ret_array = Array.new
+      for e in new_array
+        ret_array.push(e[1])
+      end
+      return ret_array.select {|s| s.owner.name !=  viewer}
+    end
+
   end
 
 end

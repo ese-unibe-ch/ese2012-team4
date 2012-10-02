@@ -18,9 +18,8 @@ class App #< Sinatra::Base
   userB.save
 
   enable :sessions
-  #session['user'] = nil
-  #session['auth'] = false
   set :views, relative('app/views')
+  set :public_folder, relative('app/public')
   use Controllers::Authentication
   use Controllers::Sites
   use Controllers::Creator

@@ -1,0 +1,9 @@
+1. Explain how a typical HTTP request is processed with the framework (the request lifecycle)
+
+
+2. Why should GET requests be indempotent?
+
+
+3. Where should you format data for rendering?
+
+

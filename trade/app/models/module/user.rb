@@ -113,20 +113,13 @@ module Models
       return @@users[username]
     end
 
-    def self.get_all(username)
+    def self.get_all(viewer)
+      new_array = @@users.to_a
       ret_array = Array.new
-      for s in @@users
-        for t in s
-          ret_array.push(t)
-        end
+      for e in new_array
+        ret_array.push(e[1])
       end
-      ret_array.select {|x| x != username}
-
-      ret = Array.new
-      for a in ret_array
-        ret.push(@@users[a])
-      end
-      return ret
+      return ret_array.select {|s| s.name !=  viewer}
     end
 
   end

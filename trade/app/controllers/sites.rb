@@ -7,6 +7,7 @@ require 'sinatra/base'
 require 'haml'
 require 'sinatra/content_for'
 require_relative('../models/module/user')
+require_relative('../models/module/item')
 
 include Models
 
@@ -93,7 +94,8 @@ module Controllers
 
     get '/items' do
       if session['auth']
-        haml :items
+        viewer = session['user']
+        haml :items, :locals => {:all_items => Item.get_all(viewer)}
       else
         redirect "/"
       end
