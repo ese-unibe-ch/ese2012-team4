@@ -19,7 +19,11 @@ module Controllers
     post '/create' do
       if session['auth']
         user = session['user']
-        User.get_user(user).create_item(params[:name], Integer(params[:price]))
+        begin
+          User.get_user(user).create_item(params[:name], Integer(params[:price]))
+        rescue
+          redirect "/error/Not_A_Number"
+        end
         redirect "/home/inactive"
       else
         redirect "/"
@@ -55,6 +59,8 @@ module Controllers
         new_user = User.get_user(user)
         if new_user.buy_new_item?(item)
           old_user.remove_item(item)
+        else
+          redirect "/error/Not_Enough_Credits"
         end
         redirect "/home/active"
       else

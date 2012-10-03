@@ -19,7 +19,9 @@ class App #< Sinatra::Base
 
   enable :sessions
   set :views, relative('app/views')
-  set :public_folder, relative('app/public')
+  set :public_folder, 'public'
+  set :static, true
+  set :public, 'public'
   use Controllers::Authentication
   use Controllers::Sites
   use Controllers::Creator
