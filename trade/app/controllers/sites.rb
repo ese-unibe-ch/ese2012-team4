@@ -101,5 +101,20 @@ module Controllers
       end
     end
 
+    get '/error/:title' do
+      if session['auth']
+        msg = ""
+        if params[:title] == "Not_A_Number"
+          msg = "Price should be a number!"
+        end
+        if params[:title] == "Not_Enough_Credits"
+          msg = "Sorry, but you can't buy this item, because you have not enough credits!"
+        end
+        haml :error, :locals => {:error_title => params[:title], :error_message => msg}
+      else
+        redirect "/"
+      end
+    end
+
   end
 end
