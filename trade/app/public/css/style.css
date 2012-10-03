@@ -1,4 +1,20 @@
 /* trial css */
-h1{
+h1, h2, h3, a, p{
     font-family: Verdana, Arial, sans-serif;
+}
+
+body{
+    margin: 20px;
+    background: #eeeeee;
+    font-size: small;
+    font-family: Verdana, Arial, sans-serif;
+    text-align: left;
+}
+
+#content{
+    width: 70%;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #666;
+    background: #ffffff;
 }
