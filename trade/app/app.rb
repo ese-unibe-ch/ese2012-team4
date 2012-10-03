@@ -9,13 +9,10 @@ require_relative('controllers/authentication')
 require_relative('controllers/sites')
 require_relative('controllers/creator')
 
-module App
-class App #< Sinatra::Base
+require_relative('init.rb')
 
-  userA = Models::User.created( "user", "password" )
-  userA.save
-  userB = Models::User.created( "userB", "passwordB" )
-  userB.save
+module App
+class App
 
   enable :sessions
   set :views, relative('app/views')

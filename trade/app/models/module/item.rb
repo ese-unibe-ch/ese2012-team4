@@ -84,7 +84,8 @@ module Models
       for e in new_array
         ret_array.push(e[1])
       end
-      return ret_array.select {|s| s.owner.name !=  viewer}
+      ret = ret_array.select {|s| s.owner.name !=  viewer}
+      return ret.select {|s| s.is_active?}
     end
 
   end
