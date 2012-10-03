@@ -1,35 +1,41 @@
-%table
-  %tr
-    %td(colspan="2")
-      %h1 Trading System - Error Page
-  %tr
-    %td
-      %h2 Menu
-      %a(href="/home") - Home
-      %br
-      %a(href="/home/active") - My Active Items
-      %br
-      %a(href="/home/inactive") - My Inactive Items
-      %br
-      %a(href="/home/new") - Create Item
-      %br
-      %br
-      %a(href="/users") - All Users
-      %br
-      %a(href="/items") - All Items
-      %br
-      %br
-      %a(href="/logout") - Logout
-    %td
-      //- content_for :name do
-      //  Error_title
-      %h2= "Error - #{error_title}"
-      %br
-      %br
-      Error Message:
-      %br
-      = "#{error_message}"
-      %br
-      %a(href="javascript: history.go(-1)") Go Back
-  %tr
-    %td(colspan="2")
+%html
+  %head
+    %title Trading System
+    %link(rel="stylesheet" type="text/css" href="/css/style.css")
+  %body
+    %table
+      %tr
+        %td(colspan="2")
+          %h1 Trading System - Error Page
+      %tr
+        %td
+          %h2 Menu
+          %a(href="/home") - Home
+          %br
+          %a(href="/home/active") - My Active Items
+          %br
+          %a(href="/home/inactive") - My Inactive Items
+          %br
+          %a(href="/home/new") - Create Item
+          %br
+          %br
+          %a(href="/users") - All Users
+          %br
+          %a(href="/items") - All Items
+          %br
+          %br
+          %a(href="/logout") - Logout
+        %td
+          //- content_for :name do
+          //  Error_title
+          %h2= "Error - #{error_title}"
+          %br
+          %br
+          Error Message:
+          %br
+          = "#{error_message}"
+          %br
+          %a(href="javascript: history.go(-1)") Go Back
+      %tr
+        %td(colspan="2")
+          %p Built during ESE 2012 by the guys who brought you "the moving turtle" in P2

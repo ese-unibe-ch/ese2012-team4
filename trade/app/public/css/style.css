@@ -18,3 +18,10 @@ body{
     border: 1px solid #666;
     background: #ffffff;
 }
+
+td{
+    padding: 20px;
+    border: 1px solid #666;
+    background: #ffffff;
+    vertical-align: top;
+}
