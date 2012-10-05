@@ -18,6 +18,9 @@ module Controllers
     post '/signup' do
       username, pw, pw2 = params[:username], params[:password1], params[:password2]
 
+      fail "enter a Username" if username == ''
+      fail "enter a Password" if pw == ''
+
       fail "Passwords not identical" if pw != pw2
       #check for complexity
       fail "User name not available" unless User.available? username
@@ -29,7 +32,6 @@ module Controllers
 
       redirect "/home"
     end
-
 
   end
 end
