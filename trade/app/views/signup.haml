@@ -1,0 +1,25 @@
+%html
+  %head
+    %title Trading System
+    %link(rel="stylesheet" type="text/css" href="/css/style.css")
+  %body
+    #content
+      %h1 Signup
+      %br
+      %form(action="/signup" method="POST")
+        %label new username:
+        %br
+        %input(type="text" name="username" value="")
+        %br
+        %p Make sure to choose a strong password.
+        %p Strong passwords include (XXXXXXXX FILL IN HERE XXXXXXXX).
+        %label new password:
+        %br
+        %input(type="password" name="password1" value="")
+        %br
+        %label retype password:
+        %br
+        %input(type="password" name="password2" value="")
+        %br
+        %br
+        %input(type="submit" value="Sign up!")

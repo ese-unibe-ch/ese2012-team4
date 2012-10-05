@@ -32,6 +32,10 @@ module Controllers
       end
     end
 
+    get '/signup' do
+      haml:signup
+    end
+
     get '/logout' do
       if session['auth']
         haml :logout

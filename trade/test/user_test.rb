@@ -117,4 +117,11 @@ class UserTest < Test::Unit::TestCase
     assert (Models::User.login "testuser", "password")
   end
 
+  def test_available
+    oldUser = Models::User.created( "Mike", "234")
+    assert (oldUser.name == "Mike")
+    oldUser.save
+    assert (!Models::User.available? "Mike")
+  end
+
 end
