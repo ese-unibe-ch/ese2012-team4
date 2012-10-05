@@ -1,9 +1,0 @@
-1. Explain how a typical HTTP request is processed with the framework (the request lifecycle)
-HTTP-request to HAML-Form, starting SINATRA-request, using RUBY-code, delivering information to SINATRA adding to HAML-Form, rendering HTTP-Site
-
-2. Why should GET requests be indempotent?
-Idea of idempotent: if you do the same command twice (or multiple times), it's as if you'd have it done only once. GET requests should be idempotent; otherwise you could get the same information twice and get different states of said information while further processing.
-
-3. Where should you format data for rendering?
-Data for rendering should be formated as soon as possible to minimize errors (Ruby-Code).
-
