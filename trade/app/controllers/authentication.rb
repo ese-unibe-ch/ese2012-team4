@@ -33,7 +33,8 @@ module Controllers
 
     post "/change_password" do
       password_check = PasswordCheck.created
-      if User.login session['user'], params[:password_old] == false
+      viewer = User.get_user(session['user'])
+      if User.login viewer, params[:password_old] == false
         halt 401, "false password"
       end
       if params[:password_new]!=params[:password_check]
@@ -42,6 +43,8 @@ module Controllers
       if !password_check.safe?(params[:password_new])
         halt 401, "password unsafe, choose another one"
       end
+      viewer.change_password(params[:password_new])
+
       redirect "/"
 
     end

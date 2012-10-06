@@ -34,6 +34,12 @@ module Models
       user
     end
 
+    def change_password(password)
+      self.password_salt = BCrypt::Engine.generate_salt
+      self.password_hash = BCrypt::Engine.hash_secret(password, password_salt)
+
+    end
+
     def save
       raise "Duplicated user" if @@users.has_key? self.name and @@users[self.name] != self
       @@users[self.name] = self
