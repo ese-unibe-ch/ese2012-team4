@@ -21,6 +21,7 @@ module Controllers
         user = session['user']
         begin
           User.get_user(user).create_item(params[:name], Integer(params[:price]))
+          # MW: maybe "User.by_name" might be somewhat more understandable
         rescue
           redirect "/error/Not_A_Number"
         end

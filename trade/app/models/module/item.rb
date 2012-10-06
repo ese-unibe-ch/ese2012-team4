@@ -7,19 +7,23 @@ module Models
     #An item has an owner.
 
     # generate getter and setter for name and price
-    attr_accessor :name, :price, :active, :owner, :id
+    attr_accessor :name, :price, :active, :owner, :id, :description
+
+    # MW: Since these variables are declared through the attr_accessor, defining getters and setters are unnecessary!
+    # ==> To do: remove getters and setters from code and adjust other classes accordingly.
 
     @@item_list = {}
     @@count = 0
 
     # factory method (constructor) on the class
-    def self.created( name, price, owner )
+    def self.created( name, price, owner, description = "" )
       item = self.new
       item.id = @@count + 1
       item.name = name
       item.price = price
       item.active = false
       item.owner = owner
+      item.description = description
       item
     end
 
@@ -65,6 +69,7 @@ module Models
       # int interpolation
       self.price
     end
+
 
     # return the owner
     def get_owner
