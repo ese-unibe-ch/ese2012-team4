@@ -86,7 +86,12 @@ module Controllers
     get '/users/:id' do
       if session['auth']
         user = params[:id]
-        haml :users_id, :locals => {:active_items => User.get_user(user).list_items}
+        viewer = session['user']
+        if user == viewer
+          haml :profile
+        else
+          haml :users_id, :locals => {:active_items => User.get_user(user).list_items}
+        end
       else
         redirect "/"
       end
@@ -115,6 +120,7 @@ module Controllers
         redirect "/"
       end
     end
+
 
   end
 end
