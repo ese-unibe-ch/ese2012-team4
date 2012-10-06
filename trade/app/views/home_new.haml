@@ -28,16 +28,20 @@
         %td
           %h2 Create Item
           %br
-          %form(action="/create" method="POST")
+          %form(action="/#{action}" method="POST")
             %label Name of Item:
             %br
-            %input(type="text" name="name" value="")
+            %input(type="text" name="name" value="#{name}")
             %br
             %label Price:
             %br
-            %input(type="text" name="price" value="")
+            %input(type="text" name="price" value="#{price}")
             %br
-            %input(type="submit" value="Create")
+            %label Description (optional)
+            %br
+            %input(type="text" name = "description" value="#{description}")
+            %br
+            %input(type="submit" value="#{button}")
       %tr
         %td(colspan="2")
           %p Built during ESE 2012 by the guys who brought you "the moving turtle" in P2

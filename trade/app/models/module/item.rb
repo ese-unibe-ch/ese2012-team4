@@ -9,6 +9,8 @@ module Models
     # generate getter and setter for name and price
     attr_accessor :name, :price, :active, :owner, :id, :description
 
+    # MW: To do: integrate description in tests
+
     # MW: Since these variables are declared through the attr_accessor, defining getters and setters are unnecessary!
     # ==> To do: remove getters and setters from code and adjust other classes accordingly.
 
@@ -74,6 +76,11 @@ module Models
     # return the owner
     def get_owner
       self.owner
+    end
+
+    #  MW: To do: write a test
+    def editable?
+      !self.active
     end
 
     def self.get_item(itemid)

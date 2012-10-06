@@ -31,6 +31,11 @@ module Controllers
       end
     end
 
+    post '/edit_item' do
+      ## To do!
+      "MW: Not yet implemented - new values of item should be stored."
+    end
+
     get '/changestate/:id/setactive' do
       if session['auth']
         id = params[:id]

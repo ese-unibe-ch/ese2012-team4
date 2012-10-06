@@ -68,10 +68,15 @@ module Controllers
 
     get '/home/new' do
       if session['auth']
-        haml :home_new
+        haml :home_new, :locals => {:action => "create", :name => "", :price => "", :description => "", :button => "Create"}
       else
         redirect "/"
       end
+    end
+
+    get '/home/edit_item' do
+      # MW: To do: Get the right params.
+      haml :home_new, :locals => {:action => "edit_item", :name => "something", :price => "some price", :description => "some text", :button => "Edit"}
     end
 
     get '/users' do
