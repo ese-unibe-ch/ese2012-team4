@@ -7,6 +7,7 @@ require 'sinatra/base'
 require 'haml'
 require 'sinatra/content_for'
 require_relative('../models/module/user')
+require_relative('../models/module/password_check')
 
 include Models
 
@@ -22,7 +23,8 @@ module Controllers
       fail "enter a Password" if pw == ''
 
       fail "Passwords not identical" if pw != pw2
-      #check for complexity
+      password_check = Models::PasswordCheck.created
+      fail "your password does not meet the standards" unless password_check.safe?(pw)
       fail "User name not available" unless User.available? username
 
       User.created(username, pw).save

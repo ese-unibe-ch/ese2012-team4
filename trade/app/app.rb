@@ -24,6 +24,7 @@ class App
   use Controllers::Creator
   use Controllers::Signup
 
+
   get '/hi' do
     "Hello World"
   end
