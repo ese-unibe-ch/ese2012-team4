@@ -128,6 +128,10 @@ module Models
       return ret_array.select {|s| s.name !=  viewer}
     end
 
+    def self.available? name
+      not @@users.has_key? name
+    end
+
   end
 
 end
