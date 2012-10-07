@@ -104,7 +104,7 @@ module Controllers
         if user == viewer
           haml :profile, :locals => {:page_name => "Your profile"}
         else
-          haml :users_id, :locals => {:active_items => User.get_user(user).list_items, :page_name => "User #{user.name}"}
+          haml :users_id, :locals => {:active_items => User.get_user(user).list_items, :page_name => "User #{user}"}
         end
       else
         redirect "/"
