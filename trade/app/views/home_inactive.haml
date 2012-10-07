@@ -1,42 +1,12 @@
-%html
-  %head
-    %title Trading System
-    %link(rel="stylesheet" type="text/css" href="/css/style.css")
-  %body
-    %table
-      %tr
-        %td(colspan="2")
-          %h1 Trading System - Home
-      %tr
-        %td
-          %h2 Menu
-          %a(href="/home") - Home
-          %br
-          %a(href="/home/active") - My Active Items
-          %br
-          %a(href="/home/inactive") - My Inactive Items
-          %br
-          %a(href="/home/new") - Create Item
-          %br
-          %br
-          %a(href="/users") - All Users
-          %br
-          %a(href="/items") - All Items
-          %br
-          %br
-          %a(href="/logout") - Logout
-        %td
-          %h2 My Inactive Items
-          %br
-          - content_for :name do
-            Inactive_items
-          %ul
-            - for item in inactive_items
-              %li
-                %em= item.name
-                %em= item.price
-                \:
-                %a(href="/changestate/#{item.id}.#{item.name}/setactive" ) Set Active
-      %tr
-        %td(colspan="2")
-          %p Built during ESE 2012 by the guys who brought you "the moving turtle" in P2
+
+%h2 My Inactive Items
+%br
+- content_for :name do
+  Inactive_items
+%ul
+  - for item in inactive_items
+    %li
+      %em= item.name
+      %em= item.price
+      \:
+      %a(href="/changestate/#{item.id}.#{item.name}/setactive" ) Set Active

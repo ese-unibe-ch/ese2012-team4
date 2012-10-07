@@ -1,43 +1,13 @@
-%html
-  %head
-    %title Trading System
-    %link(rel="stylesheet" type="text/css" href="/css/style.css")
-  %body
-    %table
-      %tr
-        %td(colspan="2")
-          %h1 Trading System - Home
-      %tr
-        %td
-          %h2 Menu
-          %a(href="/home") - Home
-          %br
-          %a(href="/home/active") - My Active Items
-          %br
-          %a(href="/home/inactive") - My Inactive Items
-          %br
-          %a(href="/home/new") - Create Item
-          %br
-          %br
-          %a(href="/users") - All Users
-          %br
-          %a(href="/items") - All Items
-          %br
-          %br
-          %a(href="/logout") - Logout
-        %td
-          %h2 Create Item
-          %br
-          %form(action="/create" method="POST")
-            %label Name of Item:
-            %br
-            %input(type="text" name="name" value="")
-            %br
-            %label Price:
-            %br
-            %input(type="text" name="price" value="")
-            %br
-            %input(type="submit" value="Create")
-      %tr
-        %td(colspan="2")
-          %p Built during ESE 2012 by the guys who brought you "the moving turtle" in P2
+
+%h2 Create Item
+%br
+%form(action="/create" method="POST")
+  %label Name of Item:
+  %br
+  %input(type="text" name="name" value="")
+  %br
+  %label Price:
+  %br
+  %input(type="text" name="price" value="")
+  %br
+  %input(type="submit" value="Create")
