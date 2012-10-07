@@ -14,9 +14,28 @@ body{
 #content{
     width: 70%;
     margin: auto;
-    padding: 20px;
-    border: 1px solid #666;
-    background: #ffffff;
+}
+
+.main{
+    width: 100%;
+    border-spacing: 5px;
+}
+
+a:link
+{
+    text-decoration: none;
+    color: black;
+}
+a:visited{
+    text-decoration: none;
+    color: black;
+}
+td.navigation{
+    width:150px;
+    height: 350px;
+}
+td.header{
+    padding-bottom: 0px;
 }
 
 td{

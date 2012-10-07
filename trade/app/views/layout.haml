@@ -3,36 +3,37 @@
     %title Trading System
     %link(rel="stylesheet" type="text/css" href="/css/style.css")
   %body
-    %table
-      %tr
-        %td(colspan="2")
-          %h1= "Trading System: #{page_name}"
-      %tr
-        -if session['auth']
-          %td
-            %h2 Menu
-            %a(href="/home") - Home
-            %br
-            %a(href="/home/active") - My Active Items
-            %br
-            %a(href="/home/inactive") - My Inactive Items
-            %br
-            %a(href="/home/new") - Create Item
-            %br
-            %br
-            %a(href="/users") - All Users
-            %br
-            %a(href="/items") - All Items
-            %br
-            %br
-            %a(href="/users/#{User.get_user(session['user']).name}") - Your Profile
-            %br
-            %a(href="/logout") - Logout
-        -else
-          %td
-            %h2 not logged in!
-        %td
-          =yield
+    #content
+      %table.main
         %tr
-          %td(colspan="2")
-            %p Built during ESE 2012 by the guys who brought you "the moving turtle" in P2
+          %td.header(colspan="2")
+            %h1= "Trading System: #{page_name}"
+        %tr
+          -if session['auth']
+            %td.navigation
+              %h2 Menu
+              %a(href="/home") - Home
+              %br
+              %a(href="/home/active") - My Active Items
+              %br
+              %a(href="/home/inactive") - My Inactive Items
+              %br
+              %a(href="/home/new") - Create Item
+              %br
+              %br
+              %a(href="/users") - All Users
+              %br
+              %a(href="/items") - All Items
+              %br
+              %br
+              %a(href="/users/#{User.get_user(session['user']).name}") - Your Profile
+              %br
+              %a(href="/logout") - Logout
+          -else
+            %td
+              %h2 not logged in!
+          %td
+            =yield
+          %tr
+            %td(colspan="2")
+              %p Built during ESE 2012 by the guys who brought you "the moving turtle" in P2
