@@ -27,7 +27,8 @@
               %h2 not logged in!
           -if error != nil
             %td.error
-              #{error}
+              #error_msg
+                #{error}
               =yield
           -else
             %td

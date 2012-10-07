@@ -76,3 +76,16 @@ td{
 td.error{
     background: #FFB3B3;
 }
+
+#error_msg{
+    display:block;
+    width: 100%;
+    background-color: #ffffff;
+    height: 30px;
+    font-size:20px;
+    border: 2px solid black;
+    text-align: center;
+    vertical-align: middle;
+    padding-top:5px;
+
+}
