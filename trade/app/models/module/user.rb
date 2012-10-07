@@ -55,8 +55,8 @@ module Models
     end
 
     #let the user create a new item
-    def create_item(name, price)
-      new_item = Models::Item.created( name, price, self )
+    def create_item(name, price, description="")
+      new_item = Models::Item.created( name, price, self, description )
       self.item_list.push(new_item)
       new_item.save
       return new_item
