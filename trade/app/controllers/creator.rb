@@ -20,7 +20,8 @@ module Controllers
       if session['auth']
         user = session['user']
         begin
-          User.get_user(user).create_item(params[:name], Integer(params[:price]))
+          User.get_user(user).create_item(params[:name], Integer(params[:price]), params[:description])
+          # MW: maybe "User.by_name" might be somewhat more understandable
         rescue
           redirect "/error/Not_A_Number"
         end
@@ -28,6 +29,16 @@ module Controllers
       else
         redirect "/"
       end
+    end
+
+    post '/edit_item/:itemid' do
+      item = Item.get_item(params[:itemid])
+      item.delete # MW: should not be necessary => Refactor-Issue (the list @@items should be reorganized...)
+      item.name = params[:name]
+      item.price = params[:price]
+      item.description = params[:description]
+      item.save # MW: should not be necessary, since the item is already in the system and only its properties have changed!
+      redirect "/home/inactive"
     end
 
     get '/changestate/:id/setactive' do
@@ -67,6 +78,5 @@ module Controllers
         redirect "/"
       end
     end
-
   end
 end

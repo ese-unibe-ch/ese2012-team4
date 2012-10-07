@@ -1,12 +1,15 @@
+          %h2 My Inactive Items
+          %br
+          - content_for :name do
+            Inactive_items
+          %ul
+            - for item in inactive_items
+              %li
+                %em= item.name
+                %em= item.price
+                %br
+                %em Description: #{item.description}
+                \
+                %a(href="/changestate/#{item.id}.#{item.name}/setactive" ) Set Active
+                %a(href="/home/edit_item/#{item.id}.#{item.name}") Edit
 
-%h2 My Inactive Items
-%br
-- content_for :name do
-  Inactive_items
-%ul
-  - for item in inactive_items
-    %li
-      %em= item.name
-      %em= item.price
-      \:
-      %a(href="/changestate/#{item.id}.#{item.name}/setactive" ) Set Active

@@ -1,12 +1,14 @@
 
-%h2 My Active Items
-%br
-- content_for :name do
-  Active_items
-%ul
-  - for item in active_items
-    %li
-      %em= item.name
-      %em= item.price
-      \:
-      %a(href="/changestate/#{item.id}.#{item.name}/setinactive" ) Set Inactive
+          %h2 My Active Items
+          %br
+          - content_for :name do
+            Active_items
+          %ul
+            - for item in active_items
+              %li
+                %em= item.name
+                %em= item.price
+                %br
+                %em Description: #{item.description}
+                \
+                %a(href="/changestate/#{item.id}.#{item.name}/setinactive" ) Set Inactive

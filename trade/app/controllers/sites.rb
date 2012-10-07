@@ -32,10 +32,6 @@ module Controllers
       end
     end
 
-    get '/signup' do
-      haml :signup, :locals => {:page_name => "Sign up"}
-    end
-
     get '/logout' do
       if session['auth']
         haml :logout, :locals => {:page_name => "Logout"}
@@ -76,6 +72,16 @@ module Controllers
       else
         redirect "/"
       end
+    end
+
+    get '/home/edit_item/:itemid' do
+      item = Item.get_item(params[:itemid])
+      item_name = item.name
+      price = item.price
+      description = item.description
+
+      # MW: To do: Get the right params.
+      haml :home_new, :locals => {:action => "edit_item/#{params[:itemid]}", :name => item_name, :price => price, :description => description, :button => "Edit"}
     end
 
     get '/users' do
@@ -124,7 +130,5 @@ module Controllers
         redirect "/"
       end
     end
-
-
   end
 end
