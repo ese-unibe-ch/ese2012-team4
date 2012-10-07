@@ -1,18 +1,21 @@
-          %h2 Create Item
-          %br
-          %form(action="/#{action}" method="POST")
-            %label Name of Item:
-            %br
-            %input(type="text" name="name" value="#{name}")
-            %br
-            %label Price:
-            %br
-            %input(type="text" name="price" value="#{price}")
-            %br
-            %label Description (optional)
-            %br
-            %input(type="text" name = "description" value="#{description}")
-            %br
-            %br
-            %input(type="submit" value="#{button}")
-      
+-if name != ""
+  %h2 Edit Item
+-if name == ""
+  %h2 New Item
+%br
+%form(action="/#{action}" method="POST")
+  %label Name of Item:
+  %br
+  %input(type="text" name="name" value="#{name}")
+  %br
+  %label Price:
+  %br
+  %input(type="text" name="price" value="#{price}")
+  %br
+  %label Description (optional)
+  %br
+  %input(type="text" name = "description" value="#{description}")
+  %br
+  %br
+  %input(type="submit" value="#{button}")
+

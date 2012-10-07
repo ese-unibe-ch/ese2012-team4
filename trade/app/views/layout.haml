@@ -23,7 +23,7 @@
               %a.nav(href="/users/#{User.get_user(session['user']).name}") - Your Profile
               %a.nav(href="/logout") - Logout
           -else
-            %td
+            %td.navigation
               %h2 not logged in!
           %td
             =yield

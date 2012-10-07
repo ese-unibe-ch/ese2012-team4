@@ -59,6 +59,7 @@ a.nav:visited
 }
 td.navigation{
     width:150px;
+    max-width: 150px;
     height: 350px;
 }
 td.header{

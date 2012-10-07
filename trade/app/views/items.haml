@@ -1,15 +1,15 @@
 
-          %h2 All Items
-          %br
-          - content_for :name do
-            All_items
-          %ul
-            - for item in all_items
-              %li
-                %em= item.name
-                %em= " owned by #{item.owner.name} costs #{item.price} credits"
-                %br
-                %em Description: #{item.description}
-                \
-                %a(href="/buy/#{item.id}.#{item.name}" ) Buy Item
+%h2 All Items
+%br
+- content_for :name do
+  All_items
+%ul
+  - for item in all_items
+    %li
+      %em= item.name
+      %em= " owned by #{item.owner.name} costs #{item.price} credits"
+      %br
+      %em Description: #{item.description}
+      \
+      %a(href="/buy/#{item.id}.#{item.name}" ) Buy Item
      
