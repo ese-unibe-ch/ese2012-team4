@@ -38,7 +38,7 @@ module Controllers
 
     get '/logout' do
       if session['auth']
-        haml :logout
+        haml :logout, :locals => {:page_name => "Logout"}
       else
         redirect "/"
       end
@@ -72,7 +72,7 @@ module Controllers
 
     get '/home/new' do
       if session['auth']
-        haml :home_new, :locals =>{:page_name => "Home"}
+        haml :home_new, :locals =>{:page_name => "New Item"}
       else
         redirect "/"
       end

@@ -6,8 +6,7 @@
     %table
       %tr
         %td(colspan="2")
-          %h1 Trading System
-          #{params[:page_name]}
+          %h1= "Trading System: #{page_name}"
       %tr
         -if session['auth']
           %td
