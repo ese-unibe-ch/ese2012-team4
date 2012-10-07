@@ -24,6 +24,8 @@
           %a(href="/items") - All Items
           %br
           %br
+          %a(href="/users/#{User.get_user(session['user']).name}") - Your Profile
+          %br
           %a(href="/logout") - Logout
         %td
           %h2 Content
