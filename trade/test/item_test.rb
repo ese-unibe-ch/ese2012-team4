@@ -23,15 +23,17 @@ class ItemTest < Test::Unit::TestCase
     assert( owner.list_items_inactive.size == 0, "Item list inactive length should be 0" )
     assert( owner.list_items[0].is_active? , "New created item should now be active" )
     assert( owner.list_items[0].to_s, "testobject, 10" )
+    assert( owner.list_items[0].description.eql?("No description available"), "Should be mentioned that no description has been entered")
   end
 
   #test if item is initialized correctly
   def test_item_initialisation
     owner = Models::User.created( "testuser", "password" )
-    item = owner.create_item("testobject", 50)
+    item = owner.create_item("testobject", 50, "Description-text")
     assert(item.get_name == "testobject", "Name should be returned")
     assert(item.get_price == 50, "Should return price")
     assert(!item.is_active?, "Should not be active")
+    assert(item.description.eql?("Description-text"), "Description should be returned")
   end
 
   #test for item activation
