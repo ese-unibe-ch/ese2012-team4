@@ -50,15 +50,19 @@ module Controllers
     end
 
     get "/profile/:error_msg" do
-      case params[:error_msg]
-        when "false_pw"
-          haml :profile, :locals => {:page_name => "Your profile", :error => "You entered an incorrect password"}
-        when "mismatch"
-          haml :profile, :locals => {:page_name => "Your profile", :error => "The new password and the check do not match"}
-        when "unsafe"
-          haml :profile, :locals => {:page_name => "Your profile", :error => "Your password is unsafe"}
+      if session['auth']
+        case params[:error_msg]
+          when "false_pw"
+            haml :profile, :locals => {:page_name => "Your profile", :error => "You entered an incorrect password"}
+          when "mismatch"
+            haml :profile, :locals => {:page_name => "Your profile", :error => "The new password and the check do not match"}
+          when "unsafe"
+            haml :profile, :locals => {:page_name => "Your profile", :error => "Your password is unsafe"}
+        end
+      else
+        redirect "/"
       end
-    end
 
+    end
   end
 end

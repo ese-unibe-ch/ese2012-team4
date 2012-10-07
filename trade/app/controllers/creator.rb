@@ -23,11 +23,18 @@ module Controllers
           User.get_user(user).create_item(params[:name], Integer(params[:price]), params[:description])
           # MW: maybe "User.by_name" might be somewhat more understandable
         rescue
-          redirect "/error/Not_A_Number"
+          get '/create/not_a_number'
         end
         redirect "/home/inactive"
       else
         redirect "/"
+      end
+    end
+
+    get '/create/:error_msg' do
+      case params[:error_msg]
+        when "not_a_number"
+          haml :home_new, :locals =>{:action => "create", :name => "", :price => "", :description =>"", :button => "Create", :page_name => "New Item", :error => "Your price is not a number!"}
       end
     end
 
@@ -71,12 +78,13 @@ module Controllers
         if new_user.buy_new_item?(item)
           old_user.remove_item(item)
         else
-          redirect "/error/Not_Enough_Credits"
+          redirect "/items/not_enough_credits"
         end
         redirect "/home/active"
       else
         redirect "/"
       end
     end
+
   end
 end
