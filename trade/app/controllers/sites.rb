@@ -72,7 +72,7 @@ module Controllers
 
     get '/home/new' do
       if session['auth']
-        haml :home_new, :locals =>{:action => "/create", :name => "", :price => "", :description =>"", :button => "Create", :page_name => "New Item", :error => nil}
+        haml :home_new, :locals =>{:action => "create", :name => "", :price => "", :description =>"", :button => "Create", :page_name => "New Item", :error => nil}
       else
         redirect "/"
       end
