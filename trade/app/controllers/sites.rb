@@ -31,6 +31,10 @@ module Controllers
         haml :login, :locals => {:page_name => "Log in"}
       end
     end
+    
+    get '/signup' do
+      haml :signup, :locals => {:page_name => "Sign up"}
+    end
 
     get '/logout' do
       if session['auth']
