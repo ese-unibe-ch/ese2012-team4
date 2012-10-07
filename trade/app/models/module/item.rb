@@ -31,6 +31,7 @@ module Models
 
     def save
       raise "Duplicated item" if @@item_list.has_key? self.id and @@item_list[self.id] != self
+      # MW: How does it make sense to identify an item through the id ( = identifier) AND the name? Name is changeable!
       @@item_list["#{self.id}.#{self.name}"] = self
       @@count += 1
     end
@@ -98,6 +99,10 @@ module Models
       end
       ret = ret_array.select {|s| s.owner.name !=  viewer}
       return ret.select {|s| s.is_active?}
+    end
+
+    def delete
+      @@item_list.delete(self)
     end
 
   end
