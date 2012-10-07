@@ -55,7 +55,7 @@ module Models
     end
 
     #let the user create a new item
-    def create_item(name, price, description="")
+    def create_item(name, price, description="No description available")
       new_item = Models::Item.created( name, price, self, description )
       self.item_list.push(new_item)
       new_item.save

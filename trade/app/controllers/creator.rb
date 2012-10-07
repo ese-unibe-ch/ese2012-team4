@@ -78,6 +78,5 @@ module Controllers
         redirect "/"
       end
     end
-
   end
 end
