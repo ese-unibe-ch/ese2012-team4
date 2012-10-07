@@ -35,8 +35,12 @@
               %li
                 %em= item.name
                 %em= item.price
-                \:
+                %br
+                %em Description: #{item.description}
+                \
                 %a(href="/changestate/#{item.id}.#{item.name}/setinactive" ) Set Inactive
+                %br
+                %br
       %tr
         %td(colspan="2")
           %p Built during ESE 2012 by the guys who brought you "the moving turtle" in P2

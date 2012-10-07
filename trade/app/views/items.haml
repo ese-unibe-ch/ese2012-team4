@@ -35,8 +35,12 @@
               %li
                 %em= item.name
                 %em= " owned by #{item.owner.name} costs #{item.price} credits"
-                \:
+                %br
+                %em Description: #{item.description}
+                \
                 %a(href="/buy/#{item.id}.#{item.name}" ) Buy Item
+                %br
+                %br
       %tr
         %td(colspan="2")
           %p Built during ESE 2012 by the guys who brought you "the moving turtle" in P2
