@@ -31,9 +31,12 @@ module Controllers
       end
     end
 
-    post '/edit_item' do
-      ## To do!
-      "MW: Not yet implemented - new values of item should be stored."
+    post '/edit_item/:itemid' do
+      item = Item.get_item(params[:itemid])
+      item.name = params[:name]
+      item.price = params[:price]
+      item.description = params[:description]
+      redirect "/home/inactive"
     end
 
     get '/changestate/:id/setactive' do
