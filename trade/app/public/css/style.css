@@ -16,17 +16,44 @@ body{
     margin: auto;
 }
 
-.main{
+.main
+{
     width: 100%;
     border-spacing: 5px;
 }
 
-a:link
+a:link{
+    text-decoration: none;
+    color:#4169e1;
+}
+
+a:visited{
+    text-decoration: none;
+    color:#4169e1;
+}
+
+a.nav:hover
+{
+    text-decoration: none;
+    background-color: #d3d3d3;
+}
+
+a.nav
+{
+    display:block;
+    text-align:left;
+    width:150px;
+    text-decoration:none;
+}
+
+a.nav:link
 {
     text-decoration: none;
     color: black;
 }
-a:visited{
+
+a.nav:visited
+{
     text-decoration: none;
     color: black;
 }
