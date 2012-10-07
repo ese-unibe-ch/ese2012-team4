@@ -25,8 +25,13 @@
           -else
             %td.navigation
               %h2 not logged in!
-          %td
-            =yield
+          -if error != nil
+            %td.error
+              #{error}
+              =yield
+          -else
+            %td
+              =yield
           %tr
             %td(colspan="2")
               %p Built during ESE 2012 by the guys who brought you "the moving turtle" in P2

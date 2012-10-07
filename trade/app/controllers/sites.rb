@@ -20,7 +20,7 @@ module Controllers
       if session['auth']
         redirect "/home"
       else
-        haml :index, :locals => {:page_name => "Home"}
+        haml :index, :locals => {:page_name => "Home", :error => nil}
       end
     end
 
@@ -28,17 +28,17 @@ module Controllers
       if session['auth']
         redirect "/home"
       else
-        haml :login, :locals => {:page_name => "Log in"}
+        haml :login, :locals => {:page_name => "Log in", :error => nil}
       end
     end
     
     get '/signup' do
-      haml :signup, :locals => {:page_name => "Sign up"}
+      haml :signup, :locals => {:page_name => "Sign up", :error => nil}
     end
 
     get '/logout' do
       if session['auth']
-        haml :logout, :locals => {:page_name => "Logout"}
+        haml :logout, :locals => {:page_name => "Logout", :error => nil}
       else
         redirect "/"
       end
@@ -46,7 +46,7 @@ module Controllers
 
     get '/home' do
       if session['auth']
-        haml :home, :locals => {:page_name => "Home"}
+        haml :home, :locals => {:page_name => "Home", :error => nil}
       else
         redirect "/"
       end
@@ -55,7 +55,7 @@ module Controllers
     get '/home/active' do
       if session['auth']
         user = session['user']
-        haml :home_active, :locals => {:active_items => User.get_user(user).list_items, :page_name => "Active items"}
+        haml :home_active, :locals => {:active_items => User.get_user(user).list_items, :page_name => "Active items", :error => nil}
       else
         redirect "/"
       end
@@ -64,7 +64,7 @@ module Controllers
     get '/home/inactive' do
       if session['auth']
         user = session['user']
-        haml :home_inactive, :locals => {:inactive_items => User.get_user(user).list_items_inactive, :page_name => "Inactive items"}
+        haml :home_inactive, :locals => {:inactive_items => User.get_user(user).list_items_inactive, :page_name => "Inactive items", :error => nil}
       else
         redirect "/"
       end
@@ -72,7 +72,7 @@ module Controllers
 
     get '/home/new' do
       if session['auth']
-        haml :home_new, :locals =>{:action => "/create", :name => "", :price => "", :description =>"", :button => "Create", :page_name => "New Item"}
+        haml :home_new, :locals =>{:action => "/create", :name => "", :price => "", :description =>"", :button => "Create", :page_name => "New Item", :error => nil}
       else
         redirect "/"
       end
@@ -85,13 +85,13 @@ module Controllers
       description = item.description
 
       # MW: To do: Get the right params.
-      haml :home_new, :locals => {:action => "edit_item/#{params[:itemid]}", :name => item_name, :price => price, :description => description, :button => "Edit", :page_name => "Edit Item"}
+      haml :home_new, :locals => {:action => "edit_item/#{params[:itemid]}", :name => item_name, :price => price, :description => description, :button => "Edit", :page_name => "Edit Item", :error => nil}
     end
 
     get '/users' do
       if session['auth']
         viewer = session['user']
-        haml :users, :locals => {:all_users => User.get_all(viewer), :page_name => "Users"}
+        haml :users, :locals => {:all_users => User.get_all(viewer), :page_name => "Users", :error => nil}
       else
         redirect "/"
       end
@@ -102,19 +102,25 @@ module Controllers
         user = params[:id]
         viewer = session['user']
         if user == viewer
-          haml :profile, :locals => {:page_name => "Your profile"}
+          redirect "/profile"
         else
-          haml :users_id, :locals => {:active_items => User.get_user(user).list_items, :page_name => "User #{user}"}
+          haml :users_id, :locals => {:active_items => User.get_user(user).list_items, :page_name => "User #{user}", :error => nil}
         end
       else
         redirect "/"
       end
     end
 
+    get "/profile" do
+      if session['auth']
+        haml :profile, :locals => {:page_name => "Your profile", :error => nil}
+      end
+    end
+
     get '/items' do
       if session['auth']
         viewer = session['user']
-        haml :items, :locals => {:all_items => Item.get_all(viewer), :page_name => "Items"}
+        haml :items, :locals => {:all_items => Item.get_all(viewer), :page_name => "Items", :error => nil }
       else
         redirect "/"
       end
@@ -129,7 +135,7 @@ module Controllers
         if params[:title] == "Not_Enough_Credits"
           msg = "Sorry, but you can't buy this item, because you have not enough credits!"
         end
-        haml :error, :locals => {:error_title => params[:title], :error_message => msg , :page_name => "Error"}
+        haml :error, :locals => {:error_title => params[:title], :error_message => msg , :page_name => "Error", :error => nil}
       else
         redirect "/"
       end

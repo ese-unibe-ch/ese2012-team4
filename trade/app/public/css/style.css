@@ -72,3 +72,7 @@ td{
     background: #ffffff;
     vertical-align: top;
 }
+
+td.error{
+    background: #FFB3B3;
+}

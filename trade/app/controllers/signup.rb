@@ -19,13 +19,14 @@ module Controllers
     post '/signup' do
       username, pw, pw2 = params[:username], params[:password1], params[:password2]
 
-      fail "enter a Username" if username == ''
-      fail "enter a Password" if pw == ''
-
-      fail "Passwords not identical" if pw != pw2
+      redirect "/signup/no_user_name" if username==''
+      redirect "/signup/taken" unless User.available? username
+      redirect "/signup/no_pw" if pw == ''
       password_check = Models::PasswordCheck.created
-      fail "your password does not meet the standards" unless password_check.safe?(pw)
-      fail "User name not available" unless User.available? username
+      redirect "/signup/unsafe" unless password_check.safe?(pw)
+      redirect "/signup/mismatch" if pw != pw2
+
+
 
       User.created(username, pw).save
 
@@ -33,6 +34,22 @@ module Controllers
       session['auth'] = true
 
       redirect "/home"
+    end
+
+    get "/signup/:error_msg" do
+      case params[:error_msg]
+        when "no_user_name"
+          haml :signup, :locals=> {:page_name => "Sign up", :error => "Enter an username!"}
+        when "no_pw"
+          haml :signup, :locals=> {:page_name => "Sign up", :error => "Enter a password!"}
+        when "mismatch"
+          haml :signup, :locals=> {:page_name => "Sign up", :error => "Passwords do not match!"}
+        when "unsafe"
+          haml :signup, :locals=> {:page_name => "Sign up", :error => "Your password is unsafe!"}
+        when "taken"
+          haml :signup, :locals=> {:page_name => "Sign up", :error => "This username is already taken!"}
+      end
+
     end
 
   end
