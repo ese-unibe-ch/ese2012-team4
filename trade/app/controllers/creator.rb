@@ -22,6 +22,7 @@ module Controllers
         #error handling for invalid prices
         unless params[:price].length == params[:price].count("0-9")
           redirect '/create/not_a_number'
+
         end
         #error handling for empty names or whitespaces (strip removes all kind of whitespaces, but not the first space)
         unless params[:name].strip.delete(' ')!=""
@@ -93,7 +94,7 @@ module Controllers
       end
     end
 
-    get '/buy/:id' do
+    get '/buy/:id' do               # TODO: change to post!
       if not session[:username].nil?
         id = params[:id]
         item = Item.get_item(id)
@@ -103,7 +104,11 @@ module Controllers
         if new_user.buy_new_item?(item)
           old_user.remove_item(item)
         else
-          redirect "/items/not_enough_credits"
+          if back.include? '/not_enough_credits'
+            redirect "#{back}"
+          else
+            redirect "#{back}/not_enough_credits"
+          end
         end
         redirect "/home/inactive"
       else

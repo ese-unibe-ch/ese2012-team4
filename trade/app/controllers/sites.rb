@@ -115,6 +115,19 @@ module Controllers
       end
     end
 
+    get '/users/:id/:error_msg' do
+      if not session[:username].nil?
+        user = params[:id]
+        case params[:error_msg]
+          when "not_enough_credits"
+            haml :users_id, :locals => {:active_items => User.get_user(user).list_items, :page_name => "User #{user}", :error => "Not enough credits!"}
+        end
+      else
+        redirect "/"
+      end
+    end
+
+
     get "/profile" do
       if not session[:username].nil?
         haml :profile, :locals => {:page_name => "Your profile", :error => nil}
