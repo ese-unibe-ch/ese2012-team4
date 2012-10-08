@@ -79,7 +79,9 @@ module Controllers
     end
 
     get '/home/edit_item/:itemid' do
-      if not session[:username].nil?
+
+      if (not session[:username].nil?) && Item.get_item(params[:itemid]).is_owner?(session[:username])
+
         item = Item.get_item(params[:itemid])
         item_name = item.name
         price = item.price

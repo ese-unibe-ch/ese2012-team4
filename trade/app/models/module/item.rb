@@ -41,6 +41,11 @@ module Models
       self.active
     end
 
+    #compare a users name to the owners name
+    def is_owner?(user)
+      User.get_user(user).eql?(self.owner)
+    end
+
     # to String-method
     def to_s
       "#{self.get_name}, #{self.get_price}"
