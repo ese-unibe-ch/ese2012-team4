@@ -41,11 +41,6 @@ module Models
       self.active
     end
 
-    # set owner
-    def set_owner(new_owner)
-      self.owner = new_owner
-    end
-
     # to String-method
     def to_s
       "#{self.get_name}, #{self.get_price}"
