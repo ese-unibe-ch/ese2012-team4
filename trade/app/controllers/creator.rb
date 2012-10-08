@@ -42,7 +42,7 @@ module Controllers
       item = Item.get_item(params[:itemid])
       item.delete # MW: should not be necessary => Refactor-Issue (the list @@items should be reorganized...)
       item.name = params[:name]
-      item.price = params[:price]
+      item.price = params[:price].to_i
       item.description = params[:description]
       item.save # MW: should not be necessary, since the item is already in the system and only its properties have changed!
       redirect "/home/inactive"
