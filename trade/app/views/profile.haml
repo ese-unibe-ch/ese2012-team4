@@ -10,13 +10,14 @@ Edit your list of interests:
 %br
 %br
 %form(action="/change_description" method="POST")
-  %input(type="text" name="description" value="#{description}")
+  %input(type="text" name="description" value="#{user.description}")
   %br
   %input(type="submit" value="save")
 %br
 %br
 Change your password
 %br
+  Please choose a safe password; a safe password includes letters and numbers and is more than 4 digits long.
 %br
 %form(action="/change_password" method="POST")
   %label Enter old password:

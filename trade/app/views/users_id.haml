@@ -1,13 +1,15 @@
 
-%h2= "Users (#{params[:id]}) Active Items"
+%h2= "#{params[:id]}"
+%br
+%br #{user.name}'s interests: #{user.description}
 %br
 - content_for :name do
-  Active_items
+  #{user.name}'s Active_items
 %ul
   - for item in active_items
     %li
       %em= item.name
       %em= item.price
       \:
-      %a(href="/buy/#{item.id}.#{item.name}" ) Buy this item
+      %a(href="/buy/#{item.id}" ) Buy this item
       -#TODO: refactor to POST!

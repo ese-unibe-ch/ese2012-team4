@@ -59,11 +59,11 @@ module Controllers
       if not session[:username].nil?
         case params[:error_msg]
           when "false_pw"
-            haml :profile, :locals => {:page_name => "Your profile", :error => "You entered an incorrect password"}
+            haml :profile, :locals => {:page_name => "Your profile", :user => User.get_user(session[:username]), :error => "You entered an incorrect password"}
           when "mismatch"
-            haml :profile, :locals => {:page_name => "Your profile", :error => "The new password and the check do not match"}
+            haml :profile, :locals => {:page_name => "Your profile", :user => User.get_user(session[:username]), :error => "The new password and the check do not match"}
           when "unsafe"
-            haml :profile, :locals => {:page_name => "Your profile", :error => "Your password is unsafe"}
+            haml :profile, :locals => {:page_name => "Your profile", :user => User.get_user(session[:username]), :error => "Your password is unsafe"}
         end
       else
         redirect "/"

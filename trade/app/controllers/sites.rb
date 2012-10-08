@@ -107,6 +107,8 @@ module Controllers
         case params[:error_msg]
           when "not_a_number"
             haml :home_new, :locals => {:action => "edit_item/#{params[:itemid]}", :name => item_name, :price => price, :description => description, :button => "Edit", :page_name => "Edit Item", :error => "Your price is not a valid number!"}
+          when "no_name"
+            haml :home_new, :locals => {:action => "edit_item/#{params[:itemid]}", :name => item_name, :price => price, :description => description, :button => "Edit", :page_name => "Edit Item", :error => "You have to choose a name for your item!"}
         end
       else
         redirect "/"
@@ -116,7 +118,7 @@ module Controllers
     get '/users' do
       if not session[:username].nil?
         viewer = session[:username]
-        haml :users, :locals => {:all_users => User.get_all(viewer), :page_name => "Users", :error => nil}
+        haml :users, :locals => {:all_users => User.get_all(""), :page_name => "Users", :error => nil}
       else
         redirect "/"
       end
@@ -129,7 +131,7 @@ module Controllers
         if user == viewer
           redirect "/profile"
         else
-          haml :users_id, :locals => {:active_items => User.get_user(user).list_items, :page_name => "User #{user}", :error => nil}
+          haml :users_id, :locals => {:active_items => User.get_user(user).list_items, :page_name => "User #{user}", :user => User.get_user(user), :error => nil}
         end
       else
         redirect "/"
