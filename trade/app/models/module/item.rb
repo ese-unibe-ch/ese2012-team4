@@ -58,12 +58,6 @@ module Models
       self.price
     end
 
-
-    # return the owner
-    def get_owner
-      self.owner
-    end
-
     #  MW: To do: write a test
     def editable?
       !self.active

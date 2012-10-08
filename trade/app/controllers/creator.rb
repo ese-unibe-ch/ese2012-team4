@@ -72,7 +72,7 @@ module Controllers
       if session['auth']
         id = params[:id]
         item = Item.get_item(id)
-        old_user = item.get_owner
+        old_user = item.owner
         user = session['user']
         new_user = User.get_user(user)
         if new_user.buy_new_item?(item)

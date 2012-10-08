@@ -53,8 +53,8 @@ class ItemTest < Test::Unit::TestCase
   def test_item_owner
     owner = Models::User.created( "testuser", "password" )
     item = owner.create_item("testobject", 50)
-    assert(item.get_owner == owner, "Owner not set correctly")
-    assert(item.get_owner.get_name == "testuser", "Owner not set correctly")
+    assert(item.owner == owner, "Owner not set correctly")
+    assert(item.owner.get_name == "testuser", "Owner not set correctly")
   end
 
   # test for items owner after selling
@@ -62,14 +62,14 @@ class ItemTest < Test::Unit::TestCase
     old_owner = Models::User.created("Old", "password")
     new_owner = Models::User.created("New", "password")
     item = old_owner.create_item("sock",10)
-    assert(item.get_owner == old_owner, "Owner not set correctly")
-    assert(item.get_owner.get_name == "Old", "Owner not set correctly")
+    assert(item.owner == old_owner, "Owner not set correctly")
+    assert(item.owner.get_name == "Old", "Owner not set correctly")
     old_owner.list_items_inactive[0].active = true
     if new_owner.buy_new_item?(item)
       old_owner.remove_item(item)
     end
-    assert(item.get_owner == new_owner, "Owner not set correctly")
-    assert(item.get_owner.get_name == "New", "Owner not set correctly")
+    assert(item.owner == new_owner, "Owner not set correctly")
+    assert(item.owner.get_name == "New", "Owner not set correctly")
   end
 
 end
