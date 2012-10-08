@@ -23,7 +23,7 @@ module Controllers
         length = price.length
         number_count=price.count("0-9")
         unless length == number_count
-          redirect '/create/not_a_number'
+          redirect "create/not_a_number"
         end
         User.get_user(user).create_item(params[:name], Integer(params[:price]), params[:description])
           # MW: maybe "User.by_name" might be somewhat more understandable
@@ -70,17 +70,21 @@ module Controllers
       end
     end
 
-    get '/buy/:id' do
+    get '/buy/:id' do               # TODO: change to post!
       if not session[:username].nil?
         id = params[:id]
         item = Item.get_item(id)
         old_user = item.owner
-        user = session['user']
+        user = session[:username]
         new_user = User.get_user(user)
         if new_user.buy_new_item?(item)
           old_user.remove_item(item)
         else
-          redirect "/items/not_enough_credits"
+          if back.include? '/not_enough_credits'
+            redirect "#{back}"
+          else
+            redirect "#{back}/not_enough_credits"
+          end
         end
         redirect "/home/inactive"
       else
