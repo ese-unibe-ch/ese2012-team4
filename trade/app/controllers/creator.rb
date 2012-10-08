@@ -56,11 +56,9 @@ module Controllers
         redirect "/home/edit_item/#{params[:itemid]}/not_a_number"
 
       end
-      item.delete # MW: should not be necessary => Refactor-Issue (the list @@items should be reorganized...)
       item.name = params[:name]
-      item.price = params[:price].to_i
+      item.price = params[:price]
       item.description = params[:description]
-      item.save # MW: should not be necessary, since the item is already in the system and only its properties have changed!
       redirect "/home/inactive"
     end
 
