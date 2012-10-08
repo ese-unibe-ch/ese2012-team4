@@ -20,9 +20,8 @@ module Controllers
       unless session[:username].nil?
         user = session[:username]
         price = params[:price]
-        length = price.length
-        number_count=price.count("0-9")
-        unless length == number_count
+
+        unless Item.valid_price?(price)
           redirect "create/not_a_number"
         end
         User.get_user(user).create_item(params[:name], Integer(params[:price]), params[:description])

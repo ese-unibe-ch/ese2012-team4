@@ -41,6 +41,12 @@ module Models
       self.active
     end
 
+
+    # check if a price is valid
+    def self.valid_price?(price)
+      (!!(price =~ /^[-+]?[1-9]([0-9]*)?$/) && Integer(price) >= 0)
+    end
+
     #compare a users name to the owners name
     def is_owner?(user)
       User.get_user(user).eql?(self.owner)
