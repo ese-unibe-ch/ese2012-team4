@@ -46,11 +46,6 @@ module Models
       "#{self.get_name}, #{self.get_price}"
     end
 
-    # to set active
-    def to_active
-      self.active = true
-    end
-
     # to set inactive
     def to_inactive
       self.active = false

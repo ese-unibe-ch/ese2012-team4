@@ -18,7 +18,7 @@ class UserTest < Test::Unit::TestCase
     assert( owner.list_items.size == 0, "Item list length should be 0" )
     assert( owner.list_items_inactive.size == 1, "Item list inactive length should be 1" )
     assert( !owner.list_items_inactive[0].is_active?, "New created item should be inactive" )
-    owner.list_items_inactive[0].to_active
+    owner.list_items_inactive[0].active = true
     assert( owner.list_items.size == 1, "Item list length should be 1" )
     assert( owner.list_items_inactive.size == 0, "Item list inactive length should be 0" )
     assert( owner.list_items[0].is_active? , "New created item should now be active" )
@@ -40,7 +40,7 @@ class UserTest < Test::Unit::TestCase
     assert( !sock.is_active?, "item should not be active, is")
     assert( !old_owner.list_items_inactive[0].is_active?, "item should not be active, is")
 
-    old_owner.list_items_inactive[0].to_active
+    old_owner.list_items_inactive[0].active = true
     assert( sock.is_active?, "item should be active, is not")
     assert( old_owner.list_items[0].is_active?, "item should be active, is not")
 
@@ -67,7 +67,7 @@ class UserTest < Test::Unit::TestCase
     sock = old_owner.create_item("sock",210)
     assert( !sock.is_active?, "item should not be active, is")
 
-    sock.to_active
+    sock.active = true
     assert( sock.is_active?, "item should be active, is not")
 
     if new_owner.buy_new_item?(sock)
@@ -89,8 +89,8 @@ class UserTest < Test::Unit::TestCase
     owner = Models::User.created( "testuser", "password" )
     owner.create_item("testobject", 10)
     owner.create_item("testobject2", 50)
-    owner.list_items_inactive[0].to_active
-    owner.list_items_inactive[0].to_active
+    owner.list_items_inactive[0].active = true
+    owner.list_items_inactive[0].active = true
     assert(owner.list_items[0].to_s == "testobject, 10")
     assert(owner.list_items[1].to_s == "testobject2, 50")
   end
@@ -101,8 +101,8 @@ class UserTest < Test::Unit::TestCase
     owner.create_item("testobject2", 50)
     assert(owner.list_items_inactive[0].to_s == "testobject, 10")
     assert(owner.list_items_inactive[1].to_s == "testobject2, 50")
-    owner.list_items_inactive[0].to_active
-    owner.list_items_inactive[0].to_active
+    owner.list_items_inactive[0].active = true
+    owner.list_items_inactive[0].active = true
     assert(owner.list_items[0].to_s == "testobject, 10")
     assert(owner.list_items[1].to_s == "testobject2, 50")
     owner.list_items[0].to_inactive

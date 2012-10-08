@@ -18,7 +18,7 @@ class ItemTest < Test::Unit::TestCase
     assert( owner.list_items.size == 0, "Item list length should be 0" )
     assert( owner.list_items_inactive.size == 1, "Item list inactive length should be 1" )
     assert( !owner.list_items_inactive[0].is_active?, "New created item should be inactive" )
-    owner.list_items_inactive[0].to_active
+    owner.list_items_inactive[0].active = true
     assert( owner.list_items.size == 1, "Item list length should be 1" )
     assert( owner.list_items_inactive.size == 0, "Item list inactive length should be 0" )
     assert( owner.list_items[0].is_active? , "New created item should now be active" )
@@ -43,7 +43,7 @@ class ItemTest < Test::Unit::TestCase
     assert(item.get_name == "testobject", "Name should be returned")
     assert(item.get_price == 50, "Should return price")
     assert(!item.is_active?, "Should not be active")
-    item.to_active
+    item.active = true
     assert(item.get_name == "testobject", "Name should be returned")
     assert(item.get_price == 50, "Should return price")
     assert(item.is_active?, "Should be active now")
@@ -64,7 +64,7 @@ class ItemTest < Test::Unit::TestCase
     item = old_owner.create_item("sock",10)
     assert(item.get_owner == old_owner, "Owner not set correctly")
     assert(item.get_owner.get_name == "Old", "Owner not set correctly")
-    old_owner.list_items_inactive[0].to_active
+    old_owner.list_items_inactive[0].active = true
     if new_owner.buy_new_item?(item)
       old_owner.remove_item(item)
     end
