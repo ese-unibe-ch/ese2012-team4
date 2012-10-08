@@ -100,7 +100,7 @@ module Models
         return false
       end
       self.credits = self.credits - item_to_buy.get_price
-      item_to_buy.to_inactive
+      item_to_buy.active = false
       item_to_buy.owner = self        #BS: replaced setter
       self.item_list.push(item_to_buy)
       return true

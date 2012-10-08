@@ -61,7 +61,7 @@ module Controllers
     get '/changestate/:id/setinactive' do
       if session['auth']
         id = params[:id]
-        Item.get_item(id).to_inactive
+        Item.get_item(id).active = false
         redirect "/home/active"
       else
         redirect "/"
