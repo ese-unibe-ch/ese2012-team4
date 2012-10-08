@@ -57,7 +57,7 @@ module Controllers
 
       end
       item.name = params[:name]
-      item.price = params[:price]
+      item.price = params[:price].to_i
       item.description = params[:description]
       redirect "/home/inactive"
     end
