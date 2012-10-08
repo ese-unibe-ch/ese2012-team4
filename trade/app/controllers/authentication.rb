@@ -41,7 +41,7 @@ module Controllers
 
     post "/change_password" do
       password_check = PasswordCheck.created
-      viewer = User.get_user(session['user'])
+      viewer = User.get_user(session[:username])
       redirect "/profile/false_pw" if !(viewer.check_password(params[:password_old]))
       redirect "/profile/mismatch" if params[:password_new]!=params[:password_check]
       redirect "/profile/unsafe"   if !password_check.safe?(params[:password_new])

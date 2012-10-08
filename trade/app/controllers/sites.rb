@@ -54,7 +54,7 @@ module Controllers
 
     get '/home/active' do
       if not session[:username].nil?
-        user = session['user']
+        user = session[:username]
         haml :home_active, :locals => {:active_items => User.get_user(user).list_items, :page_name => "Active items", :error => nil}
       else
         redirect "/"
@@ -63,7 +63,7 @@ module Controllers
 
     get '/home/inactive' do
       if not session[:username].nil?
-        user = session['user']
+        user = session[:username]
         haml :home_inactive, :locals => {:inactive_items => User.get_user(user).list_items_inactive, :page_name => "Inactive items", :error => nil}
       else
         redirect "/"
@@ -94,7 +94,7 @@ module Controllers
 
     get '/users' do
       if not session[:username].nil?
-        viewer = session['user']
+        viewer = session[:username]
         haml :users, :locals => {:all_users => User.get_all(viewer), :page_name => "Users", :error => nil}
       else
         redirect "/"
@@ -104,7 +104,7 @@ module Controllers
     get '/users/:id' do
       if not session[:username].nil?
         user = params[:id]
-        viewer = session['user']
+        viewer = session[:username]
         if user == viewer
           redirect "/profile"
         else
@@ -123,7 +123,7 @@ module Controllers
 
     get '/items' do
       if not session[:username].nil?
-        viewer = session['user']
+        viewer = session[:username]
         haml :items, :locals => {:all_items => Item.get_all(viewer), :page_name => "Items", :error => nil }
       else
         redirect "/"
@@ -131,7 +131,7 @@ module Controllers
     end
     get '/items/:error_msg' do
       if not session[:username].nil?
-        viewer = session['user']
+        viewer = session[:username]
         case params[:error_msg]
           when "not_enough_credits"
             haml :items, :locals => {:all_items => Item.get_all(viewer), :page_name => "Items", :error => "Not enough credits!" }
