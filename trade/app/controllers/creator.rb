@@ -17,14 +17,16 @@ module Controllers
     helpers Sinatra::ContentFor
 
     post '/create' do
-      if not session[:username].nil?
+      unless session[:username].nil?
         user = session[:username]
-        begin
-          User.get_user(user).create_item(params[:name], Integer(params[:price]), params[:description])
-          # MW: maybe "User.by_name" might be somewhat more understandable
-        rescue
-          get '/create/not_a_number'
+        price = params[:price]
+        length = price.length
+        number_count=price.count("0-9")
+        unless length == number_count
+          redirect '/create/not_a_number'
         end
+        User.get_user(user).create_item(params[:name], Integer(params[:price]), params[:description])
+          # MW: maybe "User.by_name" might be somewhat more understandable
         redirect "/home/inactive"
       else
         redirect "/"
@@ -34,7 +36,7 @@ module Controllers
     get '/create/:error_msg' do
       case params[:error_msg]
         when "not_a_number"
-          haml :home_new, :locals =>{:action => "create", :name => "", :price => "", :description =>"", :button => "Create", :page_name => "New Item", :error => "Your price is not a number!"}
+          haml :home_new, :locals =>{:action => "create", :name => "", :price => "", :description =>"", :button => "Create", :page_name => "New Item", :error => "Your price is not a valid number!"}
       end
     end
 
