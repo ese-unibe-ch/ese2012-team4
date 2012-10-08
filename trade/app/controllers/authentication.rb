@@ -49,6 +49,11 @@ module Controllers
       redirect "/"
     end
 
+    post "/change_description" do
+      viewer = User.get_user(session[:username])
+      viewer.description(params[:description])
+    end
+
     get "/profile/:error_msg" do
       if not session[:username].nil?
         case params[:error_msg]

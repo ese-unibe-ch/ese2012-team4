@@ -6,7 +6,7 @@
 %ul
   - for user in all_users
     %li
-      %em= user.get_name
+      %em= user.name
       %em= " has #{user.list_items.size} Items to sell"
       \:
       %a(href="/users/#{user.name}" ) Show Users Items

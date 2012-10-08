@@ -17,14 +17,15 @@ module Models
     #  fails if the buyer has not enough credits.
 
     # generate getter and setter for name and price
-    attr_accessor :name, :credits, :item_list, :pw, :password_hash, :password_salt
+    attr_accessor :name, :credits, :item_list, :pw, :password_hash, :password_salt, :description
 
     @@users = {}
 
     # factory method (constructor) on the class
-    def self.created( name, password)
+    def self.created( name, password, description = "")
       user = self.new
       user.name = name
+      user.description = description
       user.credits = 100
       user.item_list = Array.new
       pw_salt = BCrypt::Engine.generate_salt
@@ -33,6 +34,7 @@ module Models
       user.password_hash = pw_hash
       user
     end
+
 
     def change_password(password)
       self.password_salt = BCrypt::Engine.generate_salt
@@ -46,16 +48,6 @@ module Models
     def save
       raise "Duplicated user" if @@users.has_key? self.name and @@users[self.name] != self
       @@users[self.name] = self
-    end
-
-    # get string representation of users name
-    def get_name
-      self.name
-    end
-
-    #get amount of users credits
-    def get_credits
-      self.credits
     end
 
     #get string representation

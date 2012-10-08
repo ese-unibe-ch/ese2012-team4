@@ -27,8 +27,8 @@ class UserTest < Test::Unit::TestCase
 
   def test_create_user
     owner = Models::User.created( "testuser", "password" )
-    assert( owner.get_name == "testuser", "Name should be correct")
-    assert( owner.get_credits == 100, "Credits should be 100 first")
+    assert( owner.name == "testuser", "Name should be correct")
+    assert( owner.credits == 100, "Credits should be 100 first")
     assert( owner.to_s == "testuser has currently 100 credits, 0 active and 0 inactive items", "String representation is wrong generated")
   end
 
@@ -56,8 +56,8 @@ class UserTest < Test::Unit::TestCase
     assert( !sock.is_active?, "item should not be active, is")
     assert( !new_owner.list_items_inactive[0].is_active?, "item should not be active, is")
 
-    assert(old_owner.get_credits == 110, "Seller should now have more money")
-    assert(new_owner.get_credits == 90, "Buyer should now have less money")
+    assert(old_owner.credits == 110, "Seller should now have more money")
+    assert(new_owner.credits == 90, "Buyer should now have less money")
   end
 
   def test_sales_not_possible_because_of_price
@@ -81,8 +81,8 @@ class UserTest < Test::Unit::TestCase
 
     assert( sock.is_active?, "item should be active, is not")
 
-    assert(old_owner.get_credits == 100, "Money should be like before")
-    assert(new_owner.get_credits == 100, "Money should be like before")
+    assert(old_owner.credits == 100, "Money should be like before")
+    assert(new_owner.credits == 100, "Money should be like before")
   end
 
   def test_method_list_active

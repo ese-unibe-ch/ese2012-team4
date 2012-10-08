@@ -17,7 +17,7 @@ module Controllers
     helpers Sinatra::ContentFor
 
     post '/signup' do
-      username, pw, pw2 = params[:username], params[:password1], params[:password2]
+      username,description, pw, pw2 = params[:username], params[:description], params[:password1], params[:password2]
 
       redirect "/signup/no_user_name" if username==''
       redirect "/signup/taken" unless User.available? username
@@ -28,7 +28,7 @@ module Controllers
 
 
 
-      User.created(username, pw).save
+      User.created(username, pw, description).save
 
       session[:username] = params[:username]
       #session['auth'] = true
