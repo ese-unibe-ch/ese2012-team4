@@ -3,6 +3,7 @@
 %br
 %br #{user.name}'s interests: #{user.description}
 %br
+%h3= "#{user.name}'s items on sale:"
 - content_for :name do
   #{user.name}'s Active_items
 %ul
@@ -10,6 +11,7 @@
     %li
       %em= item.name
       %em= item.price
+      %em= item.description
       \:
       %a(href="/buy/#{item.id}" ) Buy this item
       -#TODO: refactor to POST!
