@@ -86,9 +86,28 @@ module Controllers
         item_name = item.name
         price = item.price
         description = item.description
+        unless Item.valid_price?(String(price))
+          redirect "/home/edit_item/#{params[:itemid]}/not_a_number"
+        end
 
         # MW: To do: Get the right params.
         haml :home_new, :locals => {:action => "edit_item/#{params[:itemid]}", :name => item_name, :price => price, :description => description, :button => "Edit", :page_name => "Edit Item", :error => nil}
+      else
+        redirect "/"
+      end
+    end
+
+    get '/home/edit_item/:itemid/:error_msg' do
+      if (not session[:username].nil?) && Item.get_item(params[:itemid]).is_owner?(session[:username])
+        item = Item.get_item(params[:itemid])
+        item_name = item.name
+        price = item.price
+        description = item.description
+
+        case params[:error_msg]
+          when "not_a_number"
+            haml :home_new, :locals => {:action => "edit_item/#{params[:itemid]}", :name => item_name, :price => price, :description => description, :button => "Edit", :page_name => "Edit Item", :error => "Your price is not a valid number!"}
+        end
       else
         redirect "/"
       end

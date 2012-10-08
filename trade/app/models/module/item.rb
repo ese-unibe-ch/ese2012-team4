@@ -32,7 +32,7 @@ module Models
     def save
       raise "Duplicated item" if @@item_list.has_key? self.id and @@item_list[self.id] != self
       # MW: How does it make sense to identify an item through the id ( = identifier) AND the name? Name is changeable!
-      @@item_list["#{self.id}.#{self.name}"] = self
+      @@item_list["#{self.id}"] = self
       @@count += 1
     end
 
