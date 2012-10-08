@@ -94,7 +94,7 @@ module Models
     end
 
     # buy an item
-    # @return true if user can buy item, false if his credit amount is to small
+    # @return true if user can buy item, false if his credit amount is too small
     def buy_new_item?(item_to_buy)
       if item_to_buy.get_price > self.credits
         return false

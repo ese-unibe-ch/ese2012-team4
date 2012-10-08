@@ -18,14 +18,16 @@ module Controllers
 
     post '/create' do
       unless session[:username].nil?
-        user = session[:username]
-        price = params[:price]
-        length = price.length
-        number_count=price.count("0-9")
-        unless length == number_count
+        username = session[:username]
+        #error handling for invalid prices
+        unless params[:price].length == params[:price].count("0-9")
           redirect '/create/not_a_number'
         end
-        User.get_user(user).create_item(params[:name], Integer(params[:price]), params[:description])
+        #error handling for empty names or whitespaces (strip removes all kind of whitespaces, but not the first space)
+        unless params[:name].strip.delete(' ')!=""
+          redirect '/create/no_name'
+        end
+        User.get_user(username).create_item(params[:name], Integer(params[:price]), params[:description])
           # MW: maybe "User.by_name" might be somewhat more understandable
         redirect "/home/inactive"
       else
@@ -37,17 +39,38 @@ module Controllers
       case params[:error_msg]
         when "not_a_number"
           haml :home_new, :locals =>{:action => "create", :name => "", :price => "", :description =>"", :button => "Create", :page_name => "New Item", :error => "Your price is not a valid number!"}
+        when "no_name"
+          haml :home_new, :locals =>{:action => "create", :name => "", :price => "", :description =>"", :button => "Create", :page_name => "New Item", :error => "You have to choose a name for your item!"}
       end
     end
 
     post '/edit_item/:itemid' do
+      #error handling for empty names or whitespaces (strip removes all kind of whitespaces, but not the first space)
+      unless params[:name].strip.delete(' ')!=""
+        redirect "/home/edit_item/#{params[:itemid]}/no_name"
+      end
       item = Item.get_item(params[:itemid])
-      item.delete # MW: should not be necessary => Refactor-Issue (the list @@items should be reorganized...)
       item.name = params[:name]
-      item.price = params[:price].to_i
+      #error handling for invalid prices
+      if params[:price].length != params[:price].count("0-9")
+        redirect "/home/edit_item/#{params[:itemid]}/not_a_number"
+      else
+        item.price = Integer(params[:price])
+      end
       item.description = params[:description]
-      item.save # MW: should not be necessary, since the item is already in the system and only its properties have changed!
       redirect "/home/inactive"
+    end
+
+    get '/home/edit_item/:itemid/:error_msg' do
+      case params[:error_msg]
+        when "not_a_number"
+          item = Item.get_item(params[:itemid])
+          haml :home_new, :locals => {:action => "edit_item/#{params[:itemid]}", :name => item.name, :price => item.price, :description => item.description, :button => "Edit", :page_name => "Edit Item", :error => "Your price is not a valid number!"}
+        when "no_name"
+          item = Item.get_item(params[:itemid])
+          haml :home_new, :locals => {:action => "edit_item/#{params[:itemid]}", :name => item.name, :price => item.price, :description => item.description, :button => "Edit", :page_name => "Edit Item", :error => "You have to choose a name for your item!"}
+      end
+
     end
 
     get '/changestate/:id/setactive' do
@@ -75,8 +98,8 @@ module Controllers
         id = params[:id]
         item = Item.get_item(id)
         old_user = item.owner
-        user = session['user']
-        new_user = User.get_user(user)
+        username = session[:username]
+        new_user = Models::User.get_user(username)
         if new_user.buy_new_item?(item)
           old_user.remove_item(item)
         else
