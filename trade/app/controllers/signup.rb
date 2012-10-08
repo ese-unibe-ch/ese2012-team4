@@ -30,8 +30,8 @@ module Controllers
 
       User.created(username, pw).save
 
-      session['user'] = params[:username]
-      session['auth'] = true
+      session[:username] = params[:username]
+      #session['auth'] = true
 
       redirect "/home"
     end

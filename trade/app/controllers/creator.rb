@@ -17,8 +17,8 @@ module Controllers
     helpers Sinatra::ContentFor
 
     post '/create' do
-      if session['auth']
-        user = session['user']
+      if not session[:username].nil?
+        user = session[:username]
         begin
           User.get_user(user).create_item(params[:name], Integer(params[:price]), params[:description])
           # MW: maybe "User.by_name" might be somewhat more understandable
@@ -49,7 +49,7 @@ module Controllers
     end
 
     get '/changestate/:id/setactive' do
-      if session['auth']
+      if not session[:username].nil?
         id = params[:id]
         Item.get_item(id).active = true
         redirect "/home/inactive"
@@ -59,7 +59,7 @@ module Controllers
     end
 
     get '/changestate/:id/setinactive' do
-      if session['auth']
+      if not session[:username].nil?
         id = params[:id]
         Item.get_item(id).active = false
         redirect "/home/active"
@@ -69,7 +69,7 @@ module Controllers
     end
 
     get '/buy/:id' do
-      if session['auth']
+      if not session[:username].nil?
         id = params[:id]
         item = Item.get_item(id)
         old_user = item.owner

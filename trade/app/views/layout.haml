@@ -9,7 +9,7 @@
           %td.header(colspan="2")
             %h1= "Trading System: #{page_name}"
         %tr
-          -if session['auth']
+          -if not session[:username].nil?
             %td.navigation
               %h2 Menu
               %a.nav(href="/home") - Home
@@ -20,7 +20,7 @@
               %a.nav(href="/users") - All Users
               %a.nav(href="/items") - All Items
               %br
-              %a.nav(href="/users/#{User.get_user(session['user']).name}") - Your Profile
+              %a.nav(href="/users/#{User.get_user(session[:username]).name}") - Your Profile
               %a.nav(href="/logout") - Logout
           -else
             %td.navigation

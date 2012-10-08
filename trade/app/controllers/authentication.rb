@@ -19,8 +19,8 @@ module Controllers
     post "/authenticate" do
       redirect "authenticate/login_fail", "No such login" unless User.login params[:username], params[:password]
 
-      session['user'] = params[:username]
-      session['auth'] = true
+      session[:username] = params[:username]
+      #session['auth'] = true
 
       redirect "/home"
     end
@@ -34,8 +34,8 @@ module Controllers
     end
 
     post "/unauthenticate" do
-      session['user'] = nil
-      session['auth'] = false
+      session[:username] = nil
+      #session['auth'] = false
       redirect "/"
     end
 
@@ -50,7 +50,7 @@ module Controllers
     end
 
     get "/profile/:error_msg" do
-      if session['auth']
+      if not session[:username].nil?
         case params[:error_msg]
           when "false_pw"
             haml :profile, :locals => {:page_name => "Your profile", :error => "You entered an incorrect password"}

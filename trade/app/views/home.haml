@@ -1,8 +1,8 @@
-="Currently logged in User: #{User.get_user(session['user']).name}"
+="Currently logged in User: #{User.get_user(session[:username]).name}"
 %br
-= "Your Credits: #{User.get_user(session['user']).credits}"
+= "Your Credits: #{User.get_user(session[:username]).credits}"
 %br
-= "You have #{User.get_user(session['user']).list_items.size} active Items"
+= "You have #{User.get_user(session[:username]).list_items.size} active Items"
 %br
-= "You have #{User.get_user(session['user']).list_items_inactive.size} inactive Items"
+= "You have #{User.get_user(session[:username]).list_items_inactive.size} inactive Items"
 

@@ -17,7 +17,7 @@ module Controllers
     helpers Sinatra::ContentFor
 
     get '/' do
-      if session['auth']
+      if not session[:username].nil?
         redirect "/home"
       else
         haml :index, :locals => {:page_name => "Home", :error => nil}
@@ -25,7 +25,7 @@ module Controllers
     end
 
     get '/login' do
-      if session['auth']
+      if not session[:username].nil?
         redirect "/home"
       else
         haml :login, :locals => {:page_name => "Log in", :error => nil}
@@ -37,7 +37,7 @@ module Controllers
     end
 
     get '/logout' do
-      if session['auth']
+      if not session[:username].nil?
         haml :logout, :locals => {:page_name => "Logout", :error => nil}
       else
         redirect "/"
@@ -45,7 +45,7 @@ module Controllers
     end
 
     get '/home' do
-      if session['auth']
+      if not session[:username].nil?
         haml :home, :locals => {:page_name => "Home", :error => nil}
       else
         redirect "/"
@@ -53,7 +53,7 @@ module Controllers
     end
 
     get '/home/active' do
-      if session['auth']
+      if not session[:username].nil?
         user = session['user']
         haml :home_active, :locals => {:active_items => User.get_user(user).list_items, :page_name => "Active items", :error => nil}
       else
@@ -62,7 +62,7 @@ module Controllers
     end
 
     get '/home/inactive' do
-      if session['auth']
+      if not session[:username].nil?
         user = session['user']
         haml :home_inactive, :locals => {:inactive_items => User.get_user(user).list_items_inactive, :page_name => "Inactive items", :error => nil}
       else
@@ -71,7 +71,7 @@ module Controllers
     end
 
     get '/home/new' do
-      if session['auth']
+      if not session[:username].nil?
         haml :home_new, :locals =>{:action => "create", :name => "", :price => "", :description =>"", :button => "Create", :page_name => "New Item", :error => nil}
       else
         redirect "/"
@@ -79,17 +79,21 @@ module Controllers
     end
 
     get '/home/edit_item/:itemid' do
-      item = Item.get_item(params[:itemid])
-      item_name = item.name
-      price = item.price
-      description = item.description
+      if not session[:username].nil?
+        item = Item.get_item(params[:itemid])
+        item_name = item.name
+        price = item.price
+        description = item.description
 
-      # MW: To do: Get the right params.
-      haml :home_new, :locals => {:action => "edit_item/#{params[:itemid]}", :name => item_name, :price => price, :description => description, :button => "Edit", :page_name => "Edit Item", :error => nil}
+        # MW: To do: Get the right params.
+        haml :home_new, :locals => {:action => "edit_item/#{params[:itemid]}", :name => item_name, :price => price, :description => description, :button => "Edit", :page_name => "Edit Item", :error => nil}
+      else
+        redirect "/"
+      end
     end
 
     get '/users' do
-      if session['auth']
+      if not session[:username].nil?
         viewer = session['user']
         haml :users, :locals => {:all_users => User.get_all(viewer), :page_name => "Users", :error => nil}
       else
@@ -98,7 +102,7 @@ module Controllers
     end
 
     get '/users/:id' do
-      if session['auth']
+      if not session[:username].nil?
         user = params[:id]
         viewer = session['user']
         if user == viewer
@@ -112,13 +116,13 @@ module Controllers
     end
 
     get "/profile" do
-      if session['auth']
+      if not session[:username].nil?
         haml :profile, :locals => {:page_name => "Your profile", :error => nil}
       end
     end
 
     get '/items' do
-      if session['auth']
+      if not session[:username].nil?
         viewer = session['user']
         haml :items, :locals => {:all_items => Item.get_all(viewer), :page_name => "Items", :error => nil }
       else
@@ -126,7 +130,7 @@ module Controllers
       end
     end
     get '/items/:error_msg' do
-      if session['auth']
+      if not session[:username].nil?
         viewer = session['user']
         case params[:error_msg]
           when "not_enough_credits"
