@@ -80,7 +80,7 @@ module Controllers
         else
           redirect "/items/not_enough_credits"
         end
-        redirect "/home/active"
+        redirect "/home/inactive"
       else
         redirect "/"
       end
