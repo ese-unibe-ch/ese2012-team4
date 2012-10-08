@@ -149,9 +149,12 @@ module Controllers
     end
 
 
-    get "/profile" do
+    get '/profile' do
       if not session[:username].nil?
-        haml :profile, :locals => {:page_name => "Your profile", :error => nil}
+        user = session[:username]
+        haml :profile, :locals => {:user => User.get_user(user), :description => User.get_user(user).description, :page_name => "Your profile", :error => nil}
+      else
+        redirect "/"
       end
     end
 
@@ -163,6 +166,7 @@ module Controllers
         redirect "/"
       end
     end
+
     get '/items/:error_msg' do
       if not session[:username].nil?
         viewer = session[:username]

@@ -49,9 +49,10 @@ module Controllers
       redirect "/"
     end
 
-    post "/change_description" do
+    post "/change_description" do           #BS: should this be in sites.rb?
       viewer = User.get_user(session[:username])
-      viewer.description(params[:description])
+      viewer.description = params[:description]
+      redirect "/profile"
     end
 
     get "/profile/:error_msg" do
