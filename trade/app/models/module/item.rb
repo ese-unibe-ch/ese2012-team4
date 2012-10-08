@@ -32,13 +32,24 @@ module Models
     def save
       raise "Duplicated item" if @@item_list.has_key? self.id and @@item_list[self.id] != self
       # MW: How does it make sense to identify an item through the id ( = identifier) AND the name? Name is changeable!
-      @@item_list["#{self.id}.#{self.name}"] = self
+      @@item_list["#{self.id}"] = self
       @@count += 1
     end
 
     # get state
     def is_active?
       self.active
+    end
+
+
+    # check if a price is valid
+    def self.valid_price?(price)
+      (!!(price =~ /^[-+]?[1-9]([0-9]*)?$/) && Integer(price) >= 0)
+    end
+
+    #compare a users name to the owners name
+    def is_owner?(user)
+      User.get_user(user).eql?(self.owner)
     end
 
     # to String-method

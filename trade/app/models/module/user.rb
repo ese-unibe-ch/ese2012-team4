@@ -114,6 +114,7 @@ module Models
       return @@users[username]
     end
 
+
     def self.get_all(viewer)
       new_array = @@users.to_a
       ret_array = Array.new
