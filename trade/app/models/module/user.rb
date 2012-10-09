@@ -88,10 +88,10 @@ module Models
     # buy an item
     # @return true if user can buy item, false if his credit amount is too small
     def buy_new_item?(item_to_buy)
-      if item_to_buy.get_price > self.credits
+      if item_to_buy.price > self.credits
         return false
       end
-      self.credits = self.credits - item_to_buy.get_price
+      self.credits = self.credits - item_to_buy.price
       item_to_buy.active = false
       item_to_buy.owner = self        #BS: replaced setter
       self.item_list.push(item_to_buy)
@@ -100,7 +100,7 @@ module Models
 
     # removing item from users item_list
     def remove_item(item_to_remove)
-      self.credits = self.credits + item_to_remove.get_price
+      self.credits = self.credits + item_to_remove.price
       self.item_list.delete(item_to_remove)
     end
 

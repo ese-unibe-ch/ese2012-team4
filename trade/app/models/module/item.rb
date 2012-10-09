@@ -9,10 +9,9 @@ module Models
     # generate getter and setter for name and price
     attr_accessor :name, :price, :active, :owner, :id, :description
 
-    # MW: To do: integrate description in tests
+    # MW: ToDo: integrate description in tests
 
     # MW: Since these variables are declared through the attr_accessor, defining getters and setters are unnecessary!
-    # ==> To do: remove getters and setters from code and adjust other classes accordingly.
 
     @@item_list = {}
     @@count = 0
@@ -41,7 +40,6 @@ module Models
       self.active
     end
 
-
     # check if a price is valid
     def self.valid_price?(price)
       (!!(price =~ /^[-+]?[1-9]([0-9]*)?$/) && Integer(price) >= 0)
@@ -54,19 +52,7 @@ module Models
 
     # to String-method
     def to_s
-      "#{self.get_name}, #{self.get_price}"
-    end
-
-    # get name
-    def get_name
-      # string interpolation
-      "#{name}"
-    end
-
-    # get price
-    def get_price
-      # int interpolation
-      self.price
+      "#{self.name}, #{self.price}"
     end
 
     #  MW: To do: write a test

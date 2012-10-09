@@ -30,8 +30,8 @@ class ItemTest < Test::Unit::TestCase
   def test_item_initialisation
     owner = Models::User.created( "testuser", "password" )
     item = owner.create_item("testobject", 50, "Description-text")
-    assert(item.get_name == "testobject", "Name should be returned")
-    assert(item.get_price == 50, "Should return price")
+    assert(item.name == "testobject", "Name should be returned")
+    assert(item.price == 50, "Should return price")
     assert(!item.is_active?, "Should not be active")
     assert(item.description.eql?("Description-text"), "Description should be returned")
   end
@@ -40,12 +40,12 @@ class ItemTest < Test::Unit::TestCase
   def test_item_activation
     owner = Models::User.created( "testuser", "password" )
     item = owner.create_item("testobject", 50)
-    assert(item.get_name == "testobject", "Name should be returned")
-    assert(item.get_price == 50, "Should return price")
+    assert(item.name == "testobject", "Name should be returned")
+    assert(item.price == 50, "Should return price")
     assert(!item.is_active?, "Should not be active")
     item.active = true
-    assert(item.get_name == "testobject", "Name should be returned")
-    assert(item.get_price == 50, "Should return price")
+    assert(item.name == "testobject", "Name should be returned")
+    assert(item.price == 50, "Should return price")
     assert(item.is_active?, "Should be active now")
   end
 
