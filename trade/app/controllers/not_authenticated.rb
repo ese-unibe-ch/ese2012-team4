@@ -12,9 +12,43 @@ require_relative('../models/module/password_check')
 include Models
 
 module Controllers
-  class Signup < Sinatra::Base
+  class Not_authenticated < Sinatra::Base
     set :views, relative('../../app/views')
     helpers Sinatra::ContentFor
+
+    get '/' do
+      redirect "/home" if session[:username]
+      redirect '/index'
+    end
+
+    get '/index' do
+      haml :index, :locals => {:page_name => "Home", :error => nil}
+    end
+
+    get '/login' do
+      haml :login, :locals => {:page_name => "Log in", :error => nil}
+    end
+
+    post "/authenticate" do
+      redirect "authenticate/login_fail", "No such login" unless User.login params[:username], params[:password]
+
+      session[:username] = params[:username]
+      #session['auth'] = true
+
+      redirect "/home"
+    end
+
+    get "/authenticate/:error_msg" do
+      case params[:error_msg]
+        when "login_fail"
+          haml :login, :locals => {:page_name => "Log in", :error => "no such login!"}
+      end
+
+    end
+
+    get '/signup' do
+      haml :signup, :locals => {:page_name => "Sign up", :error => nil}
+    end
 
     post '/signup' do
       username,description, pw, pw2 = params[:username], params[:description], params[:password1], params[:password2]
@@ -25,15 +59,8 @@ module Controllers
       password_check = Models::PasswordCheck.created
       redirect "/signup/unsafe" unless password_check.safe?(pw)
       redirect "/signup/mismatch" if pw != pw2
-
-
-
       User.created(username, pw, description).save
-
-      session[:username] = params[:username]
-      #session['auth'] = true
-
-      redirect "/home"
+      redirect "/login"
     end
 
     get "/signup/:error_msg" do
