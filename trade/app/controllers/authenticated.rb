@@ -200,7 +200,7 @@ module Controllers
       redirect "/home/inactive"
     end
 
-    get '/changestate/:id/setactive' do
+    post '/changestate/:id/setactive' do
       id = params[:id]
       Item.get_item(id).active = true
       redirect "/home/inactive"
