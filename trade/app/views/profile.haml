@@ -25,31 +25,35 @@
 %br
 %br
 %form(action="/change_description" method="POST")
-  %textarea.fixedwith(type="text" name="description")
-    -user.description.each do |line|
-      #{line}
-  %br
-  %input(type="submit" value="save")
+  #textbox.value
+    %textarea.fixedwith(type="text" name="description")
+      -user.description.each do |line|
+        #{line}
+    %br
+    %input.right(type="submit" value="save")
 %br
-%br
-Change your password
-%br
-  Please choose a safe password; a safe password includes letters and numbers and is more than 4 digits long.
-%br
-%form(action="/change_password" method="POST")
-  %label Enter old password:
+%hr.separator
+#textbox.name
   %br
-  %input(type="password" name="password_old" value="")
+    Change your password
   %br
+    Please choose a safe password; a safe password includes letters and numbers and is more than 4 digits long.
   %br
-  %br
-  %label Enter new password:
-  %br
-  %input(type="password" name="password_new" value="")
-  %br
-  %label Repeat new password:
-  %br
-  %input(type="password" name="password_check" value="")
-  %br
-  %br
-  %input(type="submit" value="Change password")
+#textbox.value
+  %form(action="/change_password" method="POST")
+    %label Enter old password:
+    %br
+    %input(type="password" name="password_old" value="")
+    %br
+    %br
+    %br
+    %label Enter new password:
+    %br
+    %input(type="password" name="password_new" value="")
+    %br
+    %label Repeat new password:
+    %br
+    %input(type="password" name="password_check" value="")
+    %br
+    %br
+    %input(type="submit" value="Change password")

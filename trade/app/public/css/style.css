@@ -16,10 +16,14 @@ body{
     width: 70%;
     margin: auto;
 }
+#content_pame{
+    width:100px;
+}
 
 #textbox{
     display: block;
     padding-top: 5px;
+    padding-right: 5px;
 
 }
 .name{
@@ -51,6 +55,12 @@ body{
     width: 100%;
     resize: none;
     height: 100px;
+
+}
+
+.right{
+    float:right;
+    margin-bottom: 5px;
 }
 
 a:link{
@@ -95,6 +105,7 @@ td.navigation{
 }
 td.header{
     padding-bottom: 0px;
+    min-width: 600px;
 }
 
 td{
@@ -103,8 +114,7 @@ td{
     background: #ffffff;
     vertical-align: top;
 }
-
-td.error{
+.error{
     background: #FFB3B3;
 }
 
