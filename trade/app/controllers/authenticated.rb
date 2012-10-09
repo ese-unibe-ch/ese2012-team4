@@ -97,7 +97,7 @@ module Controllers
       user = params[:id]
       case params[:error_msg]
         when "not_enough_credits"
-          haml :users_id, :locals => {:active_items => User.get_user(user).list_items, :page_name => "User #{user}", :error => "Not enough credits!"}
+          haml :users_id, :locals => {:active_items => User.get_user(user).list_items, :user => User.get_user(user), :page_name => "User #{user}", :error => "Not enough credits!"}
       end
     end
 

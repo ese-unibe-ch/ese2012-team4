@@ -29,10 +29,10 @@ body{
 .name{
     margin-top:3px;
     float:left;
-    width:40%;
+    width:30%;
 }
 .value{
-    width: 55%;
+    width: 65%;
     float: right;
     background-color: #E5FFF2;
     border-top: 3px solid #8FC9FF;
