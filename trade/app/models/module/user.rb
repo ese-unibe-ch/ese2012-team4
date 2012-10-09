@@ -22,7 +22,7 @@ module Models
     @@users = {}
 
     # factory method (constructor) on the class
-    def self.created( name, password, description = "")
+    def self.created( name, password, description = [""])
       user = self.new
       user.name = name
       user.description = description
