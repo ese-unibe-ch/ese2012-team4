@@ -11,6 +11,33 @@ include Models
 
 class ItemTest < Test::Unit::TestCase
 
+  #test static method get item
+  def test_get_item
+    owner = User.created( "testuser", "password" )
+    item1 = owner.create_item("testobject1", 50)
+    item2 = Item.created("testobject2", 50, owner, "bla")
+    item2.save
+    item3 = owner.create_item("testobject2", 50)
+    assert(Item.get_item("#{item1.id}") == item1, "get_item should return the item")
+    assert(Item.get_item("#{item2.id}") == item2, "get_item should return the item")
+    assert(Item.get_item("#{item1.id+2}") == item3, "get_item should return the item")
+  end
+
+  #Test static method get_all
+  def test_get_all
+    owner = User.created( "testuser", "password" )
+    item1 = owner.create_item("testobject1", 50)
+    item2 = Item.created("testobject2", 50, owner, "bla")
+    item2.save
+    item3 = owner.create_item("testobject2", 50)
+    item1.active= true
+    item2.active= true
+    item3.active = false
+    assert(Item.get_all("").include?(item1), "Active Items should be in the list")
+    assert(Item.get_all("").include?(item2), "Active Items should be in the list")
+    assert(!Item.get_all("").include?(item3), "Inactive Items should not be in the list")
+    assert(!Item.get_all(owner.name).include?(item1), "Items of the viewer parameter should not be in the list")
+  end
 
   # Fake test
   def test_item_create_by_user
@@ -96,6 +123,14 @@ class ItemTest < Test::Unit::TestCase
     assert(!item.is_owner?("bla%ç&%(/"), "Wrong names should not match")
   end
 
-
+  #test for editable? method
+  def test_editable
+    owner = User.created( "testuser", "password" )
+    item = owner.create_item("testobject", 50, "descr")
+    item.active= true
+    assert(!item.editable?, "Active Items should not be editable.")
+    item.active= false
+    assert(item.editable?, "Inactive Items should be editable.")
+  end
 
 end

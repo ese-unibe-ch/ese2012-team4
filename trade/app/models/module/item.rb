@@ -55,7 +55,6 @@ module Models
       "#{self.name}, #{self.price}"
     end
 
-    #  MW: To do: write a test
     def editable?
       !self.active
     end
