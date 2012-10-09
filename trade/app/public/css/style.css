@@ -9,6 +9,7 @@ body{
     font-size: small;
     font-family: Verdana, Arial, sans-serif;
     text-align: left;
+    ;
 }
 
 #content{
@@ -16,10 +17,40 @@ body{
     margin: auto;
 }
 
+#textbox{
+    display: block;
+    padding-top: 5px;
+
+}
+.name{
+    margin-top:3px;
+    float:left;
+    width:40%;
+}
+.value{
+    width: 55%;
+    float: right;
+    background-color: #E5FFF2;
+    border-top: 3px solid #8FC9FF;
+    padding-left:5px;
+    word-break: break-all;
+}
+
+.separator{
+    float:right;
+    width:100%;
+    margin-top: 5px;
+}
+
 .main
 {
     width: 100%;
     border-spacing: 5px;
+}
+.fixedwith{
+    width: 100%;
+    resize: none;
+    height: 100px;
 }
 
 a:link{

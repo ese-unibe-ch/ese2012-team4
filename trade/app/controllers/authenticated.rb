@@ -129,7 +129,9 @@ module Controllers
 
     post "/change_description" do
       viewer = User.get_user(session[:username])
-      viewer.description = params[:description]
+      to_insert = params[:description]
+      list = to_insert.split("\n")
+      viewer.description = list
       redirect "/profile"
     end
 

@@ -1,16 +1,33 @@
 
 %h2 Your profile
-%br Username:  #{user.name}
-%br Credits:   #{user.credits}
-%br Interests: #{user.description}
-%br
-%p
 
-Edit your list of interests:
+#textbox.name
+  Username:
+#textbox.value
+  #{user.name}
+
+#textbox.name
+  Credits:
+#textbox.value
+  #{user.credits}
+
+#textbox.name
+  Interests:
+#textbox.value
+  -user.description.each do |line|
+    #{line}
+    %br
+%br
+%hr.separator
+
+#textbox.name
+  Edit your list of interests:
 %br
 %br
 %form(action="/change_description" method="POST")
-  %input(type="text" name="description" value="#{user.description}")
+  %textarea.fixedwith(type="text" name="description")
+    -user.description.each do |line|
+      #{line}
   %br
   %input(type="submit" value="save")
 %br
