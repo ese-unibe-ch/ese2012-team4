@@ -22,10 +22,12 @@ module Controllers
     end
 
     get '/index' do
+      redirect '/home' unless session[:username].nil?
       haml :index, :locals => {:page_name => "Home", :error => nil}
     end
 
     get '/login' do
+      redirect '/home' unless session[:username].nil?
       haml :login, :locals => {:page_name => "Log in", :error => nil}
     end
 
@@ -39,6 +41,7 @@ module Controllers
     end
 
     get "/authenticate/:error_msg" do
+      redirect '/home' unless session[:username].nil?
       case params[:error_msg]
         when "login_fail"
           haml :login, :locals => {:page_name => "Log in", :error => "no such login!"}
@@ -47,10 +50,12 @@ module Controllers
     end
 
     get '/signup' do
+      redirect '/home' unless session[:username].nil?
       haml :signup, :locals => {:page_name => "Sign up", :error => nil}
     end
 
     post '/signup' do
+      redirect '/home' unless session[:username].nil?
       username,description, pw, pw2 = params[:username], params[:description], params[:password1], params[:password2]
 
       redirect "/signup/no_user_name" if username==''
@@ -64,6 +69,7 @@ module Controllers
     end
 
     get "/signup/:error_msg" do
+      redirect '/home' unless session[:username].nil?
       case params[:error_msg]
         when "no_user_name"
           haml :signup, :locals=> {:page_name => "Sign up", :error => "Enter an username!"}
