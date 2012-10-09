@@ -6,10 +6,7 @@ h1, h2, h3, a, p{
 body{
     margin: 20px;
     background: #eeeeee;
-    font-size: small;
     font-family: Verdana, Arial, sans-serif;
-    text-align: left;
-    ;
 }
 
 #content{
@@ -22,10 +19,38 @@ body{
 
 #textbox{
     display: block;
+    min-height: 19px;
     padding-top: 5px;
     padding-right: 5px;
 
 }
+.itemtable{
+    width: 100%;
+    padding: 0px;
+    border-collapse: collapse;
+    text-align:left;
+    max-height: 20px;
+    border-spacing:0px;
+}
+
+
+.itemtable td{
+    max-height: 20px;
+    overflow: hidden;
+    padding: 6px 8px;
+    display: block;
+    background-color: #E5FFF2;
+    border-left: 1px solid #8FC9FF;
+    border-top: 3px solid #8FC9FF;
+    border-right:none;
+    border-bottom: none;
+    width:100%;
+}
+
+.square{
+    background-color: #90ee90;
+}
+
 .name{
     margin-top:3px;
     float:left;
@@ -59,6 +84,8 @@ body{
 }
 
 .right{
+    width: 65%;
+    padding-left: 10px;
     float:right;
     margin-bottom: 5px;
 }
@@ -110,7 +137,7 @@ td.header{
 
 td{
     padding: 20px;
-    border: 1px solid #666;
+    border: 1px solid #778899;
     background: #ffffff;
     vertical-align: top;
 }

@@ -206,13 +206,13 @@ module Controllers
       redirect "/home/inactive"
     end
 
-    get '/changestate/:id/setinactive' do
+    post '/changestate/:id/setinactive' do
       id = params[:id]
       Item.get_item(id).active = false
       redirect "/home/active"
     end
 
-    get '/buy/:id' do               # TODO: change to post!
+    post '/buy/:id' do               # TODO: change to post!
       id = params[:id]
       item = Item.get_item(id)
       old_user = item.owner
