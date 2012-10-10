@@ -34,12 +34,19 @@ body{
 }
 
 
+
+.itemtable tbody tr:hover td{
+    background-color: #8FC9FF;
+
+}
+
+
 .itemtable td{
+    background-color: #E5FFF2;
     max-height: 20px;
     overflow: hidden;
     padding: 6px 8px;
     display: block;
-    background-color: #E5FFF2;
     border-left: 1px solid #8FC9FF;
     border-top: 3px solid #8FC9FF;
     border-right:none;
