@@ -13,7 +13,8 @@ body{
     width: 70%;
     margin: auto;
 }
-#content_pame{
+
+#content_pane{
     width:100px;
 }
 
@@ -33,8 +34,6 @@ body{
     border-spacing:0px;
     border-bottom: 3px solid #8FC9FF;
 }
-
-
 
 .itemtable tbody tr:hover td{
     background-color: #8FC9FF;
