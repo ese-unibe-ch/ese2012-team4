@@ -2,16 +2,22 @@
 %h2 All Items
 - content_for :name do
   All_items
-%table.itemtable
-  %thead
-    %tr
-      %td Name
-      %td Price
-      %td Buy
-  - for item in all_items
-    %tr
-      %td #{item.name}
-      %td #{item.price}
-      %td
-        %form(action="/buy/#{item.id}" method="POST")
-          %input.square(type="submit" value="Buy")
+-unless all_items.empty?
+  %table.itemtable
+    %thead
+      %tr
+        %td Name
+        %td Price
+        %td Seller
+        %td Buy
+    - for item in all_items
+      %tr
+        %td #{item.name}
+        %td #{item.price}
+        %td
+          %a(href="/users/#{item.owner.name}" ) #{item.owner.name}
+        %td
+          %form(action="/buy/#{item.id}" method="POST")
+            %input.square(type="submit" value="Buy")
+-else
+  %h3 No items

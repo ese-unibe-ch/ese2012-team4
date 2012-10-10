@@ -1,20 +1,23 @@
 %h2 My Inactive Items
 - content_for :name do
   Inactive_items
-%table.itemtable
-  %thead
-    %tr
-      %td Name
-      %td Price
-      %td Activate
-      %td Edit
-  - for item in inactive_items
-    %tr
-      %td #{item.name}
-      %td #{item.price}
-      %td
-        %form(action="/changestate/#{item.id}/setactive" method="POST")
-          %input.square(type="submit" value="Set active")
-      %td
-        %form(action="/home/edit_item/#{item.id}" method="GET")
-          %input.square(type="submit" value="Edit")
+-unless inactive_items.empty?
+  %table.itemtable
+    %thead
+      %tr
+        %td Name
+        %td Price
+        %td Activate
+        %td Edit
+    - for item in inactive_items
+      %tr
+        %td #{item.name}
+        %td #{item.price}
+        %td
+          %form(action="/changestate/#{item.id}/setactive" method="POST")
+            %input.square(type="submit" value="Set active")
+        %td
+          %form(action="/home/edit_item/#{item.id}" method="GET")
+            %input.square(type="submit" value="Edit")
+-else
+  %h3 No items

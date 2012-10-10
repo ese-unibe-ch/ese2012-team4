@@ -17,34 +17,38 @@ module Controllers
     helpers Sinatra::ContentFor
 
     before do
-      redirect '/index' unless session[:username]
       @user = User.get_user(session[:username])
     end
 
 
     
     get '/logout' do
+      redirect '/index' unless session[:username]
       haml :logout, :locals => {:page_name => "Logout", :error => nil}
     end
 
     get '/home' do
+      redirect '/index' unless session[:username]
       haml :home, :locals => {:page_name => "Home", :error => nil}
     end
 
     get '/home/active' do
-        haml :home_active, :locals => {:active_items => @user.list_items, :page_name => "Active items", :error => nil}
+      redirect '/index' unless session[:username]
+      haml :home_active, :locals => {:active_items => @user.list_items, :page_name => "Active items", :error => nil}
     end
 
     get '/home/inactive' do
+      redirect '/index' unless session[:username]
       haml :home_inactive, :locals => {:inactive_items => @user.list_items_inactive, :page_name => "Inactive items", :error => nil}
     end
 
     get '/home/new' do
+      redirect '/index' unless session[:username]
       haml :home_new, :locals =>{:action => "create", :name => "", :price => "", :description =>"", :button => "Create", :page_name => "New Item", :error => nil}
     end
 
     get '/home/edit_item/:itemid' do
-
+      redirect '/index' unless session[:username]
       if Item.get_item(params[:itemid]).is_owner?(@user.name)
 
         item = Item.get_item(params[:itemid])
@@ -63,6 +67,7 @@ module Controllers
     end
 
     get '/home/edit_item/:itemid/:error_msg' do
+      redirect '/index' unless session[:username]
       if Item.get_item(params[:itemid]).is_owner?(@user.name)
         item = Item.get_item(params[:itemid])
         item_name = item.name
@@ -81,10 +86,12 @@ module Controllers
     end
 
     get '/users' do
+      redirect '/index' unless session[:username]
       haml :users, :locals => {:all_users => User.get_all(""), :page_name => "Users", :error => nil}
     end
 
     get '/users/:id' do
+      redirect '/index' unless session[:username]
       user = params[:id]
       if user == @user.name
         redirect "/profile"
@@ -94,6 +101,7 @@ module Controllers
     end
 
     get '/users/:id/:error_msg' do
+      redirect '/index' unless session[:username]
       user = params[:id]
       case params[:error_msg]
         when "not_enough_credits"
@@ -102,16 +110,19 @@ module Controllers
     end
 
     post "/unauthenticate" do
+      redirect '/index' unless session[:username]
       session[:username] = nil
       #session['auth'] = false
       redirect "/"
     end
 
     get '/profile' do
+      redirect '/index' unless session[:username]
       haml :profile, :locals => {:user => @user, :description => @user.description, :page_name => "Your profile", :error => nil}
     end
 
     get "/profile/:error_msg" do
+      redirect '/index' unless session[:username]
       if not session[:username].nil?
         case params[:error_msg]
           when "false_pw"
@@ -128,6 +139,7 @@ module Controllers
     end
 
     post "/change_description" do
+      redirect '/index' unless session[:username]
       viewer = User.get_user(session[:username])
       to_insert = params[:description]
       list = to_insert.split("\n")
@@ -136,6 +148,7 @@ module Controllers
     end
 
     post "/change_password" do
+      redirect '/index' unless session[:username]
       password_check = PasswordCheck.created
       viewer = User.get_user(session[:username])
       redirect "/profile/false_pw" if !(viewer.check_password(params[:password_old]))
@@ -148,10 +161,12 @@ module Controllers
 
 
     get '/items' do
+      redirect '/index' unless session[:username]
       haml :items, :locals => {:all_items => Item.get_all(@user.name), :page_name => "Items", :error => nil }
     end
 
     get '/items/:error_msg' do
+      redirect '/index' unless session[:username]
       case params[:error_msg]
         when "not_enough_credits"
           haml :items, :locals => {:all_items => Item.get_all(@user.name), :page_name => "Items", :error => "Not enough credits!" }
@@ -159,6 +174,7 @@ module Controllers
     end
 
     post '/create' do
+      redirect '/index' unless session[:username]
       user = session[:username]
       price = params[:price]
 
@@ -175,6 +191,7 @@ module Controllers
     end
 
     get '/create/:error_msg' do
+      redirect '/index' unless session[:username]
       case params[:error_msg]
         when "not_a_number"
           haml :home_new, :locals =>{:action => "create", :name => "", :price => "", :description =>"", :button => "Create", :page_name => "New Item", :error => "Your price is not a valid number!"}
@@ -184,6 +201,7 @@ module Controllers
     end
 
     post '/edit_item/:itemid' do
+      redirect '/index' unless session[:username]
       #error handling for empty names or whitespaces (strip removes all kind of whitespaces, but not the first space)
       unless params[:name].strip.delete(' ')!=""
         redirect "/home/edit_item/#{params[:itemid]}/no_name"
@@ -201,18 +219,21 @@ module Controllers
     end
 
     post '/changestate/:id/setactive' do
+      redirect '/index' unless session[:username]
       id = params[:id]
       Item.get_item(id).active = true
       redirect "/home/inactive"
     end
 
     post '/changestate/:id/setinactive' do
+      redirect '/index' unless session[:username]
       id = params[:id]
       Item.get_item(id).active = false
       redirect "/home/active"
     end
 
-    post '/buy/:id' do               # TODO: change to post!
+    post '/buy/:id' do
+      redirect '/index' unless session[:username]
       id = params[:id]
       item = Item.get_item(id)
       old_user = item.owner
