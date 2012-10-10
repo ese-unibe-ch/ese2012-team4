@@ -128,6 +128,10 @@ module Models
       not @@users.has_key? name
     end
 
+    def delete
+      @@users.delete(self)
+    end
+
   end
 
 end
