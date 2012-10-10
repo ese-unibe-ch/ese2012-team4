@@ -6,15 +6,20 @@
   %table.itemtable
     %thead
       %tr
-        %td Name
-        %td Price
-        %td Deactivate
+        %td
+          %p.table_header Name
+        %td
+          %p.table_header Price
+        %td
+          %p.table_header Deactivate
     - for item in active_items
       %tr
-        %td #{item.name}
-        %td #{item.price}
         %td
-          %form(action="/changestate/#{item.id}/setinactive" method="POST")
+          %p #{item.name}
+        %td
+          %p #{item.price}
+        %td
+          %form.nomargin(action="/changestate/#{item.id}/setinactive" method="POST")
             %input.square(type="submit" value="Set inactive")
 -else
   %h3 No items

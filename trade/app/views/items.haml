@@ -6,18 +6,24 @@
   %table.itemtable
     %thead
       %tr
-        %td Name
-        %td Price
-        %td Seller
-        %td Buy
+        %td
+          %p.table_header Name
+        %td
+          %p.table_header Price
+        %td
+          %p.table_header Seller
+        %td
+          %p.table_header Buy
     - for item in all_items
       %tr
-        %td #{item.name}
-        %td #{item.price}
+        %td
+          %p #{item.name}
+        %td
+          %p #{item.price}
         %td
           %a(href="/users/#{item.owner.name}" ) #{item.owner.name}
         %td
-          %form(action="/buy/#{item.id}" method="POST")
+          %form.nomargin(action="/buy/#{item.id}" method="POST")
             %input.square(type="submit" value="Buy")
 -else
   %h3 No items

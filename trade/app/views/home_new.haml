@@ -3,19 +3,16 @@
 -if name == ""
   %h2 New Item
 %br
-%form(action="/#{action}" method="POST")
-  %label Name of Item:
-  %br
-  %input(type="text" name="name" value="#{name}")
-  %br
-  %label Price:
-  %br
-  %input(type="text" name="price" value="#{price}")
-  %br
-  %label Description (optional)
-  %br
-  %input(type="text" name = "description" value="#{description}")
-  %br
-  %br
-  %input(type="submit" value="#{button}")
+%form.nomargin(action="/#{action}" method="POST")
+  %label.textbox.name
+    %p Name of Item:
+  %input.textbox.value(type="text" name="name" value="#{name}")
+  %label.textbox.name
+    %p Price:
+  %input.textbox.value(type="text" name="price" value="#{price}")
+  %label.textbox.name
+    %p Description (optional)
+  %input.textbox.value(type="text" name = "description" value="#{description}")
+  %hr.separator
+  %input.rightalign.square(type="submit" value="#{button}")
 

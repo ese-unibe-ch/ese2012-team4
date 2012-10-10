@@ -1,8 +1,19 @@
-="Currently logged in User: #{User.get_user(session[:username]).name}"
-%br
-= "Your Credits: #{User.get_user(session[:username]).credits}"
-%br
-= "You have #{User.get_user(session[:username]).list_items.size} active Items"
-%br
-= "You have #{User.get_user(session[:username]).list_items_inactive.size} inactive Items"
+%h2 My Active Items
+
+.textbox.name
+  %p Currently logged in User:
+.textbox.value
+  %p #{User.get_user(session[:username]).name}
+.textbox.name
+  %p Your Credits:
+.textbox.value
+  %p #{User.get_user(session[:username]).credits}
+.textbox.name
+  %p Active items:
+.textbox.value
+  %p #{User.get_user(session[:username]).list_items.size}
+.textbox.name
+  %p Inactive items
+.textbox.value
+  %p #{User.get_user(session[:username]).list_items_inactive.size}
 

@@ -21,7 +21,7 @@
             %a.menu(href="/users/#{User.get_user(session[:username]).name}") - Your Profile
             %a.menu(href="/logout") - Logout
           -else
-            %h2 not logged in!
+            %h2.menu_header not logged in!
         -if error != nil
           #content.error
             #error_msg

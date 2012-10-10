@@ -27,7 +27,6 @@ body{
     min-height: 19px;
     padding-top: 5px;
     padding-right: 5px;
-    word-break: break-all;
 }
 #header{
     min-width: 600px;
@@ -56,14 +55,24 @@ body{
     height: 100%;
 }
 #content{
-    padding: 5px 10px 10px;
+    padding-top: 5px;
+    padding-left: 10px;
+    padding-right:10px;
     display: block;
     float:left;
-    width: 680px;
+    width: 690px;
     min-height: 337px;
     border-left : 3px solid #8FC9FF;
 
 }
+
+p{
+    padding: 0;
+    margin: 0;
+
+    height:15px;
+}
+
 #footer{
     border-top:3px solid #8FC9FF;
     display:block;
@@ -128,7 +137,7 @@ td{
     padding: 20px;
     border: 1px solid #778899;
     background: #ffffff;
-    vertical-align: top;
+    vertical-align: middle;
 }
 .itemtable{
     width: 100%;
@@ -146,12 +155,9 @@ td{
 }
 
 
-
-.itemtable tbody tr:hover td{
-    background-color: #8FC9FF;
-
+.itemtable thead{
+    vertical-align: middle;
 }
-
 
 .itemtable td{
     background-color: #E5FFF2;
@@ -165,8 +171,16 @@ td{
     width:100%;
 }
 
+.table_header{
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
 .square{
-    background-color: #90ee90;
+    background-color: #8FC9FF;
+}
+.nomargin{
+    margin:0;
 }
 
 .name{
@@ -180,12 +194,17 @@ td{
     background-color: #E5FFF2;
     border-top: 3px solid #8FC9FF;
     padding-left:5px;
+    word-break: break-all;
 }
 
 .separator{
     float:right;
     width:100%;
     margin-top: 5px;
+}
+.invisible{
+    height: 0px;
+    border:none;
 }
 
 .main
@@ -194,9 +213,9 @@ td{
     border-spacing: 5px;
 }
 .fixedwith{
-    width: 100%;
     resize: none;
     height: 100px;
+    width:66.4%;
 
 }
 .wide{

@@ -2,43 +2,42 @@
 %h2 Your profile
 
 .textbox.name
-  Username:
+  %p Username:
 .textbox.value
-  #{user.name}
+  %p #{user.name}
 
 .textbox.name
-  Credits:
+  %p Credits:
 .textbox.value
-  #{user.credits}
+  %p #{user.credits}
 
 .textbox.name
-  Interests:
+  %p Interests:
 .textbox.value
-  -user.description.each do |line|
-    #{line}
-    %br
+  %p
+    -user.description.each do |line|
+      #{line}
+      %br
 %br
 %hr.separator
 
 .textbox.name
-  Edit your list of interests:
+  %p Edit your list of interests:
 %br
 %br
 %form(action="/change_description" method="POST")
-  .textbox.value
-    %textarea.fixedwith(type="text" name="description")
-      -user.description.each do |line|
-        #{line}
-    %br
-    %input.rightalign.square(type="submit" value="save")
+  %textarea.textbox.value.fixedwith(type="text" name="description")
+    -user.description.each do |line|
+      #{line}
+  %br
+  %hr.separator.invisible
+  %input.rightalign.square(type="submit" value="save")
 %br
 %hr.separator
 .textbox.name
+  %p Change your password
   %br
-    Change your password
-  %br
-    Please choose a safe password; a safe password includes letters and numbers and is more than 4 digits long.
-  %br
+  %p Please choose a safe password; a safe password includes letters and numbers and is more than 4 digits long.
 .textbox.value
   %form(action="/change_password" method="POST")
     %label Enter old password:

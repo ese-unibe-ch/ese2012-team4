@@ -5,19 +5,25 @@
   %table.itemtable
     %thead
       %tr
-        %td Name
-        %td Price
-        %td Activate
-        %td Edit
+        %td
+          %p.table_header Name
+        %td
+          %p.table_header Price
+        %td
+          %p.table_header Activate
+        %td
+          %p.table_header Edit
     - for item in inactive_items
       %tr
-        %td #{item.name}
-        %td #{item.price}
         %td
-          %form(action="/changestate/#{item.id}/setactive" method="POST")
+          %p #{item.name}
+        %td
+          %p #{item.price}
+        %td
+          %form.nomargin(action="/changestate/#{item.id}/setactive" method="POST")
             %input.square(type="submit" value="Set active")
         %td
-          %form(action="/home/edit_item/#{item.id}" method="GET")
+          %form.nomargin(action="/home/edit_item/#{item.id}" method="GET")
             %input.square(type="submit" value="Edit")
 -else
   %h3 No items

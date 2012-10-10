@@ -9,24 +9,29 @@
 %hr.separator
 
 .textbox.name
-  #{user.name}'s items on sale:
+  %p #{user.name}'s items on sale:
 %br
 - content_for :name do
-  #{user.name}'s Active_items
+  %p #{user.name}'s Active_items
 -unless active_items.empty?
   %table.itemtable.right
     %thead
       %tr
-        %td Name
-        %td Price
-        %td Buy
+        %td
+          %p.table_header Name
+        %td
+          %p.table_header Price
+        %td
+          %p.table_header Buy
     - for item in active_items
       %tr
-        %td #{item.name}
-        %td #{item.price}
+        %td
+          %p #{item.name}
+        %td
+          %p #{item.price}
         %td
           %form(action="/buy/#{item.id}" method="POST")
             %input.square(type="submit" value="Buy")
 -else
   .textbox.value
-    No Items
+    %p No Items
