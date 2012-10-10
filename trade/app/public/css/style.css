@@ -41,6 +41,13 @@ body{
 }
 
 
+
+.itemtable tbody tr:hover td{
+    background-color: #8FC9FF;
+
+}
+
+
 .itemtable td{
     background-color: #E5FFF2;
     max-height: 20px;
