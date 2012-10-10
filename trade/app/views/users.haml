@@ -3,11 +3,10 @@
 %br
 - content_for :name do
   All_users
-%ul
-  - for user in all_users
-    %li
-      %em= user.name
-      %em= " has #{user.list_items.size} Items to sell"
-      \:
-      %a(href="/users/#{user.name}" ) Show Userpage
+
+- for user in all_users
+  .textbox.name #{user.name}
+  .textbox.value
+    has #{user.list_items.size} Items to sell
+    %a.rightalign(href="/users/#{user.name}" ) Show Userpage
 

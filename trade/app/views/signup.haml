@@ -1,23 +1,24 @@
 %h1 Signup
 %br
 %form(action="/signup" method="POST")
-  %label new username:
-  %br
-  %input(type="text" name="username" value="")
-  %br
-  %label List your interests:
-  %br
-  %textarea.fixedwith(type="text" name="description")
-  %br
-  %p Make sure to choose a strong password.
-  %p Strong passwords include letters and numbers and are longer than 4 digits.
-  %label Password:
-  %br
-  %input(type="password" name="password1" value="")
-  %br
-  %label Retype password:
-  %br
-  %input(type="password" name="password2" value="")
-  %br
-  %br
-  %input(type="submit" value="Sign up!")
+  %label.textbox.name new username:
+  .textbox.value
+    %input.wide(type="text" name="username" value="")
+  %hr.separator
+  %label.textbox.name List your interests:
+  .textbox.value
+    %textarea.fixedwith(type="text" name="description")
+  %hr.separator
+
+  %label.textbox.name Password:
+  .textbox.value
+    %input(type="password" name="password1" value="")
+
+  %label.textbox.name Retype password:
+  .textbox.value
+    %input(type="password" name="password2" value="")
+    %input.rightalign(type="submit" value="Sign up!")
+  %hr.separator
+    .textbox.name.wide
+      %p.wide Make sure to choose a strong password.
+      %p.wide Strong passwords include letters and numbers and are longer than 4 digits.

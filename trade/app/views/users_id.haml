@@ -1,28 +1,32 @@
 %br
-#textbox.name
+.textbox.name
   #{user.name}'s interests:
-#textbox.value
+.textbox.value
   -user.description.each do |line|
     #{line}
     %br
 %br
 %hr.separator
 
-#textbox.name
+.textbox.name
   #{user.name}'s items on sale:
 %br
 - content_for :name do
   #{user.name}'s Active_items
-%table.itemtable.right
-  %thead
-    %tr
-      %td Name
-      %td Price
-      %td Buy
-  - for item in active_items
-    %tr
-      %td #{item.name}
-      %td #{item.price}
-      %td
-        %form(action="/buy/#{item.id}" method="POST")
-          %input.square(type="submit" value="Buy")
+-unless active_items.empty?
+  %table.itemtable.right
+    %thead
+      %tr
+        %td Name
+        %td Price
+        %td Buy
+    - for item in active_items
+      %tr
+        %td #{item.name}
+        %td #{item.price}
+        %td
+          %form(action="/buy/#{item.id}" method="POST")
+            %input.square(type="submit" value="Buy")
+-else
+  .textbox.value
+    No Items

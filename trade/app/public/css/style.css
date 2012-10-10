@@ -17,12 +17,12 @@ body{
     width:100px;
 }
 
-#textbox{
+.textbox{
     display: block;
     min-height: 19px;
     padding-top: 5px;
     padding-right: 5px;
-
+    word-break: break-all;
 }
 .itemtable{
     width: 100%;
@@ -31,6 +31,14 @@ body{
     text-align:left;
     max-height: 20px;
     border-spacing:0px;
+    border-bottom: 3px solid #8FC9FF;
+}
+
+
+
+.itemtable tbody tr:hover td{
+    background-color: #8FC9FF;
+
 }
 
 
@@ -46,7 +54,6 @@ body{
     max-height: 20px;
     overflow: hidden;
     padding: 6px 8px;
-    display: block;
     border-left: 1px solid #8FC9FF;
     border-top: 3px solid #8FC9FF;
     border-right:none;
@@ -69,7 +76,6 @@ body{
     background-color: #E5FFF2;
     border-top: 3px solid #8FC9FF;
     padding-left:5px;
-    word-break: break-all;
 }
 
 .separator{
@@ -88,6 +94,12 @@ body{
     resize: none;
     height: 100px;
 
+}
+.wide{
+    width: 100%;
+}
+.rightalign{
+    float:right
 }
 
 .right{
