@@ -2,23 +2,19 @@
 %br
 %form(action="/signup" method="POST")
   %label.textbox.name new username:
-  .textbox.value
-    %input.wide(type="text" name="username" value="")
+  %input.textbox.value(type="text" name="username" value="")
   %hr.separator
   %label.textbox.name List your interests:
-  .textbox.value
-    %textarea.fixedwith(type="text" name="description")
+  %textarea.textbox.value(type="text" name="description")
   %hr.separator
 
   %label.textbox.name Password:
-  .textbox.value
-    %input(type="password" name="password1" value="")
+  %input.textbox.value(type="password" name="password1" value="")
 
   %label.textbox.name Retype password:
-  .textbox.value
-    %input(type="password" name="password2" value="")
-    %input.rightalign(type="submit" value="Sign up!")
+  %input.textbox.value(type="password" name="password2" value="")
   %hr.separator
-    .textbox.name.wide
-      %p.wide Make sure to choose a strong password.
-      %p.wide Strong passwords include letters and numbers and are longer than 4 digits.
+  %input.square.rightalign(type="submit" value="Sign up!")
+  .textbox.name.wide
+    %p Make sure to choose a strong password.
+    %p Strong passwords include letters and numbers and are longer than 4 digits.

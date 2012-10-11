@@ -30,7 +30,7 @@
         %td
           %p #{item.price}
         %td
-          %form(action="/buy/#{item.id}" method="POST")
+          %form.nomargin(action="/buy/#{item.id}" method="POST")
             %input.square(type="submit" value="Buy")
 -else
   .textbox.value

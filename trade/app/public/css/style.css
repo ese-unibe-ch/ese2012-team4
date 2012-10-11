@@ -181,7 +181,6 @@ td{
 
 .textbox{
     display: block;
-    resize: vertical;
     min-height: 19px;
     padding-top: 5px;
     padding-right: 5px;
@@ -199,6 +198,14 @@ td{
     border-top: 3px solid #8FC9FF;
     padding-left:5px;
     word-break: break-all;
+}
+
+textarea.textbox.value{
+    font-family: Verdana, Arial, sans-serif;
+    resize:vertical;
+    border-left:2px #979795 solid;
+    border-right:none;
+    border-bottom: none;
 }
 
 .separator{
@@ -222,14 +229,17 @@ td{
 
 }
 .wide{
-    width: 100%;
+    width: 85%;
+    margin-right: 5px;
 }
 .rightalign{
     float:right
 }
 
+
+
 .right{
-    width: 67%;
+    width: 66.4%;
     padding-left: 10px;
     float:right;
     margin-bottom: 5px;
