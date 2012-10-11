@@ -34,7 +34,7 @@ module Controllers
 
     get '/home/active' do
       redirect '/index' unless session[:username]
-      haml :home_active, :locals => {:active_items => @user.list_items, :page_name => "Active items", :error => nil}
+      haml :home_all_items, :locals => {:user => @user, :page_name => "Your items", :error => nil}
     end
 
     get '/home/inactive' do
@@ -187,7 +187,7 @@ module Controllers
       end
       User.get_user(user).create_item(params[:name], Integer(params[:price]), params[:description])
       # MW: maybe "User.by_name" might be somewhat more understandable
-      redirect "/home/inactive"
+      redirect "/home/active"
     end
 
     get '/create/:error_msg' do
@@ -215,14 +215,14 @@ module Controllers
       item.name = params[:name]
       item.price = params[:price].to_i
       item.description = params[:description]
-      redirect "/home/inactive"
+      redirect "/home/active"
     end
 
     post '/changestate/:id/setactive' do
       redirect '/index' unless session[:username]
       id = params[:id]
       Item.get_item(id).active = true
-      redirect "/home/inactive"
+      redirect "/home/active"
     end
 
     post '/changestate/:id/setinactive' do
@@ -248,7 +248,7 @@ module Controllers
           redirect "#{back}/not_enough_credits"
         end
       end
-      redirect "/home/inactive"
+      redirect "/home/active"
     end
 
   end

@@ -1,0 +1,53 @@
+
+%h2 My Active Items
+-unless user.list_items.empty?
+  %table.itemtable
+    %thead
+      %tr
+        %td
+          %p.table_header Name
+        %td
+          %p.table_header Price
+        %td
+          %p.table_header Deactivate
+    - for item in user.list_items
+      %tr
+        %td
+          %p #{item.name}
+        %td
+          %p #{item.price}
+        %td
+          %form.nomargin(action="/changestate/#{item.id}/setinactive" method="POST")
+            %input.square(type="submit" value="Set inactive")
+-else
+  %h3 No items
+
+%h2 My Inactive Items
+
+-unless user.list_items_inactive.empty?
+  %table.itemtable
+    %thead
+      %tr
+        %td
+          %p.table_header Name
+        %td
+          %p.table_header Price
+        %td
+          %p.table_header Activate
+        %td
+          %p.table_header Edit
+    - for item in user.list_items_inactive
+      %tr
+        %td
+          %p #{item.name}
+        %td
+          %p #{item.price}
+        %td
+          %form.nomargin(action="/changestate/#{item.id}/setactive" method="POST")
+            %input.square(type="submit" value="Set active")
+        %td
+          %form.nomargin(action="/home/edit_item/#{item.id}" method="GET")
+            %input.square(type="submit" value="Edit")
+-else
+  %h3 No items
+
