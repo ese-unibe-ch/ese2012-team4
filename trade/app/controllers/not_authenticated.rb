@@ -7,7 +7,7 @@ require 'sinatra/base'
 require 'haml'
 require 'sinatra/content_for'
 require_relative('../models/module/user')
-require_relative('../models/module/password_check')
+require_relative('../models/utility/password_check')
 
 include Models
 

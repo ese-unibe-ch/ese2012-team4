@@ -1,7 +1,7 @@
 require 'test/unit'
 require 'rubygems'
 require 'require_relative'
-require_relative('../app/models/module/password_check')
+require_relative('../app/models/utility/password_check')
 
 
 class PasswordCheckTest <Test::Unit::TestCase
