@@ -56,3 +56,10 @@
     %br
     %br
     %input.square(type="submit" value="Change password")
+%br
+%hr.separator
+.textbox.name
+  %p Delete my Account "#{user.name}"
+.textbox.value
+  %form(action="/delete_account" method="DELETE")
+    %input.square(type="submit" value="Delete account")

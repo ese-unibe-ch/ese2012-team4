@@ -251,5 +251,15 @@ module Controllers
       redirect "/home/active"
     end
 
+    get '/delete_account' do
+      #delete user
+      user = session[:username]
+      User.get_user(user).delete
+      #close session
+      session[:username] = nil
+      redirect '/index' unless session[:username]
+      haml :logout, :locals => {:page_name => "Logout", :error => nil}
+    end
+
   end
 end
