@@ -10,9 +10,9 @@ body{
 }
 
 #wrapper{
-    background: white;
+    background: none;
     display:table;
-    width: 70%;
+    width:913px;
     margin: auto;
 }
 
@@ -45,6 +45,7 @@ body{
     height:100%;
     height: auto;
     overflow: hidden;
+    background: white;
 }
 #navigation{
     position: relative;
@@ -63,7 +64,6 @@ body{
     width: 690px;
     min-height: 337px;
     border-left : 3px solid #8FC9FF;
-
 }
 
 p{
@@ -78,6 +78,7 @@ p{
     display:block;
     float:none;
     padding: 10px 10px 10px 20px;
+    background: white;
 }
 
 h2.menu_header{
