@@ -7,7 +7,7 @@ module Models
     #An item has an owner.
 
     # generate getter and setter for name and price
-    attr_accessor :name, :price, :active, :owner, :id, :description
+    attr_accessor :name, :price, :active, :owner, :id, :description, :timestamp
 
     # MW: ToDo: integrate description in tests
 
@@ -25,6 +25,7 @@ module Models
       item.active = false
       item.owner = owner
       item.description = description
+      item.timestamp = Time.now.to_i
       item
     end
 
@@ -33,6 +34,13 @@ module Models
       # MW: How does it make sense to identify an item through the id ( = identifier) AND the name? Name is changeable!
       @@item_list["#{self.id}"] = self
       @@count += 1
+    end
+
+    def edit(name, price, description)
+      self.name = name
+      self.price = price
+      self.description = description
+      self.timestamp = Time.now.to_i
     end
 
     # get state

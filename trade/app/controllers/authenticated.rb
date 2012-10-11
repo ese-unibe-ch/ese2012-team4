@@ -170,6 +170,8 @@ module Controllers
       case params[:error_msg]
         when "not_enough_credits"
           haml :items, :locals => {:all_items => Item.get_all(@user.name), :page_name => "Items", :error => "Not enough credits!" }
+        when "out_of_sync"
+          haml :items, :locals => {:all_items => Item.get_all(@user.name), :page_name => "Items", :error => "Item has been edited while you tried to buy it!" }
       end
     end
 
@@ -212,9 +214,7 @@ module Controllers
         redirect "/home/edit_item/#{params[:itemid]}/not_a_number"
 
       end
-      item.name = params[:name]
-      item.price = params[:price].to_i
-      item.description = params[:description]
+      item.edit(params[:name],params[:price],params[:description])
       redirect "/home/active"
     end
 
@@ -232,13 +232,23 @@ module Controllers
       redirect "/home/active"
     end
 
-    post '/buy/:id' do
+    post '/buy/:id/:timestamp' do
       redirect '/index' unless session[:username]
       id = params[:id]
       item = Item.get_item(id)
       old_user = item.owner
       user = session[:username]
       new_user = User.get_user(user)
+      puts params[:timestamp]
+      puts "item:"
+      puts item.timestamp
+        if (Integer(params[:timestamp])-item.timestamp)!=0
+          if(back.include? '/out_of_sync')
+            redirect '#back'
+          else
+            redirect "#{back}/out_of_sync"
+          end
+        end
       if new_user.buy_new_item?(item)
         old_user.remove_item(item)
       else

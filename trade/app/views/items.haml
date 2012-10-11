@@ -3,6 +3,7 @@
 - content_for :name do
   All_items
 -unless all_items.empty?
+  -stored = all_items
   %table.itemtable
     %thead
       %tr
@@ -14,7 +15,7 @@
           %p.table_header Seller
         %td
           %p.table_header Buy
-    - for item in all_items
+    - for item in stored
       %tr
         %td
           %p #{item.name}
@@ -23,7 +24,7 @@
         %td
           %a(href="/users/#{item.owner.name}" ) #{item.owner.name}
         %td
-          %form.nomargin(action="/buy/#{item.id}" method="POST")
+          %form.nomargin(action="/buy/#{item.id}/#{(stored.select {|tobuy| tobuy.id==item.id})[0].timestamp}" method="POST")
             %input.square(type="submit" value="Buy")
 -else
   %h3 No items
