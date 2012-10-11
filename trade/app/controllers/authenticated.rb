@@ -60,7 +60,7 @@ module Controllers
         end
 
         # MW: To do: Get the right params.
-        haml :home_new, :locals => {:action => "edit_item/#{params[:itemid]}", :name => item_name, :price => price, :description => description, :button => "Edit", :page_name => "Edit Item", :error => nil}
+        haml :home_new, :locals => {:action => "edit_item/#{params[:itemid]}", :name => item_name, :price => price, :description => description, :button => "Save changes", :page_name => "Edit Item", :error => nil}
       else
         redirect "/"
       end

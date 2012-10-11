@@ -248,13 +248,13 @@ textarea.textbox.value{
 
 
 .error{
-    background: #FFB3B3;
+
 }
 
 #error_msg{
     display:block;
     width: 100%;
-    background-color: #ffffff;
+    background-color: rgba(255, 41, 5, 0.31);
     height: 30px;
     font-size:20px;
     border: 2px solid black;
