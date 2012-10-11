@@ -124,4 +124,12 @@ class UserTest < Test::Unit::TestCase
     assert (!Models::User.available? "Mike")
   end
 
+  def test_delete
+    testUser = Models::User.created( "Mike", "234")
+    assert (!Models::User.available? "Mike")
+    testUser.delete
+    assert (Models::User.available? "Mike")
+
+  end
+
 end

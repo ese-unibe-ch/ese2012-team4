@@ -129,7 +129,7 @@ module Models
     end
 
     def delete
-      @@users.delete(self)
+      @@users.delete(self.name)
     end
 
   end
