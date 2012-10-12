@@ -36,3 +36,7 @@
 -else
   .textbox.value
     %p No Items
+-unless user.name != session_user.name
+  %hr.separator
+  .textbox.value
+    %a(href="/profile" ) Edit your Profile
