@@ -39,11 +39,7 @@ module Controllers
     get '/users/:id' do
       redirect '/index' unless session[:username]
       user = params[:id]
-      if user == @user.name
-        redirect "/profile"
-      else
-        haml :users_id, :locals => {:active_items => User.get_user(user).list_items, :page_name => "User #{user}", :user => User.get_user(user), :error => nil}
-      end
+      haml :users_id, :locals => {:active_items => User.get_user(user).list_items, :page_name => "User #{user}", :session_user => User.get_user(session[:username]), :user => User.get_user(user), :error => nil}
     end
 
     get '/users/:id/:error_msg' do
@@ -51,9 +47,9 @@ module Controllers
       user = params[:id]
       case params[:error_msg]
         when "not_enough_credits"
-          haml :users_id, :locals => {:active_items => User.get_user(user).list_items, :user => User.get_user(user), :page_name => "User #{user}", :error => "Not enough credits!"}
+          haml :users_id, :locals => {:active_items => User.get_user(user).list_items, :session_user => User.get_user(session[:username]), :user => User.get_user(user), :page_name => "User #{user}", :error => "Not enough credits!"}
         when "out_of_sync"
-          haml :users_id, :locals => {:active_items => User.get_user(user).list_items, :user => User.get_user(user), :page_name => "User #{user}", :error => "Item has been edited while you tried to buy it!" }
+          haml :users_id, :locals => {:active_items => User.get_user(user).list_items, :session_user => User.get_user(session[:username]), :user => User.get_user(user), :page_name => "User #{user}", :error => "Item has been edited while you tried to buy it!" }
       end
     end
 
