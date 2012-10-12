@@ -5,11 +5,13 @@ require 'rubygems'
 require 'require_relative'
 require 'sinatra'
 require 'haml'
-require_relative('controllers/authenticated')
 require_relative('controllers/not_authenticated')
+require_relative('controllers/item_control')
+require_relative('controllers/user_control')
 
 require_relative('../../trade/app/models/module/item')
 require_relative('../../trade/app/models/module/user')
+
 
 include Models
 include Controllers
@@ -17,14 +19,12 @@ include Controllers
 class App < Sinatra::Base
 
   use Not_authenticated
-  use Authenticated
-
-
+  use ItemControl
+  use UserControl
 
   enable :sessions
   set :views, relative('app/views')
-  set :public_folder, 'public'
-
+  set :public_folder, relative('public')
 
   configure :development do
     userA = User.created( "userA", "passwordA" )
@@ -56,9 +56,6 @@ class App < Sinatra::Base
 
     end
 
-
   end
-
-
 
 App.run!
