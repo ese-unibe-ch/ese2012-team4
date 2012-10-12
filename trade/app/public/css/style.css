@@ -54,6 +54,7 @@ body{
     padding-top: 5px;
     padding-left: 10px;
     padding-right:10px;
+    padding-bottom: 5px;
     display: block;
     float:left;
     width: 690px;
@@ -247,13 +248,11 @@ textarea.textbox.value{
 
 
 
-.error{
 
-}
 
 #error_msg{
     display:block;
-    width: 100%;
+    width: 99.5%;
     background-color: rgba(255, 41, 5, 0.31);
     height: 30px;
     font-size:20px;

@@ -106,6 +106,8 @@ module Controllers
       case params[:error_msg]
         when "not_enough_credits"
           haml :users_id, :locals => {:active_items => User.get_user(user).list_items, :user => User.get_user(user), :page_name => "User #{user}", :error => "Not enough credits!"}
+        when "out_of_sync"
+          haml :users_id, :locals => {:active_items => User.get_user(user).list_items, :user => User.get_user(user), :page_name => "User #{user}", :error => "Item has been edited while you tried to buy it!" }
       end
     end
 
