@@ -4,8 +4,8 @@
   #{user.name}'s interests:
 .textbox.value
   -user.description.each do |line|
-    -# MW: Kompilierfehler beim Einfügen von ":escaped"
-    #{line}
+    :escaped
+      #{line}
     %br
 %br
 %hr.separator
