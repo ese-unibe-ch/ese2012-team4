@@ -32,9 +32,9 @@ module Controllers
     end
 
     post "/authenticate" do
-      redirect "authenticate/login_fail", "No such login" unless User.login params[:username], params[:password]
+      redirect "authenticate/login_fail", "No such login" unless User.login params[:username].strip, params[:password]
 
-      session[:username] = params[:username]
+      session[:username] = params[:username].strip
       #session['auth'] = true
 
       redirect "/home"
@@ -56,7 +56,9 @@ module Controllers
 
     post '/signup' do
       redirect '/home' unless session[:username].nil?
-      username,description, pw, pw2 = params[:username], params[:description], params[:password1], params[:password2]
+      username,description, pw, pw2 = params[:username].strip, params[:description], params[:password1], params[:password2]
+
+      redirect "/signup/invalid_username" if username != username.delete("^a-zA-Z0-9")
 
       redirect "/signup/no_user_name" if username==''
       redirect "/signup/taken" unless User.available? username
@@ -81,6 +83,8 @@ module Controllers
           haml :signup, :locals=> {:page_name => "Sign up", :error => "Your password is unsafe!"}
         when "taken"
           haml :signup, :locals=> {:page_name => "Sign up", :error => "This username is already taken!"}
+        when "invalid_username"
+          haml :signup, :locals=> {:page_name => "Sign up", :error => "Invalid username!"}
       end
 
     end

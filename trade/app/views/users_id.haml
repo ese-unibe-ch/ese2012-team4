@@ -3,7 +3,8 @@
   #{user.name}'s interests:
 .textbox.value
   -user.description.each do |line|
-    #{line}
+    :escaped
+      #{line}
     %br
 %br
 %hr.separator
@@ -27,7 +28,9 @@
     - for item in active_items
       %tr
         %td
-          %p #{item.name}
+          %p
+            :escaped
+              #{item.name}
         %td
           %p #{item.price}
         %td

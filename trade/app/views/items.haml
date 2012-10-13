@@ -18,7 +18,9 @@
     - for item in stored
       %tr
         %td
-          %p #{item.name}
+          %p
+            :escaped
+              #{item.name}
         %td
           %p #{item.price}
         %td
