@@ -2,9 +2,12 @@
 %h2 Your profile
 
 .textbox.name
-  %p Username:
+  %p
+    Username:
 .textbox.value
-  %p #{user.name}
+  %p
+  :escaped
+    #{user.name}
 
 .textbox.name
   %p Credits:
@@ -16,7 +19,8 @@
 .textbox.value
   %p
     -user.description.each do |line|
-      #{line}
+      :escaped
+        #{line}
       %br
 %br
 %hr.separator

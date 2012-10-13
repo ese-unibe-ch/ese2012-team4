@@ -13,7 +13,9 @@
     - for item in user.list_items
       %tr
         %td
-          %p #{item.name}
+          %p
+          :escaped
+            #{item.name}
         %td
           %p #{item.price}
         %td
@@ -39,7 +41,9 @@
     - for item in user.list_items_inactive
       %tr
         %td
-          %p #{item.name}
+          %p
+          :escaped
+            #{item.name}
         %td
           %p #{item.price}
         %td
