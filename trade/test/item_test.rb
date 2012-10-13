@@ -133,4 +133,20 @@ class ItemTest < Test::Unit::TestCase
     assert(item.editable?, "Inactive Items should be editable.")
   end
 
+  #test for edit method
+  def test_edit
+    owner = User.created("testuser","password")
+    item = owner.create_item("testobject",50)
+
+    assert(item.name.eql?("testobject"), "Item should have a name")
+    assert(item.price.eql?(50), "Item should have a price")
+    assert(item.description.eql?("No description available"), "No description was entered")
+
+    item.edit("new_name",23,"new description")
+
+    assert(item.name.eql?("new_name"), "Item's name should have changed")
+    assert(item.price.eql?(23), "Item' price should have changed")
+    assert(item.description.eql?("new description"), "Item should now have a description")
+  end
+
 end
