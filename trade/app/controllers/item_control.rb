@@ -49,6 +49,9 @@ module Controllers
         unless Item.valid_price?(String(item_price))
           redirect "/home/edit_item/#{params[:itemid]}/not_a_number"
         end
+        unless Item.valid_price?(String(item_quantity))
+          redirect "/home/edit_item/#{params[:itemid]}/not_valid_quantity"
+        end
 
         # MW: To do: Get the right params.
         haml :home_new, :locals => {:action => "edit_item/#{params[:itemid]}", :name => item_name, :price => item_price, :description => item_description, :quantity =>item_quantity, :button => "Save changes", :page_name => "Edit Item", :error => nil}
@@ -66,6 +69,8 @@ module Controllers
         description = item.description
 
         case params[:error_msg]
+          when "not_valid_quantity"
+            haml :home_new, :locals => {:action => "edit_item/#{params[:itemid]}", :name => item_name, :price => price, :description => description, :button => "Edit", :page_name => "Edit Item", :error => "Your quantity is not a valid number!"}
           when "not_a_number"
             haml :home_new, :locals => {:action => "edit_item/#{params[:itemid]}", :name => item_name, :price => price, :description => description, :button => "Edit", :page_name => "Edit Item", :error => "Your price is not a valid number!"}
           when "no_name"
@@ -93,7 +98,6 @@ module Controllers
 
     post '/create' do
       redirect '/index' unless session[:id]
-      #user = session[:id]
       price = params[:price]
 
       unless Item.valid_price?(price)
@@ -103,7 +107,12 @@ module Controllers
       unless params[:name].strip.delete(' ')!=""
         redirect '/create/no_name'
       end
-      @user.create_item(params[:name], Integer(params[:price]), params[:description])
+
+      unless Item.valid_price?(params[:quantity])
+        redirect "create/not_a_number"
+      end
+
+      @user.create_item(params[:name], Integer(params[:price]), Integer(params[:quantity]), params[:description])
       # MW: maybe "User.by_name" might be somewhat more understandable
       redirect "/home/active"
     end
@@ -126,11 +135,11 @@ module Controllers
       end
       item = Item.get_item(params[:itemid])
       price = params[:price].to_i
+      quantity = params[:quantity].to_i
       unless Item.valid_price?(String(price))
         redirect "/home/edit_item/#{params[:itemid]}/not_a_number"
-
       end
-      item.edit(params[:name],params[:price],params[:quantity],params[:description])
+      item.edit(params[:name],price,quantity,params[:description])
       redirect "/home/active"
     end
 
@@ -153,8 +162,6 @@ module Controllers
       item_id = params[:id]
       quantity = params[:quantity].to_i
       item = Item.get_item(item_id)
-      old_user = item.owner
-      #user = session[:id]
       new_user = @user
       puts params[:timestamp]
       puts "item:"

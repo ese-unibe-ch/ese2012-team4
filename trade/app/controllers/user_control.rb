@@ -38,7 +38,7 @@ module Controllers
 
     get '/users/:id' do
       redirect '/index' unless session[:id]
-      user_id = params[:id]
+      user_id = params[:id].to_i
       if session[:id] == user_id.to_i
         redirect "/profile"
       else
