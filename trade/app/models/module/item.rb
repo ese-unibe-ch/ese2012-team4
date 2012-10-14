@@ -7,7 +7,7 @@ module Models
     #An item has an owner.
 
     # generate getter and setter for name and price
-    attr_accessor :name, :price, :active, :owner, :id, :description, :timestamp
+    attr_accessor :name, :price, :active, :owner, :id, :description, :timestamp, :quantity
 
     # MW: ToDo: integrate description in tests
 
@@ -17,16 +17,18 @@ module Models
     @@count = 0
 
     # factory method (constructor) on the class
-    def self.created( name, price, owner, description = "" )
+    def self.created( name, price, owner, quantity, description = "")
       item = self.new
       item.id = @@count + 1
       item.name = name
       item.price = price
       item.active = false
       item.owner = owner
+      item.quantity = quantity
       item.description = description
       item.timestamp = Time.now.to_i
       item
+
     end
 
     def save
@@ -36,10 +38,11 @@ module Models
       @@count += 1
     end
 
-    def edit(name, price, description)
+    def edit(name, price, quantity ,  description)
       self.name = name
       self.price = price
       self.description = description
+      self.quantity = quantity
       self.timestamp = Time.now.to_i
     end
 

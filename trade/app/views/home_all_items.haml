@@ -9,6 +9,8 @@
         %td
           %p.table_header Price
         %td
+          %p.table_header Qty
+        %td
           %p.table_header Deactivate
     - for item in user.list_items
       %tr
@@ -16,6 +18,8 @@
           %p #{item.name}
         %td
           %p #{item.price}
+        %td
+          %p #{item.quantity}
         %td
           %form.nomargin(action="/changestate/#{item.id}/setinactive" method="POST")
             %input.square(type="submit" value="Set inactive")
@@ -33,6 +37,8 @@
         %td
           %p.table_header Price
         %td
+          %p.table_header Qty
+        %td
           %p.table_header Activate
         %td
           %p.table_header Edit
@@ -42,6 +48,8 @@
           %p #{item.name}
         %td
           %p #{item.price}
+        %td
+          %p #{item.quantity}
         %td
           %form.nomargin(action="/changestate/#{item.id}/setactive" method="POST")
             %input.square(type="submit" value="Set active")
