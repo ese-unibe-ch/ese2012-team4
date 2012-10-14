@@ -110,9 +110,9 @@ module Controllers
       redirect '/index' unless session[:username]
       case params[:error_msg]
         when "not_a_number"
-          haml :home_new, :locals =>{:action => "create", :name => "", :price => "", :description =>"", :button => "Create", :page_name => "New Item", :error => "Your price is not a valid number!"}
+          haml :home_new, :locals =>{:action => "create", :name => "", :price => "", :description =>"", :quantity =>"1", :button => "Create", :page_name => "New Item", :error => "Your price is not a valid number!"}
         when "no_name"
-          haml :home_new, :locals =>{:action => "create", :name => "", :price => "", :description =>"", :button => "Create", :page_name => "New Item", :error => "You have to choose a name for your item!"}
+          haml :home_new, :locals =>{:action => "create", :name => "", :price => "", :description =>"", :quantity =>"1", :button => "Create", :page_name => "New Item", :error => "You have to choose a name for your item!"}
       end
     end
 
