@@ -5,17 +5,17 @@
 .textbox.value
   %p
   :escaped
-    #{User.get_user(session[:username]).name}
+    #{User.get_user(session[:id]).name}
 .textbox.name
   %p Your Credits:
 .textbox.value
-  %p #{User.get_user(session[:username]).credits}
+  %p #{User.get_user(session[:id]).credits}
 .textbox.name
   %p Active items:
 .textbox.value
-  %p #{User.get_user(session[:username]).list_items.size}
+  %p #{User.get_user(session[:id]).list_items.size}
 .textbox.name
   %p Inactive items
 .textbox.value
-  %p #{User.get_user(session[:username]).list_items_inactive.size}
+  %p #{User.get_user(session[:id]).list_items_inactive.size}
 

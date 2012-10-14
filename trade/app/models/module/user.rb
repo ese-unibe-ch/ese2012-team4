@@ -17,14 +17,17 @@ module Models
     #  fails if the buyer has not enough credits.
 
     # generate getter and setter for name and price
-    attr_accessor :name, :credits, :item_list, :pw, :password_hash, :password_salt, :description
+    attr_accessor :name, :credits, :item_list, :pw, :password_hash, :password_salt, :description, :id
 
+    @@users_by_name = {}
     @@users = {}
+    @@count = 0
 
     # factory method (constructor) on the class
     def self.created( name, password, description = "")
       user = self.new
       user.name = name
+      user.id = @@count + 1
       user.description = description
       user.credits = 100
       user.item_list = Array.new
@@ -46,8 +49,10 @@ module Models
     end
 
     def save
-      raise "Duplicated user" if @@users.has_key? self.name and @@users[self.name] != self
-      @@users[self.name] = self
+      raise "Duplicated user" if @@users.has_key? self.id and @@users[self.id] != self
+      @@users[self.id] = self
+      @@users_by_name[self.name] = self
+      @@count += 1
     end
 
     #get string representation
@@ -93,7 +98,7 @@ module Models
       end
       self.credits = self.credits - item_to_buy.price
       item_to_buy.active = false
-      item_to_buy.owner = self        #BS: replaced setter
+      item_to_buy.owner = self
       self.item_list.push(item_to_buy)
       return true
     end
@@ -104,16 +109,19 @@ module Models
       self.item_list.delete(item_to_remove)
     end
 
-    def self.login name, password
-      user = @@users[name]
+    def self.login id, password                #BS: change parameter "name" to "id"
+      user = @@users[id]
       return false if user.nil?
       user.password_hash == BCrypt::Engine.hash_secret(password, user.password_salt)
     end
 
-    def self.get_user(username)
-      return @@users[username]
+    def self.get_user(user_id)           #BS: change parameter "name" to "id"
+      return @@users[user_id.to_i]
     end
 
+    def self.by_name(name)
+      return @@users_by_name[name]
+    end
 
     def self.get_all(viewer)
       new_array = @@users.to_a
@@ -124,12 +132,12 @@ module Models
       return ret_array.select {|s| s.name !=  viewer}
     end
 
-    def self.available? name
-      not @@users.has_key? name
+    def self.available? id            #BS: change parameter "name" to "id"
+      not @@users.has_key? id
     end
 
     def delete
-      @@users.delete(self.name)
+      @@users.delete(self.name)          #TODO: BS: change parameter "name" to "id"
     end
 
   end

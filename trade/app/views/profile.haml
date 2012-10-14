@@ -64,7 +64,9 @@
 %br
 %hr.separator
 .textbox.name
-  %p Delete my Account "#{user.name}"
+  %p
+    :escaped
+      Delete my Account "#{user.name}"
 .textbox.value
   %form(action="/delete_link" method="GET")
     %input.square(type="submit" value="Delete account")

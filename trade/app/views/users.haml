@@ -5,11 +5,13 @@
   All_users
 
 - for user in all_users
-  .textbox.name #{user.name}
+  .textbox.name
+    :escaped
+      #{user.name}
   -#
     Formatierung geht kaputt, wenn man den Usernamen nach unten nimmt und ":escaped" zwischendrin setzt.
 
   .textbox.value
     has #{user.list_items.size} Items to sell
-    %a.rightalign(href="/users/#{user.name}" ) Show Userpage
+    %a.rightalign(href="/users/#{user.id}" ) Show Userpage
 

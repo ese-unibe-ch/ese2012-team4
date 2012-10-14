@@ -17,27 +17,27 @@ module Controllers
     helpers Sinatra::ContentFor
 
     before do
-      @user = User.get_user(session[:username])
+      @user = User.get_user(session[:id])
     end
 
     get '/home/active' do
-      redirect '/index' unless session[:username]
+      redirect '/index' unless session[:id]
       haml :home_all_items, :locals => {:user => @user, :page_name => "Your items", :error => nil}
     end
 
     get '/home/inactive' do
-      redirect '/index' unless session[:username]
+      redirect '/index' unless session[:id]
       haml :home_inactive, :locals => {:inactive_items => @user.list_items_inactive, :page_name => "Inactive items", :error => nil}
     end
 
     get '/home/new' do
-      redirect '/index' unless session[:username]
+      redirect '/index' unless session[:id]
       haml :home_new, :locals =>{:action => "create", :name => "", :price => "", :description =>"", :button => "Create", :page_name => "New Item", :error => nil}
     end
 
     get '/home/edit_item/:itemid' do
-      redirect '/index' unless session[:username]
-      if Item.get_item(params[:itemid]).is_owner?(@user.name)
+      redirect '/index' unless session[:id]
+      if Item.get_item(params[:itemid]).is_owner?(@user.id)
 
         item = Item.get_item(params[:itemid])
         item_name = item.name
@@ -55,7 +55,7 @@ module Controllers
     end
 
     get '/home/edit_item/:itemid/:error_msg' do
-      redirect '/index' unless session[:username]
+      redirect '/index' unless session[:id]
       if Item.get_item(params[:itemid]).is_owner?(@user.name)
         item = Item.get_item(params[:itemid])
         item_name = item.name
@@ -74,12 +74,12 @@ module Controllers
     end
 
     get '/items' do
-      redirect '/index' unless session[:username]
+      redirect '/index' unless session[:id]
       haml :items, :locals => {:all_items => Item.get_all(@user.name), :page_name => "Items", :error => nil }
     end
 
     get '/items/:error_msg' do
-      redirect '/index' unless session[:username]
+      redirect '/index' unless session[:id]
       case params[:error_msg]
         when "not_enough_credits"
           haml :items, :locals => {:all_items => Item.get_all(@user.name), :page_name => "Items", :error => "Not enough credits!" }
@@ -89,8 +89,8 @@ module Controllers
     end
 
     post '/create' do
-      redirect '/index' unless session[:username]
-      user = session[:username]
+      redirect '/index' unless session[:id]
+      #user = session[:id]
       price = params[:price]
 
       unless Item.valid_price?(price)
@@ -100,13 +100,13 @@ module Controllers
       unless params[:name].strip.delete(' ')!=""
         redirect '/create/no_name'
       end
-      User.get_user(user).create_item(params[:name], Integer(params[:price]), params[:description])
+      @user.create_item(params[:name], Integer(params[:price]), params[:description])
       # MW: maybe "User.by_name" might be somewhat more understandable
       redirect "/home/active"
     end
 
     get '/create/:error_msg' do
-      redirect '/index' unless session[:username]
+      redirect '/index' unless session[:id]
       case params[:error_msg]
         when "not_a_number"
           haml :home_new, :locals =>{:action => "create", :name => "", :price => "", :description =>"", :button => "Create", :page_name => "New Item", :error => "Your price is not a valid number!"}
@@ -116,42 +116,42 @@ module Controllers
     end
 
     post '/edit_item/:itemid' do
-      redirect '/index' unless session[:username]
+      redirect '/index' unless session[:id]
       #error handling for empty names or whitespaces (strip removes all kind of whitespaces, but not the first space)
       unless params[:name].strip.delete(' ')!=""
         redirect "/home/edit_item/#{params[:itemid]}/no_name"
       end
       item = Item.get_item(params[:itemid])
-      price = params[:price]
+      price = params[:price].to_i
       unless Item.valid_price?(String(price))
         redirect "/home/edit_item/#{params[:itemid]}/not_a_number"
 
       end
-      item.edit(params[:name],params[:price],params[:description])
+      item.edit(params[:name],params[:price].to_i,params[:description])
       redirect "/home/active"
     end
 
     post '/changestate/:id/setactive' do
-      redirect '/index' unless session[:username]
+      redirect '/index' unless session[:id]
       id = params[:id]
       Item.get_item(id).active = true
       redirect "/home/active"
     end
 
     post '/changestate/:id/setinactive' do
-      redirect '/index' unless session[:username]
+      redirect '/index' unless session[:id]
       id = params[:id]
       Item.get_item(id).active = false
       redirect "/home/active"
     end
 
     post '/buy/:id/:timestamp' do
-      redirect '/index' unless session[:username]
-      id = params[:id]
-      item = Item.get_item(id)
+      redirect '/index' unless session[:id]
+      item_id = params[:id]
+      item = Item.get_item(item_id)
       old_user = item.owner
-      user = session[:username]
-      new_user = User.get_user(user)
+      #user = session[:id]
+      new_user = @user
       puts params[:timestamp]
       puts "item:"
       puts item.timestamp

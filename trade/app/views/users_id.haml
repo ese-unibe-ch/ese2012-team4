@@ -1,7 +1,8 @@
 %br
 .textbox.name
   -# MW: Formatierung geht kaputt beim Einfügen von ":escaped"
-  #{user.name}'s interests:
+  :escaped
+    #{user.name}'s interests:
 .textbox.value
   -user.description.each do |line|
     :escaped
@@ -17,8 +18,8 @@
 %br
 - content_for :name do
   %p
-  :escaped
-    #{user.name}'s Active_items
+    :escaped
+      #{user.name}'s Active_items
 -unless active_items.empty?
   -stored = active_items
   %table.itemtable.right
