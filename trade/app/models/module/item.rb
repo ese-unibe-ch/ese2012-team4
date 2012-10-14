@@ -17,7 +17,7 @@ module Models
     @@count = 0
 
     # factory method (constructor) on the class
-    def self.created( name, price, owner, quantity, description = "")
+    def self.created( name, price, owner, quantity = 1, description = "")
       item = self.new
       item.id = @@count + 1
       item.name = name
@@ -38,7 +38,7 @@ module Models
       @@count += 1
     end
 
-    def edit(name, price, quantity ,  description)
+    def edit(name, price, quantity,  description)
       self.name = name
       self.price = price
       self.description = description
