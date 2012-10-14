@@ -166,6 +166,10 @@ td{
     border-bottom: none;
     width:100%;
 }
+.itemtable td.buyform {
+    min-width: 80px;
+
+}
 
 .table_header{
     margin-top: 5px;
@@ -217,7 +221,12 @@ textarea.textbox.value{
 .invisible{
     height: 0px;
     border:none;
+    margin:0;
 }
+.tiny{
+    width: 20px;
+}
+
 
 .main
 {

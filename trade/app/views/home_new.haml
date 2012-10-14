@@ -7,12 +7,19 @@
   %label.textbox.name
     %p Name of Item:
   %input.textbox.value(type="text" name="name" value="#{name}")
+  %hr.separator.invisible
   %label.textbox.name
     %p Price:
   %input.textbox.value(type="text" name="price" value="#{price}")
+  %hr.separator.invisible
   %label.textbox.name
     %p Description (optional)
   %textarea.textbox.value(type="text" name = "description" value="#{description}")
+  %hr.separator.invisible
+  %label.textbox.name
+    %p Quantity
+  %input.textbox.value(type = "text" name = "quantity" value = "#{quantity}")
   %hr.separator
+
   %input.rightalign.square(type="submit" value="#{button}")
 

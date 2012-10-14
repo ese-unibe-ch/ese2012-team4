@@ -29,26 +29,26 @@ class App < Sinatra::Base
   configure :development do
     userA = User.created( "userA", "passwordA" )
     userA.save
-    aa = userA.create_item("UserA_ItemA", 10)
-    ab = userA.create_item("UserA_ItemB", 50)
+    aa = userA.create_item("UserA_ItemA", 10, 1)
+    ab = userA.create_item("UserA_ItemB", 50, 1)
     ab.active = true
-    ac = userA.create_item("UserA_ItemC", 120)
+    ac = userA.create_item("UserA_ItemC", 120, 1)
     ac.active = true
 
     userB = User.created( "userB", "passwordB" )
     userB.save
-    ba = userB.create_item("UserB_ItemA", 10)
+    ba = userB.create_item("UserB_ItemA", 10, 2)
     ba.active = true
-    bb = userB.create_item("UserB_ItemB", 50)
+    bb = userB.create_item("UserB_ItemB", 2, 100)
     bb.active = true
-    bc = userB.create_item("UserB_ItemC", 120)
+    bc = userB.create_item("UserB_ItemC", 120, 1)
 
     userC = User.created( "userC", "passwordC" )
     userC.save
-    ca = userC.create_item("UserC_ItemA", 10)
+    ca = userC.create_item("UserC_ItemA", 10, 1)
     ca.active = true
-    cb = userC.create_item("UserC_ItemB", 50)
-    cc = userC.create_item("UserC_ItemC", 120)
+    cb = userC.create_item("UserC_ItemB", 50, 1)
+    cc = userC.create_item("UserC_ItemC", 120, 1)
     cc.active = true
 
     ese = User.created( "ese", "ese" )
