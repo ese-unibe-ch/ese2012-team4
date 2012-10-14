@@ -19,12 +19,20 @@
       %tr
         %td
           %p
+<<<<<<< HEAD
             :escaped
               #{item.name}
+=======
+          :escaped
+            #{item.name}
+>>>>>>> f87e17967d52af12cc69f38d065de1816dd826d2
         %td
           %p #{item.price}
         %td
           %a(href="/users/#{item.owner.name}" ) #{item.owner.name}
+          -#
+            MW: Hier wird der User-Name noch angezeigt - ich schaffe es nicht, den Namen ohne
+            html-Zeugs darzustellen ohne dabei den Link kaputt zu machen
         %td
           %form.nomargin(action="/buy/#{item.id}/#{(stored.select {|tobuy| tobuy.id==item.id})[0].timestamp}" method="POST")
             %input.square(type="submit" value="Buy")

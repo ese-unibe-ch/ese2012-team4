@@ -3,7 +3,9 @@
 .textbox.name
   %p Currently logged in User:
 .textbox.value
-  %p #{User.get_user(session[:username]).name}
+  %p
+  :escaped
+    #{User.get_user(session[:username]).name}
 .textbox.name
   %p Your Credits:
 .textbox.value
