@@ -14,7 +14,7 @@ class UserTest < Test::Unit::TestCase
     owner = Models::User.created( "testuser", "password" )
     assert( owner.list_items.size == 0, "Item list length should be 0" )
     assert( owner.list_items_inactive.size == 0, "Item list inactive length should be 0" )
-    owner.create_item("testobject", 10)
+    owner.create_item("testobject", 10, 1)
     assert( owner.list_items.size == 0, "Item list length should be 0" )
     assert( owner.list_items_inactive.size == 1, "Item list inactive length should be 1" )
     assert( !owner.list_items_inactive[0].is_active?, "New created item should be inactive" )
@@ -36,7 +36,7 @@ class UserTest < Test::Unit::TestCase
     old_owner = Models::User.created("Old", "password")
     new_owner = Models::User.created("New", "password")
 
-    sock = old_owner.create_item("sock",10)
+    sock = old_owner.create_item("sock",10, 1)
     assert( !sock.is_active?, "item should not be active, is")
     assert( !old_owner.list_items_inactive[0].is_active?, "item should not be active, is")
 
@@ -44,7 +44,7 @@ class UserTest < Test::Unit::TestCase
     assert( sock.is_active?, "item should be active, is not")
     assert( old_owner.list_items[0].is_active?, "item should be active, is not")
 
-    if new_owner.buy_new_item?(sock)
+    if new_owner.buy_new_item?(sock, 1)
       old_owner.remove_item(sock)
     end
 
@@ -64,13 +64,13 @@ class UserTest < Test::Unit::TestCase
     old_owner = Models::User.created("Old", "password")
     new_owner = Models::User.created("New", "password")
 
-    sock = old_owner.create_item("sock",210)
+    sock = old_owner.create_item("sock",210,1)
     assert( !sock.is_active?, "item should not be active, is")
 
     sock.active = true
     assert( sock.is_active?, "item should be active, is not")
 
-    if new_owner.buy_new_item?(sock)
+    if new_owner.buy_new_item?(sock, 1)
       old_owner.remove_item(sock)
     end
 
@@ -87,8 +87,8 @@ class UserTest < Test::Unit::TestCase
 
   def test_method_list_active
     owner = Models::User.created( "testuser", "password" )
-    owner.create_item("testobject", 10)
-    owner.create_item("testobject2", 50)
+    owner.create_item("testobject", 10, 1)
+    owner.create_item("testobject2", 50, 1)
     owner.list_items_inactive[0].active = true
     owner.list_items_inactive[0].active = true
     assert(owner.list_items[0].to_s == "testobject, 10")
@@ -97,8 +97,8 @@ class UserTest < Test::Unit::TestCase
 
   def test_method_list_inactive
     owner = Models::User.created( "testuser", "password" )
-    owner.create_item("testobject", 10)
-    owner.create_item("testobject2", 50)
+    owner.create_item("testobject", 10, 1)
+    owner.create_item("testobject2", 50, 1)
     assert(owner.list_items_inactive[0].to_s == "testobject, 10")
     assert(owner.list_items_inactive[1].to_s == "testobject2, 50")
     owner.list_items_inactive[0].active = true
@@ -113,7 +113,6 @@ class UserTest < Test::Unit::TestCase
 
   def test_auth
     owner = Models::User.created( "testuser", "password" )
-    owner.save
     assert (Models::User.login "testuser", "password")
   end
 

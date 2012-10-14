@@ -16,10 +16,10 @@ class ItemTest < Test::Unit::TestCase
   #test static method get item
   def test_get_item
     owner = User.created( "testuser", "password" )
-    item1 = owner.create_item("testobject1", 50)
-    item2 = Item.created("testobject2", 50, owner, "bla")
+    item1 = owner.create_item("testobject1", 50, 1)
+    item2 = Item.created("testobject2", 50, owner, 1, "bla")
     item2.save
-    item3 = owner.create_item("testobject2", 50)
+    item3 = owner.create_item("testobject3", 50, 1)
     assert(Item.get_item("#{item1.id}") == item1, "get_item should return the item")
     assert(Item.get_item("#{item2.id}") == item2, "get_item should return the item")
     assert(Item.get_item("#{item1.id+2}") == item3, "get_item should return the item")
@@ -28,10 +28,10 @@ class ItemTest < Test::Unit::TestCase
   #Test static method get_all
   def test_get_all
     owner = User.created( "testuser", "password" )
-    item1 = owner.create_item("testobject1", 50)
-    item2 = Item.created("testobject2", 50, owner, "bla")
+    item1 = owner.create_item("testobject1", 50, 1)
+    item2 = Item.created("testobject2", 50, owner, 1, "bla")
     item2.save
-    item3 = owner.create_item("testobject2", 50)
+    item3 = owner.create_item("testobject3", 50, 1)
     item1.active= true
     item2.active= true
     item3.active = false
@@ -46,7 +46,7 @@ class ItemTest < Test::Unit::TestCase
     owner = User.created( "testuser", "password" )
     assert( owner.list_items.size == 0, "Item list length should be 0" )
     assert( owner.list_items_inactive.size == 0, "Item list inactive length should be 0" )
-    owner.create_item("testobject", 10)
+    owner.create_item("testobject", 10, 1)
     assert( owner.list_items.size == 0, "Item list length should be 0" )
     assert( owner.list_items_inactive.size == 1, "Item list inactive length should be 1" )
     assert( !owner.list_items_inactive[0].is_active?, "New created item should be inactive" )
@@ -61,17 +61,18 @@ class ItemTest < Test::Unit::TestCase
   #test if item is initialized correctly
   def test_item_initialisation
     owner = User.created( "testuser", "password" )
-    item = owner.create_item("testobject", 50, "Description-text")
+    item = owner.create_item("testobject", 50, 7, "Description-text")
     assert(item.name == "testobject", "Name should be returned")
     assert(item.price == 50, "Should return price")
     assert(!item.is_active?, "Should not be active")
+    assert(item.quantity == 7, "Quantity should be returned")
     assert(item.description.eql?("Description-text"), "Description should be returned")
   end
 
   #test for item activation
   def test_item_activation
     owner = User.created( "testuser", "password" )
-    item = owner.create_item("testobject", 50)
+    item = owner.create_item("testobject", 50, 1)
     assert(item.name == "testobject", "Name should be returned")
     assert(item.price == 50, "Should return price")
     assert(!item.is_active?, "Should not be active")
@@ -84,20 +85,20 @@ class ItemTest < Test::Unit::TestCase
   # test for items owner
   def test_item_owner
     owner = User.created( "testuser", "password" )
-    item = owner.create_item("testobject", 50)
-    assert(item.owner == owner, "Owner not set correctly")
-    assert(item.owner.name == "testuser", "Owner not set correctly")
+    item = owner.create_item("testobject", 50, 1)
+    assert(item.owner == owner, "Owner should be set correctly")
+    assert(item.owner.name == "testuser", "Ownername should be set correctly")
   end
 
   # test for items owner after selling
   def test_item_owner_after_selling
     old_owner = User.created("Old", "password")
     new_owner = User.created("New", "password")
-    item = old_owner.create_item("sock",10)
+    item = old_owner.create_item("sock",10, 1)
     assert(item.owner == old_owner, "Owner not set correctly")
     assert(item.owner.name == "Old", "Owner not set correctly")
     old_owner.list_items_inactive[0].active = true
-    if new_owner.buy_new_item?(item)
+    if new_owner.buy_new_item?(item,1)
       old_owner.remove_item(item)
     end
     assert(item.owner == new_owner, "Owner not set correctly")
@@ -118,8 +119,8 @@ class ItemTest < Test::Unit::TestCase
 
   #test for is_owner? method
   def test_is_owner
-    owner = User.created( "testuser", "password" ).save
-    item = owner.create_item("testobject", 50)
+    owner = User.created( "testuser", "password").save
+    item = owner.create_item("testobject", 50, 1)
     assert(item.is_owner?("testuser"), "The owner should be recognized by its name.")
     assert(!item.is_owner?("testuser   "), "Wrong names should not match")
     assert(!item.is_owner?("bla%ç&%(/"), "Wrong names should not match")
@@ -128,7 +129,7 @@ class ItemTest < Test::Unit::TestCase
   #test for editable? method
   def test_editable
     owner = User.created( "testuser", "password" )
-    item = owner.create_item("testobject", 50, "descr")
+    item = owner.create_item("testobject", 50, 5, "descr")
     item.active= true
     assert(!item.editable?, "Active Items should not be editable.")
     item.active= false
@@ -138,17 +139,19 @@ class ItemTest < Test::Unit::TestCase
   #test for edit method
   def test_edit
     owner = User.created("testuser","password")
-    item = owner.create_item("testobject",50)
+    item = owner.create_item("testobject",50, 10)
 
     assert(item.name.eql?("testobject"), "Item should have a name")
     assert(item.price.eql?(50), "Item should have a price")
     assert(item.description.eql?("No description available"), "No description was entered")
+    assert(item.quantity.eql?(10), "Quantity should be set correctly")
 
     item.edit("new_name",23,1,"new description")
 
     assert(item.name.eql?("new_name"), "Item's name should have changed")
-    assert(item.price.eql?(23), "Item' price should have changed")
+    assert(item.price.eql?(23), "Item's price should have changed")
     assert(item.description.eql?("new description"), "Item should now have a description")
+    assert(item.quantity.eql?(1), "Item's quantity should have changed")
   end
 
 end
