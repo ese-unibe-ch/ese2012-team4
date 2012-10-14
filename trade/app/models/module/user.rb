@@ -56,8 +56,8 @@ module Models
     end
 
     #let the user create a new item
-    def create_item(name, price, description="No description available")
-      new_item = Models::Item.created( name, price, self, description )
+    def create_item(name, price, quantity, description="No description available")
+      new_item = Models::Item.created( name, price, self, quantity, description)
       self.item_list.push(new_item)
       new_item.save
       return new_item
@@ -87,20 +87,36 @@ module Models
 
     # buy an item
     # @return true if user can buy item, false if his credit amount is too small
-    def buy_new_item?(item_to_buy)
-      if item_to_buy.price > self.credits
+    def buy_new_item?(item_to_buy, quantity)
+      if item_to_buy.price*quantity > self.credits or item_to_buy.quantity<quantity
         return false
       end
-      self.credits = self.credits - item_to_buy.price
-      item_to_buy.active = false
-      item_to_buy.owner = self        #BS: replaced setter
-      self.item_list.push(item_to_buy)
+      self.credits -= item_to_buy.price*quantity
+      item_to_buy.owner.credits+=item_to_buy.price*quantity
+      if(item_to_buy.quantity == quantity)
+        item_to_buy.active = false
+        item_to_buy.owner = self        #BS: replaced setter
+        item_to_buy.owner.remove_item(item_to_buy)
+        if !(identical = self.item_list.detect{|i| i.name== item_to_buy.name and i.price == item_to_buy.price and i.description==item_to_buy.description}).nil?
+          identical.quantity+=quantity
+        else
+          self.item_list.push(item_to_buy)
+        end
+      else
+        if !(identical = self.item_list.detect{|i| i.name== item_to_buy.name and i.price == item_to_buy.price and i.description==item_to_buy.description}).nil?
+          identical.quantity+=quantity
+        else
+          self.create_item(item_to_buy.name,item_to_buy.price, quantity,item_to_buy.description)
+        end
+        item_to_buy.quantity-=quantity
+
+      end
+
       return true
     end
 
     # removing item from users item_list
     def remove_item(item_to_remove)
-      self.credits = self.credits + item_to_remove.price
       self.item_list.delete(item_to_remove)
     end
 
