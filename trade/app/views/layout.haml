@@ -22,6 +22,9 @@
             %a.menu(href="/logout") - Logout
           -else
             %h2.menu_header not logged in!
+            %a.menu(href='/login') - Login!
+            %br
+            %a.menu(href='/signup') - Signup!
         -if error != nil
           #content
             #error_msg
