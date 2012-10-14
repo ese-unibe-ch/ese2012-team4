@@ -63,7 +63,7 @@ module Controllers
       #BS: only needed if we don't allow special characters 
 
       redirect "/signup/no_user_name" if username==''
-      redirect "/signup/taken" unless User.available? username.id
+      redirect "/signup/taken" unless User.available? username
       redirect "/signup/no_pw" if pw == ''
       password_check = Models::PasswordCheck.created
       redirect "/signup/unsafe" unless password_check.safe?(pw)

@@ -18,10 +18,11 @@
   %p Interests:
 .textbox.value
   %p
-    -user.description.each do |line|
-      :escaped
-        #{line}
-      %br
+    -if !user.description.empty?
+      -user.description.each do |line|
+        :escaped
+          #{line}
+        %br
 %br
 %hr.separator
 
@@ -31,9 +32,10 @@
 %br
 %form(action="/change_description" method="POST")
   %textarea.textbox.value.fixedwith(type="text" name="description")
-    -user.description.each do |line|
-      :escaped
-        #{line}
+    -if !user.description.empty?
+      -user.description.each do |line|
+        :escaped
+          #{line}
   %br
   %hr.separator.invisible
   %input.rightalign.square(type="submit" value="save")

@@ -4,9 +4,10 @@
   :escaped
     #{user.name}'s interests:
 .textbox.value
-  -user.description.each do |line|
-    :escaped
-      #{line}
+  -if !user.description.empty?
+    -user.description.each do |line|
+      :escaped
+        #{line}
     %br
 %br
 %hr.separator

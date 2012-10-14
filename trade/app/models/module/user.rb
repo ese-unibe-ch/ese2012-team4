@@ -147,8 +147,8 @@ module Models
       return ret_array.select {|s| s.name !=  viewer}
     end
 
-    def self.available? id            #BS: change parameter "name" to "id"
-      not @@users.has_key? id
+    def self.available? name
+      not @@users_by_name.has_key? name
     end
 
     def delete
