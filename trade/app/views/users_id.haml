@@ -47,3 +47,8 @@
 -else
   .textbox.value
     %p No Items
+-unless user.name != session_user.name
+  %hr.separator
+  .textbox.value
+    %form.nomargin(action="/profile" method="GET")
+      %input.square(type="submit" value="Edit your profile")

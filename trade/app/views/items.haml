@@ -12,6 +12,8 @@
         %td
           %p.table_header Price
         %td
+          %p.table_header Qty
+        %td
           %p.table_header Seller
         %td
           %p.table_header Buy
@@ -24,15 +26,14 @@
         %td
           %p #{item.price}
         %td
-          %a(href="/users/#{item.owner.id}" )
+          %p #{item.quantity}
+        %td
+          %a(href="/users/#{item.owner.name}" )
             :escaped
               #{item.owner.name}
-
-          -#
-            MW: Hier wird der User-Name noch angezeigt - ich schaffe es nicht, den Namen ohne
-            html-Zeugs darzustellen ohne dabei den Link kaputt zu machen
-        %td
+        %td.buyform
           %form.nomargin(action="/buy/#{item.id}/#{(stored.select {|tobuy| tobuy.id==item.id})[0].timestamp}" method="POST")
-            %input.square(type="submit" value="Buy")
+            %input.tiny(type = "text" name = "quantity" value = "1")
+            %input.square.rightalign(type="submit" value="Buy")
 -else
   %h3 No items

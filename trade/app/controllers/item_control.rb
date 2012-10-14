@@ -31,8 +31,10 @@ module Controllers
     end
 
     get '/home/new' do
+
       redirect '/index' unless session[:id]
-      haml :home_new, :locals =>{:action => "create", :name => "", :price => "", :description =>"", :button => "Create", :page_name => "New Item", :error => nil}
+      haml :home_new, :locals =>{:action => "create", :name => "", :price => "", :description =>"", :quantity =>"1", :button => "Create", :page_name => "New Item", :error => nil}
+
     end
 
     get '/home/edit_item/:itemid' do
@@ -41,14 +43,15 @@ module Controllers
 
         item = Item.get_item(params[:itemid])
         item_name = item.name
-        price = item.price
-        description = item.description
-        unless Item.valid_price?(String(price))
+        item_price = item.price
+        item_description = item.description
+        item_quantity = item.quantity
+        unless Item.valid_price?(String(item_price))
           redirect "/home/edit_item/#{params[:itemid]}/not_a_number"
         end
 
         # MW: To do: Get the right params.
-        haml :home_new, :locals => {:action => "edit_item/#{params[:itemid]}", :name => item_name, :price => price, :description => description, :button => "Save changes", :page_name => "Edit Item", :error => nil}
+        haml :home_new, :locals => {:action => "edit_item/#{params[:itemid]}", :name => item_name, :price => item_price, :description => item_description, :quantity =>item_quantity, :button => "Save changes", :page_name => "Edit Item", :error => nil}
       else
         redirect "/"
       end
@@ -109,9 +112,9 @@ module Controllers
       redirect '/index' unless session[:id]
       case params[:error_msg]
         when "not_a_number"
-          haml :home_new, :locals =>{:action => "create", :name => "", :price => "", :description =>"", :button => "Create", :page_name => "New Item", :error => "Your price is not a valid number!"}
+          haml :home_new, :locals =>{:action => "create", :name => "", :price => "", :description =>"", :quantity =>"1", :button => "Create", :page_name => "New Item", :error => "Your price is not a valid number!"}
         when "no_name"
-          haml :home_new, :locals =>{:action => "create", :name => "", :price => "", :description =>"", :button => "Create", :page_name => "New Item", :error => "You have to choose a name for your item!"}
+          haml :home_new, :locals =>{:action => "create", :name => "", :price => "", :description =>"", :quantity =>"1", :button => "Create", :page_name => "New Item", :error => "You have to choose a name for your item!"}
       end
     end
 
@@ -127,7 +130,7 @@ module Controllers
         redirect "/home/edit_item/#{params[:itemid]}/not_a_number"
 
       end
-      item.edit(params[:name],params[:price].to_i,params[:description])
+      item.edit(params[:name],params[:price],params[:quantity],params[:description])
       redirect "/home/active"
     end
 
@@ -148,6 +151,7 @@ module Controllers
     post '/buy/:id/:timestamp' do
       redirect '/index' unless session[:id]
       item_id = params[:id]
+      quantity = params[:quantity].to_i
       item = Item.get_item(item_id)
       old_user = item.owner
       #user = session[:id]
@@ -162,9 +166,7 @@ module Controllers
           redirect "#{back}/out_of_sync"
         end
       end
-      if new_user.buy_new_item?(item)
-        old_user.remove_item(item)
-      else
+      unless new_user.buy_new_item?(item, quantity)
         if back.include? '/not_enough_credits'
           redirect "#{back}"
         else
