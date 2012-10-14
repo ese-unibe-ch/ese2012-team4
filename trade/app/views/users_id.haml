@@ -39,4 +39,5 @@
 -unless user.name != session_user.name
   %hr.separator
   .textbox.value
-    %a(href="/profile" ) Edit your Profile
+    %form.nomargin(action="/profile" method="GET")
+      %input.square(type="submit" value="Edit your profile")
