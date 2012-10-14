@@ -15,7 +15,7 @@
     - for item in user.list_items
       %tr
         %td
-          %p #{item.name}
+          %a(href="/item/#{item.id}" ) #{item.name}
         %td
           %p #{item.price}
         %td
@@ -45,7 +45,7 @@
     - for item in user.list_items_inactive
       %tr
         %td
-          %p #{item.name}
+          %a(href="/item/#{item.id}" ) #{item.name}
         %td
           %p #{item.price}
         %td

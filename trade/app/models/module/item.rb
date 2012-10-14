@@ -42,7 +42,7 @@ module Models
       self.name = name
       self.price = price
       self.description = description
-      self.quantity = Integer(quantity)
+      self.quantity = quantity
       self.timestamp = Time.now.to_i
     end
 

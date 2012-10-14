@@ -29,7 +29,7 @@
     - for item in active_items
       %tr
         %td
-          %p #{item.name}
+          %a(href="/item/#{item.id}" ) #{item.name}
         %td
           %p #{item.price}
         %td

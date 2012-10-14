@@ -50,7 +50,7 @@ module Controllers
         #end
 
         # MW: To do: Get the right params.
-        haml :home_new, :locals => {:action => "edit_item/#{params[:itemid]}", :name => item_name, :price => item_price, :description => item_description, :quantity =>item_quantity, :button => "Save changes", :page_name => "Edit Item", :error => nil}
+        haml :home_new, :locals => {:action => "change/#{params[:itemid]}", :name => item_name, :price => item_price, :description => item_description, :quantity =>item_quantity, :button => "Save changes", :page_name => "Edit Item", :error => nil}
       else
         redirect "/"
       end
@@ -90,6 +90,13 @@ module Controllers
       end
     end
 
+    get '/item/:itemid' do
+      redirect '/index' unless session[:username]
+      id = params[:itemid]
+      item = Item.get_item(id)
+      haml :item_id, :locals => {:page_name => "Item #{item.name}", :session_user => User.get_user(session[:username]), :item => item, :error => nil}
+    end
+
     post '/create' do
       redirect '/index' unless session[:username]
       username = session[:username]
@@ -118,20 +125,20 @@ module Controllers
       end
     end
 
-    post '/edit_item/:itemid' do
+    post '/change/:itemid' do
       redirect '/index' unless session[:username]
       #error handling for empty names or whitespaces (strip removes all kind of whitespaces, but not the first space)
-      puts("huhu")
       unless params[:name].strip.delete(' ')!=""
         redirect "/home/edit_item/#{params[:itemid]}/no_name"
       end
       item = Item.get_item(params[:itemid])
       price = params[:price]
-      unless Item.valid_integer?(String(price)) & Item.valid_integer?(params[:quantity])
+      quantity = params[:quantity]
+      unless Item.valid_integer?(String(price)) & Item.valid_integer?(quantity)
         redirect "/home/edit_item/#{params[:itemid]}/not_a_number"
 
       end
-      item.edit(params[:name],price,params[:quantity],params[:description])
+      item.edit(params[:name],Integer(price),Integer(quantity),params[:description])
       redirect "/home/active"
     end
 
@@ -152,7 +159,7 @@ module Controllers
     post '/buy/:id/:timestamp' do
       redirect '/index' unless session[:username]
       id = params[:id]
-      quantity = params[:quantity].to_i
+      quantity = Integer(params[:quantity])
       item = Item.get_item(id)
       old_user = item.owner
       user = session[:username]
