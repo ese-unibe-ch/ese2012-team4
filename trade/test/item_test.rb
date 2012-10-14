@@ -9,6 +9,8 @@ require_relative('../app/models/module/item')
 
 include Models
 
+#ToDo: Update the tests for Items with quantities!
+
 class ItemTest < Test::Unit::TestCase
 
   #test static method get item
@@ -104,14 +106,14 @@ class ItemTest < Test::Unit::TestCase
 
   #test for price validation
   def test_valid_price
-    assert(Item.valid_price?("10"), "10 should be a valid price")
-    assert(Item.valid_price?("9876543210"), "9876543210 should be a valid price")
-    assert(!Item.valid_price?("010"), "Strings with zeros at the beginning should not be valid, because of wrong parsing")
-    assert(!Item.valid_price?(""), "Empty Strings should not be valid, an Item needs a price.")
-    assert(!Item.valid_price?(" "), "Empty Strings should not be valid, an Item needs a price.")
-    assert(!Item.valid_price?("dfafd"), "Letters should not be valid prices")
-    assert(!Item.valid_price?("-"), "Operators should not be valid prices")
-    assert(!Item.valid_price?("*"), "Operators should not be valid prices")
+    assert(Item.valid_integer?("10"), "10 should be a valid price")
+    assert(Item.valid_integer?("9876543210"), "9876543210 should be a valid price")
+    assert(!Item.valid_integer?("010"), "Strings with zeros at the beginning should not be valid, because of wrong parsing")
+    assert(!Item.valid_integer?(""), "Empty Strings should not be valid, an Item needs a price.")
+    assert(!Item.valid_integer?(" "), "Empty Strings should not be valid, an Item needs a price.")
+    assert(!Item.valid_integer?("dfafd"), "Letters should not be valid prices")
+    assert(!Item.valid_integer?("-"), "Operators should not be valid prices")
+    assert(!Item.valid_integer?("*"), "Operators should not be valid prices")
   end
 
   #test for is_owner? method
@@ -142,7 +144,7 @@ class ItemTest < Test::Unit::TestCase
     assert(item.price.eql?(50), "Item should have a price")
     assert(item.description.eql?("No description available"), "No description was entered")
 
-    item.edit("new_name",23,"new description")
+    item.edit("new_name",23,1,"new description")
 
     assert(item.name.eql?("new_name"), "Item's name should have changed")
     assert(item.price.eql?(23), "Item' price should have changed")

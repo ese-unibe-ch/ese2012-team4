@@ -38,11 +38,11 @@ module Models
       @@count += 1
     end
 
-    def edit(name, price, quantity ,  description)
+    def edit(name, price, quantity,  description = "")
       self.name = name
       self.price = price
       self.description = description
-      self.quantity = quantity
+      self.quantity = Integer(quantity)
       self.timestamp = Time.now.to_i
     end
 
@@ -52,7 +52,7 @@ module Models
     end
 
     # check if a price is valid
-    def self.valid_price?(price)
+    def self.valid_integer?(price)
       (!!(price =~ /^[-+]?[1-9]([0-9]*)?$/) && Integer(price) >= 0)
     end
 

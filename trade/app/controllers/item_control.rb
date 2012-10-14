@@ -44,9 +44,10 @@ module Controllers
         item_price = item.price
         item_description = item.description
         item_quantity = item.quantity
-        unless Item.valid_price?(String(item_price))
-          redirect "/home/edit_item/#{params[:itemid]}/not_a_number"
-        end
+        #RB: Not needed, if we assume that the system is in a valid state before
+        #unless Item.valid_integer?(item_price)
+        #  redirect "/home/edit_item/#{params[:itemid]}/not_a_number"
+        #end
 
         # MW: To do: Get the right params.
         haml :home_new, :locals => {:action => "edit_item/#{params[:itemid]}", :name => item_name, :price => item_price, :description => item_description, :quantity =>item_quantity, :button => "Save changes", :page_name => "Edit Item", :error => nil}
@@ -65,9 +66,9 @@ module Controllers
 
         case params[:error_msg]
           when "not_a_number"
-            haml :home_new, :locals => {:action => "edit_item/#{params[:itemid]}", :name => item_name, :price => price, :description => description, :button => "Edit", :page_name => "Edit Item", :error => "Your price is not a valid number!"}
+            haml :home_new, :locals => {:action => "edit_item/#{params[:itemid]}", :name => item_name, :price => price, :description => description, :quantity => item.quantity, :button => "Edit", :page_name => "Edit Item", :error => "Your price is not a valid number!"}
           when "no_name"
-            haml :home_new, :locals => {:action => "edit_item/#{params[:itemid]}", :name => item_name, :price => price, :description => description, :button => "Edit", :page_name => "Edit Item", :error => "You have to choose a name for your item!"}
+            haml :home_new, :locals => {:action => "edit_item/#{params[:itemid]}", :name => item_name, :price => price, :description => description, :quantity => item.quantity, :button => "Edit", :page_name => "Edit Item", :error => "You have to choose a name for your item!"}
         end
       else
         redirect "/"
@@ -91,17 +92,18 @@ module Controllers
 
     post '/create' do
       redirect '/index' unless session[:username]
-      user = session[:username]
+      username = session[:username]
       price = params[:price]
+      quantity = params[:quantity]
 
-      unless Item.valid_price?(price)
+      unless Item.valid_integer?(price) & Item.valid_integer?(quantity)
         redirect "create/not_a_number"
       end
       #error handling for empty names or whitespaces (strip removes all kind of whitespaces, but not the first space)
       unless params[:name].strip.delete(' ')!=""
         redirect '/create/no_name'
       end
-      User.get_user(user).create_item(params[:name], Integer(params[:price]), params[:description])
+      User.get_user(username).create_item(params[:name], Integer(price), Integer(quantity), params[:description])
       # MW: maybe "User.by_name" might be somewhat more understandable
       redirect "/home/active"
     end
@@ -110,7 +112,7 @@ module Controllers
       redirect '/index' unless session[:username]
       case params[:error_msg]
         when "not_a_number"
-          haml :home_new, :locals =>{:action => "create", :name => "", :price => "", :description =>"", :quantity =>"1", :button => "Create", :page_name => "New Item", :error => "Your price is not a valid number!"}
+          haml :home_new, :locals =>{:action => "create", :name => "", :price => "", :description =>"", :quantity =>"1", :button => "Create", :page_name => "New Item", :error => "Please choose a valid number!"}
         when "no_name"
           haml :home_new, :locals =>{:action => "create", :name => "", :price => "", :description =>"", :quantity =>"1", :button => "Create", :page_name => "New Item", :error => "You have to choose a name for your item!"}
       end
@@ -119,16 +121,17 @@ module Controllers
     post '/edit_item/:itemid' do
       redirect '/index' unless session[:username]
       #error handling for empty names or whitespaces (strip removes all kind of whitespaces, but not the first space)
+      puts("huhu")
       unless params[:name].strip.delete(' ')!=""
         redirect "/home/edit_item/#{params[:itemid]}/no_name"
       end
       item = Item.get_item(params[:itemid])
       price = params[:price]
-      unless Item.valid_price?(String(price))
+      unless Item.valid_integer?(String(price)) & Item.valid_integer?(params[:quantity])
         redirect "/home/edit_item/#{params[:itemid]}/not_a_number"
 
       end
-      item.edit(params[:name],params[:price],params[:quantity],params[:description])
+      item.edit(params[:name],price,params[:quantity],params[:description])
       redirect "/home/active"
     end
 
