@@ -1,24 +1,26 @@
--if name != ""
+-if @item.name != ""
   %h2 Edit Item
--if name == ""
+-if @item.name == ""
   %h2 New Item
 %br
 %form.nomargin(action="/#{action}" method="POST")
   %label.textbox.name
     %p Name of Item:
-  %input.textbox.value(type="text" name="name" value="#{name}")
+  %input.textbox.value(type="text" name="name" value="#{@item.name}")
   %hr.separator.invisible
   %label.textbox.name
     %p Price:
-  %input.textbox.value(type="text" name="price" value="#{price}")
+  %input.textbox.value(type="text" name="price" value="#{@item.price}")
   %hr.separator.invisible
   %label.textbox.name
     %p Description (optional)
-  %textarea.textbox.value(type="text" name = "description" value="#{description}")
+  %textarea.textbox.value(type="text" name = "description")
+    -@item.description.each do |line|
+      #{line}
   %hr.separator.invisible
   %label.textbox.name
     %p Quantity
-  %input.textbox.value(type = "text" name = "quantity" value = "#{quantity}")
+  %input.textbox.value(type = "text" name = "quantity" value = "#{@item.quantity}")
   %hr.separator
 
   %input.rightalign.square(type="submit" value="#{button}")

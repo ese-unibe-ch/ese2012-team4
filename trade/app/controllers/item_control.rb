@@ -17,40 +17,37 @@ module Controllers
     helpers Sinatra::ContentFor
 
     before do
-      @user = User.get_user(session[:username])
+      @session_user = User.get_user(session[:username])
     end
 
     get '/home/active' do
       redirect '/index' unless session[:username]
-      haml :home_all_items, :locals => {:user => @user, :page_name => "Your items", :error => nil}
+      haml :home_all_items, :locals => {:page_name => "Your items", :error => nil}
     end
 
     get '/home/inactive' do
       redirect '/index' unless session[:username]
-      haml :home_inactive, :locals => {:inactive_items => @user.list_items_inactive, :page_name => "Inactive items", :error => nil}
+      haml :home_inactive, :locals => {:page_name => "Inactive items", :error => nil}
     end
 
     get '/home/new' do
       redirect '/index' unless session[:username]
-      haml :home_new, :locals =>{:action => "create", :name => "", :price => "", :description =>"", :quantity =>"1", :button => "Create", :page_name => "New Item", :error => nil}
+      @item = Item.created("", "", "", "", "");
+      haml :home_new, :locals =>{:action => "create", :button => "Create", :page_name => "New Item", :error => nil}
     end
 
     get '/home/edit_item/:itemid' do
       redirect '/index' unless session[:username]
-      if Item.get_item(params[:itemid]).is_owner?(@user.name)
+      if Item.get_item(params[:itemid]).is_owner?(@session_user.name)
 
-        item = Item.get_item(params[:itemid])
-        item_name = item.name
-        item_price = item.price
-        item_description = item.description
-        item_quantity = item.quantity
+        @item = Item.get_item(params[:itemid])
         #RB: Not needed, if we assume that the system is in a valid state before
         #unless Item.valid_integer?(item_price)
         #  redirect "/home/edit_item/#{params[:itemid]}/not_a_number"
         #end
 
         # MW: To do: Get the right params.
-        haml :home_new, :locals => {:action => "change/#{params[:itemid]}", :name => item_name, :price => item_price, :description => item_description, :quantity =>item_quantity, :button => "Save changes", :page_name => "Edit Item", :error => nil}
+        haml :home_new, :locals => {:action => "change/#{params[:itemid]}", :button => "Save changes", :page_name => "Edit Item", :error => nil}
       else
         redirect "/"
       end
@@ -59,16 +56,13 @@ module Controllers
     get '/home/edit_item/:itemid/:error_msg' do
       redirect '/index' unless session[:username]
       if Item.get_item(params[:itemid]).is_owner?(@user.name)
-        item = Item.get_item(params[:itemid])
-        item_name = item.name
-        price = item.price
-        description = item.description
+        @item = Item.get_item(params[:itemid])
 
         case params[:error_msg]
           when "not_a_number"
-            haml :home_new, :locals => {:action => "edit_item/#{params[:itemid]}", :name => item_name, :price => price, :description => description, :quantity => item.quantity, :button => "Edit", :page_name => "Edit Item", :error => "Your price is not a valid number!"}
+            haml :home_new, :locals => {:action => "edit_item/#{params[:itemid]}", :button => "Edit", :page_name => "Edit Item", :error => "Your price is not a valid number!"}
           when "no_name"
-            haml :home_new, :locals => {:action => "edit_item/#{params[:itemid]}", :name => item_name, :price => price, :description => description, :quantity => item.quantity, :button => "Edit", :page_name => "Edit Item", :error => "You have to choose a name for your item!"}
+            haml :home_new, :locals => {:action => "edit_item/#{params[:itemid]}", :button => "Edit", :page_name => "Edit Item", :error => "You have to choose a name for your item!"}
         end
       else
         redirect "/"
@@ -77,29 +71,30 @@ module Controllers
 
     get '/items' do
       redirect '/index' unless session[:username]
-      haml :items, :locals => {:all_items => Item.get_all(@user.name), :page_name => "Items", :error => nil }
+      @all_items = Item.get_all(@session_user.name)
+      haml :items, :locals => {:page_name => "Items", :error => nil }
     end
 
     get '/items/:error_msg' do
       redirect '/index' unless session[:username]
+      @all_items = Item.get_all(@session_user.name)
       case params[:error_msg]
         when "not_enough_credits"
-          haml :items, :locals => {:all_items => Item.get_all(@user.name), :page_name => "Items", :error => "Not enough credits!" }
+          haml :items, :locals => {:page_name => "Items", :error => "Not enough credits!" }
         when "out_of_sync"
-          haml :items, :locals => {:all_items => Item.get_all(@user.name), :page_name => "Items", :error => "Item has been edited while you tried to buy it!" }
+          haml :items, :locals => {:page_name => "Items", :error => "Item has been edited while you tried to buy it!" }
       end
     end
 
     get '/item/:itemid' do
       redirect '/index' unless session[:username]
       id = params[:itemid]
-      item = Item.get_item(id)
-      haml :item_id, :locals => {:page_name => "Item #{item.name}", :session_user => User.get_user(session[:username]), :item => item, :error => nil}
+      @item = Item.get_item(id)
+      haml :item_id, :locals => {:page_name => "Item #{@item.name}", :error => nil}
     end
 
     post '/create' do
       redirect '/index' unless session[:username]
-      username = session[:username]
       price = params[:price]
       quantity = params[:quantity]
 
@@ -110,7 +105,7 @@ module Controllers
       unless params[:name].strip.delete(' ')!=""
         redirect '/create/no_name'
       end
-      User.get_user(username).create_item(params[:name], Integer(price), Integer(quantity), params[:description])
+      @session_user.create_item(params[:name], Integer(price), Integer(quantity), params[:description])
       # MW: maybe "User.by_name" might be somewhat more understandable
       redirect "/home/active"
     end
@@ -180,6 +175,5 @@ module Controllers
       end
       redirect "/home/active"
     end
-
   end
 end

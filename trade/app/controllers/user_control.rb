@@ -18,7 +18,7 @@ module Controllers
     helpers Sinatra::ContentFor
 
     before do
-      @user = User.get_user(session[:username])
+      @session_user = User.get_user(session[:username])
     end
 
     get '/logout' do
@@ -33,23 +33,24 @@ module Controllers
 
     get '/users' do
       redirect '/index' unless session[:username]
-      haml :users, :locals => {:all_users => User.get_all(""), :page_name => "Users", :error => nil}
+      @all_users = User.get_all("")
+      haml :users, :locals => {:page_name => "Users", :error => nil}
     end
 
     get '/users/:id' do
       redirect '/index' unless session[:username]
-      user = params[:id]
-      haml :users_id, :locals => {:active_items => User.get_user(user).list_items, :page_name => "User #{user}", :session_user => User.get_user(session[:username]), :user => User.get_user(user), :error => nil}
+      @user = User.get_user(params[:id])
+      haml :users_id, :locals => {:page_name => "User #{@user.name}", :error => nil}
     end
 
     get '/users/:id/:error_msg' do
       redirect '/index' unless session[:username]
-      user = params[:id]
+      @user = User.get_user(params[:id])
       case params[:error_msg]
         when "not_enough_credits"
-          haml :users_id, :locals => {:active_items => User.get_user(user).list_items, :session_user => User.get_user(session[:username]), :user => User.get_user(user), :page_name => "User #{user}", :error => "Not enough credits!"}
+          haml :users_id, :locals => {:session_user => User.get_user(session[:username]), :page_name => "User #{user}", :error => "Not enough credits!"}
         when "out_of_sync"
-          haml :users_id, :locals => {:active_items => User.get_user(user).list_items, :session_user => User.get_user(session[:username]), :user => User.get_user(user), :page_name => "User #{user}", :error => "Item has been edited while you tried to buy it!" }
+          haml :users_id, :locals => {:session_user => User.get_user(session[:username]), :page_name => "User #{user}", :error => "Item has been edited while you tried to buy it!" }
       end
     end
 
@@ -62,19 +63,20 @@ module Controllers
 
     get '/profile' do
       redirect '/index' unless session[:username]
-      haml :profile, :locals => {:user => @user, :description => @user.description, :page_name => "Your profile", :error => nil}
+      haml :profile, :locals => {:page_name => "Your profile", :error => nil}
     end
 
     get "/profile/:error_msg" do
       redirect '/index' unless session[:username]
       if not session[:username].nil?
+        @user = User.get_user(session[:username])
         case params[:error_msg]
           when "false_pw"
-            haml :profile, :locals => {:page_name => "Your profile", :user => User.get_user(session[:username]), :error => "You entered an incorrect password"}
+            haml :profile, :locals => {:page_name => "Your profile", :error => "You entered an incorrect password"}
           when "mismatch"
-            haml :profile, :locals => {:page_name => "Your profile", :user => User.get_user(session[:username]), :error => "The new password and the check do not match"}
+            haml :profile, :locals => {:page_name => "Your profile", :error => "The new password and the check do not match"}
           when "unsafe"
-            haml :profile, :locals => {:page_name => "Your profile", :user => User.get_user(session[:username]), :error => "Your password is unsafe"}
+            haml :profile, :locals => {:page_name => "Your profile", :error => "Your password is unsafe"}
         end
       else
         redirect "/"

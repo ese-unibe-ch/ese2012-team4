@@ -1,7 +1,7 @@
 %h2 My Inactive Items
 - content_for :name do
   Inactive_items
--unless inactive_items.empty?
+-unless @session_user.list_items_inactive.empty?
   %table.itemtable
     %thead
       %tr
@@ -13,7 +13,7 @@
           %p.table_header Activate
         %td
           %p.table_header Edit
-    - for item in inactive_items
+    - for item in @session_user.list_items_inactive
       %tr
         %td
           %p #{item.name}

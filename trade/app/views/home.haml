@@ -2,17 +2,17 @@
 .textbox.name
   %p Currently logged in User:
 .textbox.value
-  %p #{User.get_user(session[:username]).name}
+  %p #{@session_user.name}
 .textbox.name
   %p Your Credits:
 .textbox.value
-  %p #{User.get_user(session[:username]).credits}
+  %p #{@session_user.credits}
 .textbox.name
   %p Active items:
 .textbox.value
-  %p #{User.get_user(session[:username]).list_items.size}
+  %p #{@session_user.list_items.size}
 .textbox.name
   %p Inactive items
 .textbox.value
-  %p #{User.get_user(session[:username]).list_items_inactive.size}
+  %p #{@session_user.list_items_inactive.size}
 

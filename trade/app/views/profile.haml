@@ -4,18 +4,18 @@
 .textbox.name
   %p Username:
 .textbox.value
-  %p #{user.name}
+  %p #{@session_user.name}
 
 .textbox.name
   %p Credits:
 .textbox.value
-  %p #{user.credits}
+  %p #{@session_user.credits}
 
 .textbox.name
   %p Interests:
 .textbox.value
   %p
-    -user.description.each do |line|
+    -@session_user.description.each do |line|
       #{line}
       %br
 %br
@@ -27,7 +27,7 @@
 %br
 %form(action="/change_description" method="POST")
   %textarea.textbox.value.fixedwith(type="text" name="description")
-    -user.description.each do |line|
+    -@session_user.description.each do |line|
       #{line}
   %br
   %hr.separator.invisible
@@ -59,7 +59,7 @@
 %br
 %hr.separator
 .textbox.name
-  %p Delete my Account "#{user.name}"
+  %p Delete my Account "#{@session_user.name}"
 .textbox.value
   %form(action="/delete_link" method="GET")
     %input.square(type="submit" value="Delete account")

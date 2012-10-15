@@ -2,31 +2,32 @@
 .textbox.name
   Description:
 .textbox.value
-  -item.description.each do |line|
+  -@item.description.each do |line|
     #{line}
     %br
 %br
 .textbox.name
   Price:
 .textbox.value
-  #{item.price}
+  #{@item.price}
 %br
 .textbox.name
   Available Quantity:
 .textbox.value
-  #{item.quantity}
+  #{@item.quantity}
 %br
 .textbox.name
   Owner:
 .textbox.value
-  %a(href="/users/#{item.owner.name}" ) #{item.owner.name}
+  %a(href="/users/#{@item.owner.name}" ) #{@item.owner.name}
 %hr.separator
--if item.owner.name == session_user.name
-  -if item.editable?
-    #ToDo: Edit Button...
+-if @item.owner.name == @session_user.name
+  -if @item.editable?
+    %form.nomargin(action="/home/edit_item/#{@item.id}" method="GET")
+      %input.square(type="submit" value="Edit")
 -else
-  -if item.active
+  -if @item.active
     %td.buyform
-      %form.nomargin(action="/buy/#{item.id}/#{item.timestamp}" method="POST")
+      %form.nomargin(action="/buy/#{@item.id}/#{@item.timestamp}" method="POST")
         %input.tiny.rightalign(type = "text" name = "quantity" value = "1")
         %input.square.rightalign(type="submit" value="Buy")

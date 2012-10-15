@@ -2,8 +2,8 @@
 %h2 All Items
 - content_for :name do
   All_items
--unless all_items.empty?
-  -stored = all_items
+-unless @all_items.empty?
+  -stored = @all_items
   %table.itemtable
     %thead
       %tr

@@ -1,6 +1,6 @@
 
 %h2 My Active Items
--unless user.list_items.empty?
+-unless @session_user.list_items.empty?
   %table.itemtable
     %thead
       %tr
@@ -12,7 +12,7 @@
           %p.table_header Qty
         %td
           %p.table_header Deactivate
-    - for item in user.list_items
+    - for item in @session_user.list_items
       %tr
         %td
           %a(href="/item/#{item.id}" ) #{item.name}
@@ -28,7 +28,7 @@
 
 %h2 My Inactive Items
 
--unless user.list_items_inactive.empty?
+-unless @session_user.list_items_inactive.empty?
   %table.itemtable
     %thead
       %tr
@@ -42,7 +42,7 @@
           %p.table_header Activate
         %td
           %p.table_header Edit
-    - for item in user.list_items_inactive
+    - for item in @session_user.list_items_inactive
       %tr
         %td
           %a(href="/item/#{item.id}" ) #{item.name}

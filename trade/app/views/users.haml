@@ -4,7 +4,7 @@
 - content_for :name do
   All_users
 
-- for user in all_users
+- for user in @all_users
   .textbox.name #{user.name}
   .textbox.value
     has #{user.list_items.size} Items to sell
