@@ -5,12 +5,15 @@ h1, h2, h3, a, p{
 
 body{
     margin: 20px;
-    background: #eeeeee;
+    background: rgb(46, 109, 166);
+    background-image: url(../images/bg.png);
     font-family: Verdana, Arial, sans-serif;
 }
 
 #wrapper{
-    background: none;
+    border-radius:7px;
+    padding:10px;
+    background: rgba(255, 255, 255, 0.5);
     display:table;
     width:913px;
     margin: auto;
@@ -24,6 +27,8 @@ body{
 
 
 #header{
+    border-top-right-radius: 5px;
+    border-top-left-radius: 5px;
     min-width: 600px;
     display: block;
     background-color: white;
@@ -67,8 +72,14 @@ p{
     margin: 0;
 
 }
+.wholly_clickable{
+    display:block;
+    padding: 10px 8px;
+}
 
 #footer{
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
     border-top:3px solid #8FC9FF;
     display:block;
     float:none;
@@ -129,12 +140,6 @@ td.header{
     min-width: 600px;
 }
 
-td{
-    padding: 20px;
-    border: 1px solid #778899;
-    background: #ffffff;
-    vertical-align: middle;
-}
 .itemtable{
     width: 100%;
     padding: 0px;
@@ -168,6 +173,10 @@ td{
 }
 .itemtable td.buyform {
     min-width: 80px;
+
+}
+.itemtable td.nopadding{
+    padding: 0;
 
 }
 
@@ -254,10 +263,6 @@ textarea.textbox.value{
     float:right;
     margin-bottom: 5px;
 }
-
-
-
-
 
 #error_msg{
     display:block;

@@ -19,8 +19,8 @@
           %p.table_header Buy
     - for item in stored
       %tr
-        %td
-          %a(href="/item/#{item.id}" ) 
+        %td.nopadding
+          %a.wholly_clickable(href="/item/#{item.id}" )
             :escaped
               #{item.name}
         %td
