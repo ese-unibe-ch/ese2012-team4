@@ -17,31 +17,32 @@ module Controllers
     helpers Sinatra::ContentFor
 
     get '/' do
-      redirect "/home" if session[:username]
+      redirect "/home" if session[:id]
       redirect '/index'
     end
 
     get '/index' do
-      redirect '/home' unless session[:username].nil?
+      redirect '/home' unless session[:id].nil?
       haml :index, :locals => {:page_name => "Home", :error => nil}
     end
 
     get '/login' do
-      redirect '/home' unless session[:username].nil?
+      redirect '/home' unless session[:id].nil?
       haml :login, :locals => {:page_name => "Log in", :error => nil}
     end
 
     post "/authenticate" do
-      redirect "authenticate/login_fail", "No such login" unless User.login params[:username], params[:password]
+      user = User.by_name params[:username].strip
+      redirect "authenticate/login_fail", "No such login" unless User.login user.id, params[:password]
 
-      session[:username] = params[:username]
+      session[:id] = user.id
       #session['auth'] = true
 
       redirect "/home"
     end
 
     get "/authenticate/:error_msg" do
-      redirect '/home' unless session[:username].nil?
+      redirect '/home' unless session[:id].nil?
       case params[:error_msg]
         when "login_fail"
           haml :login, :locals => {:page_name => "Log in", :error => "no such login!"}
@@ -50,13 +51,16 @@ module Controllers
     end
 
     get '/signup' do
-      redirect '/home' unless session[:username].nil?
+      redirect '/home' unless session[:id].nil?
       haml :signup, :locals => {:page_name => "Sign up", :error => nil}
     end
 
     post '/signup' do
-      redirect '/home' unless session[:username].nil?
-      username,description, pw, pw2 = params[:username], params[:description], params[:password1], params[:password2]
+      redirect '/home' unless session[:id].nil?
+      username,description, pw, pw2 = params[:username].strip, params[:description], params[:password1], params[:password2]
+
+      #redirect "/signup/invalid_username" if username != username.delete("^a-zA-Z0-9")  
+      #BS: only needed if we don't allow special characters 
 
       redirect "/signup/no_user_name" if username==''
       redirect "/signup/taken" unless User.available? username
@@ -69,7 +73,7 @@ module Controllers
     end
 
     get "/signup/:error_msg" do
-      redirect '/home' unless session[:username].nil?
+      redirect '/home' unless session[:id].nil?
       case params[:error_msg]
         when "no_user_name"
           haml :signup, :locals=> {:page_name => "Sign up", :error => "Enter an username!"}
@@ -81,6 +85,9 @@ module Controllers
           haml :signup, :locals=> {:page_name => "Sign up", :error => "Your password is unsafe!"}
         when "taken"
           haml :signup, :locals=> {:page_name => "Sign up", :error => "This username is already taken!"}
+        #when "invalid_username"
+        #  haml :signup, :locals=> {:page_name => "Sign up", :error => "Invalid username!"}
+        #BS: only needed if we don't allow special characters 
       end
 
     end

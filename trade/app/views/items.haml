@@ -20,13 +20,17 @@
     - for item in stored
       %tr
         %td
-          %a(href="/item/#{item.id}" ) #{item.name}
+          %a(href="/item/#{item.id}" ) 
+            :escaped
+              #{item.name}
         %td
           %p #{item.price}
         %td
           %p #{item.quantity}
         %td
-          %a(href="/users/#{item.owner.name}" ) #{item.owner.name}
+          %a(href="/users/#{item.owner.id}" ) 
+            :escaped
+              #{item.owner.name}
         %td.buyform
           %form.nomargin(action="/buy/#{item.id}/#{(stored.select {|tobuy| tobuy.id==item.id})[0].timestamp}" method="POST")
             %input.tiny(type = "text" name = "quantity" value = "1")

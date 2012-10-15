@@ -9,8 +9,6 @@ require_relative('../app/models/module/item')
 
 include Models
 
-#ToDo: Update the tests for Items with quantities!
-
 class ItemTest < Test::Unit::TestCase
 
   #test static method get item
@@ -123,7 +121,7 @@ class ItemTest < Test::Unit::TestCase
     item = owner.create_item("testobject", 50, 1)
     assert(item.is_owner?("testuser"), "The owner should be recognized by its name.")
     assert(!item.is_owner?("testuser   "), "Wrong names should not match")
-    assert(!item.is_owner?("bla%ç&%(/"), "Wrong names should not match")
+    assert(!item.is_owner?("bla%ç&%(/k"), "Wrong names should not match")
   end
 
   #test for editable? method

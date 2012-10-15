@@ -16,7 +16,9 @@
     - for item in @session_user.list_items_inactive
       %tr
         %td
-          %p #{item.name}
+          %p
+            :escaped
+              #{item.name}
         %td
           %p #{item.price}
         %td

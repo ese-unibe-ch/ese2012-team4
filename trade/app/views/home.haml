@@ -2,7 +2,9 @@
 .textbox.name
   %p Currently logged in User:
 .textbox.value
-  %p #{@session_user.name}
+  %p
+    :escaped
+      #{@session_user.name}
 .textbox.name
   %p Your Credits:
 .textbox.value

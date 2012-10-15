@@ -15,7 +15,9 @@
     - for item in @session_user.list_items
       %tr
         %td
-          %a(href="/item/#{item.id}" ) #{item.name}
+          %a(href="/item/#{item.id}" )
+            :escaped
+              #{item.name}
         %td
           %p #{item.price}
         %td
@@ -45,7 +47,9 @@
     - for item in @session_user.list_items_inactive
       %tr
         %td
-          %a(href="/item/#{item.id}" ) #{item.name}
+          %a(href="/item/#{item.id}" ) 
+            :escaped
+              #{item.name}
         %td
           %p #{item.price}
         %td

@@ -12,7 +12,6 @@ require_relative('controllers/user_control')
 require_relative('../../trade/app/models/module/item')
 require_relative('../../trade/app/models/module/user')
 
-
 include Models
 include Controllers
 

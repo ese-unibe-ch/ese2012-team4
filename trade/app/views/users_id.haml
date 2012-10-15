@@ -1,18 +1,26 @@
 %br
 .textbox.name
-  #{@user.name}'s interests:
+  -# MW: Formatierung geht kaputt beim Einfügen von ":escaped"
+  :escaped
+    #{@user.name}'s interests:
 .textbox.value
-  -@user.description.each do |line|
-    #{line}
+  -if !@user.description.empty?
+    -user.description.each do |line|
+      :escaped
+        #{line}
     %br
 %br
 %hr.separator
 
 .textbox.name
-  %p #{@user.name}'s items on sale:
+  %p
+    :escaped
+      #{@user.name}'s items on sale:
 %br
 - content_for :name do
-  %p #{@user.name}'s Active_items
+  %p
+    :escaped
+      #{@user.name}'s Active_items
 -unless @user.list_items.empty?
   -stored = @user.list_items
   %table.itemtable.right
@@ -29,9 +37,13 @@
     - for item in @user.list_items
       %tr
         %td
-          %a(href="/item/#{item.id}" ) #{item.name}
+          %a(href="/item/#{item.id}" ) 
+            :escaped
+              #{item.name}
         %td
-          %p #{item.price}
+          %p
+          :escaped
+            #{item.price}
         %td
           %p #{item.quantity}
         %td
