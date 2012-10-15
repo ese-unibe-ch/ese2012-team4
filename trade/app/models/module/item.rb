@@ -88,6 +88,7 @@ module Models
     end
 
     def delete
+      self.owner.remove_item(self)
       @@item_list.delete(self)
     end
 

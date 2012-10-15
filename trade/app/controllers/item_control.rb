@@ -73,7 +73,7 @@ module Controllers
 
     get '/items' do
       redirect '/index' unless session[:id]
-      @all_items = Item.get_all(@session_user.name) # could possibly be id instead of name(merge)
+      @all_items = Item.get_all(@session_user.name)
       haml :items, :locals => {:page_name => "Items", :error => nil }
     end
 
@@ -142,14 +142,16 @@ module Controllers
     post '/changestate/:id/setactive' do
       redirect '/index' unless session[:id]
       id = params[:id]
-      Item.get_item(id).active = true
+      owner = Item.get_item(id).owner
+      owner.activate_item(id)
       redirect "/home/active"
     end
 
     post '/changestate/:id/setinactive' do
       redirect '/index' unless session[:id]
       id = params[:id]
-      Item.get_item(id).active = false
+      owner = Item.get_item(id).owner
+      owner.deactivate_item(id)
       redirect "/home/active"
     end
 

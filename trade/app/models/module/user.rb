@@ -63,8 +63,12 @@ module Models
     #let the user create a new item
     def create_item(name, price, quantity, description="No description available")
       new_item = Models::Item.created( name, price, self, quantity, description)
-      self.item_list.push(new_item)
-      new_item.save
+      if !(identical = self.list_items_inactive.detect{|i| i.name== new_item.name and i.price == new_item.price and i.description==new_item.description}).nil?
+        identical.quantity += new_item.quantity
+      else
+        self.item_list.push(new_item)
+        new_item.save
+      end
       return new_item
     end
 
@@ -102,13 +106,13 @@ module Models
         item_to_buy.active = false
         item_to_buy.owner = self
         item_to_buy.owner.remove_item(item_to_buy)
-        if !(identical = self.item_list.detect{|i| i.name== item_to_buy.name and i.price == item_to_buy.price and i.description==item_to_buy.description}).nil?
+        if !(identical = self.list_items_inactive.detect{|i| i.name== item_to_buy.name and i.price == item_to_buy.price and i.description==item_to_buy.description}).nil?
           identical.quantity+=quantity
         else
           self.item_list.push(item_to_buy)
         end
       else
-        if !(identical = self.item_list.detect{|i| i.name== item_to_buy.name and i.price == item_to_buy.price and i.description==item_to_buy.description}).nil?
+        if !(identical = self.list_items_inactive.detect{|i| i.name== item_to_buy.name and i.price == item_to_buy.price and i.description==item_to_buy.description}).nil?
           identical.quantity+=quantity
         else
           self.create_item(item_to_buy.name,item_to_buy.price, quantity,item_to_buy.description)
@@ -122,6 +126,26 @@ module Models
     # removing item from users item_list
     def remove_item(item_to_remove)
       self.item_list.delete(item_to_remove)
+    end
+
+    def activate_item(id)
+      item = Item.get_item(id)
+      return false unless item.owner==self
+      if !(identical = self.list_items.detect{|i| i.name== item.name and i.price == item.price and i.description==item.description}).nil?
+        identical.quantity+=item.quantity
+        item.delete
+      end
+      item.active=true
+    end
+
+    def deactivate_item(id)
+      item = Item.get_item(id)
+      return false unless item.owner==self
+      if !(identical = self.list_items_inactive.detect{|i| i.name== item.name and i.price == item.price and i.description==item.description}).nil?
+        identical.quantity+=item.quantity
+        item.delete
+      end
+      item.active = false
     end
 
     def self.login id, password                #BS: change parameter "name" to "id"
