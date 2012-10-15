@@ -60,7 +60,7 @@ module Controllers
 
         case params[:error_msg]
           when "not_valid_quantity"
-            haml :home_new, :locals => {:action => "edit_item/#{params[:itemid]}", :name => item_name, :price => price, :description => description, :button => "Edit", :page_name => "Edit Item", :error => "Your quantity is not a valid number!"}
+            haml :home_new, :locals => {:action => "edit_item/#{params[:itemid]}", :button => "Edit", :page_name => "Edit Item", :error => "Your quantity is not a valid number!"}
           when "not_a_number"
             haml :home_new, :locals => {:action => "edit_item/#{params[:itemid]}", :button => "Edit", :page_name => "Edit Item", :error => "Your price is not a valid number!"}
           when "no_name"
@@ -114,11 +114,12 @@ module Controllers
 
     get '/create/:error_msg' do
       redirect '/index' unless session[:id]
+      @item = Item.created("","","","1")
       case params[:error_msg]
         when "not_a_number"
-          haml :home_new, :locals =>{:action => "create", :name => "", :price => "", :description =>"", :quantity =>"1", :button => "Create", :page_name => "New Item", :error => "Please choose a valid number!"}
+          haml :home_new, :locals =>{:action => "create", :button => "Create", :page_name => "New Item", :error => "Please choose a valid number!"}
         when "no_name"
-          haml :home_new, :locals =>{:action => "create", :name => "", :price => "", :description =>"", :quantity =>"1", :button => "Create", :page_name => "New Item", :error => "You have to choose a name for your item!"}
+          haml :home_new, :locals =>{:action => "create", :button => "Create", :page_name => "New Item", :error => "You have to choose a name for your item!"}
       end
     end
 
