@@ -60,7 +60,7 @@ module Controllers
 
         case params[:error_msg]
           when "not_valid_quantity"
-            haml :home_new, :locals => {:action => "edit_item/#{params[:itemid]}", :name => item_name, :price => price, :description => description, :button => "Edit", :page_name => "Edit Item", :error => "Your quantity is not a valid number!"}
+            haml :home_new, :locals => {:action => "edit_item/#{params[:itemid]}", :button => "Edit", :page_name => "Edit Item", :error => "Your quantity is not a valid number!"}
           when "not_a_number"
             haml :home_new, :locals => {:action => "edit_item/#{params[:itemid]}", :button => "Edit", :page_name => "Edit Item", :error => "Your price is not a valid number!"}
           when "no_name"
@@ -73,7 +73,7 @@ module Controllers
 
     get '/items' do
       redirect '/index' unless session[:id]
-      @all_items = Item.get_all(@session_user.name) # could possibly be id instead of name(merge)
+      @all_items = Item.get_all(@session_user.name)
       haml :items, :locals => {:page_name => "Items", :error => nil }
     end
 
@@ -141,14 +141,16 @@ module Controllers
     post '/changestate/:id/setactive' do
       redirect '/index' unless session[:id]
       id = params[:id]
-      Item.get_item(id).active = true
+      owner = Item.get_item(id).owner
+      owner.activate_item(id)
       redirect "/home/active"
     end
 
     post '/changestate/:id/setinactive' do
       redirect '/index' unless session[:id]
       id = params[:id]
-      Item.get_item(id).active = false
+      owner = Item.get_item(id).owner
+      owner.deactivate_item(id)
       redirect "/home/active"
     end
 
