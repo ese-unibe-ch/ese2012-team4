@@ -4,11 +4,12 @@
   :escaped
     #{@user.name}'s interests:
 .textbox.value
-  -if !@user.description.empty?
-    -@user.description.each do |line|
-      :escaped
-        #{line}
-    %br
+  %p
+    -if !@user.description.empty?
+      -@user.description.each do |line|
+        :escaped
+          #{line}
+        %br
 %br
 %hr.separator
 
@@ -55,6 +56,5 @@
     %p No Items
 -unless @user.name != @session_user.name
   %hr.separator
-  .textbox.value
     %form.nomargin(action="/profile" method="GET")
-      %input.square(type="submit" value="Edit your profile")
+      %input.square.rightalign(type="submit" value="Edit your profile")

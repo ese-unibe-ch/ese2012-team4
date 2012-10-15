@@ -2,9 +2,12 @@
 .textbox.name
   Description:
 .textbox.value
-  -@item.description.each do |line|
-    #{line}
-    %br
+  %p
+    -if !@item.description.empty?
+      -@item.description.each do |line|
+        :escaped
+          #{line}
+        %br
 %br
 .textbox.name
   Price:
@@ -23,8 +26,9 @@
 %hr.separator
 -if @item.owner.name == @session_user.name
   -if @item.editable?
-    %form.nomargin(action="/home/edit_item/#{@item.id}" method="GET")
-      %input.square(type="submit" value="Edit")
+    %p
+      %form.nomargin(action="/home/edit_item/#{@item.id}" method="GET")
+        %input.square.rightalign(type="submit" value="Edit")
 -else
   -if @item.active
     %td.buyform
