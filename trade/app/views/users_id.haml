@@ -5,7 +5,7 @@
     #{@user.name}'s interests:
 .textbox.value
   -if !@user.description.empty?
-    -user.description.each do |line|
+    -@user.description.each do |line|
       :escaped
         #{line}
     %br
