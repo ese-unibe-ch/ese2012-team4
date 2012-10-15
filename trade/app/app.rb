@@ -22,6 +22,7 @@ class App < Sinatra::Base
   use UserControl
 
   enable :sessions
+  enable :method_override
   set :views, relative('app/views')
   set :public_folder, relative('public')
 

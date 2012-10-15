@@ -2,5 +2,6 @@
 .textbox.name
   %p Are you sure you want to delete your account? This is not reversible!
 .textbox.value
-  %form(action="/delete_account" method="DELETE")
+  %form(action="/delete_account" method="post")
     %input.square(type="submit" value="Delete account")
+    %input(name="_method" type="hidden" value="delete")
