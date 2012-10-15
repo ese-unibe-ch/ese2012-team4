@@ -46,10 +46,10 @@
             #{item.price}
         %td
           %p #{item.quantity}
-        %td
+        %td.buyform
           %form.nomargin(action="/buy/#{item.id}/#{(stored.select {|tobuy| tobuy.id==item.id})[0].timestamp}" method="POST")
             %input.tiny(type = "text" name = "quantity" value = "1")
-            %input.square(type="submit" value="Buy")
+            %input.square.rightalign(type="submit" value="Buy")
 -else
   .textbox.value
     %p No Items

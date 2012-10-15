@@ -48,9 +48,9 @@ module Controllers
       @user = User.get_user(params[:id])
       case params[:error_msg]
         when "not_enough_credits"
-          haml :users_id, :locals => {:session_user => User.get_user(session[:id]), :page_name => "User #{user}", :error => "Not enough credits!"}
+          haml :users_id, :locals => {:session_user => User.get_user(session[:id]), :page_name => "User #{@user}", :error => "Not enough credits!"}
         when "out_of_sync"
-          haml :users_id, :locals => {:session_user => User.get_user(session[:id]), :page_name => "User #{user}", :error => "Item has been edited while you tried to buy it!" }
+          haml :users_id, :locals => {:session_user => User.get_user(session[:id]), :page_name => "User #{@user}", :error => "Item has been edited while you tried to buy it!" }
       end
     end
 
