@@ -27,7 +27,7 @@ module Models
     def self.created( name, password, description = "")
       user = self.new
       user.name = name
-      user.id = @@count + 1
+      user.id = @@count +1
       user.description = description
       user.credits = 100
       user.item_list = Array.new

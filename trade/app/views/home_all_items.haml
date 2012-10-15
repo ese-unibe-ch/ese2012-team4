@@ -14,8 +14,8 @@
           %p.table_header Deactivate
     - for item in @session_user.list_items
       %tr
-        %td
-          %a(href="/item/#{item.id}" )
+        %td.nopadding
+          %a.wholly_clickable(href="/item/#{item.id}" )
             :escaped
               #{item.name}
         %td
@@ -46,8 +46,8 @@
           %p.table_header Edit
     - for item in @session_user.list_items_inactive
       %tr
-        %td
-          %a(href="/item/#{item.id}" ) 
+        %td.nopadding
+          %a.wholly_clickable(href="/item/#{item.id}" )
             :escaped
               #{item.name}
         %td

@@ -33,12 +33,13 @@
           %p.table_header Price
         %td
           %p.table_header Qty
-        %td
-          %p.table_header Buy
+        -unless @user.id == session[:id]
+          %td
+            %p.table_header Buy
     - for item in @user.list_items
       %tr
-        %td
-          %a(href="/item/#{item.id}" ) 
+        %td.nopadding
+          %a.wholly_clickable(href="/item/#{item.id}" )
             :escaped
               #{item.name}
         %td
@@ -47,10 +48,11 @@
             #{item.price}
         %td
           %p #{item.quantity}
-        %td.buyform
-          %form.nomargin(action="/buy/#{item.id}/#{(stored.select {|tobuy| tobuy.id==item.id})[0].timestamp}" method="POST")
-            %input.tiny(type = "text" name = "quantity" value = "1")
-            %input.square.rightalign(type="submit" value="Buy")
+        -unless @user.id == session[:id]
+          %td.buyform
+            %form.nomargin(action="/buy/#{item.id}/#{(stored.select {|tobuy| tobuy.id==item.id})[0].timestamp}" method="POST")
+              %input.tiny(type = "text" name = "quantity" value = "1")
+              %input.square.rightalign(type="submit" value="Buy")
 -else
   .textbox.value
     %p No Items
