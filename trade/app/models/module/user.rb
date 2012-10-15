@@ -51,7 +51,7 @@ module Models
     def save
       raise "Duplicated user" if @@users.has_key? self.id and @@users[self.id] != self
       @@users[self.id] = self
-      @@users_by_name[self.name] = self
+      @@users_by_name[self.name.downcase] = self
       @@count += 1
     end
 
@@ -172,7 +172,7 @@ module Models
     end
 
     def self.available? name
-      not @@users_by_name.has_key? name
+      not @@users_by_name.has_key? name.downcase
     end
 
     def delete
