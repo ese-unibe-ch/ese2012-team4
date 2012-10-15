@@ -18,10 +18,12 @@
             %a.menu(href="/users") - All Users
             %a.menu(href="/items") - All Items
             %br
-            %a.menu(href="/users/#{@session_user.name}") - Your Profile
+            %a.menu(href="/users/#{User.get_user(session[:username]).name}") - Your Profile
             %a.menu(href="/logout") - Logout
           -else
             %h2.menu_header not logged in!
+            %a.menu(href='/login') - Login!
+            %a.menu(href='/signup') - Signup!
         -if error != nil
           #content
             #error_msg
