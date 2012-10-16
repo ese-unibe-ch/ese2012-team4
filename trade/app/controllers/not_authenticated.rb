@@ -32,7 +32,7 @@ module Controllers
     end
 
     post "/authenticate" do
-      user = User.by_name params[:username].strip
+      user = User.by_name params[:username].strip.downcase
       redirect "authenticate/login_fail", "No such login" unless User.login user.id, params[:password]
 
       session[:id] = user.id
