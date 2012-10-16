@@ -96,7 +96,7 @@ module Models
 
     # buy an item
     # @return true if user can buy item, false if his credit amount is too small
-    def buy_new_item?(item_to_buy, quantity)
+    def buy_new_item(item_to_buy, quantity)
       if Integer(item_to_buy.price*quantity) > self.credits or Integer(item_to_buy.quantity)<quantity
         return false
       end

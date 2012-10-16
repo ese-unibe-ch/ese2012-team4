@@ -25,7 +25,9 @@
 .textbox.name
   Owner:
 .textbox.value
-  %a(href="/users/#{@item.owner.id}" ) #{@item.owner.name}
+  %a(href="/users/#{@item.owner.id}" )
+    :escaped
+      #{@item.owner.name}
 %hr.separator.invisible
 -if @item.owner.name == @session_user.name
   -if @item.editable?

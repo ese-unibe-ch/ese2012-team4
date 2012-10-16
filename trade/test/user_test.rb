@@ -44,7 +44,7 @@ class UserTest < Test::Unit::TestCase
     assert( sock.is_active?, "item should be active, is not")
     assert( old_owner.list_items[0].is_active?, "item should be active, is not")
 
-    if new_owner.buy_new_item?(sock, 1)
+    if new_owner.buy_new_item(sock, 1)
       old_owner.remove_item(sock)
     end
 
@@ -70,7 +70,7 @@ class UserTest < Test::Unit::TestCase
     sock.active = true
     assert( sock.is_active?, "item should be active, is not")
 
-    if new_owner.buy_new_item?(sock, 1)
+    if new_owner.buy_new_item(sock, 1)
       old_owner.remove_item(sock)
     end
 
