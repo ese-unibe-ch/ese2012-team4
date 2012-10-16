@@ -1,4 +1,4 @@
-%br
+%h2 #{@user.name}
 .textbox.name
   -# MW: Formatierung geht kaputt beim Einfügen von ":escaped"
   :escaped
@@ -57,6 +57,6 @@
   .textbox.value
     %p No Items
 -unless @user.name != @session_user.name
-  %hr.separator
+  %hr.separator.invisible
     %form.nomargin(action="/profile" method="GET")
       %input.square.rightalign(type="submit" value="Edit your profile")
