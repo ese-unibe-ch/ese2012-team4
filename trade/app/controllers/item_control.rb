@@ -20,20 +20,15 @@ module Controllers
       @session_user = User.get_user(session[:id])
     end
 
-    get '/home/active' do
+    get '/home/items' do
       redirect '/index' unless session[:id]
-      haml :home_all_items, :locals => {:page_name => "Your items", :error => nil}
-    end
-
-    get '/home/inactive' do
-      redirect '/index' unless session[:id]
-      haml :home_inactive, :locals => {:page_name => "Inactive items", :error => nil}
+      haml :user_items, :locals => {:page_name => "Your items", :error => nil}
     end
 
     get '/home/new' do
       redirect '/index' unless session[:id]
       @item = Item.created("", "", "", "", "");
-      haml :home_new, :locals =>{:action => "create", :button => "Create", :page_name => "New Item", :error => nil}
+      haml :item_edit, :locals =>{:action => "create", :button => "Create", :page_name => "New Item", :error => nil}
     end
 
     get '/home/edit_item/:itemid' do
@@ -47,7 +42,7 @@ module Controllers
         #end
 
         # MW: To do: Get the right params.
-        haml :home_new, :locals => {:action => "change/#{params[:itemid]}", :button => "Save changes", :page_name => "Edit Item", :error => nil}
+        haml :item_edit, :locals => {:action => "change/#{params[:itemid]}", :button => "Save changes", :page_name => "Edit Item", :error => nil}
       else
         redirect "/"
       end
@@ -60,11 +55,11 @@ module Controllers
 
         case params[:error_msg]
           when "not_valid_quantity"
-            haml :home_new, :locals => {:action => "edit_item/#{params[:itemid]}", :button => "Edit", :page_name => "Edit Item", :error => "Your quantity is not a valid number!"}
+            haml :item_edit, :locals => {:action => "edit_item/#{params[:itemid]}", :button => "Edit", :page_name => "Edit Item", :error => "Your quantity is not a valid number!"}
           when "not_a_number"
-            haml :home_new, :locals => {:action => "edit_item/#{params[:itemid]}", :button => "Edit", :page_name => "Edit Item", :error => "Your price is not a valid number!"}
+            haml :item_edit, :locals => {:action => "edit_item/#{params[:itemid]}", :button => "Edit", :page_name => "Edit Item", :error => "Your price is not a valid number!"}
           when "no_name"
-            haml :home_new, :locals => {:action => "edit_item/#{params[:itemid]}", :button => "Edit", :page_name => "Edit Item", :error => "You have to choose a name for your item!"}
+            haml :item_edit, :locals => {:action => "edit_item/#{params[:itemid]}", :button => "Edit", :page_name => "Edit Item", :error => "You have to choose a name for your item!"}
         end
       else
         redirect "/"
@@ -74,7 +69,7 @@ module Controllers
     get '/items' do
       redirect '/index' unless session[:id]
       @all_items = Item.get_all(@session_user.name)
-      haml :items, :locals => {:page_name => "Items", :error => nil }
+      haml :all_items, :locals => {:page_name => "Items", :error => nil }
     end
 
     get '/items/:error_msg' do
@@ -82,9 +77,9 @@ module Controllers
       @all_items = Item.get_all(@session_user.name)
       case params[:error_msg]
         when "not_enough_credits"
-          haml :items, :locals => {:page_name => "Items", :error => "Not enough credits!" }
+          haml :all_items, :locals => {:page_name => "Items", :error => "Not enough credits!" }
         when "out_of_sync"
-          haml :items, :locals => {:page_name => "Items", :error => "Item has been edited while you tried to buy it!" }
+          haml :all_items, :locals => {:page_name => "Items", :error => "Item has been edited while you tried to buy it!" }
       end
     end
 
@@ -92,7 +87,7 @@ module Controllers
       redirect '/index' unless session[:id]
       id = params[:itemid]
       @item = Item.get_item(id)
-      haml :item_id, :locals => {:page_name => "Item #{@item.name}", :error => nil}
+      haml :item_page, :locals => {:page_name => "Item #{@item.name}", :error => nil}
     end
 
     post '/create' do
@@ -109,7 +104,7 @@ module Controllers
       end
       @session_user.create_item(params[:name], Integer(price), Integer(quantity), params[:description])
       # MW: maybe "User.by_name" might be somewhat more understandable
-      redirect "/home/active"
+      redirect "/home/items"
     end
 
     get '/create/:error_msg' do
@@ -117,9 +112,9 @@ module Controllers
       @item = Item.created("","","","1")
       case params[:error_msg]
         when "not_a_number"
-          haml :home_new, :locals =>{:action => "create", :button => "Create", :page_name => "New Item", :error => "Please choose a valid number!"}
+          haml :item_edit, :locals =>{:action => "create", :button => "Create", :page_name => "New Item", :error => "Please choose a valid number!"}
         when "no_name"
-          haml :home_new, :locals =>{:action => "create", :button => "Create", :page_name => "New Item", :error => "You have to choose a name for your item!"}
+          haml :item_edit, :locals =>{:action => "create", :button => "Create", :page_name => "New Item", :error => "You have to choose a name for your item!"}
       end
     end
 
@@ -136,7 +131,7 @@ module Controllers
         redirect "/home/edit_item/#{params[:itemid]}/not_a_number"
       end
       item.edit(params[:name],Integer(price),Integer(quantity),params[:description])
-      redirect "/home/active"
+      redirect "/home/items"
     end
 
     post '/changestate/:id/setactive' do
@@ -144,7 +139,7 @@ module Controllers
       id = params[:id]
       owner = Item.get_item(id).owner
       owner.activate_item(id)
-      redirect "/home/active"
+      redirect "/home/items"
     end
 
     post '/changestate/:id/setinactive' do
@@ -152,7 +147,7 @@ module Controllers
       id = params[:id]
       owner = Item.get_item(id).owner
       owner.deactivate_item(id)
-      redirect "/home/active"
+      redirect "/home/items"
     end
 
     post '/buy/:id/:timestamp' do
@@ -177,7 +172,7 @@ module Controllers
           redirect "#{back}/not_enough_credits"
         end
       end
-      redirect "/home/active"
+      redirect "/home/items"
     end
 
   end
