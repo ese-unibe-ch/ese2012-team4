@@ -39,6 +39,7 @@ module Models
     end
 
     def edit(name, price, quantity,  description = "")
+      return false if self.active
       self.name = name
       self.price = price
       self.description = description

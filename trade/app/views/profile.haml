@@ -34,33 +34,25 @@
       -@session_user.description.each do |line|
         :escaped
           #{line}
-  %br
   %hr.separator.invisible
   %input.rightalign.square(type="submit" value="save")
-%br
 %hr.separator
 .textbox.name
   %p Change your password
   %br
   %p Please choose a safe password; a safe password includes letters and numbers and is more than 4 digits long.
 .textbox.value
-  %form(action="/change_password" method="POST")
-    %label Enter old password:
-    %br
-    %input(type="password" name="password_old" value="")
-    %br
-    %br
-    %br
-    %label Enter new password:
-    %br
-    %input(type="password" name="password_new" value="")
-    %br
-    %label Repeat new password:
-    %br
-    %input(type="password" name="password_check" value="")
-    %br
-    %br
-    %input.square(type="submit" value="Change password")
+  %form.nomargin(action="/change_password" method="POST")
+    %label.leftalign.topmargin Enter old password:
+    %input.rightalign(type="password" name="password_old" value="")
+    %hr.separator
+    %label.leftalign.topmargin Enter new password:
+    %input.rightalign(type="password" name="password_new" value="")
+    %hr.separator.invisible
+    %label.leftalign.topmargin Repeat new password:
+    %input.rightalign(type="password" name="password_check" value="")
+    %hr.separator
+    %input.square.rightalign(type="submit" value="Change password")
 %br
 %hr.separator
 .textbox.name
@@ -68,5 +60,5 @@
     :escaped
       Delete my Account "#{@session_user.name}"
 .textbox.value
-  %form(action="/delete_link" method="GET")
-    %input.square(type="submit" value="Delete account")
+  %form.nomargin(action="/delete_link" method="GET")
+    %input.square.rightalign(type="submit" value="Delete account")
