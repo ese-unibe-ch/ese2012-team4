@@ -11,7 +11,9 @@
       #statusbar
         #status
           -if not session[:id].nil?
-            %a.status(href="/users/#{session[:id]}")#{@session_user.name}
+            %a.status(href="/users/#{session[:id]}")
+              :escaped
+                #{@session_user.name}
             | Credits: #{@session_user.credits}
             |
             %a.status(href="/logout")Logout
