@@ -90,6 +90,19 @@ module Controllers
       haml :item_page, :locals => {:page_name => "Item #{@item.name}", :error => nil}
     end
 
+    get '/item/:itemid/:error' do
+      redirect '/index' unless session[:id]
+      id = params[:itemid]
+      @item = Item.get_item(id)
+
+      case params[:error]
+        when "not_enough_credits"
+          haml :item_page, :locals => {:page_name => "Item #{@item.name}", :error => "Not enough credits!"}
+      end
+    end
+
+
+
     post '/create' do
       redirect '/index' unless session[:id]
       price = params[:price]
