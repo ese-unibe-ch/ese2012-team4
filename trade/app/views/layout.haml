@@ -11,8 +11,13 @@
       #statusbar
         #status
           -if not session[:id].nil?
-            %a.black(href="/users/#{session[:id]}")#{@session_user.name}
+            %a.status(href="/users/#{session[:id]}")#{@session_user.name}
             | Credits: #{@session_user.credits}
+            |
+            %a.status(href="/logout")Logout
+          -else
+            %a.status(href='/login')Login
+
       #page
         #navigation
           -if not session[:id].nil?

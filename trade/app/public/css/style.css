@@ -69,12 +69,9 @@ body{
 #status{
     color:black;
     float:right;
-    padding-left: 5px;
-    padding-right: 5px;
-    padding-top:3px;
-    padding-bottom: 3px;
     background-color: #8FC9FF;
     margin-right:10px;
+    padding: 3px 6px;
 }
 
 #statusbar{
@@ -147,9 +144,16 @@ a.menu:visited
     color: black;
 }
 
-a.black{
+a.status{
     color:black;
+    text-decoration: underline;
+    display:inline;
 }
+
+a.status:hover{
+    color: #656565;
+}
+
 
 td.navigation{
     width:150px;
