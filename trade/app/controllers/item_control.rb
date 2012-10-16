@@ -22,7 +22,7 @@ module Controllers
 
     get '/home/items' do
       redirect '/index' unless session[:id]
-      haml :user_items, :locals => {:page_name => "Your items", :error => nil}
+      haml :user_items, :locals => {:page_name => "My items", :error => nil}
     end
 
     get '/home/new' do
