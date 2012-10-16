@@ -30,12 +30,11 @@ body{
     border-top-right-radius: 5px;
     border-top-left-radius: 5px;
     min-width: 600px;
-    display: block;
     background-color: white;
     padding-top: 5px;
     padding-left: 20px;
-    height:100%;
-    border-bottom: 3px solid #8FC9FF;
+    height:56px;
+
 }
 #page{
     position: relative;
@@ -65,6 +64,24 @@ body{
     width: 690px;
     min-height: 337px;
     border-left : 3px solid #8FC9FF;
+}
+
+#status{
+    color:black;
+    float:right;
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-top:3px;
+    padding-bottom: 3px;
+    background-color: #8FC9FF;
+    margin-right:10px;
+}
+
+#statusbar{
+    border-bottom: 3px solid #8FC9FF;
+    float:right;
+    background-color: white;
+    width:100%;
 }
 
 p{
@@ -128,6 +145,10 @@ a.menu:visited
 {
     text-decoration: none;
     color: black;
+}
+
+a.black{
+    color:black;
 }
 
 td.navigation{
