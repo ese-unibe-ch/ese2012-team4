@@ -176,7 +176,8 @@ module Models
     end
 
     def delete
-      @@users.delete(self.name)          #TODO: BS: change parameter "name" to "id"
+      @@users.delete(self.id)
+      @@users_by_name.delete(self.name.downcase)
     end
 
   end

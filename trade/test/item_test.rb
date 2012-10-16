@@ -117,11 +117,12 @@ class ItemTest < Test::Unit::TestCase
 
   #test for is_owner? method
   def test_is_owner
-    owner = User.created( "testuser", "password").save
+    owner = User.created( "testuser", "password")
+    owner.save
     item = owner.create_item("testobject", 50, 1)
-    assert(item.is_owner?("testuser"), "The owner should be recognized by its name.")
-    assert(!item.is_owner?("testuser   "), "Wrong names should not match")
-    assert(!item.is_owner?("bla%ç&%(/k"), "Wrong names should not match")
+    assert(item.is_owner?(1), "The owner should be recognized by its ID.")
+    assert(!item.is_owner?(2), "Wrong IDs should not match")
+    assert(!item.is_owner?("bla%ç&%(/k"), "Wrong IDs should not match")
   end
 
   #test for editable? method

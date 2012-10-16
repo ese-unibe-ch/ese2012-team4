@@ -113,18 +113,20 @@ class UserTest < Test::Unit::TestCase
 
   def test_auth
     owner = Models::User.created( "testuser", "password" )
-    assert (Models::User.login "testuser", "password")
+    assert (Models::User.login 1, "password")
   end
 
   def test_available
     oldUser = Models::User.created( "Mike", "234")
     assert (oldUser.name == "Mike")
+    assert (Models::User.available? "Mike")
     oldUser.save
     assert (!Models::User.available? "Mike")
   end
 
   def test_delete
     testUser = Models::User.created( "Mike", "234")
+    testUser.save
     assert (!Models::User.available? "Mike")
     testUser.delete
     assert (Models::User.available? "Mike")
