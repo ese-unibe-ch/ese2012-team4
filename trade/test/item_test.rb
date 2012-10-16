@@ -96,7 +96,7 @@ class ItemTest < Test::Unit::TestCase
     assert(item.owner == old_owner, "Owner not set correctly")
     assert(item.owner.name == "Old", "Owner not set correctly")
     old_owner.list_items_inactive[0].active = true
-    if new_owner.buy_new_item?(item,1)
+    if new_owner.buy_new_item(item,1)
       old_owner.remove_item(item)
     end
     assert(item.owner == new_owner, "Owner not set correctly")

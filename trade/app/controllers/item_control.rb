@@ -41,7 +41,6 @@ module Controllers
         #  redirect "/home/edit_item/#{params[:itemid]}/not_a_number"
         #end
 
-        # MW: To do: Get the right params.
         haml :item_edit, :locals => {:action => "change/#{params[:itemid]}", :button => "Save changes", :page_name => "Edit Item", :error => nil}
       else
         redirect "/"
@@ -116,7 +115,6 @@ module Controllers
         redirect '/create/no_name'
       end
       @session_user.create_item(params[:name], Integer(price), Integer(quantity), params[:description])
-      # MW: maybe "User.by_name" might be somewhat more understandable
       redirect "/home/items"
     end
 
@@ -178,7 +176,7 @@ module Controllers
           redirect "#{back}/out_of_sync"
         end
       end
-      unless new_user.buy_new_item?(item, quantity)
+      unless new_user.buy_new_item(item, quantity)
         if back.include? '/not_enough_credits'
           redirect "#{back}"
         else
