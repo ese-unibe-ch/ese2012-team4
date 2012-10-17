@@ -1,7 +1,9 @@
 require 'rubygems'
 require 'bcrypt'
 require 'require_relative'
+require_relative('../utility/mailer')
 require_relative('item')
+
 
 module Models
 
@@ -102,7 +104,8 @@ module Models
         return false
       end
       self.credits -= Integer(item_to_buy.price)*quantity
-      item_to_buy.owner.credits+=Integer(item_to_buy.price)*quantity
+      preowner = item_to_buy.owner
+      preowner.credits+=Integer(item_to_buy.price)*quantity
       if(item_to_buy.quantity.to_i == quantity)
         item_to_buy.active = false
         item_to_buy.owner = self
@@ -121,6 +124,8 @@ module Models
         item_to_buy.quantity-=quantity
 
       end
+      Models::Mailer.send_mail_to(preowner.e_mail, "Hi #{preowner.name}, \n #{self.name} bought your Item #{item_to_buy.name}.
+        Please Contact him for completing the trade. His E-Mail is: #{self.e_mail}")
       return true
     end
 
