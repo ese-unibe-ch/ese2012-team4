@@ -17,16 +17,17 @@ module Models
     #  fails if the buyer has not enough credits.
 
     # generate getter and setter for name and price
-    attr_accessor :name, :credits, :item_list, :pw, :password_hash, :password_salt, :description, :id
+    attr_accessor :name, :credits, :item_list, :pw, :password_hash, :password_salt, :description, :e_mail, :id
 
     @@users_by_name = {}
     @@users = {}
     @@count = 0
 
     # factory method (constructor) on the class
-    def self.created( name, password, description = "")
+    def self.created( name, password, e_mail, description = "")
       user = self.new
       user.name = name
+      user.e_mail = e_mail
       user.id = @@count +1
       user.description = description
       user.credits = 100

@@ -57,18 +57,19 @@ module Controllers
 
     post '/signup' do
       redirect '/home' unless session[:id].nil?
-      username,description, pw, pw2 = params[:username].strip, params[:description], params[:password1], params[:password2]
+      username, e_mail, description, pw, pw2 = params[:username].strip, params[:e_mail].strip, params[:description], params[:password1], params[:password2]
 
       #redirect "/signup/invalid_username" if username != username.delete("^a-zA-Z0-9")  
       #BS: only needed if we don't allow special characters 
 
       redirect "/signup/no_user_name" if username==''
+      redirect "/signup/invalid_e_mail" if e_mail=='' || e_mail.count("@")==0 || e_mail.count(".")==0
       redirect "/signup/taken" unless User.available? username
       redirect "/signup/no_pw" if pw == ''
       password_check = Models::PasswordCheck.created
       redirect "/signup/unsafe" unless password_check.safe?(pw)
       redirect "/signup/mismatch" if pw != pw2
-      User.created(username, pw, description).save
+      User.created(username, pw, e_mail, description).save
       redirect "/login"
     end
 
@@ -77,6 +78,8 @@ module Controllers
       case params[:error_msg]
         when "no_user_name"
           haml :signup, :locals=> {:page_name => "Sign up", :error => "Enter an username!"}
+        when "invalid_e_mail"
+          haml :signup, :locals=> {:page_name => "Sign up", :error => "Enter a valid e-mail address!"}
         when "no_pw"
           haml :signup, :locals=> {:page_name => "Sign up", :error => "Enter a password!"}
         when "mismatch"

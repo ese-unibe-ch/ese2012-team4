@@ -27,7 +27,7 @@ class App < Sinatra::Base
   set :public_folder, relative('public')
 
   configure :development do
-    userA = User.created( "userA", "passwordA" )
+    userA = User.created( "userA", "passwordA", "e_mail_A@preset.com" )
     userA.save
     aa = userA.create_item("UserA_ItemA", 10, 1)
     ab = userA.create_item("UserA_ItemB", 50, 1)
@@ -35,7 +35,7 @@ class App < Sinatra::Base
     ac = userA.create_item("UserA_ItemC", 120, 1)
     ac.active = true
 
-    userB = User.created( "userB", "passwordB" )
+    userB = User.created( "userB", "passwordB", "e_mail_B@preset.com" )
     userB.save
     ba = userB.create_item("UserB_ItemA", 10, 2)
     ba.active = true
@@ -43,7 +43,7 @@ class App < Sinatra::Base
     bb.active = true
     bc = userB.create_item("UserB_ItemC", 120, 1)
 
-    userC = User.created( "userC", "passwordC" )
+    userC = User.created( "userC", "passwordC", "e_mail_C@preset.com" )
     userC.save
     ca = userC.create_item("UserC_ItemA", 10, 1)
     ca.active = true
@@ -51,7 +51,7 @@ class App < Sinatra::Base
     cc = userC.create_item("UserC_ItemC", 120, 1)
     cc.active = true
 
-    ese = User.created( "ese", "ese" )
+    ese = User.created( "ese", "ese", "ese@preset.com" )
     ese.save
 
     end

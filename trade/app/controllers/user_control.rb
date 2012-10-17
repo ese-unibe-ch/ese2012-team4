@@ -77,6 +77,8 @@ module Controllers
             haml :profile, :locals => {:page_name => "My profile", :error => "The new password and the check do not match"}
           when "unsafe"
             haml :profile, :locals => {:page_name => "My profile", :error => "Your password is unsafe"}
+          when "invalid_e_mail"
+            haml :profile, :locals => {:page_name => "My profile", :error => "Your E-Mail is not valid!"}
         end
       else
         redirect "/"
@@ -90,6 +92,15 @@ module Controllers
       to_insert = params[:description]
       list = to_insert.split("\n")
       viewer.description = list
+      redirect "/profile"
+    end
+
+    post "/change_e_mail" do
+      redirect '/index' unless session[:id]
+      viewer = User.get_user(session[:id])
+      new_e_mail = params[:e_mail].strip
+      redirect "/profile/invalid_e_mail" if new_e_mail=='' || new_e_mail.count("@")==0 || new_e_mail.count(".")==0
+      viewer.e_mail = new_e_mail
       redirect "/profile"
     end
 

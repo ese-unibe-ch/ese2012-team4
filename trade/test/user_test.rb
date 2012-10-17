@@ -11,7 +11,7 @@ class UserTest < Test::Unit::TestCase
 
   # Fake test
   def test_user_item_create
-    owner = Models::User.created( "testuser", "password" )
+    owner = Models::User.created( "testuser", "password", "test@mail.com" )
     assert( owner.list_items.size == 0, "Item list length should be 0" )
     assert( owner.list_items_inactive.size == 0, "Item list inactive length should be 0" )
     owner.create_item("testobject", 10, 1)
@@ -26,15 +26,15 @@ class UserTest < Test::Unit::TestCase
   end
 
   def test_create_user
-    owner = Models::User.created( "testuser", "password" )
+    owner = Models::User.created( "testuser", "password","test@mail.com" )
     assert( owner.name == "testuser", "Name should be correct")
     assert( owner.credits == 100, "Credits should be 100 first")
     assert( owner.to_s == "testuser has currently 100 credits, 0 active and 0 inactive items", "String representation is wrong generated")
   end
 
   def test_sales
-    old_owner = Models::User.created("Old", "password")
-    new_owner = Models::User.created("New", "password")
+    old_owner = Models::User.created("Old", "password", "test@mail.com")
+    new_owner = Models::User.created("New", "password", "test@mail.com")
 
     sock = old_owner.create_item("sock",10, 1)
     assert( !sock.is_active?, "item should not be active, is")
@@ -61,8 +61,8 @@ class UserTest < Test::Unit::TestCase
   end
 
   def test_sales_not_possible_because_of_price
-    old_owner = Models::User.created("Old", "password")
-    new_owner = Models::User.created("New", "password")
+    old_owner = Models::User.created("Old", "password", "test@mail.com")
+    new_owner = Models::User.created("New", "password", "test@mail.com")
 
     sock = old_owner.create_item("sock",210,1)
     assert( !sock.is_active?, "item should not be active, is")
@@ -86,7 +86,7 @@ class UserTest < Test::Unit::TestCase
   end
 
   def test_method_list_active
-    owner = Models::User.created( "testuser", "password" )
+    owner = Models::User.created( "testuser", "password", "test@mail.com" )
     owner.create_item("testobject", 10, 1)
     owner.create_item("testobject2", 50, 1)
     owner.list_items_inactive[0].active = true
@@ -96,7 +96,7 @@ class UserTest < Test::Unit::TestCase
   end
 
   def test_method_list_inactive
-    owner = Models::User.created( "testuser", "password" )
+    owner = Models::User.created( "testuser", "password", "test@mail.com" )
     owner.create_item("testobject", 10, 1)
     owner.create_item("testobject2", 50, 1)
     assert(owner.list_items_inactive[0].to_s == "testobject, 10")
@@ -112,12 +112,13 @@ class UserTest < Test::Unit::TestCase
   end
 
   def test_auth
-    owner = Models::User.created( "testuser", "password" )
+    owner = Models::User.created( "testuser", "password", "test@mail.com" )
+    owner.save
     assert (Models::User.login 1, "password")
   end
 
   def test_available
-    oldUser = Models::User.created( "Mike", "234")
+    oldUser = Models::User.created( "Mike", "234", "test@mail.com")
     assert (oldUser.name == "Mike")
     assert (Models::User.available? "Mike")
     oldUser.save
@@ -125,7 +126,7 @@ class UserTest < Test::Unit::TestCase
   end
 
   def test_delete
-    testUser = Models::User.created( "Mike", "234")
+    testUser = Models::User.created( "Mike", "234", "test@mail.com")
     testUser.save
     assert (!Models::User.available? "Mike")
     testUser.delete

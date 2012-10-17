@@ -13,6 +13,13 @@
   %p #{@session_user.credits}
 
 .textbox.name
+  %p E-Mail:
+.textbox.value
+  %p
+    :escaped
+       #{@session_user.e_mail}
+
+.textbox.name
   %p Interests:
 .textbox.value
   %p
@@ -24,6 +31,16 @@
 %br
 %hr.separator
 
+.textbox.name
+  %p Edit my E-Mail address:
+%br
+%form.nomargin(action="/change_e_mail" method="POST")
+  %textarea.textbox.value.fixedwith(type="text" name ="e_mail")
+    :escaped
+      #{@session_user.e_mail}
+  %hr.separator.invisible
+  %input.rightalign.square(type="submit" value="save")
+%hr.separator
 .textbox.name
   %p Edit my list of interests:
 %br
