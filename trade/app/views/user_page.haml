@@ -1,6 +1,9 @@
-%h2
+-#%h2
   :escaped
     #{@user.name}
+-# this should check if the user has an upload, otherwise placeholder - there are no uploads yet.
+%img(src='/images/user_pix/placeholder_user.jpg' class = "bigpicturebox")
+%br
 .textbox.name
   %p E-Mail:
 .textbox.value

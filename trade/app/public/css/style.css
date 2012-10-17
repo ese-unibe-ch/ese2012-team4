@@ -307,3 +307,15 @@ textarea.textbox.value{
     padding-top:5px;
 
 }
+
+img.bigpicturebox{
+    width: 222px;
+}
+
+img.mediumpicturebox{
+    width: 100px;
+}
+
+img.smallpicturebox{
+    width: 20px;
+}
