@@ -299,13 +299,24 @@ textarea.textbox.value{
     display:block;
     width: 99.5%;
     background-color: rgba(255, 41, 5, 0.31);
-    height: 30px;
+    /*height: 30px;*/
     font-size:20px;
     border: 2px solid black;
     text-align: center;
     vertical-align: middle;
-    padding-top:5px;
+    /*padding-top: 5px;*/
+    white-space: pre-wrap;
+}
 
+#notification_msg{
+    display:block;
+    width: 99.5%;
+    background-color: rgba(41, 255, 5, 0.31);
+    font-size:20px;
+    border: 2px solid black;
+    text-align: center;
+    vertical-align: middle;
+    white-space: pre-wrap;
 }
 
 img.bigpicturebox{

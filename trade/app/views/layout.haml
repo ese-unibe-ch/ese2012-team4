@@ -37,14 +37,14 @@
           -else
             %h2.menu_header not logged in!
             %a.menu(href='/login') - Login!
-            %a.menu(href='/signup') - Signup!
-        -if error != nil
-          #content
-            #error_msg
-              #{error}
-            =yield
-        -else
-          #content
-            =yield
+            %a.menu(href='/signup') - Signup!        
+        #content
+          -if flash[:error]
+            #error_msg 
+              = flash[:error]
+          -if flash[:notice]
+            #notification_msg 
+              = flash[:notice]
+          =yield
       #footer
         %p built during ESE 2012
