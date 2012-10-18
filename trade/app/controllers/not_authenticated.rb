@@ -6,6 +6,7 @@ require 'require_relative'
 require 'sinatra/base'
 require 'haml'
 require 'sinatra/content_for'
+require 'rack-flash'
 require_relative('../models/module/user')
 require_relative('../models/utility/password_check')
 
@@ -15,6 +16,7 @@ module Controllers
   class Not_authenticated < Sinatra::Base
     set :views, relative('../../app/views')
     helpers Sinatra::ContentFor
+    use Rack::Flash
 
     get '/' do
       redirect "/home" if session[:id]
@@ -23,77 +25,48 @@ module Controllers
 
     get '/index' do
       redirect '/home' unless session[:id].nil?
-      haml :index, :locals => {:page_name => "Home", :error => nil}
+      haml :index, :locals => {:page_name => "Home"}
     end
 
     get '/login' do
       redirect '/home' unless session[:id].nil?
-      haml :login, :locals => {:page_name => "Log in", :error => nil}
+      haml :login, :locals => {:page_name => "Log in"}
     end
 
     post "/authenticate" do
       user = User.by_name params[:username].strip.downcase
-      redirect "authenticate/login_fail", "No such login" unless User.login user.id, params[:password]
-
-      session[:id] = user.id
-      #session['auth'] = true
-
-      redirect "/home"
-    end
-
-    get "/authenticate/:error_msg" do
-      redirect '/home' unless session[:id].nil?
-      case params[:error_msg]
-        when "login_fail"
-          haml :login, :locals => {:page_name => "Log in", :error => "no such login!"}
+      unless User.login user.id, params[:password]
+        flash[:error] = "No such login"
+        redirect "/login"
+      else
+        session[:id] = user.id
+        #session['auth'] = true
+        flash[:notice] = "You are now logged in"
+        redirect "/home"
       end
-
     end
 
     get '/signup' do
       redirect '/home' unless session[:id].nil?
-      haml :signup, :locals => {:page_name => "Sign up", :error => nil}
+      haml :signup, :locals => {:page_name => "Sign up"}
     end
 
     post '/signup' do
       redirect '/home' unless session[:id].nil?
       username, e_mail, description, pw, pw2 = params[:username].strip, params[:e_mail].strip, params[:description], params[:password1], params[:password2]
 
-      #redirect "/signup/invalid_username" if username != username.delete("^a-zA-Z0-9")  
-      #BS: only needed if we don't allow special characters 
-
-      redirect "/signup/no_user_name" if username==''
-      redirect "/signup/invalid_e_mail" if e_mail=='' || e_mail.count("@")==0 || e_mail.count(".")==0
-      redirect "/signup/taken" unless User.available? username
-      redirect "/signup/no_pw" if pw == ''
-      password_check = Models::PasswordCheck.created
-      redirect "/signup/unsafe" unless password_check.safe?(pw)
-      redirect "/signup/mismatch" if pw != pw2
-      User.created(username, pw, e_mail, description).save
-      redirect "/login"
-    end
-
-    get "/signup/:error_msg" do
-      redirect '/home' unless session[:id].nil?
-      case params[:error_msg]
-        when "no_user_name"
-          haml :signup, :locals=> {:page_name => "Sign up", :error => "Enter an username!"}
-        when "invalid_e_mail"
-          haml :signup, :locals=> {:page_name => "Sign up", :error => "Enter a valid e-mail address!"}
-        when "no_pw"
-          haml :signup, :locals=> {:page_name => "Sign up", :error => "Enter a password!"}
-        when "mismatch"
-          haml :signup, :locals=> {:page_name => "Sign up", :error => "Passwords do not match!"}
-        when "unsafe"
-          haml :signup, :locals=> {:page_name => "Sign up", :error => "Your password is unsafe!"}
-        when "taken"
-          haml :signup, :locals=> {:page_name => "Sign up", :error => "This username is already taken!"}
-        #when "invalid_username"
-        #  haml :signup, :locals=> {:page_name => "Sign up", :error => "Invalid username!"}
-        #BS: only needed if we don't allow special characters 
+      user = User.created(username, pw, e_mail, description)
+      unless user.is_valid(pw, pw2)
+        flash[:error] = user.errors
+        redirect "/signup"
+      else
+        user.save
+        flash[:notice] = "You are now registered. Please log in"
+        redirect "/login"
       end
-
+      
+      #redirect "/signup/invalid_username" if username != username.delete("^a-zA-Z0-9")  
+      #BS: only needed if we don't allow special characters
     end
-
   end
 end

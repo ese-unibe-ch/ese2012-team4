@@ -28,7 +28,15 @@ module Models
       item.description = description
       item.timestamp = Time.now.to_i
       item
+    end
 
+    # LD maybe we can use this some time. Creates a copy of an instance, while replacing the
+    # instance variables defined in the parameter hash
+    # usage: my_item.copy(:name => "Item2")
+    def copy( hash = {})
+      item = Models::Item.created(hash[:name] || self.name, hash[:price] || self.price,
+                                  hash[:owner] || self.owner, hash[:quantity] ||self.quantity,
+                                  hash[:description] || self.description)
     end
     
     def is_valid

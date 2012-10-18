@@ -31,28 +31,24 @@
 %br
 %hr.separator
 
-.textbox.name
-  %p Edit my E-Mail address:
 %br
-%form.nomargin(action="/change_e_mail" method="POST")
-  %textarea.textbox.value.fixedwith(type="text" name ="e_mail")
-    :escaped
-      #{@session_user.e_mail}
+%form.nomargin(action="/change_profile" method="POST")
+  %label.textbox.name
+    %p Edit my E-Mail address:
+  %input.textbox.value(type="text" name="e_mail" value="#{@session_user.e_mail}")
   %hr.separator.invisible
-  %input.rightalign.square(type="submit" value="save")
-%hr.separator
-.textbox.name
-  %p Edit my list of interests:
-%br
-%br
-%form(action="/change_description" method="POST")
-  %textarea.textbox.value.fixedwith(type="text" name="description")
+  %label.textbox.name
+    %p Edit my list of interests:
+  %textarea.textbox.value(type="text" name = "description")
     -if !@session_user.description.empty?
       -@session_user.description.each do |line|
         :escaped
           #{line}
   %hr.separator.invisible
   %input.rightalign.square(type="submit" value="save")
+%hr.separator
+%br
+%br
 %hr.separator
 .textbox.name
   %p Change my password

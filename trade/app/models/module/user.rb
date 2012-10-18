@@ -42,17 +42,26 @@ module Models
       user
     end
 
-    def is_valid(pw = nil, pw2 = nil)
+    # LD maybe we can use this some time. Creates a copy of an instance, while replacing the
+    # instance variables defined in the parameter hash
+    # usage: user1.copy(:name => "User 2")
+    def copy( hash = {} )
+      Models::User.created(hash[:name] || self.name, "FdZ.(gJa)s'dFjKdaDGS+J1",
+                           hash[:e_mail] || self.e_mail,
+                           hash[:description] || self.description)
+    end
+
+    def is_valid(pw = nil, pw2 = nil, check_username_exists = true)
       self.errors = ""
       self.errors += "User must have a name\n" unless self.name.strip.delete(' ')!=""
       self.errors += "Invalid e-mail\n" if self.e_mail=='' || self.e_mail.count("@")!=1 || self.e_mail.count(".")==0
-      self.errors += "Username already chosen\n" unless User.available? self.name
+      self.errors += "Username already chosen\n" unless (User.available? self.name) || !check_username_exists
       if pw != nil || pw2 != nil
         if pw != nil || pw != ""
           if pw2 == nil || pw2 == ""
             self.errors += "Password confirmation is required\n"
           else
-            self.errors += "Password do not match\n" if pw != pw2
+            self.errors += "Passwords do not match\n" unless pw == pw2
             password_check = Models::PasswordCheck.created
             self.errors += "Password is not safe\n" unless password_check.safe?(pw)
           end

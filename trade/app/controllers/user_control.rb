@@ -6,6 +6,7 @@ require 'require_relative'
 require 'sinatra/base'
 require 'haml'
 require 'sinatra/content_for'
+require 'rack-flash'
 require_relative('../models/module/user')
 require_relative('../models/module/item')
 
@@ -16,6 +17,7 @@ module Controllers
     set :views, relative('../../app/views')
     set :public_folder, relative('../public')
     helpers Sinatra::ContentFor
+    use Rack::Flash
 
     before do
       @session_user = User.get_user(session[:id])
@@ -23,101 +25,69 @@ module Controllers
 
     get '/logout' do
       redirect '/index' unless session[:id]
-      haml :logout, :locals => {:page_name => "Logout", :error => nil}
+      haml :logout, :locals => {:page_name => "Logout"}
     end
 
     get '/home' do
       redirect '/index' unless session[:id]
-      haml :home, :locals => {:page_name => "Home", :error => nil}
+      haml :home, :locals => {:page_name => "Home"}
     end
 
     get '/users' do
       redirect '/index' unless session[:id]
       @all_users = User.get_all("")
-      haml :users, :locals => {:page_name => "Users", :error => nil}
+      haml :users, :locals => {:page_name => "Users"}
     end
 
     get '/users/:id' do
       redirect '/index' unless session[:id]
       @user = User.get_user(params[:id])
-      haml :user_page, :locals => {:page_name => "User #{@user.name}", :error => nil}
-    end
-
-    get '/users/:id/:error_msg' do
-      redirect '/index' unless session[:id]
-      @user = User.get_user(params[:id])
-      case params[:error_msg]
-        when "not_enough_credits"
-          haml :user_page, :locals => {:page_name => "User #{@user.name}", :error => "Not enough credits!"}
-        when "out_of_sync"
-          haml :user_page, :locals => {:page_name => "User #{@user.name}", :error => "Item has been edited while you tried to buy it!" }
-      end
+      haml :user_page, :locals => {:page_name => "User #{@user.name}"}
     end
 
     post "/unauthenticate" do
       redirect '/index' unless session[:id]
       session[:id] = nil
       #session['auth'] = false
+      flash[:notice] = "You are now logged out"
       redirect "/"
     end
 
     get '/profile' do
       redirect '/index' unless session[:id]
-      haml :profile, :locals => {:page_name => "My profile", :error => nil}
+      haml :profile, :locals => {:page_name => "My profile"}
     end
 
-    get "/profile/:error_msg" do
+    post "/change_profile" do
       redirect '/index' unless session[:id]
-      if not session[:id].nil?
-        @user = User.get_user(session[:id])
-        case params[:error_msg]
-          when "false_pw"
-            haml :profile, :locals => {:page_name => "My profile", :error => "You entered an incorrect password"}
-          when "mismatch"
-            haml :profile, :locals => {:page_name => "My profile", :error => "The new password and the check do not match"}
-          when "unsafe"
-            haml :profile, :locals => {:page_name => "My profile", :error => "Your password is unsafe"}
-          when "invalid_e_mail"
-            haml :profile, :locals => {:page_name => "My profile", :error => "Your E-Mail is not valid!"}
-        end
+      viewer = User.get_user(session[:id])
+      test_user = User.created(viewer.name, "FdZ.(gJa)s'dFjKdaDGS+J1", params[:e_mail].strip, params[:description].split("\n"))
+      unless test_user.is_valid(nil, nil, false)
+        flash[:error] = test_user.errors
+        redirect "/profile"
       else
-        redirect "/"
+        viewer.description = params[:description].split("\n")
+        viewer.e_mail = params[:e_mail].strip
+        flash[:notice] = "Profile has been updated"
+        redirect "/profile"
       end
-
     end
-
-    post "/change_description" do
-      redirect '/index' unless session[:id]
-      viewer = User.get_user(session[:id])
-      to_insert = params[:description]
-      list = to_insert.split("\n")
-      viewer.description = list
-      redirect "/profile"
-    end
-
-    post "/change_e_mail" do
-      redirect '/index' unless session[:id]
-      viewer = User.get_user(session[:id])
-      new_e_mail = params[:e_mail].strip
-      redirect "/profile/invalid_e_mail" if new_e_mail=='' || new_e_mail.count("@")==0 || new_e_mail.count(".")==0
-      viewer.e_mail = new_e_mail
-      redirect "/profile"
-    end
-
+    
     post "/change_password" do
       redirect '/index' unless session[:id]
-      password_check = PasswordCheck.created
       viewer = User.get_user(session[:id])
-      redirect "/profile/false_pw" if !(viewer.check_password(params[:password_old]))
-      redirect "/profile/mismatch" if params[:password_new]!=params[:password_check]
-      redirect "/profile/unsafe"   if !password_check.safe?(params[:password_new])
+      unless viewer.is_valid(params[:password_new], params[:password_check], false)
+        flash[:error] = viewer.errors
+        redirect "/profile"
+      end
       viewer.change_password(params[:password_new])
+      flash[:notice] = "Password has been updated"
       redirect "/"
     end
 
     get '/delete_link' do
       redirect '/index' unless session[:id]
-      haml :delete_user, :locals =>{:page_name => "Delete Your Account", :error => nil}
+      haml :delete_user, :locals =>{:page_name => "Delete Your Account"}
     end
 
 
@@ -128,7 +98,7 @@ module Controllers
       #close session
       session[:id] = nil
       redirect '/index' unless session[:id]
-      haml :logout, :locals => {:page_name => "Logout", :error => nil}
+      haml :logout, :locals => {:page_name => "Logout"}
     end
   end
 end
