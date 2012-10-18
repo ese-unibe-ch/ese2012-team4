@@ -7,7 +7,7 @@ module Models
     #An item has an owner.
 
     # generate getter and setter for name and price
-    attr_accessor :name, :price, :active, :owner, :id, :description, :timestamp, :quantity
+    attr_accessor :name, :price, :active, :owner, :id, :description, :timestamp, :quantity, :errors
 
     # MW: ToDo: integrate description in tests
 
@@ -29,6 +29,14 @@ module Models
       item.timestamp = Time.now.to_i
       item
 
+    end
+    
+    def is_valid
+      self.errors = ""
+      self.errors += "Price is not a valid number\n" unless Item.valid_integer?(self.price)
+      self.errors += "Quantity is not a valid number\n" unless Item.valid_integer?(self.quantity)
+      self.errors += "Item must have a name" unless self.name.strip.delete(' ')!=""
+      self.errors != "" ? false : true
     end
 
     def save
@@ -54,7 +62,7 @@ module Models
 
     # check if a price is valid
     def self.valid_integer?(price)
-      (!!(price =~ /^[-+]?[1-9]([0-9]*)?$/) && Integer(price) >= 0)
+      (!!(price =~ /^[-+]?[1-9]([0-9]*)?$/) && Integer(price) >= 0 || (price.is_a? Integer))
     end
 
     #compare a users name to the owners name

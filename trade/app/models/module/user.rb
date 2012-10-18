@@ -2,6 +2,7 @@ require 'rubygems'
 require 'bcrypt'
 require 'require_relative'
 require_relative('../utility/mailer')
+require_relative('../utility/password_check')
 require_relative('item')
 
 
@@ -19,7 +20,7 @@ module Models
     #  fails if the buyer has not enough credits.
 
     # generate getter and setter for name and price
-    attr_accessor :name, :credits, :item_list, :pw, :password_hash, :password_salt, :description, :e_mail, :id
+    attr_accessor :name, :credits, :item_list, :password_hash, :password_salt, :description, :e_mail, :id, :errors
 
     @@users_by_name = {}
     @@users = {}
@@ -41,6 +42,26 @@ module Models
       user
     end
 
+    def is_valid(pw = nil, pw2 = nil)
+      self.errors = ""
+      self.errors += "User must have a name\n" unless self.name.strip.delete(' ')!=""
+      self.errors += "Invalid e-mail\n" if self.e_mail=='' || self.e_mail.count("@")!=1 || self.e_mail.count(".")==0
+      self.errors += "Username already chosen\n" unless User.available? self.name
+      if pw != nil || pw2 != nil
+        if pw != nil || pw != ""
+          if pw2 == nil || pw2 == ""
+            self.errors += "Password confirmation is required\n"
+          else
+            self.errors += "Password do not match\n" if pw != pw2
+            password_check = Models::PasswordCheck.created
+            self.errors += "Password is not safe\n" unless password_check.safe?(pw)
+          end
+        else
+          self.errors += "Password is required"
+        end
+      end
+      self.errors != "" ? false : true
+    end
 
     def change_password(password)
       self.password_salt = BCrypt::Engine.generate_salt
