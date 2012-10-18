@@ -8,28 +8,35 @@ require_relative('../app/models/module/user')
 require_relative('../app/models/module/item')
 
 class UserTest < Test::Unit::TestCase
+  # runs before each test
+  def setup
+    @owner = Models::User.created( "testuser", "password", "test@mail.com" )
+  end
+
+  # runs after every test
+  def teardown
+    @owner.delete
+  end
 
   # Fake test
   def test_user_item_create
-    owner = Models::User.created( "testuser", "password", "test@mail.com" )
-    assert( owner.list_items.size == 0, "Item list length should be 0" )
-    assert( owner.list_items_inactive.size == 0, "Item list inactive length should be 0" )
-    owner.create_item("testobject", 10, 1)
-    assert( owner.list_items.size == 0, "Item list length should be 0" )
-    assert( owner.list_items_inactive.size == 1, "Item list inactive length should be 1" )
-    assert( !owner.list_items_inactive[0].is_active?, "New created item should be inactive" )
-    owner.list_items_inactive[0].active = true
-    assert( owner.list_items.size == 1, "Item list length should be 1" )
-    assert( owner.list_items_inactive.size == 0, "Item list inactive length should be 0" )
-    assert( owner.list_items[0].is_active? , "New created item should now be active" )
-    assert( owner.list_items[0].to_s, "testobject, 10" )
+    assert( @owner.list_items.size == 0, "Item list length should be 0" )
+    assert( @owner.list_items_inactive.size == 0, "Item list inactive length should be 0" )
+    @owner.create_item("testobject", 10, 1)
+    assert( @owner.list_items.size == 0, "Item list length should be 0" )
+    assert( @owner.list_items_inactive.size == 1, "Item list inactive length should be 1" )
+    assert( !@owner.list_items_inactive[0].is_active?, "New created item should be inactive" )
+    @owner.list_items_inactive[0].active = true
+    assert( @owner.list_items.size == 1, "Item list length should be 1" )
+    assert( @owner.list_items_inactive.size == 0, "Item list inactive length should be 0" )
+    assert( @owner.list_items[0].is_active? , "New created item should now be active" )
+    assert( @owner.list_items[0].to_s, "testobject, 10" )
   end
 
   def test_create_user
-    owner = Models::User.created( "testuser", "password","test@mail.com" )
-    assert( owner.name == "testuser", "Name should be correct")
-    assert( owner.credits == 100, "Credits should be 100 first")
-    assert( owner.to_s == "testuser has currently 100 credits, 0 active and 0 inactive items", "String representation is wrong generated")
+    assert( @owner.name == "testuser", "Name should be correct")
+    assert( @owner.credits == 100, "Credits should be 100 first")
+    assert( @owner.to_s == "testuser has currently 100 credits, 0 active and 0 inactive items", "String representation is wrong generated")
   end
 
   def test_sales
@@ -86,52 +93,76 @@ class UserTest < Test::Unit::TestCase
   end
 
   def test_method_list_active
-    owner = Models::User.created( "testuser", "password", "test@mail.com" )
-    owner.create_item("testobject", 10, 1)
-    owner.create_item("testobject2", 50, 1)
-    owner.list_items_inactive[0].active = true
-    owner.list_items_inactive[0].active = true
-    assert(owner.list_items[0].to_s == "testobject, 10")
-    assert(owner.list_items[1].to_s == "testobject2, 50")
+    @owner.create_item("testobject", 10, 1)
+    @owner.create_item("testobject2", 50, 1)
+    @owner.list_items_inactive[0].active = true
+    @owner.list_items_inactive[0].active = true
+    assert(@owner.list_items[0].to_s == "testobject, 10")
+    assert(@owner.list_items[1].to_s == "testobject2, 50")
   end
 
   def test_method_list_inactive
-    owner = Models::User.created( "testuser", "password", "test@mail.com" )
-    owner.create_item("testobject", 10, 1)
-    owner.create_item("testobject2", 50, 1)
-    assert(owner.list_items_inactive[0].to_s == "testobject, 10")
-    assert(owner.list_items_inactive[1].to_s == "testobject2, 50")
-    owner.list_items_inactive[0].active = true
-    owner.list_items_inactive[0].active = true
-    assert(owner.list_items[0].to_s == "testobject, 10")
-    assert(owner.list_items[1].to_s == "testobject2, 50")
-    owner.list_items[0].active = false
-    owner.list_items[0].active = false
-    assert(owner.list_items_inactive[0].to_s == "testobject, 10")
-    assert(owner.list_items_inactive[1].to_s == "testobject2, 50")
+    @owner.create_item("testobject", 10, 1)
+    @owner.create_item("testobject2", 50, 1)
+    assert(@owner.list_items_inactive[0].to_s == "testobject, 10")
+    assert(@owner.list_items_inactive[1].to_s == "testobject2, 50")
+    @owner.list_items_inactive[0].active = true
+    @owner.list_items_inactive[0].active = true
+    assert(@owner.list_items[0].to_s == "testobject, 10")
+    assert(@owner.list_items[1].to_s == "testobject2, 50")
+    @owner.list_items[0].active = false
+    @owner.list_items[0].active = false
+    assert(@owner.list_items_inactive[0].to_s == "testobject, 10")
+    assert(@owner.list_items_inactive[1].to_s == "testobject2, 50")
   end
 
   def test_auth
-    owner = Models::User.created( "testuser", "password", "test@mail.com" )
-    owner.save
+    @owner.save
     assert (Models::User.login 1, "password")
   end
 
   def test_available
-    oldUser = Models::User.created( "Mike", "234", "test@mail.com")
-    assert (oldUser.name == "Mike")
-    assert (Models::User.available? "Mike")
-    oldUser.save
-    assert (!Models::User.available? "Mike")
+    assert (@owner.name == "testuser")
+    assert (Models::User.available? "testuser")
+    @owner.save
+    assert (!Models::User.available? "testuser")
   end
 
   def test_delete
-    testUser = Models::User.created( "Mike", "234", "test@mail.com")
-    testUser.save
-    assert (!Models::User.available? "Mike")
-    testUser.delete
-    assert (Models::User.available? "Mike")
-
+    @owner.save
+    assert (!Models::User.available? "testuser")
+    @owner.delete
+    assert (Models::User.available? "testuser")
   end
 
+  def test_validation
+    assert @owner.is_valid
+  end
+
+  def test_validation_duplicate_username
+    @owner.save
+    user1 = Models::User.created( "testuser", "password", "test@mail.com" )
+    assert !user1.is_valid
+  end
+
+  def test_validation_missing_name_e_mail
+    user1 = Models::User.created( "", "password", "test@mail.com" )
+    assert !user1.is_valid
+    user2 = Models::User.created( "testuser", "password", "" )
+    assert !user2.is_valid
+    user3 = Models::User.created( "testuser", "password", "testmail.com" )
+    assert !user3.is_valid
+    user4 = Models::User.created( "testuser", "password", "test@mailcom" )
+    assert !user4.is_valid
+  end
+
+  def test_validation_password
+    assert @owner.is_valid("asdfasdf1", "asdfasdf1")
+    assert !@owner.is_valid("asdfasdf1", "asdfasdf")
+    assert !@owner.is_valid("asdfasdf", "asdfasdf")
+    assert !@owner.is_valid("asdfasdf1", "")
+    assert !@owner.is_valid("", "asdfasdf1")
+    assert !@owner.is_valid("asdf", "asdf")
+    assert @owner.is_valid("aSdfasdf1", "aSdfasdf1")
+  end
 end
