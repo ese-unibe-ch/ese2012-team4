@@ -7,6 +7,8 @@
         %td
           %p.table_header Name
         %td
+          %p.table_header Picture
+        %td
           %p.table_header Price
         %td
           %p.table_header Qty
@@ -18,6 +20,8 @@
           %a.wholly_clickable(href="/item/#{item.id}" )
             :escaped
               #{item.name}
+        %td
+          %img(src='/images/item_pix/placeholder_item.jpg' class = "smallpicturebox")
         %td
           %p #{item.price}
         %td

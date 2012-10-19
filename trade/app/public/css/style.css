@@ -1,13 +1,20 @@
 /* trial css */
-h1, h2, h3, a, p{
+h1, h2, h3, a, p, body, td, tr, #status{
+    /*this is for textstyle and textsize*/
     font-family: Verdana, Arial, sans-serif;
+    font-size:0.9em;
+}
+
+.value, td, tr {
+    /* this is for tables*/
+    background-color: #E5FFF2;
+    border-top: 1px solid #8FC9FF;
 }
 
 body{
     margin: 20px;
     background: rgb(46, 109, 166);
     background-image: url(../images/bg.png);
-    font-family: Verdana, Arial, sans-serif;
 }
 
 #wrapper{
@@ -190,8 +197,8 @@ td.header{
     max-height: 20px;
     overflow: hidden;
     padding: 6px 8px;
-    border-left: 1px solid #8FC9FF;
-    border-top: 3px solid #8FC9FF;
+    /*border-left: 1px solid #8FC9FF;*/
+    /*border-top: 3px solid #8FC9FF;*/
     border-right:none;
     border-bottom: none;
     width:100%;
@@ -224,6 +231,10 @@ td.header{
     padding-top: 5px;
     padding-right: 5px;
 }
+.lineContainer{
+    width: 100%;
+    float:left;
+}
 
 .name{
     margin-top:3px;
@@ -233,8 +244,8 @@ td.header{
 .value{
     width: 65%;
     float: right;
-    background-color: #E5FFF2;
-    border-top: 3px solid #8FC9FF;
+    /*background-color: #E5FFF2;*/
+    /*border-top: 3px solid #8FC9FF;*/
     padding-left:5px;
     word-break: break-all;
 }
@@ -300,7 +311,7 @@ textarea.textbox.value{
     width: 99.5%;
     background-color: rgba(255, 41, 5, 0.31);
     /*height: 30px;*/
-    font-size:20px;
+    /* font-size:20px;*/
     border: 2px solid black;
     text-align: center;
     vertical-align: middle;
@@ -312,7 +323,7 @@ textarea.textbox.value{
     display:block;
     width: 99.5%;
     background-color: rgba(41, 255, 5, 0.31);
-    font-size:20px;
+    /*font-size:20px;*/
     border: 2px solid black;
     text-align: center;
     vertical-align: middle;
@@ -320,7 +331,7 @@ textarea.textbox.value{
 }
 
 img.bigpicturebox{
-    width: 222px;
+    width: 150px;
 }
 
 img.mediumpicturebox{
@@ -328,5 +339,5 @@ img.mediumpicturebox{
 }
 
 img.smallpicturebox{
-    width: 20px;
+    width: 40px;
 }

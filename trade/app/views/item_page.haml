@@ -1,6 +1,10 @@
-%h2
+-#%h2
   :escaped
     #{@item.name}
+
+-# this should check if the user has an upload, otherwise placeholder - there are no uploads yet.
+%img(src='/images/item_pix/placeholder_item.jpg' class = "bigpicturebox")
+%br
 
 .textbox.name
   Description:

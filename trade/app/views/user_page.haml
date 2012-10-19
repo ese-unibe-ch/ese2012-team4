@@ -4,22 +4,24 @@
 -# this should check if the user has an upload, otherwise placeholder - there are no uploads yet.
 %img(src='/images/user_pix/placeholder_user.jpg' class = "bigpicturebox")
 %br
-.textbox.name
-  %p E-Mail:
-.textbox.value
-  %p
+.lineContainer
+  .textbox.name
+    %p E-Mail:
+  .textbox.value
+    %p
+      :escaped
+         #{@user.e_mail}
+.lineContainer
+  .textbox.name
     :escaped
-       #{@user.e_mail}
-.textbox.name
-  :escaped
-    #{@user.name}'s interests:
-.textbox.value
-  %p
-    -if !@user.description.empty?
-      -@user.description.each do |line|
-        :escaped
-          #{line}
-        %br
+      #{@user.name}'s interests:
+  .textbox.value
+    %p
+      -if !@user.description.empty?
+        -@user.description.each do |line|
+          :escaped
+            #{line}
+          %br
 %br
 %hr.separator
 
