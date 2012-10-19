@@ -1,13 +1,14 @@
 /* trial css */
-h1, h2, h3, a, p{
+h1, h2, h3, a, p, body, td, tr, #status{
+    /*this is for textstyle and textsize*/
     font-family: Verdana, Arial, sans-serif;
+    font-size:0.9em;
 }
 
 body{
     margin: 20px;
     background: rgb(46, 109, 166);
     background-image: url(../images/bg.png);
-    font-family: Verdana, Arial, sans-serif;
 }
 
 #wrapper{
@@ -300,7 +301,7 @@ textarea.textbox.value{
     width: 99.5%;
     background-color: rgba(255, 41, 5, 0.31);
     /*height: 30px;*/
-    font-size:20px;
+    /* font-size:20px;*/
     border: 2px solid black;
     text-align: center;
     vertical-align: middle;
@@ -312,7 +313,7 @@ textarea.textbox.value{
     display:block;
     width: 99.5%;
     background-color: rgba(41, 255, 5, 0.31);
-    font-size:20px;
+    /*font-size:20px;*/
     border: 2px solid black;
     text-align: center;
     vertical-align: middle;
