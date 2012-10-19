@@ -49,7 +49,11 @@ module Controllers
     get "/user/:id/image" do
       redirect '/index' unless session[:id]
       path = User.get_user(params[:id]).image
-      send_file(path)
+      if path == ""
+        send_file(File.join(FileUtils::pwd, "public/images/user_pix/placeholder_user.jpg"))
+      else
+        send_file(path)
+      end
     end
 
     post "/unauthenticate" do
@@ -71,12 +75,14 @@ module Controllers
       filename = save_image(params[:image_file])
       test_user = User.created(viewer.name, "FdZ.(gJa)s'dFjKdaDGS+J1", params[:e_mail].strip, params[:description].split("\n"), filename)
       unless test_user.is_valid(nil, nil, false)
-        FileUtils::rm(filename)
         flash[:error] = test_user.errors
         redirect "/profile"
       else
         viewer.description = params[:description].split("\n")
-        viewer.image = filename unless filename.include? "placeholder"
+        if filename != ""
+          FileUtils.rm(viewer.image, :force => true)
+          viewer.image = filename
+        end
         viewer.e_mail = params[:e_mail].strip
         flash[:notice] = "Profile has been updated"
         redirect "/profile"
@@ -104,7 +110,6 @@ module Controllers
     delete '/delete_account' do
       #delete user
       user = session[:id]
-      FileUtils::rm(user.image)
       User.get_user(user).delete
       #close session
       session[:id] = nil

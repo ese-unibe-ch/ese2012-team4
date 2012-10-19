@@ -59,7 +59,6 @@ module Controllers
 
       user = User.created(username, pw, e_mail, description, filename)
       unless user.is_valid(pw, pw2)
-        FileUtils::rm(filename)
         flash[:error] = user.errors
         redirect "/signup"
       else

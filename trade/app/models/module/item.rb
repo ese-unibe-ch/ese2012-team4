@@ -42,8 +42,14 @@ module Models
       self.errors += "Price is not a valid number\n" unless Item.valid_integer?(self.price)
       self.errors += "Quantity is not a valid number\n" unless Item.valid_integer?(self.quantity)
       self.errors += "Item must have a name" unless self.name.strip.delete(' ')!=""
-      self.errors += "Image is heavier than 400kB" unless image.size <= 400*1024
-      self.errors += "Image is no square" unless Dimensions.dimensions(image)[0] == Dimensions.dimensions(image)[1]
+      if image != ""
+        self.errors += "Image is heavier than 400kB" unless image.size <= 400*1024
+        dim = Dimensions.dimensions(image)
+        self.errors += "Image is no square" unless dim[0] == dim[1]
+        unless image.size <= 400*1024 && dim[0] == dim[1]
+          FileUtils.rm(image, :force => true)
+        end
+      end
       self.errors != "" ? false : true
     end
 
@@ -58,7 +64,10 @@ module Models
       self.name = name
       self.price = price
       self.description = description
-      self.image = image unless image.include? "placeholder"
+      if image != ""
+        FileUtils.rm(self.image, :force => true)
+        self.image = image
+      end
       self.quantity = quantity
       self.timestamp = Time.now.to_i
     end

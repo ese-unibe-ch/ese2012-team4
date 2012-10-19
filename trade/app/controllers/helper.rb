@@ -11,7 +11,7 @@ def save_image(image_file)
     FileUtils::cp(tempfile.path, destination)
     path = File.join(FileUtils::pwd, destination)
   else
-    path = File.join(FileUtils::pwd, "public/images/item_pix/placeholder_item.jpg")
+    path = ""
   end
   path
 end

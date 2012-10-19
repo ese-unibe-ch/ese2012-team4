@@ -75,7 +75,6 @@ module Controllers
 
       item = Item.created(name, price, owner, quantity, description, filename)
       unless item.is_valid
-        FileUtils::rm(filename)
         flash[:error] = item.errors
         redirect "/home/new"
       end
@@ -88,7 +87,11 @@ module Controllers
     get "/item/:id/image" do
       redirect '/index' unless session[:id]
       path = Item.get_item(params[:id]).image
-      send_file(path)
+      if path == ""
+        send_file(File.join(FileUtils::pwd, "public/images/item_pix/placeholder_item.jpg"))
+      else
+        send_file(path)
+      end
     end
 
     post '/change/:itemid' do
@@ -97,7 +100,6 @@ module Controllers
       filename = save_image(params[:image_file])
       test_item = Item.created(params[:name], params[:price], @session_user, params[:quantity], params[:description], filename)
       unless test_item.is_valid
-        FileUtils::rm(filename)
         flash[:error] = test_item.errors
         redirect "/home/edit_item/#{params[:itemid]}"
       else
