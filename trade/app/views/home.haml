@@ -1,21 +1,25 @@
 %h2
   Home
-.textbox.name
-  %p Currently logged in User:
-.textbox.value
-  %p
-    :escaped
-      #{@session_user.name}
-.textbox.name
-  %p Your Credits:
-.textbox.value
-  %p #{@session_user.credits}
-.textbox.name
-  %p Active items:
-.textbox.value
-  %p #{@session_user.list_items.size}
-.textbox.name
-  %p Inactive items
-.textbox.value
-  %p #{@session_user.list_items_inactive.size}
+.lineContainer
+  .textbox.name
+    %p Currently logged in User:
+  .textbox.value
+    %p
+      :escaped
+        #{@session_user.name}
+.lineContainer
+  .textbox.name
+    %p Your Credits:
+  .textbox.value
+    %p #{@session_user.credits}
+.lineContainer
+  .textbox.name
+    %p Active items:
+  .textbox.value
+    %p #{@session_user.list_items.size}
+.lineContainer
+  .textbox.name
+    %p Inactive items
+  .textbox.value
+    %p #{@session_user.list_items_inactive.size}
 
