@@ -20,19 +20,20 @@ module Models
     #  fails if the buyer has not enough credits.
 
     # generate getter and setter for name and price
-    attr_accessor :name, :credits, :item_list, :password_hash, :password_salt, :description, :e_mail, :id, :errors
+    attr_accessor :name, :credits, :item_list, :password_hash, :password_salt, :description, :e_mail, :id, :errors, :image
 
     @@users_by_name = {}
     @@users = {}
     @@count = 0
 
     # factory method (constructor) on the class
-    def self.created( name, password, e_mail, description = "")
+    def self.created( name, password, e_mail, description = "", image = "")
       user = self.new
       user.name = name
       user.e_mail = e_mail
       user.id = @@count +1
       user.description = description
+      user.image = image
       user.credits = 100
       user.item_list = Array.new
       pw_salt = BCrypt::Engine.generate_salt
@@ -69,6 +70,8 @@ module Models
           self.errors += "Password is required"
         end
       end
+      self.errors += "Image is heavier than 400kB" unless image.size <= 400*1024
+      self.errors += "Image is no square" unless Dimensions.dimensions(image)[0] == Dimensions.dimensions(image)[1]
       self.errors != "" ? false : true
     end
 
@@ -94,8 +97,8 @@ module Models
     end
 
     #let the user create a new item
-    def create_item(name, price, quantity, description="No description available")
-      new_item = Models::Item.created( name, price, self, quantity, description)
+    def create_item(name, price, quantity, description="No description available", image="")
+      new_item = Models::Item.created( name, price, self, quantity, description, image)
       if !(identical = self.list_items_inactive.detect{|i| i.name== new_item.name and i.price == new_item.price and i.description==new_item.description}).nil?
         identical.quantity += new_item.quantity
       else
@@ -212,6 +215,7 @@ module Models
     end
 
     def delete
+      FileUtils::rm(self.image)
       @@users.delete(self.id)
       @@users_by_name.delete(self.name.downcase)
     end

@@ -1,19 +1,20 @@
 module Models
-
   class Item
+    require 'dimensions'
+
     #Items have a name.
     #Items have a price.
     #An item can be active or inactive.
     #An item has an owner.
 
     # generate getter and setter for name and price
-    attr_accessor :name, :price, :active, :owner, :id, :description, :timestamp, :quantity, :errors
+    attr_accessor :name, :price, :active, :owner, :id, :description, :timestamp, :quantity, :errors, :image
 
     @@item_list = {}
     @@count = 0
 
     # factory method (constructor) on the class
-    def self.created( name, price, owner, quantity, description = "")
+    def self.created( name, price, owner, quantity, description = "", image = "")
       item = self.new
       item.id = @@count + 1
       item.name = name
@@ -22,6 +23,7 @@ module Models
       item.owner = owner
       item.quantity = quantity
       item.description = description
+      item.image = image
       item.timestamp = Time.now.to_i
       item
     end
@@ -40,6 +42,8 @@ module Models
       self.errors += "Price is not a valid number\n" unless Item.valid_integer?(self.price)
       self.errors += "Quantity is not a valid number\n" unless Item.valid_integer?(self.quantity)
       self.errors += "Item must have a name" unless self.name.strip.delete(' ')!=""
+      self.errors += "Image is heavier than 400kB" unless image.size <= 400*1024
+      self.errors += "Image is no square" unless Dimensions.dimensions(image)[0] == Dimensions.dimensions(image)[1]
       self.errors != "" ? false : true
     end
 
@@ -49,11 +53,12 @@ module Models
       @@count += 1
     end
 
-    def edit(name, price, quantity,  description = "")
+    def edit(name, price, quantity,  description = "", image = "")
       return false if self.active
       self.name = name
       self.price = price
       self.description = description
+      self.image = image unless image.include? "placeholder"
       self.quantity = quantity
       self.timestamp = Time.now.to_i
     end
