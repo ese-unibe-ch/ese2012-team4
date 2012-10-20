@@ -1,6 +1,7 @@
 require 'rubygems'
 require 'bcrypt'
 require 'require_relative'
+require 'fileutils'
 require_relative('../utility/mailer')
 require_relative('../utility/password_check')
 require_relative('item')
@@ -221,7 +222,7 @@ module Models
     end
 
     def delete
-      FileUtils.rm(self.image, :force => true)
+      FileUtils::rm(self.image, :force => true)
       @@users.delete(self.id)
       @@users_by_name.delete(self.name.downcase)
     end
