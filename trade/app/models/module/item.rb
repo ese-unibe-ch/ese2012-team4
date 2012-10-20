@@ -8,7 +8,7 @@ module Models
     #An item has an owner.
 
     # generate getter and setter for name and price
-    attr_accessor :name, :price, :active, :owner, :id, :description, :timestamp, :quantity, :errors, :image
+    attr_accessor :name, :price, :active, :owner, :id, :description, :timestamp, :quantity, :errors, :image, :head_comments
 
     @@item_list = {}
     @@count = 0
@@ -116,6 +116,10 @@ module Models
     def delete
       self.owner.remove_item(self)
       @@item_list.delete(self)
+    end
+
+    def comment (author, text, prev_comment = nil)
+      Comment.created(author, self, text, prev_comment)
     end
 
   end

@@ -1,6 +1,8 @@
 module Models
 
   class Comment
+    @@comment_count = 0
+    @@comments = {}
     # A Comment has an id (identifier), an author and there's an item on which the comment corresponds.
     # A Comment may be the answer on a previous comment, but does not have to.
     # Of course, a comment also has a text.
@@ -10,8 +12,7 @@ module Models
 
     attr_accessor :id, :author, :correspondent_item, :previous_comment, :text
 
-    @@comment_count = 0
-    @@comments = {}
+
 
     def self.created(author, correspondent_item, text, previous_comment = nil)
       comment = self.new
@@ -22,17 +23,22 @@ module Models
       comment.text = text
       comment
     end
-  end
 
-  def self.list_comments(item)
-    @@comments.select{|comment| comment.correspondent_item.eql?(item)}
-  end
+    def self.list_comments(item)
+     @@comments.select{|comment| comment.correspondent_item.eql?(item)}
+   end
 
-  def save
-  # TODO
-  end
+    def save
+      @@comments[self.id] = self
+      @@comment_count +=1
+   end
 
-  def is_head_comment?
-    previous_comment.eql?(nil)
+   def is_head_comment?
+      previous_comment.eql?(nil)
+   end
+
+  def self.by_id id
+    @@comments[id]
+  end
   end
 end
