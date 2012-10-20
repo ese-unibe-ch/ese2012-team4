@@ -10,9 +10,7 @@ module Models
     #   - head comments which correspond to an item and do not have a previous comment
     #   - sub comments  which correspond to an item and a head comment
 
-    attr_accessor :id, :author, :correspondent_item, :previous_comment, :text
-
-
+    attr_accessor :id, :author, :correspondent_item, :previous_comment, :text, :sub_comments
 
     def self.created(author, correspondent_item, text, previous_comment = nil)
       comment = self.new
@@ -21,24 +19,45 @@ module Models
       comment.correspondent_item = correspondent_item
       comment.previous_comment = previous_comment
       comment.text = text
+      comment.sub_comments = []
       comment
     end
 
     def self.list_comments(item)
-     @@comments.select{|comment| comment.correspondent_item.eql?(item)}
-   end
+      @@comments.select{|comment| comment.correspondent_item.eql?(item)}
+    end
 
     def save
       @@comments[self.id] = self
       @@comment_count +=1
-   end
+    end
 
-   def is_head_comment?
+    # "delete" will remove a comment (and with it all its subcomments) from the @@comments list
+    def delete
+      @@comments.delete(self.id)
+    end
+
+    def is_head_comment?
       previous_comment.eql?(nil)
-   end
+    end
 
-  def self.by_id id
-    @@comments[id]
-  end
+    def self.by_id id
+      @@comments[id]
+    end
+
+    def answer (author, text)
+      if is_head_comment?
+        answer = Comment.created(author, self.correspondent_item, self, text)
+        sub_comments.push(answer)
+        true
+      else
+        false
+      end
+
+    end
+
+    def self.get_comments (item)
+      # TODO
+    end
   end
 end

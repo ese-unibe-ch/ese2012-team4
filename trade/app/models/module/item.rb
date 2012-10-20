@@ -121,9 +121,16 @@ module Models
 
     def comment (author, text)
       comment = Comment.created(author, self, text)
-      head_comments.push(comment)
+      comment.save
+      head_comments[comment.id] = comment
     end
 
+    def delete_all_comments
+      for comm in head_comments
+        comm.delete
+      end
+    end
+    # MW: TODO: write a test
   end
 
 end

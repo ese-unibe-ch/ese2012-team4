@@ -18,11 +18,10 @@ class CommentTest < Test::Unit::TestCase
 
   def test_initialization
     comment = Comment.created(@author, @item, 'Hello, this is a test comment')
-
+    @item.delete_all_comments
     assert_not_nil(comment)
-    assert(comment.id.eql?(1), "wrong id")
     assert(comment.author.eql?(@author), "wrong author")
-    assert(comment.correspondent_item.eql?(@item), "wrong correspondant item")
+    assert(comment.correspondent_item.eql?(@item), "wrong correspondent item")
     assert_nil(comment.previous_comment)
   end
 
@@ -33,16 +32,23 @@ class CommentTest < Test::Unit::TestCase
 
   def test_save
     comment = Comment.created(@author, @item, 'test comment')
-    assert(comment.id.eql?(1), "wrong id")
     comment.save
-    assert(Comment.by_id(1).eql?(comment), "comment should have been stored")
+    assert(Comment.by_id(comment.id).eql?(comment), "comment should have been stored")
 
     comment2 = Comment.created(@author, @item, 'comment2')
-    assert(comment2.id.eql?(2))
+    assert_nil(Comment.by_id(comment2), "comment2 should not have been stored")
 
-    assert_nil(Comment.by_id(2), "comment2 should not have been stored")
     comment2.save
-    assert(Comment.by_id(2).eql?(comment2), "comment2 should have been stored")
-
+    assert(Comment.by_id(comment2.id).eql?(comment2), "comment2 should have been stored")
   end
+
+  def test_delete
+    comment = Comment.created(@author, @item, 'test comm')
+    comment.save
+
+    assert(Comment.by_id(comment.id).eql?(comment))
+    comment.delete
+    assert_nil(Comment.by_id(comment.id), "comment should have been deleted")
+  end
+
 end
