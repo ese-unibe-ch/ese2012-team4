@@ -25,6 +25,7 @@ module Models
       item.description = description
       item.image = image
       item.timestamp = Time.now.to_i
+      item.head_comments = []
       item
     end
 
@@ -118,8 +119,9 @@ module Models
       @@item_list.delete(self)
     end
 
-    def comment (author, text, prev_comment = nil)
-      Comment.created(author, self, text, prev_comment)
+    def comment (author, text)
+      comment = Comment.created(author, self, text)
+      head_comments.push(comment)
     end
 
   end
