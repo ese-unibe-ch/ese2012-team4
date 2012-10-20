@@ -3,7 +3,7 @@
 -if @item.name == ""
   %h2 New Item
 %br
-%form.nomargin(action="/#{action}" method="POST")
+%form.nomargin(action="/#{action}" method="POST" enctype="multipart/form-data")
   %label.textbox.name
     %p Name of Item:
   %input.textbox.value(type="text" name="name" value="#{@item.name}")
@@ -21,6 +21,10 @@
   %label.textbox.name
     %p Quantity
   %input.textbox.value(type = "text" name = "quantity" value = "#{@item.quantity}")
+  %hr.separator.invisible
+  %label.textbox.name
+    %p Display image
+  %input.textbox.value(type='file' name='image_file' accept="image/*")
   %hr.separator
 
   %input.rightalign.square(type="submit" value="#{button}")

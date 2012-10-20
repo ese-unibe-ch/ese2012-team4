@@ -1,23 +1,20 @@
 module Models
-
   class Item
+    require 'dimensions'
+
     #Items have a name.
     #Items have a price.
     #An item can be active or inactive.
     #An item has an owner.
 
     # generate getter and setter for name and price
-    attr_accessor :name, :price, :active, :owner, :id, :description, :timestamp, :quantity, :errors
-
-    # MW: ToDo: integrate description in tests
-
-    # MW: Since these variables are declared through the attr_accessor, defining getters and setters are unnecessary!
+    attr_accessor :name, :price, :active, :owner, :id, :description, :timestamp, :quantity, :errors, :image
 
     @@item_list = {}
     @@count = 0
 
     # factory method (constructor) on the class
-    def self.created( name, price, owner, quantity, description = "")
+    def self.created( name, price, owner, quantity, description = "", image = "")
       item = self.new
       item.id = @@count + 1
       item.name = name
@@ -26,6 +23,7 @@ module Models
       item.owner = owner
       item.quantity = quantity
       item.description = description
+      item.image = image
       item.timestamp = Time.now.to_i
       item
     end
@@ -44,21 +42,32 @@ module Models
       self.errors += "Price is not a valid number\n" unless Item.valid_integer?(self.price)
       self.errors += "Quantity is not a valid number\n" unless Item.valid_integer?(self.quantity)
       self.errors += "Item must have a name" unless self.name.strip.delete(' ')!=""
+      if image != ""
+        self.errors += "Image is heavier than 400kB" unless image.size <= 400*1024
+        dim = Dimensions.dimensions(image)
+        self.errors += "Image is no square" unless dim[0] == dim[1]
+        unless image.size <= 400*1024 && dim[0] == dim[1]
+          FileUtils.rm(image, :force => true)
+        end
+      end
       self.errors != "" ? false : true
     end
 
     def save
       raise "Duplicated item" if @@item_list.has_key? self.id and @@item_list[self.id] != self
-      # MW: How does it make sense to identify an item through the id ( = identifier) AND the name? Name is changeable!
       @@item_list["#{self.id}"] = self
       @@count += 1
     end
 
-    def edit(name, price, quantity,  description = "")
+    def edit(name, price, quantity,  description = "", image = "")
       return false if self.active
       self.name = name
       self.price = price
       self.description = description
+      if image != ""
+        FileUtils.rm(self.image, :force => true)
+        self.image = image
+      end
       self.quantity = quantity
       self.timestamp = Time.now.to_i
     end

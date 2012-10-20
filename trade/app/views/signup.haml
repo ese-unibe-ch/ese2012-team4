@@ -1,12 +1,15 @@
 %h2 Signup
 %br
-%form(action="/signup" method="POST")
+%form(action="/signup" method="POST" enctype="multipart/form-data")
   %label.textbox.name new username:
   %input.textbox.value(type="text" name="username" value="")
   %hr.separator
   %label.textbox.name E-Mail:
   %input.textbox.value(type="text" name="e_mail" value="")
   %hr.separator
+  %label.textbox.name
+    %p Display image
+  %input.textbox.value(type='file' name='image_file' accept="image/*")
   %label.textbox.name List your interests:
   %textarea.textbox.value(type="text" name="description")
   %hr.separator

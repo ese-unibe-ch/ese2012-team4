@@ -32,7 +32,7 @@
 %hr.separator
 
 %br
-%form.nomargin(action="/change_profile" method="POST")
+%form.nomargin(action="/change_profile" method="POST" enctype="multipart/form-data")
   %label.textbox.name
     %p Edit my E-Mail address:
   %input.textbox.value(type="text" name="e_mail" value="#{@session_user.e_mail}")
@@ -44,6 +44,10 @@
       -@session_user.description.each do |line|
         :escaped
           #{line}
+  %hr.separator.invisible
+  %label.textbox.name
+    %p Display image
+  %input.textbox.value(type='file' name='image_file' accept="image/*")
   %hr.separator.invisible
   %input.rightalign.square(type="submit" value="save")
 %hr.separator

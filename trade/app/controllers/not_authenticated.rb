@@ -9,6 +9,7 @@ require 'sinatra/content_for'
 require 'rack-flash'
 require_relative('../models/module/user')
 require_relative('../models/utility/password_check')
+require_relative('helper')
 
 include Models
 
@@ -54,8 +55,9 @@ module Controllers
     post '/signup' do
       redirect '/home' unless session[:id].nil?
       username, e_mail, description, pw, pw2 = params[:username].strip, params[:e_mail].strip, params[:description], params[:password1], params[:password2]
+      filename = save_image(params[:image_file])
 
-      user = User.created(username, pw, e_mail, description)
+      user = User.created(username, pw, e_mail, description, filename)
       unless user.is_valid(pw, pw2)
         flash[:error] = user.errors
         redirect "/signup"

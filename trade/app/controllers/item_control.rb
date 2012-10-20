@@ -9,6 +9,7 @@ require 'sinatra/content_for'
 require 'rack-flash'
 require_relative('../models/module/user')
 require_relative('../models/module/item')
+require_relative('helper')
 
 include Models
 
@@ -70,26 +71,40 @@ module Controllers
       quantity = params[:quantity]
       description = params[:quantity]
 
-      item = Item.created(name, price, owner, quantity, description)
+      filename = save_image(params[:image_file])
+
+      item = Item.created(name, price, owner, quantity, description, filename)
       unless item.is_valid
         flash[:error] = item.errors
         redirect "/home/new"
       end
-
-      @session_user.create_item(params[:name], Integer(price), Integer(quantity), params[:description])
+      
+      @session_user.create_item(params[:name], Integer(price), Integer(quantity), params[:description], filename)
       flash[:notice] = "Item has been created"
       redirect "/home/items"
     end
 
+    get "/item/:id/image" do
+      redirect '/index' unless session[:id]
+      path = Item.get_item(params[:id]).image
+      if path == ""
+        send_file(File.join(FileUtils::pwd, "public/images/item_pix/placeholder_item.jpg"))
+      else
+        send_file(path)
+      end
+    end
+
     post '/change/:itemid' do
       redirect '/index' unless session[:id]
-      test_item = Item.created(params[:name], params[:price], @session_user, params[:quantity], params[:description])
+
+      filename = save_image(params[:image_file])
+      test_item = Item.created(params[:name], params[:price], @session_user, params[:quantity], params[:description], filename)
       unless test_item.is_valid
         flash[:error] = test_item.errors
         redirect "/home/edit_item/#{params[:itemid]}"
       else
         item = Item.get_item(params[:itemid])
-        item.edit(params[:name],Integer(params[:price]),Integer(params[:quantity]),params[:description])
+        item.edit(params[:name],Integer(params[:price]),Integer(params[:quantity]),params[:description], filename)
         flash[:notice] = "Item has been changed"
         redirect "/home/items"
       end
