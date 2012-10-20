@@ -164,11 +164,11 @@ class ItemTest < Test::Unit::TestCase
     # LD TODO: add more tests
   end
 
-  def test_item_can_be_commented
+  def test_item_comment
     item = @owner.create_item('test_item', 20, 1)
     comment_author = User.created('fritz','1234a','fritz@testmail.mail')
-    item.comment(comment_author, "This is a comment to the item")
-    assert(Comment.by_id(1).author.eql?(comment_author), "item not correctly saved")
-    assert_not_nil(item.head_comments[1], "item should have a head comment")
+    comment = item.comment(comment_author, "This is a comment to the item")
+    assert(Comment.by_id(comment.id).author.eql?(comment_author), "item not correctly saved")
+    assert_not_nil(item.head_comments[comment.id], "item should have a head comment")
   end
 end

@@ -18,7 +18,6 @@ class CommentTest < Test::Unit::TestCase
 
   def test_initialization
     comment = Comment.created(@author, @item, 'Hello, this is a test comment')
-    @item.delete_all_comments
     assert_not_nil(comment)
     assert(comment.author.eql?(@author), "wrong author")
     assert(comment.correspondent_item.eql?(@item), "wrong correspondent item")

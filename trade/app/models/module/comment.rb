@@ -49,15 +49,11 @@ module Models
       if is_head_comment?
         answer = Comment.created(author, self.correspondent_item, self, text)
         sub_comments.push(answer)
-        true
+        answer
       else
         false
       end
 
-    end
-
-    def self.get_comments (item)
-      # TODO
     end
   end
 end

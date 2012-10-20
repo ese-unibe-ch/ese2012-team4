@@ -37,7 +37,7 @@ module Models
                                   hash[:owner] || self.owner, hash[:quantity] ||self.quantity,
                                   hash[:description] || self.description)
     end
-    
+
     def is_valid
       self.errors = ""
       self.errors += "Price is not a valid number\n" unless Item.valid_integer?(self.price)
@@ -123,14 +123,7 @@ module Models
       comment = Comment.created(author, self, text)
       comment.save
       head_comments[comment.id] = comment
+      comment
     end
-
-    def delete_all_comments
-      for comm in head_comments
-        comm.delete
-      end
-    end
-    # MW: TODO: write a test
   end
-
 end
