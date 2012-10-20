@@ -9,6 +9,7 @@ require 'sinatra/content_for'
 require 'rack-flash'
 require_relative('../models/module/user')
 require_relative('../models/module/item')
+require_relative('helper')
 
 include Models
 
@@ -45,6 +46,16 @@ module Controllers
       haml :user_page, :locals => {:page_name => "User #{@user.name}"}
     end
 
+    get "/user/:id/image" do
+      redirect '/index' unless session[:id]
+      path = User.get_user(params[:id]).image
+      if path == ""
+        send_file(File.join(FileUtils::pwd, "public/images/user_pix/placeholder_user.jpg"))
+      else
+        send_file(path)
+      end
+    end
+
     post "/unauthenticate" do
       redirect '/index' unless session[:id]
       session[:id] = nil
@@ -61,12 +72,17 @@ module Controllers
     post "/change_profile" do
       redirect '/index' unless session[:id]
       viewer = User.get_user(session[:id])
-      test_user = User.created(viewer.name, "FdZ.(gJa)s'dFjKdaDGS+J1", params[:e_mail].strip, params[:description].split("\n"))
+      filename = save_image(params[:image_file])
+      test_user = User.created(viewer.name, "FdZ.(gJa)s'dFjKdaDGS+J1", params[:e_mail].strip, params[:description].split("\n"), filename)
       unless test_user.is_valid(nil, nil, false)
         flash[:error] = test_user.errors
         redirect "/profile"
       else
         viewer.description = params[:description].split("\n")
+        if filename != ""
+          FileUtils.rm(viewer.image, :force => true)
+          viewer.image = filename
+        end
         viewer.e_mail = params[:e_mail].strip
         flash[:notice] = "Profile has been updated"
         redirect "/profile"
