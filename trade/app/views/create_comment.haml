@@ -4,3 +4,5 @@
   %textarea.textbox.value(type="text" name = "com")
   %hr.separator
   %input.rightalign.square(type="submit" value="Submit")
+%form.nomargin(action="/comments/#{@item.id}" method="GET")
+  %input.square(type="submit" value="Back")
