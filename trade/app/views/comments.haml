@@ -17,6 +17,14 @@
               #{comment.author.name}
         %td
           %p #{comment.text}
+      - for sub in comment.sub_comments
+        %tr
+          %td.nopadding
+            %a.wholly_clickable(href="/users/#{sub.author.id}" )
+              :escaped
+                #{sub.author.name}
+          %td
+            %p #{sub.text}
 
 -# MW: the things below are copied from item_page.haml
 %br

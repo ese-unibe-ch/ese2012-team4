@@ -34,7 +34,8 @@ class App < Sinatra::Base
     ab.active = true
     ac = userA.create_item("UserA_ItemC", 120, 1)
     ac.active = true
-    ac.comment(userA, "Great Item! Please buy it!")
+    co = ac.comment(userA, "Great Item! Please buy it!")
+
 
     userB = User.created( "userB", "passwordB", "e_mail_B@preset.com" )
     userB.save
@@ -43,6 +44,7 @@ class App < Sinatra::Base
     bb = userB.create_item("UserB_ItemB", 2, 100)
     bb.active = true
     bc = userB.create_item("UserB_ItemC", 120, 1)
+    co.answer(userB, "It doesn't seems that great. Do you have a picture of it?")
 
     userC = User.created( "userC", "passwordC", "e_mail_C@preset.com" )
     userC.save
