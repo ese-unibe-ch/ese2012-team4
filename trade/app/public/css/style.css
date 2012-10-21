@@ -1,5 +1,5 @@
 /* trial css */
-h1, h2, h3, a, p, body, td, tr, #status, .value{
+h1, h2, h3, a, p, body, td, tr, #status, .value, .name{
     /*this is for textstyle and textsize*/
     font-family: Verdana, Arial, sans-serif;
     font-size:0.9em;
