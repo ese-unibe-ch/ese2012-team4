@@ -32,9 +32,15 @@ module Models
       @@comment_count +=1
     end
 
-    # "delete" will remove a comment (and with it all its subcomments) from the @@comments list
+    # "delete" will remove a comment (and with it all its subcomments) from the @@comments list, if it's a head comment.
+    #  If it's a subcomment, it will delete it from the head comments' list sub_comments
     def delete
-      @@comments.delete(self.id)
+      if is_head_comment?
+        @@comments.delete(self.id)
+      else
+         head_comment = self.previous_comment
+         head_comment.sub_comments.delete(self)
+      end
     end
 
     def is_head_comment?
@@ -47,7 +53,7 @@ module Models
 
     def answer (author, text)
       if is_head_comment?
-        answer = Comment.created(author, self.correspondent_item, self, text)
+        answer = Comment.created(author, self.correspondent_item, text, self)
         sub_comments.push(answer)
         answer
       else

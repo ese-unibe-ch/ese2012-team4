@@ -50,4 +50,15 @@ class CommentTest < Test::Unit::TestCase
     assert_nil(Comment.by_id(comment.id), "comment should have been deleted")
   end
 
+  def test_answer
+    comment = Comment.created(@uathor, @item, 'head comment')
+    answer = comment.answer(@author, 'subcomment')
+
+    assert(!answer.is_head_comment?, "this is no head comment!")
+    assert(comment.sub_comments.include?(answer))
+
+    answer.delete
+    assert(!comment.sub_comments.include?(answer))
+
+  end
 end
