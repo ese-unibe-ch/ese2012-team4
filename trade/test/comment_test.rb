@@ -59,6 +59,5 @@ class CommentTest < Test::Unit::TestCase
 
     answer.delete
     assert(!comment.sub_comments.include?(answer))
-
   end
 end

@@ -2,24 +2,12 @@
   :escaped
     #{@item.name}
 
--# this should check if the user has an upload, otherwise placeholder - there are no uploads yet.
-%img(src='/images/item_pix/placeholder_item.jpg' class = "bigpicturebox")
 %br
+- for comment in @item.head_comments
+  %td
+    %p comment.text
 
-.textbox.name
-  Description:
-.textbox.value
-  %p
-    -if !@item.description.empty?
-      -@item.description.each do |line|
-        :escaped
-          #{line}
-        %br
-%br
-.textbox.name
-  Price:
-.textbox.value
-  #{@item.price}
+-# MW: the things below are copied from item_page.haml
 %br
 .textbox.name
   Available Quantity:
@@ -32,10 +20,6 @@
   %a(href="/users/#{@item.owner.id}" )
     :escaped
       #{@item.owner.name}
-.textbox.name
-  Comments:
-.textbox.value
-  %a(href="/comments/#{@item.id}") see comments
 %hr.separator.invisible
 -if @item.owner.name == @session_user.name
   -if @item.editable?

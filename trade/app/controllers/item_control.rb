@@ -147,5 +147,12 @@ module Controllers
       flash[:notice] = "You have bought the item"
       redirect "/home/items"
     end
+
+    get "/comments/:item_id" do
+    redirect "/index" unless session[:id]
+    item_name = Item.get_item(params[:item_id]).name
+    @item = Item.get_item(params[:item_id])
+    haml :comments, :locals => {:page_name => "Comments on #{@item.name}"}
+    end
   end
 end
