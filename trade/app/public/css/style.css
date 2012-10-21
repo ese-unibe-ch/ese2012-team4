@@ -172,6 +172,8 @@ td.header{
     min-width: 600px;
 }
 
+/*ToDo: Commenttable with .subcomment on tablerows for subcomments */
+
 .itemtable{
     width: 100%;
     padding: 0px;

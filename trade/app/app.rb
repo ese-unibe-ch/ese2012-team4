@@ -53,6 +53,7 @@ class App < Sinatra::Base
     cb = userC.create_item("UserC_ItemB", 50, 1)
     cc = userC.create_item("UserC_ItemC", 120, 1)
     cc.active = true
+    co.answer(userC, "You're right userB!")
 
     ese = User.created( "ese", "ese", "ese@preset.com" )
     ese.save

@@ -1,0 +1,6 @@
+%form.nomargin(action="/answer/#{@comment.id}" method="POST" enctype="multipart/form-data")
+  %label.textbox.name
+    %p Write your Reply on this comment:
+  %textarea.textbox.value(type="text" name = "reply")
+  %hr.separator
+  %input.rightalign.square(type="submit" value="Submit")

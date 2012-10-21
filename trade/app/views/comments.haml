@@ -9,6 +9,8 @@
         %p.table_header Author
       %td
         %p.table_header Comment
+      %td
+        %p.table_header
     - for comment in @item.head_comments
       %tr
         %td.nopadding
@@ -17,14 +19,20 @@
               #{comment.author.name}
         %td
           %p #{comment.text}
+        %td.buyform
+          %form.nomargin(action="/reply/#{comment.id}" method="GET")
+            %input.square.rightalign(type="submit" value="Reply")
       - for sub in comment.sub_comments
-        %tr
+        %tr.subcomment
           %td.nopadding
             %a.wholly_clickable(href="/users/#{sub.author.id}" )
               :escaped
                 #{sub.author.name}
           %td
             %p #{sub.text}
+%hr.separator
+%form.nomargin(action="/comment/#{@item.id}" method="GET")
+  %input.square.rightalign(type="submit" value="New Comment")
 
 -# MW: the things below are copied from item_page.haml
 %br

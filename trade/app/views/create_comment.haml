@@ -1,0 +1,6 @@
+%form.nomargin(action="/create_comment/#{@item.id}" method="POST" enctype="multipart/form-data")
+  %label.textbox.name
+    %p Write your comment for this Item:
+  %textarea.textbox.value(type="text" name = "com")
+  %hr.separator
+  %input.rightalign.square(type="submit" value="Submit")

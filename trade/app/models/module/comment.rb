@@ -28,7 +28,7 @@ module Models
     end
 
     def save
-      @@comments[self.id] = self
+      @@comments["#{self.id}"] = self
       @@comment_count +=1
     end
 
