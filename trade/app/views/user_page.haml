@@ -1,7 +1,8 @@
 -#%h2
   :escaped
     #{@user.name}
-%img(src="/user/#{@user.id}/image" class = "bigpicturebox")
+%a(href="/user/#{@user.id}/image" rel="lightbox" title="#{@user.name}")
+  %img(src="/user/#{@user.id}/image" class = "bigpicturebox")
 %br
 .lineContainer
   .textbox.name

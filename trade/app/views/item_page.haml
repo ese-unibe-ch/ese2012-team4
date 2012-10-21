@@ -3,7 +3,8 @@
     #{@item.name}
 
 -# this should check if the user has an upload, otherwise placeholder - there are no uploads yet.
-%img(src="/item/#{@item.id}/image" class = "bigpicturebox")
+%a(href="/item/#{@item.id}/image" rel="lightbox" title="#{@item.name}")
+  %img(src="/item/#{@item.id}/image" class = "bigpicturebox")
 %br
 .lineContainer
   .textbox.name

@@ -21,7 +21,8 @@
             :escaped
               #{item.name}
         %td
-          %img(src="/item/#{item.id}/image" class = "smallpicturebox")
+          %a(href="/item/#{item.id}/image" rel="lightbox" title="#{item.name}")
+            %img(src="/item/#{item.id}/image" class = "smallpicturebox")
         %td
           %p #{item.price}
         %td
@@ -57,7 +58,8 @@
             :escaped
               #{item.name}
         %td
-          %img(src="/item/#{item.id}/image" class = "smallpicturebox")
+          %a(href="/item/#{item.id}/image" rel="lightbox[inactive]" title="#{item.name}")
+            %img(src="/item/#{item.id}/image" class = "smallpicturebox")
         %td
           %p #{item.price}
         %td
