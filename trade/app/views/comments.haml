@@ -1,11 +1,22 @@
--#%h2
+%h2
   :escaped
     #{@item.name}
 
-%br
-- for comment in @item.head_comments
-  %td
-    %p comment.text
+%table.commenttable
+  %thead
+    %tr
+      %td
+        %p.table_header Author
+      %td
+        %p.table_header Comment
+    - for comment in @item.head_comments
+      %tr
+        %td.nopadding
+          %a.wholly_clickable(href="/users/#{comment.author.id}" )
+            :escaped
+              #{comment.author.name}
+        %td
+          %p #{comment.text}
 
 -# MW: the things below are copied from item_page.haml
 %br

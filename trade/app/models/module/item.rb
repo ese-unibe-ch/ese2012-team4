@@ -1,6 +1,8 @@
 module Models
   class Item
     require 'dimensions'
+    require 'require_relative'
+    require_relative('comment')
 
     #Items have a name.
     #Items have a price.
@@ -12,6 +14,7 @@ module Models
 
     @@item_list = {}
     @@count = 0
+    @comment_count = 0
 
     # factory method (constructor) on the class
     def self.created( name, price, owner, quantity, description = "", image = "")
@@ -120,10 +123,11 @@ module Models
     end
 
     def comment (author, text)
-      comment = Comment.created(author, self, text)
-      comment.save
-      head_comments[comment.id] = comment
-      comment
+      c = Models::Comment.created(author, self, text)
+      c.save
+      head_comments[Integer(@comment_count)] = c
+      @comment_count = Integer(@comment_count) + 1
+      c
     end
   end
 end

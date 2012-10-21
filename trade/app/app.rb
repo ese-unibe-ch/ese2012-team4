@@ -34,6 +34,7 @@ class App < Sinatra::Base
     ab.active = true
     ac = userA.create_item("UserA_ItemC", 120, 1)
     ac.active = true
+    ac.comment(userA, "Great Item! Please buy it!")
 
     userB = User.created( "userB", "passwordB", "e_mail_B@preset.com" )
     userB.save
