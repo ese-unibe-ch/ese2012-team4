@@ -174,6 +174,7 @@ td.header{
 
 /*ToDo: Commenttable with .subcomment on tablerows for subcomments */
 .commenttable{
+    table-layout: fixed;
     width: 100%;
     padding: 0px;
     border-collapse: collapse;
@@ -184,10 +185,13 @@ td.header{
 .commenttable thead{
     vertical-align: middle;
 }
+.commenttable td.comment{
+    width: 450;
+    word-wrap: break-word;
+}
 .commenttable td{
     background-color: #E5FFF2;
     max-height: 20px;
-    overflow: hidden;
     padding: 6px 8px;
     /*border-left: 1px solid #8FC9FF;*/
     /*border-top: 3px solid #8FC9FF;*/
@@ -200,7 +204,6 @@ td.header{
 }
 
 .commenttable tr.subcomment{
-
 }
 
 .itemtable{

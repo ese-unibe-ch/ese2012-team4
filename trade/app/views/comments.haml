@@ -7,7 +7,7 @@
     %tr
       %td
         %p.table_header Author
-      %td
+      %td.comment
         %p.table_header Comment
       %td
         %p.table_header
@@ -17,8 +17,13 @@
           %a.wholly_clickable(href="/users/#{comment.author.id}" )
             :escaped
               #{comment.author.name}
-        %td
-          %p #{comment.text}
+        %td.comment
+          %p
+            -if !comment.text.empty?
+              -comment.text.each do |line|
+                :escaped
+                  #{line}
+                %br
         %td.buyform
           %form.nomargin(action="/reply/#{comment.id}" method="GET")
             %input.square.rightalign(type="submit" value="Reply")
@@ -28,8 +33,12 @@
             %a.wholly_clickable(href="/users/#{sub.author.id}" )
               :escaped
                 #{sub.author.name}
-          %td
-            %p #{sub.text}
+            %td.comment
+              -if !sub.text.empty?
+                -sub.text.each do |line|
+                  :escaped
+                    #{line}
+                  %br
           %td
             %p
 %hr.separator
