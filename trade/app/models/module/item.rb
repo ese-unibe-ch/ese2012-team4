@@ -8,7 +8,7 @@ module Models
     #An item has an owner.
 
     # generate getter and setter for name and price
-    attr_accessor :name, :price, :active, :owner, :id, :description, :timestamp, :quantity, :errors, :image
+    attr_accessor :name, :price, :active, :owner, :id, :description, :timestamp, :quantity, :errors, :image, :head_comments
 
     @@item_list = {}
     @@count = 0
@@ -25,6 +25,7 @@ module Models
       item.description = description
       item.image = image
       item.timestamp = Time.now.to_i
+      item.head_comments = []
       item
     end
 
@@ -36,7 +37,7 @@ module Models
                                   hash[:owner] || self.owner, hash[:quantity] ||self.quantity,
                                   hash[:description] || self.description)
     end
-    
+
     def is_valid
       self.errors = ""
       self.errors += "Price is not a valid number\n" unless Item.valid_integer?(self.price)
@@ -118,6 +119,11 @@ module Models
       @@item_list.delete(self)
     end
 
+    def comment (author, text)
+      comment = Comment.created(author, self, text)
+      comment.save
+      head_comments[comment.id] = comment
+      comment
+    end
   end
-
 end

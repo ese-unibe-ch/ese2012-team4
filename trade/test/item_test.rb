@@ -6,6 +6,7 @@ require 'rubygems'
 require 'require_relative'
 require_relative('../app/models/module/user')
 require_relative('../app/models/module/item')
+require_relative('../app/models/module/comment')
 
 include Models
 
@@ -161,5 +162,13 @@ class ItemTest < Test::Unit::TestCase
     print Item.valid_integer?(item.price)
     assert item.is_valid, item.errors
     # LD TODO: add more tests
+  end
+
+  def test_item_comment
+    item = @owner.create_item('test_item', 20, 1)
+    comment_author = User.created('fritz','1234a','fritz@testmail.mail')
+    comment = item.comment(comment_author, "This is a comment to the item")
+    assert(Comment.by_id(comment.id).author.eql?(comment_author), "item not correctly saved")
+    assert_not_nil(item.head_comments[comment.id], "item should have a head comment")
   end
 end
