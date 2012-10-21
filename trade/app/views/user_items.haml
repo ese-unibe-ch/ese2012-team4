@@ -1,4 +1,3 @@
-
 %h2 My Active Items
 -unless @session_user.list_items.empty?
   %table.itemtable
@@ -58,7 +57,7 @@
             :escaped
               #{item.name}
         %td
-          %a(href="/item/#{item.id}/image" rel="lightbox[inactive]" title="#{item.name}")
+          %a(href="/item/#{item.id}/image" rel="lightbox" title="#{item.name}")
             %img(src="/item/#{item.id}/image" class = "smallpicturebox")
         %td
           %p #{item.price}
