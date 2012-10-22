@@ -1,10 +1,14 @@
 %h2 Login
 %br
 %form(action="/authenticate" method="POST")
-  %label.textbox.name Name:
+  %label.textbox.name
+    %p
+      Name:
   %input.textbox.value(type="text" name="username" value="")
   %hr.separator.invisible
-  %label.textbox.name Password:
+  %label.textbox.name
+    %p
+      Password:
   %input.textbox.value(type="password" name="password" value="")
   %hr.separator
   %input.rightalign.square(type="submit" value="Login")

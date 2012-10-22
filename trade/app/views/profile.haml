@@ -6,19 +6,19 @@
   %p 
     :escaped
       #{@session_user.name}
-
+%hr.separator.invisible
 .textbox.name
   %p Credits:
 .textbox.value
   %p #{@session_user.credits}
-
+%hr.separator.invisible
 .textbox.name
   %p E-Mail:
 .textbox.value
   %p
     :escaped
        #{@session_user.e_mail}
-
+%hr.separator.invisible
 .textbox.name
   %p Interests:
 .textbox.value
@@ -52,8 +52,6 @@
   %input.rightalign.square(type="submit" value="save")
 %hr.separator
 %br
-%br
-%hr.separator
 .textbox.name
   %p Change my password
   %br

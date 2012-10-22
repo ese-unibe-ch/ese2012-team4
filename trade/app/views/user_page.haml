@@ -13,8 +13,9 @@
          #{@user.e_mail}
 .lineContainer
   .textbox.name
-    :escaped
-      #{@user.name}'s interests:
+    %p
+      :escaped
+        #{@user.name}'s interests:
   .textbox.value
     %p
       -if !@user.description.empty?
