@@ -44,6 +44,9 @@ class App < Sinatra::Base
     bb = userB.create_item("UserB_ItemB", 2, 100)
     bb.active = true
     bc = userB.create_item("UserB_ItemC", 120, 1)
+    for i in 0..200
+      userB.create_item("User_B#{i}",10,1).active=true
+    end
     co.answer(userB, "It doesn't seems that great. Do you have a picture of it?")
 
     userC = User.created( "userC", "passwordC", "e_mail_C@preset.com" )

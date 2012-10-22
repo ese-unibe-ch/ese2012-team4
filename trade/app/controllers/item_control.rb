@@ -50,10 +50,24 @@ module Controllers
       end
     end
 
+    get '/items/:page' do
+      redirect '/index' unless session[:id]
+
+      items_per_page = 20
+      page = params[:page].to_i
+      items = Item.get_all(@session_user.name)
+      (items.size%20)==0? page_count = (items.size/20).to_i : page_count = (items.size/20).to_i+1
+      redirect 'items/1' unless 0<params[:page].to_i and params[:page].to_i<page_count+1
+      @all_items = []
+      for i in ((page-1)*items_per_page)..(page*items_per_page)-1
+        @all_items<<items[i] unless items[i].nil?
+      end
+      haml :all_items, :locals => {:page_name => "Items", :page => page, :page_count => page_count}
+    end
+
     get '/items' do
       redirect '/index' unless session[:id]
-      @all_items = Item.get_all(@session_user.name)
-      haml :all_items, :locals => {:page_name => "Items" }
+      redirect '/items/1'
     end
 
     get '/item/:itemid' do

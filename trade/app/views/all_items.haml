@@ -3,6 +3,12 @@
 - content_for :name do
   All_items
 -unless @all_items.empty?
+  -unless page ==1
+    %a(href = "/items/#{page-1}") previous
+  -for i in 1..page_count
+    %a(href = "/items/#{i}") #{i}
+  -unless page == page_count
+    %a(href = "/items/#{page+1}") next
   -stored = @all_items
   %table.itemtable
     %thead
