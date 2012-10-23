@@ -18,9 +18,11 @@ module Controllers
     set :views, relative('../../app/views')
     helpers Sinatra::ContentFor
     use Rack::Flash
+    @@item_map = Hash.new()
 
     before do
       @session_user = User.get_user(session[:id])
+
     end
 
     get '/search' do
@@ -28,12 +30,26 @@ module Controllers
       haml :search , :locals => {:page_name => "Search"}
     end
 
-    get '/search/result/:page' do
+    post '/search/query' do
       redirect '/index' unless session[:id]
       input = params[:search]
-      @all_items = Item.search(input,User.get_user(session[:id]))
-      #TODO: pagination for search results
-      haml :search_result, :locals=> {:page_name => "result", :page => 1, :page_count =>1}
+      @@item_map[session[:id]]= Item.search(input,User.get_user(session[:id]))
+      redirect '/search/result/1'
+    end
+
+    get '/search/result/:page' do
+      redirect '/index' unless session[:id]
+      redirect '/search' if @@item_map[session[:id]].nil?
+      items_per_page = 20
+      page = params[:page].to_i
+      items = @@item_map[session[:id]]
+      (items.size%items_per_page)==0? page_count = (items.size/items_per_page).to_i : page_count = (items.size/items_per_page).to_i+1
+      redirect 'search/result/1' unless 0<params[:page].to_i and params[:page].to_i<page_count+1
+      @all_items = []
+      for i in ((page-1)*items_per_page)..(page*items_per_page)-1
+        @all_items<<items[i] unless items[i].nil?
+      end
+      haml :search_result, :locals=> {:page_name => "result", :page => page, :page_count =>page_count}
     end
 
     get '/search/result' do
@@ -67,7 +83,7 @@ module Controllers
       for i in ((inactive-1)*items_per_page)..(inactive*items_per_page)-1
         @inactive_items<<inactive_items[i] unless inactive_items[i].nil?
       end
-      haml :user_items, :locals => {:page_name => "My items", :active_page =>active, :active_page_count =>active_page_count, :inactive_page =>inactive, :inactive_page =>inactive, :inactive_page_count => inactive_page_count}
+      haml :user_items, :locals => {:page_name => "My items", :active_page =>active, :active_page_count =>active_page_count, :inactive_page =>inactive, :inactive_page_count => inactive_page_count}
     end
 
     get '/home/items' do
