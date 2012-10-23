@@ -23,6 +23,16 @@ module Controllers
       @session_user = User.get_user(session[:id])
     end
 
+    get '/search' do
+      redirect '/index' unless session[:id]
+      haml :search , :locals => {:page_name => "Search"}
+    end
+
+    post '/search' do
+      redirect '/index' unless session[:id]
+
+    end
+
     get '/home/items/:active/:inactive' do
       redirect '/index' unless session[:id]
       items_per_page = 10
