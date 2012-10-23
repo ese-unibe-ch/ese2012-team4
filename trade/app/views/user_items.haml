@@ -1,5 +1,16 @@
 %h2 My Active Items
--unless @session_user.list_items.empty?
+
+-unless @active_items.empty?
+  -unless active_page ==1
+    %a(href = "/home/items/#{active_page-1}/#{inactive_page}") previous
+  -for i in 1..active_page_count
+    -if i != active_page
+      %a(href = "/home/items/#{i}/#{inactive_page}") #{i}
+    -else
+      #{i}
+
+  -unless active_page == active_page_count
+    %a(href = "/home/items/#{active_page+1}/#{inactive_page}") next
   %table.itemtable
     %thead
       %tr
@@ -13,7 +24,7 @@
           %p.table_header Qty
         %td
           %p.table_header Deactivate
-    - for item in @session_user.list_items
+    - for item in @active_items
       %tr
         %td.nopadding
           %a.wholly_clickable(href="/item/#{item.id}" )
@@ -34,7 +45,16 @@
 
 %h2 My Inactive Items
 
--unless @session_user.list_items_inactive.empty?
+-unless @inactive_items.empty?
+  -unless inactive_page ==1
+    %a(href = "/home/items/#{active_page}/#{inactive_page-1}") previous
+  -for i in 1..inactive_page_count
+    -if i != inactive_page
+      %a(href = "/home/items/#{active_page}/#{i}") #{i}
+    -else
+      #{i}
+  -unless inactive_page == inactive_page_count
+    %a(href = "/home/items/#{active_page}/#{inactive_page+1}") next
   %table.itemtable
     %thead
       %tr
@@ -50,7 +70,7 @@
           %p.table_header Activate
         %td
           %p.table_header Edit
-    - for item in @session_user.list_items_inactive
+    - for item in @inactive_items
       %tr
         %td.nopadding
           %a.wholly_clickable(href="/item/#{item.id}" )

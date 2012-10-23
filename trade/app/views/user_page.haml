@@ -35,8 +35,17 @@
   %p
     :escaped
       #{@user.name}'s Active_items
--unless @user.list_items.empty?
-  -stored = @user.list_items
+-unless @all_items.empty?
+  -stored = @all_items
+  -unless page ==1
+    %a(href = "/items/#{page-1}") previous
+  -for i in 1..page_count
+    -if page!=i
+      %a(href = "/items/#{i}") #{i}
+    -else
+      #{i}
+  -unless page == page_count
+    %a(href = "/items/#{page+1}") next
   %table.itemtable.right
     %thead
       %tr
@@ -49,7 +58,7 @@
         -unless @user.id == session[:id]
           %td
             %p.table_header Buy
-    - for item in @user.list_items
+    - for item in @all_items
       %tr
         %td.nopadding
           %a.wholly_clickable(href="/item/#{item.id}" )

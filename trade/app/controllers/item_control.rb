@@ -23,9 +23,38 @@ module Controllers
       @session_user = User.get_user(session[:id])
     end
 
+    get '/home/items/:active/:inactive' do
+      redirect '/index' unless session[:id]
+      items_per_page = 10
+      active = params[:active].to_i
+      inactive = params[:inactive].to_i
+      active_items = @session_user.list_items
+      (active_items.size%items_per_page)==0? active_page_count = (active_items.size/items_per_page).to_i : active_page_count = (active_items.size/items_per_page).to_i+1
+      if active_items.size==0
+        active_page_count=1
+      end
+      redirect 'home/items/1/1' unless 0<params[:active].to_i and params[:active].to_i<active_page_count+1
+      inactive_items = @session_user.list_items_inactive
+      (inactive_items.size%items_per_page)==0? inactive_page_count = (inactive_items.size/items_per_page).to_i : inactive_page_count = (inactive_items.size/items_per_page).to_i+1
+      if inactive_items.size==0
+        inactive_page_count=1
+      end
+      redirect 'home/items/1/1' unless 0<params[:inactive].to_i and params[:inactive].to_i<inactive_page_count+1
+
+      @active_items = []
+      for i in ((active-1)*items_per_page)..(active*items_per_page)-1
+        @active_items<<active_items[i] unless active_items[i].nil?
+      end
+      @inactive_items = []
+      for i in ((inactive-1)*items_per_page)..(inactive*items_per_page)-1
+        @inactive_items<<inactive_items[i] unless inactive_items[i].nil?
+      end
+      haml :user_items, :locals => {:page_name => "My items", :active_page =>active, :active_page_count =>active_page_count, :inactive_page =>inactive, :inactive_page =>inactive, :inactive_page_count => inactive_page_count}
+    end
+
     get '/home/items' do
       redirect '/index' unless session[:id]
-      haml :user_items, :locals => {:page_name => "My items"}
+      redirect '/home/items/1/1'
     end
 
     get '/home/new' do
@@ -56,7 +85,7 @@ module Controllers
       items_per_page = 20
       page = params[:page].to_i
       items = Item.get_all(@session_user.name)
-      (items.size%20)==0? page_count = (items.size/20).to_i : page_count = (items.size/20).to_i+1
+      (items.size%items_per_page)==0? page_count = (items.size/items_per_page).to_i : page_count = (items.size/items_per_page).to_i+1
       redirect 'items/1' unless 0<params[:page].to_i and params[:page].to_i<page_count+1
       @all_items = []
       for i in ((page-1)*items_per_page)..(page*items_per_page)-1
