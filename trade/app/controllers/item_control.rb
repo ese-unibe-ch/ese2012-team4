@@ -28,9 +28,17 @@ module Controllers
       haml :search , :locals => {:page_name => "Search"}
     end
 
-    post '/search' do
+    get '/search/result/:page' do
       redirect '/index' unless session[:id]
+      input = params[:search]
+      @all_items = Item.search(input,User.get_user(session[:id]))
+      #TODO: pagination for search results
+      haml :search_result, :locals=> {:page_name => "result", :page => 1, :page_count =>1}
+    end
 
+    get '/search/result' do
+      redirect '/index' unless session[:id]
+      redirect '/search/result/1'
     end
 
     get '/home/items/:active/:inactive' do
