@@ -130,22 +130,25 @@ module Models
       c
     end
 
-    # Returns an Array of items whose names or descriptions contain a keyword.
+    # Returns an Array of items whose names or descriptions contain a keyword and are visible to a certain user.
     # @param s_string: Keywords for whom should be searched. Keywords must be separated by spaces.
+    # @param user: The user requesting the item list
     def self.search (s_string, user)
       s_array = s_string.downcase.split
-      ret_array = Array.new
+      ret_array = []
       i_array = @@item_list.to_a
-      for item in i_array
-        for keyword in s_array
-          if (item[1].name.downcase.include?(keyword) or item[1].description.downcase.include?(keyword)) and (item[1].active or item[1].owner==user)
-            if !(ret_array.include?(item[1].id))
-              ret_array.push(item[1])
-            end
-          end
+
+      provisional = i_array.select do |item|
+        s_array.all?{|keyword| (item[1].name.downcase+" "+item[1].description.downcase).include? keyword.downcase}
+      end
+      for item in provisional
+        i = item[1]
+        if i.active or i.owner==user
+          ret_array.push(i)
         end
       end
       ret_array
+
     end
   end
 end
