@@ -25,7 +25,7 @@
         %td
           %p.table_header Deactivate
     - for item in @active_items
-      %tr
+      %tr(title = "#{item.description}")
         %td.nopadding
           %a.wholly_clickable(href="/item/#{item.id}" )
             :escaped
@@ -71,7 +71,7 @@
         %td
           %p.table_header Edit
     - for item in @inactive_items
-      %tr
+      %tr(title = "#{item.description}")
         %td.nopadding
           %a.wholly_clickable(href="/item/#{item.id}" )
             :escaped
