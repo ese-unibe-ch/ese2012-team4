@@ -6,7 +6,10 @@
   -unless page ==1
     %a(href = "/items/#{page-1}") previous
   -for i in 1..page_count
-    %a(href = "/items/#{i}") #{i}
+    -if page!=i
+      %a(href = "/items/#{i}") #{i}
+    -else
+      #{i}
   -unless page == page_count
     %a(href = "/items/#{page+1}") next
   -stored = @all_items

@@ -40,10 +40,25 @@ module Controllers
       haml :users, :locals => {:page_name => "Users"}
     end
 
-    get '/users/:id' do
+    get '/users/:id/:page' do
       redirect '/index' unless session[:id]
       @user = User.get_user(params[:id])
-      haml :user_page, :locals => {:page_name => "User #{@user.name}"}
+      items_per_page = 20
+      page = params[:page].to_i
+      items = @user.list_items
+      (items.size%items_per_page)==0? page_count = (items.size/items_per_page).to_i : page_count = (items.size/items_per_page).to_i+1
+      if(items.size==0)
+        page_count=1;
+      end
+      redirect "users/#{params[:id]}/1" unless 0<params[:page].to_i and params[:page].to_i<page_count+1
+      @all_items = []
+      for i in ((page-1)*items_per_page)..(page*items_per_page)-1
+        @all_items<<items[i] unless items[i].nil?
+      end
+      haml :user_page, :locals => {:page_name => "User #{@user.name}", :page => page, :page_count => page_count}
+    end
+    get '/users/:id' do
+      redirect "/users/#{params[:id]}/1"
     end
 
     get "/user/:id/image" do
