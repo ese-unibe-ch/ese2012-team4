@@ -211,7 +211,7 @@ module Controllers
     get '/reply/:comment_id' do
       redirect "/index" unless session[:id]
       @comment = Comment.by_id(params[:comment_id])
-      haml :reply, :locals => {:page_name => "Reply on #{@comment.author}'s comment"}
+      haml :reply, :locals => {:page_name => "Reply on #{@comment.author.name}'s comment"}
     end
 
     get '/comment/:item_id' do

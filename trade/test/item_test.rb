@@ -168,7 +168,17 @@ class ItemTest < Test::Unit::TestCase
     item = @owner.create_item('test_item', 20, 1)
     comment_author = User.created('fritz','1234a','fritz@testmail.mail')
     comment = item.comment(comment_author, "This is a comment to the item")
-    assert(Comment.by_id(comment.id).author.eql?(comment_author), "item not correctly saved")
-    assert_not_nil(item.head_comments[comment.id], "item should have a head comment")
+    assert(Comment.by_id("#{comment.id}").author.eql?(comment_author), "item not correctly saved")
+    assert_not_nil(item.head_comments[0], "item should have a head comment at first place")
+  end
+
+  def test_search
+    item1 = @owner.create_item('item', 20, 1, "descr")
+    assert(Item.search("item").include?(item1.id), "Searching for the name should return the item-id.")
+    assert(Item.search("descr").include?(item1.id), "Searching for the description should return the item-id.")
+    assert(Item.search("des").include?(item1.id), "Searching for parts of the description should return the item-id.")
+    item2 = @owner.create_item('bla', 20, 1)
+    assert(Item.search("item bla").include?(item2.id))
+    assert(Item.search("item bla").include?(item1.id))
   end
 end
