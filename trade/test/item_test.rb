@@ -177,7 +177,6 @@ class ItemTest < Test::Unit::TestCase
     assert(Item.search("item").include?(item1.id), "Searching for the name should return the item-id.")
     assert(Item.search("descr").include?(item1.id), "Searching for the description should return the item-id.")
     assert(Item.search("des").include?(item1.id), "Searching for parts of the description should return the item-id.")
-    assert(Item.search("user").include?(item1.id), "Searching for parts of the owner's name should return the item-id.")
     item2 = @owner.create_item('bla', 20, 1)
     assert(Item.search("item bla").include?(item2.id))
     assert(Item.search("item bla").include?(item1.id))
