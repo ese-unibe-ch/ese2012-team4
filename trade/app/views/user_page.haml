@@ -59,7 +59,7 @@
           %td
             %p.table_header Buy
     - for item in @all_items
-      %tr
+      %tr(title = "#{item.description}")
         %td.nopadding
           %a.wholly_clickable(href="/item/#{item.id}" )
             :escaped
