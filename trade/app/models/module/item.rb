@@ -132,15 +132,15 @@ module Models
 
     # Returns an Array of item-ids whose names or descriptions contain a keyword.
     # @param s_string: Keywords for whom should be searched. Keywords must be separated by spaces.
-    def self.search (s_string)
+    def self.search (s_string, user)
       s_array = s_string.split
       ret_array = Array.new
       i_array = @@item_list.to_a
       for item in i_array
         for keyword in s_array
-          if item[1].name.include?(keyword) || item[1].description.include?(keyword)
+          if (item[1].name.include?(keyword) || item[1].description.include?(keyword)) and (item[1].active or item[1].owner==user)
             if !(ret_array.include?(item[1].id))
-              ret_array.push(item[1].id)
+              ret_array.push(item[1])
             end
           end
         end
