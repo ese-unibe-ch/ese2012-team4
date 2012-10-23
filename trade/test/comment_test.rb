@@ -32,22 +32,22 @@ class CommentTest < Test::Unit::TestCase
   def test_save
     comment = Comment.created(@author, @item, 'test comment')
     comment.save
-    assert(Comment.by_id(comment.id).eql?(comment), "comment should have been stored")
+    assert(Comment.by_id("#{comment.id}").eql?(comment), "comment should have been stored")
 
     comment2 = Comment.created(@author, @item, 'comment2')
-    assert_nil(Comment.by_id(comment2), "comment2 should not have been stored")
+    assert_nil(Comment.by_id("#{comment2}"), "comment2 should not have been stored")
 
     comment2.save
-    assert(Comment.by_id(comment2.id).eql?(comment2), "comment2 should have been stored")
+    assert(Comment.by_id("#{comment2.id}").eql?(comment2), "comment2 should have been stored")
   end
 
   def test_delete
     comment = Comment.created(@author, @item, 'test comm')
     comment.save
 
-    assert(Comment.by_id(comment.id).eql?(comment))
+    assert(Comment.by_id("#{comment.id}").eql?(comment))
     comment.delete
-    assert_nil(Comment.by_id(comment.id), "comment should have been deleted")
+    assert_nil(Comment.by_id("#{comment.id}"), "comment should have been deleted")
   end
 
   def test_answer
