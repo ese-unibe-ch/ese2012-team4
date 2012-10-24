@@ -188,9 +188,12 @@ td.header{
 .commenttable td.comment{
     width: 450;
     word-wrap: break-word;
+
+}
+.commenttable td.blue{
+    background-color: #E5FFF2;
 }
 .commenttable td{
-    background-color: #E5FFF2;
     max-height: 20px;
     padding: 6px 8px;
     /*border-left: 1px solid #8FC9FF;*/
@@ -203,7 +206,8 @@ td.header{
     padding: 0;
 }
 
-.commenttable tr.subcomment{
+.commenttable td.subcomment{
+    background-color: lightgray;
 }
 
 .itemtable{

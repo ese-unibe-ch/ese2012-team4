@@ -118,7 +118,7 @@ class UserTest < Test::Unit::TestCase
 
   def test_auth
     @owner.save
-    assert (Models::User.login 1, "password")
+    assert (Models::User.login @owner.id, "password")
   end
 
   def test_available

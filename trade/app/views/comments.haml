@@ -29,18 +29,18 @@
           %form.nomargin(action="/reply/#{comment.id}" method="GET")
             %input.square.rightalign(type="submit" value="Reply")
       - for sub in comment.sub_comments
-        %tr.subcomment
-          %td.nopadding
+        %tr
+          %td.nopadding.subcomment
             %a.wholly_clickable(href="/users/#{sub.author.id}" )
               :escaped
                 #{sub.author.name}
-            %td.comment
-              -if !sub.text.empty?
-                -sub.text.each do |line|
-                  :escaped
-                    #{line}
-                  %br
-          %td
+          %td.comment.subcomment
+            -if !sub.text.empty?
+              -sub.text.each do |line|
+                :escaped
+                  #{line}
+                %br
+          %td.subcomment
             %p
 %hr.separator
 %form.nomargin(action="/comment/#{@item.id}" method="GET")
