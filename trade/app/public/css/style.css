@@ -348,10 +348,10 @@ textarea.textbox.value{
     margin-bottom: 5px;
 }
 
-#error_msg{
+#error_msg, #notification_msg{
     display:block;
-    width: 99.5%;
-    background-color: rgba(255, 41, 5, 0.31);
+    width: 93.7%;
+    padding-right:40px;
     /*height: 30px;*/
     /* font-size:20px;*/
     border: 2px solid black;
@@ -361,15 +361,12 @@ textarea.textbox.value{
     white-space: pre-wrap;
 }
 
+#error_msg{
+    background-color: rgba(255, 41, 5, 0.31);
+}
+
 #notification_msg{
-    display:block;
-    width: 99.5%;
-    background-color: rgba(41, 255, 5, 0.31);
-    /*font-size:20px;*/
-    border: 2px solid black;
-    text-align: center;
-    vertical-align: middle;
-    white-space: pre-wrap;
+    background-color: rgba(41, 255, 5, 0.31);;
 }
 
 img.bigpicturebox{
