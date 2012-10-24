@@ -34,7 +34,9 @@ body{
 
 #headcombi{
     background-image:url('../images/Header.jpg');
-    height: 87px;
+    height: 83px;
+    border-top-right-radius: 5px;
+    border-top-left-radius: 5px;
 }
 
 #header{
