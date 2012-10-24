@@ -32,12 +32,16 @@ body{
     width:100px;
 }
 
+#headcombi{
+    background-image:url('../images/Header.jpg');
+    height: 87px;
+}
 
 #header{
     border-top-right-radius: 5px;
     border-top-left-radius: 5px;
     min-width: 600px;
-    background-color: white;
+    /*background-color: white;*/
     padding-top: 5px;
     padding-left: 20px;
     height:56px;
@@ -84,7 +88,7 @@ body{
 #statusbar{
     border-bottom: 3px solid #8FC9FF;
     float:right;
-    background-color: white;
+    /*background-color: white;*/
     width:100%;
 }
 

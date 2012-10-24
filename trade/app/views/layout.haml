@@ -7,21 +7,22 @@
     %link(rel="stylesheet" href="/css/lightbox.css")
   %body
     #wrapper
-      #header
-        %h1
-          :escaped
-            Trading System: #{page_name}
-      #statusbar
-        #status
-          -if not session[:id].nil?
-            %a.status(href="/users/#{session[:id]}")
-              :escaped
-                #{@session_user.name}
-            | Credits: #{@session_user.credits}
-            |
-            %a.status(href="/logout")Logout
-          -else
-            %a.status(href='/login')Login
+      #headcombi
+        #header
+          -#%h1
+            :escaped
+              Trading System: #{page_name}
+        #statusbar
+          #status
+            -if not session[:id].nil?
+              %a.status(href="/users/#{session[:id]}")
+                :escaped
+                  #{@session_user.name}
+              | Credits: #{@session_user.credits}
+              |
+              %a.status(href="/logout")Logout
+            -else
+              %a.status(href='/login')Login
 
       #page
         #navigation
