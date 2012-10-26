@@ -10,7 +10,7 @@ module Models
     #An item has an owner.
 
     # generate getter and setter for name and price
-    attr_accessor :name, :price, :active, :owner, :id, :description, :timestamp, :quantity, :errors, :image, :head_comments
+    attr_accessor :name, :price, :active, :owner, :id, :description, :timestamp, :quantity, :errors, :image, :head_comments, :expiration_date
 
     @@item_list = {}
     @@count = 0
@@ -149,6 +149,11 @@ module Models
       end
       ret_array
 
+    end
+
+    # Returns if the chosen expiration date is exceeded
+    def expired?
+      Time.now.getlocal > expiration_date
     end
   end
 end
