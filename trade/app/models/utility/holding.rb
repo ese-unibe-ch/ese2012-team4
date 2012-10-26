@@ -1,8 +1,11 @@
 module Models
 class Holding
-  @@holder = {}
+  require 'require_relative'
+  require_relative '../module/item'
 
-  attr_accessor :item, :seller, :buyer, :quantity
+  @@holder = []
+
+  attr_accessor :item, :seller, :buyer, :quantity, :name
 
   def self.created (item, seller, buyer, quantity)
     holding = self.new
@@ -11,6 +14,7 @@ class Holding
     holding.seller = seller
     holding.buyer = buyer
     holding.quantity = quantity
+    #holding.name = "HOOOOOOOLDING"
 
     @@holder.push(holding)
   end
@@ -36,12 +40,15 @@ class Holding
 
   #moves the item from seller to holding
   def self.shipItem(item, seller, buyer, quantity)
+    item_list = Models::Item.get_item_list
+        item_list.delete(item)
+
 
 
     buyer.credits -= Integer(item.price)*quantity
 
     #seller: remove number of items (or item)
-    if (seller.item_list["#{item.id}"].quantity == quantity)
+    if (seller.item_list[item.id].quantity == quantity)
       seller.item_list.delete(item)
     else
       seller.item_list["#{item.id}"].quantity -= quantity
@@ -50,7 +57,7 @@ class Holding
     item.active = false
 
     holding = self.created(item,seller,buyer,quantity)
-    item.owner = holding
+    item.owner = self
   end
 
 end

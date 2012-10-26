@@ -5,6 +5,7 @@ require 'fileutils'
 require_relative('../utility/mailer')
 require_relative('../utility/password_check')
 require_relative('item')
+require_relative('../utility/holding')
 
 
 module Models
@@ -140,14 +141,16 @@ module Models
     # buy an item
     # @return true if user can buy item, false if his credit amount is too small
     def buy_new_item(item_to_buy, quantity)
+      preowner = item_to_buy.owner
 
       if Integer(item_to_buy.price*quantity) > self.credits or Integer(item_to_buy.quantity)<quantity
         return false
       end
 
-        Holding.shipItem(item_to_buy, item_to_buy.owner, self, quantity)
-      Models::Mailer.send_mail_to(preowner.e_mail, "Hi #{preowner.name}, \n #{self.name} bought your Item #{item_to_buy.name}.
-        Please Contact him for completing the trade. His E-Mail is: #{self.e_mail}")
+        Models::Holding.shipItem(item_to_buy, item_to_buy.owner, self, quantity)
+
+      #Models::Mailer.send_mail_to(preowner.e_mail, "Hi #{preowner.name}, \n #{self.name} bought your Item #{item_to_buy.name}.
+      #  Please Contact him for completing the trade. His E-Mail is: #{self.e_mail}")
       return true
     end
 
