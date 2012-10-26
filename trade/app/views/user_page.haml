@@ -38,14 +38,14 @@
 -unless @all_items.empty?
   -stored = @all_items
   -unless page ==1
-    %a(href = "/items/#{page-1}") previous
+    %a(href = "/users/#{@user.id}/#{page-1}") previous
   -for i in 1..page_count
     -if page!=i
-      %a(href = "/items/#{i}") #{i}
+      %a(href = "/users/#{@user.id}/#{i}") #{i}
     -else
       #{i}
   -unless page == page_count
-    %a(href = "/items/#{page+1}") next
+    %a(href = "/users/#{@user.id}#{page+1}") next
   %table.itemtable.right
     %thead
       %tr
