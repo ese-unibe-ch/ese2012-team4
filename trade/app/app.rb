@@ -62,6 +62,7 @@ class App < Sinatra::Base
 
     ese = User.created( "ese", "ese", "ese@preset.com" )
     ese.save
+    ese.add_to_wishlist(ab)
 
     end
 

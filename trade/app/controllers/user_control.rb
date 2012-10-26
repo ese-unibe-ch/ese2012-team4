@@ -131,5 +131,18 @@ module Controllers
       redirect '/index' unless session[:id]
       haml :logout, :locals => {:page_name => "Logout"}
     end
+
+    get '/wishlist' do
+      redirect '/index' unless session[:id]
+      haml :wishlist, :locals =>{:page_name => "Your Wishlist"}
+    end
+
+    post "/remove_from_wishlist/:itemid" do
+      redirect '/index' unless session[:id]
+      @item = Item.get_item(params[:itemid])
+      @session_user.remove_from_wishlist(@item)
+      redirect "/wishlist"
+    end
+
   end
 end

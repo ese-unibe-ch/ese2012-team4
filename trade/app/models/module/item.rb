@@ -159,5 +159,9 @@ module Models
     def add_user_to_wishlist(user)
       wishlist_users.push(user)
     end
+
+    def remove_user_from_wishlist(user)
+      wishlist_users.delete(user)
+    end
   end
 end

@@ -234,10 +234,11 @@ module Models
 
     def add_to_wishlist(item)
       self.wishlist.push(item)
-      item.wishlist_users.push(self)
+      item.add_user_to_wishlist(self)
     end
 
     def remove_from_wishlist(item)
+      item.remove_user_from_wishlist(self)
       self.wishlist.delete(item)
     end
 
