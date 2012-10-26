@@ -140,30 +140,12 @@ module Models
     # buy an item
     # @return true if user can buy item, false if his credit amount is too small
     def buy_new_item(item_to_buy, quantity)
+
       if Integer(item_to_buy.price*quantity) > self.credits or Integer(item_to_buy.quantity)<quantity
         return false
       end
-      self.credits -= Integer(item_to_buy.price)*quantity
-      preowner = item_to_buy.owner
-      preowner.credits+=Integer(item_to_buy.price)*quantity
-      if(item_to_buy.quantity.to_i == quantity)
-        item_to_buy.active = false
-        item_to_buy.owner = self
-        item_to_buy.owner.remove_item(item_to_buy)
-        if !(identical = self.list_items_inactive.detect{|i| i.name== item_to_buy.name and i.price == item_to_buy.price and i.description==item_to_buy.description}).nil?
-          identical.quantity+=quantity
-        else
-          self.item_list.push(item_to_buy)
-        end
-      else
-        if !(identical = self.list_items_inactive.detect{|i| i.name== item_to_buy.name and i.price == item_to_buy.price and i.description==item_to_buy.description}).nil?
-          identical.quantity+=quantity
-        else
-          self.create_item(item_to_buy.name,item_to_buy.price, quantity,item_to_buy.description)
-        end
-        item_to_buy.quantity-=quantity
 
-      end
+        Holding.shipItem(item_to_buy, item_to_buy.owner, self, quantity)
       Models::Mailer.send_mail_to(preowner.e_mail, "Hi #{preowner.name}, \n #{self.name} bought your Item #{item_to_buy.name}.
         Please Contact him for completing the trade. His E-Mail is: #{self.e_mail}")
       return true
