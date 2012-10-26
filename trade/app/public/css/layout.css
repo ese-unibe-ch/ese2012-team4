@@ -178,94 +178,12 @@ td.header{
     min-width: 600px;
 }
 
-/*ToDo: Commenttable with .subcomment on tablerows for subcomments */
-.commenttable{
-    table-layout: fixed;
-    width: 100%;
-    padding: 0px;
-    border-collapse: collapse;
-    text-align: left;
-    border-spacing: 0px;
-    border-bottom: 3px solid #8FC9FF;
-}
-.commenttable thead{
-    vertical-align: middle;
-}
-.commenttable td.comment{
-    width: 450;
-    word-wrap: break-word;
-
-}
-.commenttable td.blue{
-    background-color: #E5FFF2;
-}
-.commenttable td{
-    max-height: 20px;
-    padding: 6px 8px;
-    /*border-left: 1px solid #8FC9FF;*/
-    /*border-top: 3px solid #8FC9FF;*/
-    border-right:none;
-    border-bottom: none;
-}
-
-.commenttable td.nopadding{
-    padding: 0;
-}
-
-.commenttable td.subcomment{
-    background-color: lightgray;
-}
-
-.itemtable{
-    width: 100%;
-    padding: 0px;
-    border-collapse: collapse;
-    text-align:left;
-    max-height: 20px;
-    border-spacing:0px;
-    border-bottom: 3px solid #8FC9FF;
-}
-
-.itemtable tbody tr:hover td{
-    background-color: #8FC9FF;
-
-}
-
-.itemtable thead{
-    vertical-align: middle;
-}
-
-.itemtable td{
-    background-color: #E5FFF2;
-    max-height: 20px;
-    overflow: hidden;
-    padding: 6px 8px;
-    /*border-left: 1px solid #8FC9FF;*/
-    /*border-top: 3px solid #8FC9FF;*/
-    border-right:none;
-    border-bottom: none;
-    width:100%;
-}
-.itemtable td.buyform {
-    min-width: 80px;
-
-}
-.itemtable td.nopadding{
-    padding: 0;
-}
-
-.table_header{
-    margin-top: 5px;
-    margin-bottom: 5px;
-}
-
 .square{
     background-color: #8FC9FF;
 }
 .nomargin{
     margin:0;
 }
-
 
 .textbox{
     display: block;
@@ -314,7 +232,6 @@ textarea.textbox.value{
 .tiny{
     width: 20px;
 }
-
 
 .main
 {

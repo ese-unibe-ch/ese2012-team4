@@ -211,6 +211,10 @@ module Controllers
     post '/buy/:id/:timestamp' do
       redirect '/index' unless session[:id]
       id = params[:id]
+      unless Item.valid_integer?(params[:quantity])
+        flash[:error] = "Please choose a valid quantity of items."
+        redirect "#{back}"
+      end
       quantity = Integer(params[:quantity])
       item = Item.get_item(id)
       old_user = item.owner

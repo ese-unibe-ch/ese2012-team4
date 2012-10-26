@@ -1,0 +1,42 @@
+.itemtable{
+    width: 100%;
+    padding: 0px;
+    border-collapse: collapse;
+    text-align:left;
+    max-height: 20px;
+    border-spacing:0px;
+    border-bottom: 3px solid #8FC9FF;
+}
+
+.itemtable tbody tr:hover td{
+    background-color: #8FC9FF;
+
+}
+
+.itemtable thead{
+    vertical-align: middle;
+}
+
+.itemtable td{
+    background-color: #E5FFF2;
+    max-height: 20px;
+    overflow: hidden;
+    padding: 6px 8px;
+    /*border-left: 1px solid #8FC9FF;*/
+    /*border-top: 3px solid #8FC9FF;*/
+    border-right:none;
+    border-bottom: none;
+    width:100%;
+}
+.itemtable td.buyform {
+    min-width: 80px;
+
+}
+.itemtable td.nopadding{
+    padding: 0;
+}
+
+.table_header{
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
