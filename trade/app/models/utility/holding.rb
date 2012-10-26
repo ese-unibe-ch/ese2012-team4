@@ -7,6 +7,10 @@ class Holding
 
   attr_accessor :item, :seller, :buyer, :quantity, :name
 
+  def self.get_all
+    @@holder
+  end
+
   def self.created (item, seller, buyer, quantity)
     holding = self.new
 

@@ -9,6 +9,7 @@ require 'sinatra/content_for'
 require 'rack-flash'
 require_relative('../models/module/user')
 require_relative('../models/module/item')
+require_relative('../models/utility/holding')
 require_relative('helper')
 
 include Models
@@ -259,6 +260,12 @@ module Controllers
       item = Item.get_item(params[:item_id])
       item.comment(@session_user, params[:com])
       redirect "/comments/#{params[:item_id]}"
+    end
+
+    get '/item/:id/delivered' do
+      pending_items = Models::Holding.get_all.select {|s| s.buyer == @session_user}
+      pending_items[0].itemReceived
+      redirect "/index"
     end
   end
 end
