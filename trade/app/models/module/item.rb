@@ -10,7 +10,7 @@ module Models
     #An item has an owner.
 
     # generate getter and setter for name and price
-    attr_accessor :name, :price, :active, :owner, :id, :description, :timestamp, :quantity, :errors, :image, :head_comments, :expiration_date
+    attr_accessor :name, :price, :active, :owner, :id, :description, :timestamp, :quantity, :errors, :image, :head_comments, :expiration_date, :wishlist_users
 
     @@item_list = {}
     @@count = 0
@@ -27,6 +27,7 @@ module Models
       item.quantity = quantity
       item.description = description
       item.image = image
+      item.wishlist_users = Array.new
       item.timestamp = Time.now.to_i
       item.head_comments = []
       item
@@ -148,12 +149,15 @@ module Models
         end
       end
       ret_array
-
     end
 
     # Returns if the chosen expiration date is exceeded
     def expired?
       Time.now.getlocal > expiration_date
+    end
+
+    def add_user_to_wishlist(user)
+      wishlist_users.push(user)
     end
   end
 end

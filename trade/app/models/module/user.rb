@@ -21,7 +21,7 @@ module Models
     #  fails if the buyer has not enough credits.
 
     # generate getter and setter for name and price
-    attr_accessor :name, :credits, :item_list, :password_hash, :password_salt, :description, :e_mail, :id, :errors, :image
+    attr_accessor :name, :credits, :item_list, :password_hash, :password_salt, :description, :e_mail, :id, :errors, :image, :wishlist
 
     @@users_by_name = {}
     @@users = {}
@@ -35,6 +35,7 @@ module Models
       user.id = @@count +1
       user.description = description
       user.image = image
+      user.wishlist = Array.new
       user.credits = 100
       user.item_list = Array.new
       pw_salt = BCrypt::Engine.generate_salt
@@ -192,15 +193,19 @@ module Models
         item.delete
       end
       item.active = false
+
+      if !item.wishlist_users.empty?
+        item.wishlist_users.each {|user| user.remove_from_wishlist(item); item.wishlist_users.delete(user)}
+      end
     end
 
-    def self.login id, password                #BS: change parameter "name" to "id"
+    def self.login id, password
       user = @@users[id]
       return false if user.nil?
       user.password_hash == BCrypt::Engine.hash_secret(password, user.password_salt)
     end
 
-    def self.get_user(user_id)           #BS: change parameter "name" to "id"
+    def self.get_user(user_id)
       return @@users[user_id.to_i]
     end
 
@@ -225,6 +230,15 @@ module Models
       FileUtils::rm(self.image, :force => true)
       @@users.delete(self.id)
       @@users_by_name.delete(self.name.downcase)
+    end
+
+    def add_to_wishlist(item)
+      self.wishlist.push(item)
+      item.wishlist_users.push(self)
+    end
+
+    def remove_from_wishlist(item)
+      self.wishlist.delete(item)
     end
 
   end
