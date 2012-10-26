@@ -27,16 +27,27 @@ class Holding
   def itemReceived
     seller.credits+=Integer(item.price)*quantity
 
-    #if(item.quantity.to_i == quantity)
+    if(item.quantity.to_i == quantity)
+      # buy all items from seller
       item.owner = buyer
       item.owner.remove_item(item)
       if !(identical = buyer.list_items_inactive.detect{|i| i.name== item.name and i.price == item.price and i.description==item.description}).nil?
         identical.quantity+=quantity
       else
+        item.quantity = quantity;
         buyer.item_list.push(item)
       end
+    else
+      # seller has some items left
+      if !(identical = buyer.list_items_inactive.detect{|i| i.name== item.name and i.price == item.price and i.description==item.description}).nil?
+        identical.quantity+=quantity
+      else
+        buyer.create_item(item.name,item.price, quantity, item.description)
+      end
+    end
 
-    item.quantity-=quantity #deletes original item
+    # LD unnoetig seit dem refactoring, glaube ich.
+    # item.quantity-=quantity #deletes original item
 
     @@holder.delete(self) #closes the holding-state
 
@@ -45,23 +56,19 @@ class Holding
   #moves the item from seller to holding
   def self.shipItem(item, seller, buyer, quantity)
     item_list = Models::Item.get_item_list
-        item_list.delete(item)
-
-
+    item_list.delete(item)
 
     buyer.credits -= Integer(item.price)*quantity
 
+    index = seller.item_list.index(item)
     #seller: remove number of items (or item)
-    if (seller.item_list[item.id].quantity == quantity)
+    if (seller.item_list[index].quantity == quantity)
       seller.item_list.delete(item)
     else
-      seller.item_list["#{item.id}"].quantity -= quantity
+      seller.item_list[index].quantity -= quantity
     end
 
-    item.active = false
-
     holding = self.created(item,seller,buyer,quantity)
-    item.owner = self
   end
 
 end

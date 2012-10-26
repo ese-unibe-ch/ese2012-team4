@@ -226,7 +226,7 @@ module Controllers
         redirect "#{back}"
       end
       flash[:notice] = "You have bought the item"
-      redirect "/home/items"
+      redirect "/home"
     end
 
     get "/comments/:item_id" do
@@ -262,10 +262,19 @@ module Controllers
       redirect "/comments/#{params[:item_id]}"
     end
 
-    get '/item/:id/delivered' do
-      pending_items = Models::Holding.get_all.select {|s| s.buyer == @session_user}
-      pending_items[0].itemReceived
-      redirect "/index"
+    post '/items/:id/delivered' do
+      redirect '/index' unless session[:id]
+      items = Models::Holding.get_all.select {|s|
+        s.item.id.to_s.eql?(params[:id].to_s) }
+      item = items.first
+      item.itemReceived
+      if @session_user.has_rated(item.seller)
+        flash[:notice] = "Transfer completed. Would You like to edit your rating of #{item.seller.name}?"
+        redirect "/rate/#{item.seller.id}"
+      else
+        flash[:notice] = "Transfer completed. Would You like to rate #{item.seller.name}?"
+        redirect "/rate/#{item.seller.id}"
+      end
     end
   end
 end

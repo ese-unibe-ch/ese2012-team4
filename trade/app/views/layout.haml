@@ -4,6 +4,7 @@
     %link(rel="stylesheet" type="text/css" href="/css/style.css")
     %script(src="/js/jquery-1.7.2.min.js")
     %script(src="/js/lightbox.js")
+    %script(src="/js/jquery.flot.js")
     %link(rel="stylesheet" href="/css/lightbox.css")
   %body
     #wrapper
@@ -38,6 +39,7 @@
             %a.menu(href="/search") - Search
             %br
             %a.menu(href="/users/#{session[:id]}") - My Profile
+            %a.menu(href="/profile/pending") - Pending items
             %a.menu(href="/logout") - Logout
           -else
             %h2.menu_header not logged in!

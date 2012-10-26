@@ -1,0 +1,59 @@
+%h2 My pending items
+
+-unless @inbox.empty?
+  %h4 Incoming
+  %table.itemtable
+    %thead
+      %tr
+        %td
+          %p.table_header Name
+        %td
+          %p.table_header Seller
+        %td
+          %p.table_header Price
+        %td
+          %p.table_header Qty
+        %td
+          %p.table_header Confirm arrival
+    - for holding in @inbox
+      %tr(title = "#{holding.item.description}")
+        %td
+          %p #{holding.item.name}
+        %td
+          %a.wholly_clickable(href="/users/#{holding.seller.id}" )
+            :escaped
+              #{holding.seller.name}
+        %td
+          %p #{holding.item.price}
+        %td
+          %p #{holding.quantity}
+        %td
+          %form.nomargin(action="/items/#{holding.item.id}/delivered" method="POST")
+            %input.square(type="submit" value="Arrived")
+
+
+-unless @outbox.empty?
+  %h4 Outgoing
+  %table.itemtable
+    %thead
+      %tr
+        %td
+          %p.table_header Name
+        %td
+          %p.table_header Buyer
+        %td
+          %p.table_header Price
+        %td
+          %p.table_header Qty
+    - for holding in @outbox
+      %tr(title = "#{holding.item.description}")
+        %td
+          %p #{holding.item.name}
+        %td
+          %a.wholly_clickable(href="/users/#{holding.buyer.id}" )
+            :escaped
+              #{holding.buyer.name}
+        %td
+          %p #{holding.item.price}
+        %td
+          %p #{holding.quantity}

@@ -1,0 +1,16 @@
+%h2 Rating
+
+%form(action = "/rate/#{@user.id}" method = "POST")
+  %input{:type => "radio", :name => "rating", :value => 0, :checked => @current_rating == "0" ? "true" : nil} Bad
+  %br
+  %input{:type => "radio", :name => "rating", :value => 1, :checked => @current_rating == "1" ? "true" : nil} Good
+  %br
+  %input{:type => "radio", :name => "rating", :value => 2, :checked => @current_rating == "2" ? "true" : nil} Great
+  %br
+  %input{:type => "radio", :name => "rating", :value => 3, :checked => @current_rating == "3" ? "true" : nil} Fucking Awesome!!!
+  %br
+  %br
+  %input.square(type = "submit" value = "Save")
+%br
+%form.nomargin(action="/home" method="GET")
+  %input.square(type="submit" value="Cancel")

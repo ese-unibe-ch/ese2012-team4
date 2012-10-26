@@ -2,6 +2,7 @@ require 'rubygems'
 require 'bcrypt'
 require 'require_relative'
 require 'fileutils'
+require 'json'
 require_relative('../utility/mailer')
 require_relative('../utility/password_check')
 require_relative('item')
@@ -22,7 +23,7 @@ module Models
     #  fails if the buyer has not enough credits.
 
     # generate getter and setter for name and price
-    attr_accessor :name, :credits, :item_list, :password_hash, :password_salt, :description, :e_mail, :id, :errors, :image
+    attr_accessor :name, :credits, :item_list, :password_hash, :password_salt, :description, :e_mail, :id, :errors, :image, :ratings
 
     @@users_by_name = {}
     @@users = {}
@@ -42,6 +43,7 @@ module Models
       pw_hash = BCrypt::Engine.hash_secret(password, pw_salt)
       user.password_salt = pw_salt
       user.password_hash = pw_hash
+      user.ratings = {}
       user
     end
 
@@ -205,6 +207,14 @@ module Models
     def self.available? name
       not @@users_by_name.has_key? name.downcase
     end
+    
+    def pending_inbox
+      Models::Holding.get_all.select {|s| s.buyer == self}
+    end
+    
+    def pending_outbox
+      Models::Holding.get_all.select {|s| s.seller == self}
+    end
 
     def delete
       FileUtils::rm(self.image, :force => true)
@@ -212,5 +222,44 @@ module Models
       @@users_by_name.delete(self.name.downcase)
     end
 
+    def has_rated(seller)
+      seller.rating_from self != nil
+    end
+
+    def add_rating(seller, rating)
+      self.ratings[seller] = rating
+    end
+    
+    def rating_from user
+      user = User.get_user(user.id)
+      self.ratings[user]
+    end
+    
+    def ratings_json
+      colors = ['#FF0000','#FF8000','#9EFF3D','#00FF00']
+      
+      values = Array.new(4, 0)  # size, initial value
+      self.ratings.each_pair do |k,v|
+        values[v.to_i]+=1
+      end
+      data = []
+      values.each_with_index do |value, index|
+        hash = Hash.new
+        hash[:data] = [[values[index], index+1]]
+        hash[:color] = colors[index]
+        data.push(hash)
+      end
+      data.to_json
+    end
+    
+    def rating
+      counter = 0
+      value = 0
+      self.ratings.each_pair do |k,v|
+        value = value + v
+        counter = counter + 1
+      end
+      value/counter
+    end
   end
 end
