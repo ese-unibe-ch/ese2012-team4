@@ -53,3 +53,7 @@
       %form.nomargin(action="/buy/#{@item.id}/#{@item.timestamp}" method="POST")
         %input.tiny.rightalign(type = "text" name = "quantity" value = "1")
         %input.square.rightalign(type="submit" value="Buy")
+  - if !@session_user.wishlist.include?(@item) and !@item.owner.eql?(@session_user)
+    %td
+      %form.nomargin(action="/add_to_wishlist/#{@item.id}" method="POST")
+        %input.square.rightalign(type="submit" value="Add to wishlist")
