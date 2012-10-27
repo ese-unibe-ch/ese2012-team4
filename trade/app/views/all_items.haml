@@ -49,5 +49,8 @@
           %form.nomargin(action="/buy/#{item.id}/#{(stored.select {|tobuy| tobuy.id==item.id})[0].timestamp}" method="POST")
             %input.tiny(type = "text" name = "quantity" value = "1")
             %input.square.rightalign(type="submit" value="Buy")
+        %td
+          %form.nomargin(action="/add_to_wishlist/#{item.id}" method="POST")
+            %input.square.rightalign(type = "submit" value ="Add to wishlist")
 -else
   %h3 No items

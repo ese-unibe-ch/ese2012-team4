@@ -144,5 +144,12 @@ module Controllers
       redirect "/wishlist"
     end
 
+    post "/add_to_wishlist/:itemid" do
+      redirect '/index' unless session[:id]
+      @item = Item.get_item(params[:itemid])
+      @session_user.add_to_wishlist(@item)
+      redirect "/wishlist"
+    end
+
   end
 end
