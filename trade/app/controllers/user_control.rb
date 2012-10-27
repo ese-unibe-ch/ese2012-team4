@@ -144,5 +144,18 @@ module Controllers
       redirect "/wishlist"
     end
 
+    post "/add_to_wishlist/:itemid" do
+      redirect '/index' unless session[:id]
+      id = params[:itemid]
+      @item = Item.get_item(id)
+      unless @item.active == true
+        flash[:error] = "Item has been deactivated"
+        redirect "/items"
+      end
+      @session_user.add_to_wishlist(@item)
+      flash[:notice] = "Item has been added to your wishlist"
+      redirect "/wishlist"
+    end
+
   end
 end

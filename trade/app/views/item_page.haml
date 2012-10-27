@@ -3,6 +3,12 @@
     #{@item.name}
 
 -# this should check if the user has an upload, otherwise placeholder - there are no uploads yet.
+-if @item.wishlist_users.include? @session_user
+  %form.nomargin(action="/remove_from_wishlist/#{@item.id}" method="POST")
+    %input.square.rightalign(type="submit" value="Remove this item from wishlist")
+-else
+  %form.nomargin(action="/add_to_wishlist/#{@item.id}" method="POST")
+    %input.square.rightalign(type="submit" value="Add this item to wishlist")
 %a(href="/item/#{@item.id}/image" rel="lightbox" title="#{@item.name}")
   %img(src="/item/#{@item.id}/image" class = "bigpicturebox")
 %br
