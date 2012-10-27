@@ -51,9 +51,14 @@
           %form.nomargin(action="/buy/#{item.id}/#{(stored.select {|tobuy| tobuy.id==item.id})[0].timestamp}" method="POST")
             %input.tiny(type = "text" name = "quantity" value = "1")
             %input.square.rightalign(type="submit" value="Buy")
-        - if !@session_user.wishlist.include?(item) and !item.owner.eql?(@session_user)
+        - if @session_user.wishlist.include?(item)
           %td
-            %form.nomargin(action="/add_to_wishlist/#{item.id}" method="POST")
-              %input.square.rightalign(type = "submit" value ="Add to wishlist")
+            %form.nomargin(action="/remove_from_wishlist/#{item.id}" method="POST")
+              %input.square.rightalign(type="submit" value = "Remove from Wishlist")
+        -else
+          - if !item.owner.eql?(@session_user)
+            %td
+              %form.nomargin(action="/add_to_wishlist/#{item.id}" method="POST")
+                %input.square.rightalign(type = "submit" value ="Add to wishlist")
 -else
   %h3 No items
