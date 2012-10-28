@@ -71,6 +71,20 @@ module Controllers
       end
     end
 
+    get "/rate/:id" do
+      redirect '/index' unless session[:id]
+      @user = User.get_user(params[:id])
+      @current_rating = @user.rating_from @session_user
+      haml :rate_user
+    end
+
+    post "/rate/:id" do
+      redirect '/index' unless session[:id]
+      user = User.get_user(params[:id])
+      user.add_rating(@session_user, params[:rating]) unless params[:rating] == nil
+      redirect "/home"
+    end
+
     post "/unauthenticate" do
       redirect '/index' unless session[:id]
       session[:id] = nil
@@ -114,6 +128,12 @@ module Controllers
       viewer.change_password(params[:password_new])
       flash[:notice] = "Password has been updated"
       redirect "/"
+    end
+    
+    get '/profile/pending' do
+      @inbox = @session_user.pending_inbox
+      @outbox = @session_user.pending_outbox
+      haml :pending_items
     end
 
     get '/delete_link' do

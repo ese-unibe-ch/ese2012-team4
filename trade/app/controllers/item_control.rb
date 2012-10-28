@@ -9,6 +9,7 @@ require 'sinatra/content_for'
 require 'rack-flash'
 require_relative('../models/module/user')
 require_relative('../models/module/item')
+require_relative('../models/utility/holding')
 require_relative('helper')
 
 include Models
@@ -229,7 +230,22 @@ module Controllers
         redirect "#{back}"
       end
       flash[:notice] = "You have bought the item"
-      redirect "/home/items"
+      redirect "/home"
+    end
+
+    post '/items/:id/delivered' do
+      redirect '/index' unless session[:id]
+      items = Models::Holding.get_all.select {|s|
+        s.item.id.to_s.eql?(params[:id].to_s) }
+      item = items.first
+      item.itemReceived
+      if @session_user.has_rated(item.seller)
+        flash[:notice] = "Transfer completed. Would You like to edit your rating of #{item.seller.name}?"
+        redirect "/rate/#{item.seller.id}"
+      else
+        flash[:notice] = "Transfer completed. Would You like to rate #{item.seller.name}?"
+        redirect "/rate/#{item.seller.id}"
+      end
     end
   end
 end

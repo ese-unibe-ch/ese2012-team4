@@ -2,9 +2,11 @@ require 'rubygems'
 require 'bcrypt'
 require 'require_relative'
 require 'fileutils'
+require 'json'
 require_relative('../utility/mailer')
 require_relative('../utility/password_check')
 require_relative('item')
+require_relative('../utility/holding')
 
 
 module Models
@@ -21,7 +23,7 @@ module Models
     #  fails if the buyer has not enough credits.
 
     # generate getter and setter for name and price
-    attr_accessor :name, :credits, :item_list, :password_hash, :password_salt, :description, :e_mail, :id, :errors, :image, :wishlist
+    attr_accessor :name, :credits, :item_list, :password_hash, :password_salt, :description, :e_mail, :id, :errors, :image, :wishlist, :ratings
 
     @@users_by_name = {}
     @@users = {}
@@ -42,6 +44,7 @@ module Models
       pw_hash = BCrypt::Engine.hash_secret(password, pw_salt)
       user.password_salt = pw_salt
       user.password_hash = pw_hash
+      user.ratings = {}
       user
     end
 
@@ -141,37 +144,20 @@ module Models
     # buy an item
     # @return true if user can buy item, false if his credit amount is too small
     def buy_new_item(item_to_buy, quantity)
+      preowner = item_to_buy.owner
+
       if Integer(item_to_buy.price*quantity) > self.credits or Integer(item_to_buy.quantity)<quantity
         return false
       end
-      self.credits -= Integer(item_to_buy.price)*quantity
-      preowner = item_to_buy.owner
-      preowner.credits+=Integer(item_to_buy.price)*quantity
-      if(item_to_buy.quantity.to_i == quantity)
-        item_to_buy.active = false
-        item_to_buy.owner = self
-        item_to_buy.owner.remove_item(item_to_buy)
 
-        if !item_to_buy.wishlist_users.empty?
-          item_to_buy.wishlist_users.each {|user| user.remove_from_wishlist(item_to_buy); item_to_buy.wishlist_users.delete(user)}
-        end
-
-        if !(identical = self.list_items_inactive.detect{|i| i.name== item_to_buy.name and i.price == item_to_buy.price and i.description==item_to_buy.description}).nil?
-          identical.quantity+=quantity
-        else
-          self.item_list.push(item_to_buy)
-        end
-      else
-        if !(identical = self.list_items_inactive.detect{|i| i.name== item_to_buy.name and i.price == item_to_buy.price and i.description==item_to_buy.description}).nil?
-          identical.quantity+=quantity
-        else
-          self.create_item(item_to_buy.name,item_to_buy.price, quantity,item_to_buy.description)
-        end
-        item_to_buy.quantity-=quantity
-
+      if !item_to_buy.wishlist_users.empty?
+        item_to_buy.wishlist_users.each {|user| user.remove_from_wishlist(item_to_buy); item_to_buy.wishlist_users.delete(user)}
       end
-      Models::Mailer.send_mail_to(preowner.e_mail, "Hi #{preowner.name}, \n #{self.name} bought your Item #{item_to_buy.name}.
-        Please Contact him for completing the trade. His E-Mail is: #{self.e_mail}")
+
+      Models::Holding.shipItem(item_to_buy, item_to_buy.owner, self, quantity)
+
+      #Models::Mailer.send_mail_to(preowner.e_mail, "Hi #{preowner.name}, \n #{self.name} bought your Item #{item_to_buy.name}.
+      #  Please Contact him for completing the trade. His E-Mail is: #{self.e_mail}")
       return true
     end
 
@@ -230,6 +216,14 @@ module Models
     def self.available? name
       not @@users_by_name.has_key? name.downcase
     end
+    
+    def pending_inbox
+      Models::Holding.get_all.select {|s| s.buyer == self}
+    end
+    
+    def pending_outbox
+      Models::Holding.get_all.select {|s| s.seller == self}
+    end
 
     def delete
       FileUtils::rm(self.image, :force => true)
@@ -247,5 +241,44 @@ module Models
       self.wishlist.delete(item)
     end
 
+    def has_rated(seller)
+      seller.rating_from self != nil
+    end
+
+    def add_rating(seller, rating)
+      self.ratings[seller] = rating
+    end
+    
+    def rating_from user
+      user = User.get_user(user.id)
+      self.ratings[user]
+    end
+    
+    def ratings_json
+      colors = ['#FF0000','#FF8000','#9EFF3D','#00FF00']
+      
+      values = Array.new(4, 0)  # size, initial value
+      self.ratings.each_pair do |k,v|
+        values[v.to_i]+=1
+      end
+      data = []
+      values.each_with_index do |value, index|
+        hash = Hash.new
+        hash[:data] = [[values[index], index+1]]
+        hash[:color] = colors[index]
+        data.push(hash)
+      end
+      data.to_json
+    end
+    
+    def rating
+      counter = 0
+      value = 0
+      self.ratings.each_pair do |k,v|
+        value = value + v
+        counter = counter + 1
+      end
+      value/counter
+    end
   end
 end

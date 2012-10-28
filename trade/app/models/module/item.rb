@@ -16,6 +16,10 @@ module Models
     @@count = 0
     @comment_count = 0
 
+    def self.get_item_list
+      @@item_list
+    end
+
     # factory method (constructor) on the class
     def self.created( name, price, owner, quantity, description = "", image = "")
       item = self.new
