@@ -86,7 +86,7 @@
         %td
           %p #{item.quantity}
         %td
-          %form.nomargin(action="/changestate/#{item.id}/setactive" method="POST")
+          %form.nomargin(action="/changestate/#{item.id}/activation" method="GET")
             %input.square(type="submit" value="Set active")
         %td
           %form.nomargin(action="/home/edit_item/#{item.id}" method="GET")

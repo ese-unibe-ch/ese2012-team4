@@ -10,6 +10,7 @@ require 'rack-flash'
 require_relative('../models/module/user')
 require_relative('../models/module/item')
 require_relative('../models/utility/holding')
+require_relative('../models/utility/time_handler')
 require_relative('helper')
 
 include Models
@@ -104,13 +105,7 @@ module Controllers
     get '/home/edit_item/:itemid' do
       redirect '/index' unless session[:id]
       if Item.get_item(params[:itemid]).is_owner?(@session_user.id)
-
         @item = Item.get_item(params[:itemid])
-        #RB: Not needed, if we assume that the system is in a valid state before
-        #unless Item.valid_integer?(item_price)
-        #  redirect "/home/edit_item/#{params[:itemid]}/not_a_number"
-        #end
-
         haml :item_edit, :locals => {:action => "change/#{params[:itemid]}", :button => "Save changes", :page_name => "Edit Item"}
       else
         redirect "/"
@@ -151,15 +146,12 @@ module Controllers
       owner = @session_user
       quantity = params[:quantity]
       description = params[:quantity]
-
       filename = save_image(params[:image_file])
-
       item = Item.created(name, price, owner, quantity, description, filename)
       unless item.is_valid
         flash[:error] = item.errors
         redirect "/home/new"
       end
-      
       @session_user.create_item(params[:name], Integer(price), Integer(quantity), params[:description], filename)
       flash[:notice] = "Item has been created"
       redirect "/home/items"
@@ -177,7 +169,6 @@ module Controllers
 
     post '/change/:itemid' do
       redirect '/index' unless session[:id]
-
       filename = save_image(params[:image_file])
       test_item = Item.created(params[:name], params[:price], @session_user, params[:quantity], params[:description], filename)
       unless test_item.is_valid
@@ -191,12 +182,30 @@ module Controllers
       end
     end
 
+    get '/changestate/:itemid/activation' do
+      redirect '/index' unless session[:id]
+      if Item.get_item(params[:itemid]).is_owner?(@session_user.id)
+        @item = Item.get_item(params[:itemid])
+        haml :activation_confirm, :locals => {:page_name => "Confirm Activation"}
+      else
+        redirect '/'
+      end
+    end
+
     post '/changestate/:id/setactive' do
       redirect '/index' unless session[:id]
       id = params[:id]
       owner = Item.get_item(id).owner
-      owner.activate_item(id)
-      flash[:notice] = "Item has been activated"
+      item = Item.get_item(id)
+      if(TimeHandler.validTime?(params[:exp_date], params[:exp_time]))
+        unless((params[:exp_date].eql?("") and params[:exp_time].eql?("")))
+          item.expiration_date= TimeHandler.parseTime(params[:exp_date], params[:exp_time])
+        end
+        owner.activate_item(id)
+        flash[:notice] = "Item has been activated"
+      else
+        flash[:error] = "You did not put in a valid Time"
+      end
       redirect "/home/items"
     end
 
@@ -205,6 +214,7 @@ module Controllers
       id = params[:id]
       owner = Item.get_item(id).owner
       owner.deactivate_item(id)
+      Item.get_item(id).expiration_date = nil
       flash[:notice] = "Item has been deactivated"
       redirect "/home/items"
     end

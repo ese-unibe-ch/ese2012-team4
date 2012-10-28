@@ -83,7 +83,19 @@ module Models
 
     # get state
     def is_active?
+      if(self.expired?)
+        self.active= false
+      end
       self.active
+    end
+
+    # Returns if the chosen expiration date is exceeded
+    def expired?
+      if(!self.expiration_date.nil?)
+        return Time.now.getlocal > self.expiration_date
+      else
+        return false
+      end
     end
 
     # check if a price is valid
@@ -148,16 +160,11 @@ module Models
       end
       for item in provisional
         i = item[1]
-        if i.active or i.owner==user
+        if i.is_active? or i.owner==user
           ret_array.push(i)
         end
       end
       ret_array
-    end
-
-    # Returns if the chosen expiration date is exceeded
-    def expired?
-      Time.now.getlocal > expiration_date
     end
 
     def add_user_to_wishlist(user)
