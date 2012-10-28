@@ -136,12 +136,12 @@ a.menu:hover
 
 a.menu
 {
-    padding-left: 20px;
-    padding-top: 2px;
+    /* padding-left: 20px;*/
+    /*  padding-top: 2px;*/
     display:block;
     text-align:left;
-    width:180px;
-    height:20px;
+    width:200px;
+    height:27px;
     text-decoration:none;
 }
 
@@ -298,6 +298,7 @@ img.smallpicturebox{
     width: 40px;
 }
 
+
 .ratingtable{
     width: 65%;
     float: right;
@@ -305,3 +306,4 @@ img.smallpicturebox{
     padding-left: 5px;
 
 }
+

@@ -31,23 +31,35 @@
         #navigation
           -if not session[:id].nil?
             %h2.menu_header Menu
-            %a.menu(href="/home") - Home
-            %a.menu(href="/home/items") - My Items
+            %a.menu(href='/home')
+              %img(src="/images/legend/Home.png" class = "iamlegend")
+            %a.menu(href="/users/#{session[:id]}")
+              %img(src="/images/legend/My Profile.png" class = "iamlegend")
+            %a.menu(href="/home/items")
+              %img(src="/images/legend/My_Items.png" class = "iamlegend")
+            %a.menu(href="/profile/pending")
+              %img(src="/images/legend/Pending_Items.png" class = "iamlegend")
+            %a.menu(href="/wishlist")
+              %img(src="/images/legend/Wishlist.png" class = "iamlegend")
             -#%a.menu(href="/home/inactive") - My Inactive Items
-            %a.menu(href="/home/new") - Create Item
+            -#%a.menu(href="/home/new") - Create Item
             %br
-            %a.menu(href="/users") - All Users
-            %a.menu(href="/items") - All Items
-            %a.menu(href="/search") - Search
+            %a.menu(href="/users")
+              %img(src="/images/legend/All_Users.png" class = "iamlegend")
+            %a.menu(href="/items")
+              %img(src="/images/legend/All_Items.png" class = "iamlegend")
+            -#%a.menu(href="/search") - Search
             %br
-            %a.menu(href="/users/#{session[:id]}") - My Profile
-            %a.menu(href="/wishlist") - My Wishlist
-            %a.menu(href="/profile/pending") - Pending items
-            %a.menu(href="/logout") - Logout
+
+            %a.menu(href="/logout")
+              %img(src="/images/legend/Logout.png" class = "iamlegend")
+
           -else
             %h2.menu_header not logged in!
-            %a.menu(href='/login') - Login!
-            %a.menu(href='/signup') - Signup!        
+            %a.menu(href='/login')
+              %img(src="/images/legend/Login.png" class = "iamlegend")
+            %a.menu(href='/signup')
+              %img(src="/images/legend/Signup.png" class = "iamlegend")
         #content
           -if flash[:error]
             #error_msg 
