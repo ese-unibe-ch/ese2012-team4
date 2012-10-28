@@ -55,10 +55,22 @@ class UserTest < Test::Unit::TestCase
       old_owner.remove_item(sock)
     end
 
-    assert(old_owner.list_items.size==0)
-    assert(old_owner.list_items_inactive.size==0)
-    assert(new_owner.list_items.size==0)
-    assert(new_owner.list_items_inactive.size==1)
+    assert old_owner.list_items.size == 0
+    assert old_owner.list_items_inactive.size == 0
+    assert new_owner.list_items.size == 0
+    assert new_owner.list_items_inactive.size == 0
+
+    pending = Models::Holding.get_all.last
+    assert pending.item == sock
+    assert pending.seller == old_owner
+    assert pending.buyer == new_owner
+
+    pending.itemReceived
+
+    assert old_owner.list_items.size == 0
+    assert old_owner.list_items_inactive.size == 0
+    assert new_owner.list_items.size == 0
+    assert new_owner.list_items_inactive.size == 1
 
     assert( !sock.is_active?, "item should not be active, is")
     assert( !new_owner.list_items_inactive[0].is_active?, "item should not be active, is")

@@ -103,8 +103,10 @@ class ItemTest < Test::Unit::TestCase
     if new_owner.buy_new_item(item,1)
       old_owner.remove_item(item)
     end
-    assert(item.owner == new_owner, "Owner not set correctly")
-    assert(item.owner.name == "New", "Owner not set correctly")
+    # LD Removed this. This is already tested in user_test.rb, because
+    # it's a method of the User class. Maybe remove whole class?
+    # assert(item.owner == new_owner, "Owner not set correctly")
+    # assert(item.owner.name == "New", "Owner not set correctly")
   end
 
   #test for price validation
@@ -128,7 +130,7 @@ class ItemTest < Test::Unit::TestCase
     item = @owner.create_item("testobject", 50, 1)
     assert(item.is_owner?(1), "The owner should be recognized by its ID.")
     assert(!item.is_owner?(2), "Wrong IDs should not match")
-    #assert(!item.is_owner?("bla%ç&#12;%(/k"), "Wrong IDs should not match")
+    #assert(!item.is_owner?("bla%x&#12;%(/k"), "Wrong IDs should not match")
   end
 
   #test for editable? method
@@ -159,7 +161,6 @@ class ItemTest < Test::Unit::TestCase
 
   def test_validation
     item = @owner.create_item("testobject",50, 10)
-    print Item.valid_integer?(item.price)
     assert item.is_valid, item.errors
     # LD TODO: add more tests
   end
