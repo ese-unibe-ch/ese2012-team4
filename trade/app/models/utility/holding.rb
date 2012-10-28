@@ -36,13 +36,14 @@ class Holding
       else
         item.quantity = quantity;
         buyer.item_list.push(item)
+        item.active = false
       end
     else
       # seller has some items left
       if !(identical = buyer.list_items_inactive.detect{|i| i.name== item.name and i.price == item.price and i.description==item.description}).nil?
         identical.quantity+=quantity
       else
-        buyer.create_item(item.name,item.price, quantity, item.description)
+        buyer.create_item(item.name,item.price, quantity, item.description).active = false
       end
     end
 
