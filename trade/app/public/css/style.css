@@ -380,3 +380,11 @@ img.mediumpicturebox{
 img.smallpicturebox{
     width: 40px;
 }
+
+.ratingtable{
+    width: 65%;
+    float: right;
+    padding-top: 10px;
+    padding-left: 5px;
+
+}
