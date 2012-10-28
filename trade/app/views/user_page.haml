@@ -2,14 +2,19 @@
 -#%h2
   :escaped
     #{@user.name}
-%a(href="/user/#{@user.id}/image" rel="lightbox" title="#{@user.name}")
-  %img(src="/user/#{@user.id}/image" class = "bigpicturebox")
-:javascript
-  var data = #{@user.ratings_json};
-  $(document).ready(function (e) {
-    $.plot($("#placeholder"), data, options);
-  });
-%div(id="placeholder" style="width:250px; height:100px;")
+.lineContainer
+  .textbox.name
+    %a(href="/user/#{@user.id}/image" rel="lightbox" title="#{@user.name}")
+      %img(src="/user/#{@user.id}/image" class = "bigpicturebox")
+  .ratingtable
+    %p Rating by other users:
+    %br
+    :javascript
+      var data = #{@user.ratings_json};
+      $(document).ready(function (e) {
+        $.plot($("#placeholder"), data, options);
+      });
+    %div(id="placeholder" style="width:250px; height:100px;")
 %br
 .lineContainer
   .textbox.name
