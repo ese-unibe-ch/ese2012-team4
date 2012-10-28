@@ -44,7 +44,7 @@ module Models
       pw_hash = BCrypt::Engine.hash_secret(password, pw_salt)
       user.password_salt = pw_salt
       user.password_hash = pw_hash
-      user.ratings = {}
+      user.ratings = []
       user
     end
 
@@ -241,24 +241,15 @@ module Models
       self.wishlist.delete(item)
     end
 
-    def has_rated(seller)
-      seller.rating_from self != nil
-    end
-
-    def add_rating(seller, rating)
-      self.ratings[seller] = rating
-    end
-    
-    def rating_from user
-      user = User.get_user(user.id)
-      self.ratings[user]
+    def add_rating(rating)
+      self.ratings.push rating
     end
     
     def ratings_json
       colors = ['#FF0000','#FF8000','#9EFF3D','#00FF00']
       
       values = Array.new(4, 0)  # size, initial value
-      self.ratings.each_pair do |k,v|
+      self.ratings.each do |v|
         values[v.to_i]+=1
       end
       data = []
@@ -274,7 +265,7 @@ module Models
     def rating
       counter = 0
       value = 0
-      self.ratings.each_pair do |k,v|
+      self.ratings.each do |v|
         value = value + v
         counter = counter + 1
       end

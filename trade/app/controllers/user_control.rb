@@ -74,14 +74,13 @@ module Controllers
     get "/rate/:id" do
       redirect '/index' unless session[:id]
       @user = User.get_user(params[:id])
-      @current_rating = @user.rating_from @session_user
       haml :rate_user
     end
 
     post "/rate/:id" do
       redirect '/index' unless session[:id]
       user = User.get_user(params[:id])
-      user.add_rating(@session_user, params[:rating]) unless params[:rating] == nil
+      user.add_rating(params[:rating]) unless params[:rating] == nil
       redirect "/home"
     end
 

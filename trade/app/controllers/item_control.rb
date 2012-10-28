@@ -239,13 +239,8 @@ module Controllers
         s.item.id.to_s.eql?(params[:id].to_s) }
       item = items.first
       item.itemReceived
-      if @session_user.has_rated(item.seller)
-        flash[:notice] = "Transfer completed. Would You like to edit your rating of #{item.seller.name}?"
-        redirect "/rate/#{item.seller.id}"
-      else
-        flash[:notice] = "Transfer completed. Would You like to rate #{item.seller.name}?"
-        redirect "/rate/#{item.seller.id}"
-      end
+      flash[:notice] = "Transfer completed. Would You like to rate #{item.seller.name}?"
+      redirect "/rate/#{item.seller.id}"
     end
   end
 end
