@@ -8,7 +8,7 @@ module Models
   #   - sub comments  which correspond to an item and a head comment
   class Comment
     @@comment_count = 0
-    @@comments = {}
+    @@comments = []
 
     # - [Integer] id: The identifier of this Comment
     attr_accessor :id
@@ -44,7 +44,7 @@ module Models
     end
 
     def save
-      @@comments["#{self.id}"] = self
+      @@comments[self.id] = self
       @@comment_count +=1
     end
 
@@ -52,7 +52,7 @@ module Models
     # If it's a subcomment, it will delete it from the head Comment's list 'sub_comments'
     def delete
       if is_head_comment?
-        @@comments.delete(self.id)
+        @@comments.delete self
       else
         head_comment = self.previous_comment
         head_comment.sub_comments.delete(self)
@@ -64,7 +64,7 @@ module Models
     end
 
     def self.by_id id
-      @@comments[id]
+      @@comments[id.to_i]
     end
 
     # Adds a new Comment to this Comment

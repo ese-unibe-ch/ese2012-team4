@@ -181,6 +181,7 @@ class UserTest < Test::Unit::TestCase
   def test_wishlist
     user1 = Models::User.created( "testuser1", "password", "test@mail.com" )
     item1 = user1.create_item("testobject", 10, 1)
+    id_before = item1.id
     item2 = user1.create_item("testobject2", 50, 1)
     user2 = Models::User.created( "testuser2", "password", "test@mail.com" )
     assert item1.owner.name == user1.name
@@ -189,7 +190,7 @@ class UserTest < Test::Unit::TestCase
     assert item2.wishlist_users.size == 0
     user2.add_to_wishlist(item1)
     assert item1.owner.eql?(user1)
-    assert item1.id == 8
+    assert item1.id == id_before
     item1.active = true
     assert user2.wishlist.size == 1
     assert item1.wishlist_users.size == 1
