@@ -2,16 +2,17 @@
 %br
 - content_for :name do
   All_users
+%table.itemtable
+  - for user in @all_users
+    %tr
+      %td
+        %a(href="/user/#{user.id}/image" rel="lightbox" title="#{user.name}")
+          %img(src="/user/#{user.id}/image" class = "smallpicturebox")
+      %td
+        %a(href="/users/#{user.id}" )
+          :escaped
+            #{user.name}
+      %td
+        has #{user.list_items.size} Items to sell
 
-- for user in @all_users
-  .lineContainer
-    .textbox.name
-      :escaped
-        #{user.name}
-    -#
-      Formatierung geht kaputt, wenn man den Usernamen nach unten nimmt und ":escaped" zwischendrin setzt.
-
-    .textbox.value
-      has #{user.list_items.size} Items to sell
-      %a.rightalign(href="/users/#{user.id}" ) Show Userpage
 
