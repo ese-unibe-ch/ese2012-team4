@@ -1,4 +1,4 @@
-.itemtable{
+.itemtable, .usertable{
     width: 100%;
     padding: 0px;
     border-collapse: collapse;
@@ -17,7 +17,7 @@
     vertical-align: middle;
 }
 
-.itemtable td{
+.itemtable, .usertable td{
     background-color: #E5FFF2;
     max-height: 20px;
     overflow: hidden;
@@ -26,8 +26,11 @@
     /*border-top: 3px solid #8FC9FF;*/
     border-right:none;
     border-bottom: none;
+}
+.itemtable td{
     width:100%;
 }
+
 .itemtable td.buyform {
     min-width: 80px;
 
