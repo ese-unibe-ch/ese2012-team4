@@ -1,13 +1,11 @@
 module Models
+
+  # Represents an item in the shop, stores its data and different states.
+  # The class stores all created items in a list.
   class Item
     require 'dimensions'
     require 'require_relative'
     require_relative('comment')
-
-    #Items have a name.
-    #Items have a price.
-    #An item can be active or inactive.
-    #An item has an owner.
 
     # generate getter and setter for name and price
     attr_accessor :name, :price, :active, :owner, :id, :description, :timestamp, :quantity, :errors, :image, :head_comments, :expiration_date, :wishlist_users
@@ -37,7 +35,7 @@ module Models
       item
     end
 
-    # LD maybe we can use this some time. Creates a copy of an instance, while replacing the
+    # Creates a copy of an instance, while replacing the
     # instance variables defined in the parameter hash
     # usage: my_item.copy(:name => "Item2")
     def copy( hash = {})
@@ -46,6 +44,7 @@ module Models
                                   hash[:description] || self.description)
     end
 
+    # Controls the item's data. Returns true if there is no invalid data or returns false and adds errors if there is.
     def is_valid
       self.errors = ""
       self.errors += "Price is not a valid number\n" unless Item.valid_integer?(self.price)
@@ -62,6 +61,7 @@ module Models
       self.errors != "" ? false : true
     end
 
+    # Saves the item to the Item-List
     def save
       raise "Duplicated item" if @@item_list.has_key? self.id and @@item_list[self.id] != self
       @@item_list["#{self.id}"] = self
@@ -81,7 +81,8 @@ module Models
       self.timestamp = Time.now.to_i
     end
 
-    # get state
+    # Get the activation state.
+    # Use this method instead of .active if you want to update the state if the item is expired.
     def is_active?
       if(self.expired?)
         self.active= false
@@ -89,7 +90,7 @@ module Models
       self.active
     end
 
-    # Returns if the chosen expiration date is exceeded
+    # Checks if the chosen expiration date is exceeded
     def expired?
       if(!self.expiration_date.nil?)
         return Time.now.getlocal > self.expiration_date
@@ -98,17 +99,17 @@ module Models
       end
     end
 
-    # check if a price is valid
+    # Checks if a price is valid
     def self.valid_integer?(price)
       (!!(price =~ /^[-+]?[1-9]([0-9]*)?$/) && Integer(price) >= 0 || (price.is_a? Integer))
     end
 
-    #compare a users name to the owners name
+    # Compares a users name to the owners name
     def is_owner?(user)
       User.get_user(user).eql?(self.owner)
     end
 
-    # to String-method
+    # Overrides to String method
     def to_s
       "#{self.name}, #{self.price}"
     end
@@ -117,13 +118,13 @@ module Models
       !self.active
     end
 
+    # Returns an item by its id.
     def self.get_item(itemid)
       return @@item_list[itemid]
     end
 
-    #def self.get_all(viewer)
-    #  return @@item_list.select {|s| s.owner.name !=  viewer}
-    #end
+    # Returns all stored Items except those who belong to the given viewer.
+    # @param viewer: Name of the user whose items should not be listed.
     def self.get_all(viewer)
       new_array = @@item_list.to_a
       ret_array = Array.new
@@ -139,6 +140,9 @@ module Models
       @@item_list.delete(self)
     end
 
+    # Adds a new Comment on this Item
+    # @param author: The User who wrote the Comment
+    # @param text: The text of the Comment
     def comment (author, text)
       c = Models::Comment.created(author, self, text)
       c.save

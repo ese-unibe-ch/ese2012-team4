@@ -31,6 +31,12 @@
 %br
 .lineContainer
   .textbox.name
+    Expires on:
+  .textbox.value
+    #{@item.expiration_date}
+%br
+.lineContainer
+  .textbox.name
     Owner:
   .textbox.value
     %a(href="/users/#{@item.owner.id}" )
