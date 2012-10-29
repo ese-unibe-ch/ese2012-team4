@@ -153,7 +153,7 @@ module Controllers
         redirect "/home/new"
       end
       @session_user.create_item(params[:name], Integer(price), Integer(quantity), params[:description], filename)
-      flash[:notice] = "Item has been created"
+      flash[:notice] = "Item #{params[:name]} has been created"
       redirect "/home/items"
     end
 
@@ -177,7 +177,7 @@ module Controllers
       else
         item = Item.get_item(params[:itemid])
         item.edit(params[:name],Integer(params[:price]),Integer(params[:quantity]),params[:description], filename)
-        flash[:notice] = "Item has been changed"
+        flash[:notice] = "#{params[:name]} has been changed"
         redirect "/home/items"
       end
     end
@@ -202,7 +202,7 @@ module Controllers
           item.expiration_date= TimeHandler.parseTime(params[:exp_date], params[:exp_time])
         end
         owner.activate_item(id)
-        flash[:notice] = "Item has been activated"
+        flash[:notice] = "#{item.name} has been activated"
       else
         flash[:error] = "You did not put in a valid Time"
       end
@@ -214,7 +214,7 @@ module Controllers
       id = params[:id]
       owner = Item.get_item(id).owner
       owner.deactivate_item(id)
-      flash[:notice] = "Item has been deactivated"
+      flash[:notice] = "#{Item.get_item(id).name} has been deactivated"
       redirect "/home/items"
     end
 
@@ -231,18 +231,18 @@ module Controllers
       user = session[:id]
       new_user = User.get_user(user)
       if (Integer(params[:timestamp])-item.timestamp)!=0
-        flash[:error] = "Item has been edited while you were buying it"
+        flash[:error] = "#{item.name} has been edited while you were buying it"
         redirect "#{back}"
       end
       unless item.is_active?
-        flash[:error] = "Item is no longer active."
+        flash[:error] = "#{item.name} is no longer active."
         redirect "#{back}"
       end
       unless new_user.buy_new_item(item, quantity)
-        flash[:error] = "You don't have enough credits"
+        flash[:error] = "You don't have enough credits to buy #{quantity} piece/s of #{item.name}"
         redirect "#{back}"
       end
-      flash[:notice] = "You have bought the item"
+      flash[:notice] = "You have bought #{quantity} piece/s of #{item.name}"
       redirect "/home"
     end
 

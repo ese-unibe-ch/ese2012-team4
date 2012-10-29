@@ -42,7 +42,7 @@ module Controllers
       else
         session[:id] = user.id
         #session['auth'] = true
-        flash[:notice] = "You are now logged in"
+        flash[:notice] = "Welcome, #{user.name}. You are now logged in"
         redirect "/home"
       end
     end
