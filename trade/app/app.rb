@@ -29,40 +29,45 @@ class App < Sinatra::Base
   set :public_folder, relative('public')
 
   configure :development do
-    userA = User.created( "userA", "passwordA", "e_mail_A@preset.com" )
+    userA = User.created( "Bad Simu", "password1", "e_mail_A@preset.com" )
     userA.save
-    aa = userA.create_item("UserA_ItemA", 10, 1)
-    ab = userA.create_item("UserA_ItemB", 50, 1)
+    aa = userA.create_item("Half-empty hair wax", 15, 1)
+    ab = userA.create_item("Vespa Primavera ET3", 250, 1)
+    ab.description = "Rusty, but a true classic"
     ab.active = true
-    ac = userA.create_item("UserA_ItemC", 120, 1)
+    ac = userA.create_item("Beretta Model 38/42", 120, 1)
+    ac.description = "Only used in one murder"
     ac.active = true
+
     co = ac.comment(userA, "Great Item! Please buy it!")
 
 
-    userB = User.created( "userB", "passwordB", "e_mail_B@preset.com" )
-    userB.save
-    ba = userB.create_item("UserB_ItemA", 10, 2)
-    ba.active = true
-    bb = userB.create_item("UserB_ItemB", 2, 100)
-    bb.active = true
-    bc = userB.create_item("UserB_ItemC", 120, 1)
-    for i in 0..200
-      userB.create_item("User_B#{i}",10,1).active=true
-    end
-    co.answer(userB, "It doesn't seems that great. Do you have a picture of it?")
 
-    userC = User.created( "userC", "passwordC", "e_mail_C@preset.com" )
+    userB = User.created( "Bad Giänu", "password1", "e_mail_B@preset.com" )
+    userB.save
+    ba = userB.create_item("Black leather suitcase", 10, 2)
+    ba.active = true
+    ba.description = "Crappy, but stylish"
+    bb = userB.create_item("Dirty Socks", 5, 10)
+    bb.active = true
+    bb.description = "Too lazy to wash, I'm buying new ones"
+    co.answer(userB, "It doesn't seems that great. That model is quite loud, can't you go any lower than that?")
+
+
+    userC = User.created( "Bad lüku", "password1", "e_mail_C@preset.com" )
     userC.save
-    ca = userC.create_item("UserC_ItemA", 10, 1)
+    ca = userC.create_item("Rusty saber", 70, 1)
+    ca.description="YAAAAAAAAAAAAAAARRRRRRRRRRRRR!!!"
     ca.active = true
-    cb = userC.create_item("UserC_ItemB", 50, 1)
-    cc = userC.create_item("UserC_ItemC", 120, 1)
+    cb = userC.create_item("Cheap rum", 10, 5)
+    cb.description = "Smells and tastes like a rotten fish, but it gets you wonderfully drunk"
+    cc = userC.create_item("Ship", 2700, 1)
+    cc.description = "It's a bloody ship, mate! YAAAAARRRRRRR!!"
     cc.active = true
-    co.answer(userC, "You're right userB!")
+    co.answer(userC, "You're right, those things will scare my rum off my ship!")
 
     ese = User.created( "ese", "ese", "ese@preset.com" )
     ese.save
-    ese.add_to_wishlist(ab)
 
     end
 

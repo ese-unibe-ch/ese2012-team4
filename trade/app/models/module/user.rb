@@ -2,7 +2,6 @@ require 'rubygems'
 require 'bcrypt'
 require 'require_relative'
 require 'fileutils'
-require 'json'
 require_relative('../utility/mailer')
 require_relative('../utility/password_check')
 require_relative('item')
@@ -23,11 +22,12 @@ module Models
     #  fails if the buyer has not enough credits.
 
     # generate getter and setter for name and price
-    attr_accessor :name, :credits, :item_list, :password_hash, :password_salt, :description, :e_mail, :id, :errors, :image, :wishlist, :ratings
+    attr_accessor :name, :credits, :item_list, :password_hash, :password_salt, :description, :e_mail, :id, :errors, :image, :wishlist
 
     @@users_by_name = {}
     @@users = {}
     @@count = 0
+    @@ratings = {}
 
     # factory method (constructor) on the class
     def self.created( name, password, e_mail, description = "", image = "")
@@ -44,7 +44,6 @@ module Models
       pw_hash = BCrypt::Engine.hash_secret(password, pw_salt)
       user.password_salt = pw_salt
       user.password_hash = pw_hash
-      user.ratings = []
       user
     end
 
@@ -134,7 +133,7 @@ module Models
     def list_items_inactive
       return_list = Array.new
       for s in self.item_list
-        if !s.active && !s.expired?
+        if !s.is_active?
           return_list.push(s)
         end
       end
@@ -150,14 +149,10 @@ module Models
         return false
       end
 
-      if !item_to_buy.wishlist_users.empty?
-        item_to_buy.wishlist_users.each {|user| user.remove_from_wishlist(item_to_buy); item_to_buy.wishlist_users.delete(user)}
-      end
+        Models::Holding.shipItem(item_to_buy, item_to_buy.owner, self, quantity)
 
-      Models::Holding.shipItem(item_to_buy, item_to_buy.owner, self, quantity)
-
-      Models::Mailer.send_mail_to(preowner.e_mail, "Hi #{preowner.name}, \n #{self.name} bought your Item #{item_to_buy.name}.
-        Please Contact him for completing the trade. His E-Mail is: #{self.e_mail}")
+      #Models::Mailer.send_mail_to(preowner.e_mail, "Hi #{preowner.name}, \n #{self.name} bought your Item #{item_to_buy.name}.
+      #  Please Contact him for completing the trade. His E-Mail is: #{self.e_mail}")
       return true
     end
 
@@ -184,7 +179,6 @@ module Models
         item.delete
       end
       item.active = false
-      item.expiration_date=nil
 
       if !item.wishlist_users.empty?
         item.wishlist_users.each {|user| user.remove_from_wishlist(item); item.wishlist_users.delete(user)}
@@ -236,45 +230,22 @@ module Models
       self.wishlist.push(item)
       item.add_user_to_wishlist(self)
     end
+    def ratings
+      @@ratings
+    end
 
     def remove_from_wishlist(item)
       item.remove_user_from_wishlist(self)
       self.wishlist.delete(item)
     end
+    def can_rate(seller)
+      seller.ratings[self] == nil
+    end
 
-    def add_rating(rating)
-      self.ratings.push rating
-    end
-    
-    def ratings_json
-      colors = ['#ff6f31',   # color for bad
-                '#ff9f02',
-                '#ffcf02',
-                '#a4cc02',
-                '#88b131']    # color for good
-      
-      values = Array.new(5, 0)  # size, initial value
-      self.ratings.each do |v|
-        values[v.to_i]+=1
+    def rate(seller, rating)
+      if can_rate seller
+        seller.ratings[self] = rating
       end
-      data = []
-      values.each_with_index do |value, index|
-        hash = Hash.new
-        hash[:data] = [[values[index], index+1]]
-        hash[:color] = colors[index]
-        data.push(hash)
-      end
-      data.to_json
-    end
-    
-    def rating
-      counter = 0
-      value = 0
-      self.ratings.each do |v|
-        value = value + v
-        counter = counter + 1
-      end
-      value/counter
     end
   end
 end
