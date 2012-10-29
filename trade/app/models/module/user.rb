@@ -134,7 +134,7 @@ module Models
     def list_items_inactive
       return_list = Array.new
       for s in self.item_list
-        if !s.is_active?
+        if !s.active && !s.expired?
           return_list.push(s)
         end
       end
@@ -184,6 +184,7 @@ module Models
         item.delete
       end
       item.active = false
+      item.expiration_date=nil
 
       if !item.wishlist_users.empty?
         item.wishlist_users.each {|user| user.remove_from_wishlist(item); item.wishlist_users.delete(user)}

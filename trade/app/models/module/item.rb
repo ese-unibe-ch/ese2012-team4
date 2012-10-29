@@ -19,13 +19,13 @@ module Models
     end
 
     # Factory method (constructor) on the class.
-    # @param [String] name
-    # @param [Integer] price
-    # @param [User] owner
-    # @param [Integer] quantity
-    # @param [String] description
-    # @param [String] image: The Path of the Image to be displayed.
-    # @return [Item] The created Item.
+    # -@param [String] name
+    # -@param [Integer] price
+    # -@param [User] owner
+    # -@param [Integer] quantity
+    # -@param [String] description
+    # -@param [String] image: The Path of the Image to be displayed.
+    # -@return [Item] The created Item.
     def self.created( name, price, owner, quantity, description = "", image = "")
       item = self.new
       item.id = @@count + 1
@@ -45,13 +45,13 @@ module Models
     # Creates a copy of an instance, while replacing the
     # instance variables defined in the parameter hash
     # usage: my_item.copy(:name => "Item2")
-    # @param [Hash] hash: Hash, containing:
+    # -@param [Hash] hash: Hash, containing:
     #   -[String] :name
     #   -[Integer] :price
     #   -[User] :owner
     #   -[Integer]:quantity
     #   -[String] :description
-    # @return [Item]: A copy of this Item with the new variables.
+    # -@return [Item]: A copy of this Item with the new variables.
     def copy( hash = {})
       item = Models::Item.created(hash[:name] || self.name, hash[:price] || self.price,
                                   hash[:owner] || self.owner, hash[:quantity] ||self.quantity,
@@ -59,7 +59,7 @@ module Models
     end
 
     # Controls the item's data and adds errors if necessary.
-    # @return: true if there is no invalid data or false there is.
+    # -@return: true if there is no invalid data or false there is.
     def is_valid
       self.errors = ""
       self.errors += "Price is not a valid number\n" unless Item.valid_integer?(self.price)
@@ -84,11 +84,11 @@ module Models
     end
 
     # Replaces the data of this Item with the given params.
-    # @param [String] name
-    # @param [Integer] price
-    # @param [Integer] quantity
-    # @param [String] description
-    # @param [String] image
+    # -@param [String] name
+    # -@param [Integer] price
+    # -@param [Integer] quantity
+    # -@param [String] description
+    # -@param [String] image
     def edit(name, price, quantity,  description = "", image = "")
       return false if self.active
       self.name = name
@@ -106,7 +106,7 @@ module Models
     # Use this method instead of .active if you want to update the state if the item is expired.
     def is_active?
       if(self.expired?)
-        self.active= false
+        owner.deactivate_item("#{self.id}")
       end
       self.active
     end
@@ -121,13 +121,13 @@ module Models
     end
 
     # Checks if a string is a valid price.
-    # @param [String] price_string: The String that should be tested.
+    # -@param [String] price_string: The String that should be tested.
     def self.valid_integer?(price_string)
-      (!!(price_string =~ /^[-+]?[1-9]([0-9]*)?$/) && Integer(price_string) >= 0 && (price_string.is_a? Integer))
+      (!!(price_string =~ /^[-+]?[1-9]([0-9]*)?$/) && Integer(price_string) >= 0 || (price_string.is_a? Integer))
     end
 
     # Compares a users name to the owners name.
-    # @param [String] username: The name of the user to be compared.
+    # -@param [String] username: The name of the user to be compared.
     def is_owner?(username)
       User.get_user(username).eql?(self.owner)
     end
@@ -142,14 +142,14 @@ module Models
     end
 
     # Returns an item by its id.
-    # @param [Integer] itemid: The id of the Item to be selected.
-    # @return [Item]: The selected Item.
+    # -@param [Integer] itemid: The id of the Item to be selected.
+    # -@return [Item]: The selected Item.
     def self.get_item(itemid)
       return @@item_list[itemid]
     end
 
-    # @param [User] viewer: Name of the user whose items should not be listed.
-    # @return [Array]: Array of all stored Items except those who belong to the given viewer.
+    # -@param [User] viewer: Name of the user whose items should not be listed.
+    # -@return [Array]: Array of all stored Items except those who belong to the given viewer.
     def self.get_all(viewer)
       new_array = @@item_list.to_a
       ret_array = Array.new
@@ -166,9 +166,9 @@ module Models
     end
 
     # Adds a new Comment on this Item.
-    # @param [User] author: The User who wrote the Comment.
-    # @param [String] text: The text of the Comment.
-    # @return [Comment]: The created Comment.
+    # -@param [User] author: The User who wrote the Comment.
+    # -@param [String] text: The text of the Comment.
+    # -@return [Comment]: The created Comment.
     def comment (author, text)
       c = Models::Comment.created(author, self, text)
       c.save
@@ -177,9 +177,9 @@ module Models
       c
     end
 
-    # @param [String] search_string: Keywords for whom should be searched. Keywords must be separated by spaces.
-    # @param [User] user: The user requesting the item list.
-    # @return [Array]: Items whose names or descriptions contain a the keywords and are visible to the given user.
+    # -@param [String] search_string: Keywords for whom should be searched. Keywords must be separated by spaces.
+    # -@param [User] user: The user requesting the item list.
+    # -@return [Array]: Items whose names or descriptions contain a the keywords and are visible to the given user.
     def self.search (search_string, user)
       s_array = search_string.downcase.split
       ret_array = []

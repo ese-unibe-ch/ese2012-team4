@@ -214,7 +214,6 @@ module Controllers
       id = params[:id]
       owner = Item.get_item(id).owner
       owner.deactivate_item(id)
-      Item.get_item(id).expiration_date = nil
       flash[:notice] = "Item has been deactivated"
       redirect "/home/items"
     end
@@ -233,6 +232,10 @@ module Controllers
       new_user = User.get_user(user)
       if (Integer(params[:timestamp])-item.timestamp)!=0
         flash[:error] = "Item has been edited while you were buying it"
+        redirect "#{back}"
+      end
+      unless item.is_active?
+        flash[:error] = "Item is no longer active."
         redirect "#{back}"
       end
       unless new_user.buy_new_item(item, quantity)

@@ -10,14 +10,24 @@ module Models
     @@comment_count = 0
     @@comments = {}
 
+    # - [Integer] id: The identifier of this Comment
+    attr_accessor :id
+    # - [User] author: The user that wrote this Comment
+    attr_accessor :author
+    # - [Item] correspondent_item: Item on which the Comment is made
+    attr_accessor :correspondent_item
+    # - [Comment] previous_comment
+    attr_accessor :previous_comment
+    # - [String] text
+    attr_accessor :text
+    # - [Array] sub_comment: All the Comments on this Comment
+    attr_accessor :sub_comments
 
-    attr_accessor :id, :author, :correspondent_item, :previous_comment, :text, :sub_comments
 
-
-    # @param [User] author
-    # @param [Item] correspondent_item
-    # @param [String] text
-    # @param [Comment] previous_comment
+    # -@param [User] author
+    # -@param [Item] correspondent_item
+    # -@param [String] text
+    # -@param [Comment] previous_comment
     def self.created(author, correspondent_item, text, previous_comment = nil)
       comment = self.new
       comment.id = @@comment_count + 1
@@ -38,8 +48,8 @@ module Models
       @@comment_count +=1
     end
 
-    # "delete" will remove a comment (and with it all its subcomments) from the @@comments list, if it's a head comment.
-    #  If it's a subcomment, it will delete it from the head comments' list 'sub_comments'
+    # Removes a comment (and with it all its subcomments) from the @@comments list, if it's a head comment.
+    # If it's a subcomment, it will delete it from the head Comment's list 'sub_comments'
     def delete
       if is_head_comment?
         @@comments.delete(self.id)
@@ -57,6 +67,10 @@ module Models
       @@comments[id]
     end
 
+    # Adds a new Comment to this Comment
+    # -@param [User] author
+    # -@param [String] text
+    # -@return [Comment]: Returns the new sub-comment or false, if it is no head-comment
     def answer (author, text)
       if is_head_comment?
         answer = Comment.created(author, self.correspondent_item, text, self)
