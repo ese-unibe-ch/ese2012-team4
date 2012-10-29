@@ -247,9 +247,13 @@ module Models
     end
     
     def ratings_json
-      colors = ['#FF0000','#FF8000','#9EFF3D','#00FF00']
+      colors = ['#ff6f31',   # color for bad
+                '#ff9f02',
+                '#ffcf02',
+                '#a4cc02',
+                '#88b131']    # color for good
       
-      values = Array.new(4, 0)  # size, initial value
+      values = Array.new(5, 0)  # size, initial value
       self.ratings.each do |v|
         values[v.to_i]+=1
       end

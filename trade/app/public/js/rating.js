@@ -22,10 +22,11 @@ var options = {
 	yaxis: {
 		tickLength: 0,
 		ticks: [
-			[1,'Bad'],
-			[2,'Good'],
-			[3,'Great'],
-			[4,'Fucking Awesome!!!']
+			[1,'Not at all'],
+			[2,'A little'],
+			[3,'Moderately'],
+			[4,'Quite a bit'],
+            [5,'Extremely']
 		]
 	}
 };
