@@ -18,6 +18,42 @@ class UserTest < Test::Unit::TestCase
     @owner.delete
   end
 
+  def test_activate_item
+    item = @owner.create_item("testobject", 5, 2)
+    assert(!item.is_active?)
+    @owner.activate_item("#{item.id}")
+    assert(item.is_active?)
+
+    more_of_same_item = @owner.create_item("testobject", 5, 2)
+    assert(!more_of_same_item.is_active?)
+    @owner.activate_item("#{more_of_same_item.id}")
+    assert(item.quantity.eql?(4))
+  end
+
+  def test_deactivate_item
+    item = @owner.create_item("testobject", 5, 2)
+    @owner.activate_item("#{item.id}")
+    assert(item.is_active?)
+
+    user1 = Models::User.created("user1", "password1", "user1@mail.com")
+    user1.add_to_wishlist(item)
+    assert(user1.wishlist.include?(item))
+
+    @owner.deactivate_item("#{item.id}")
+    assert(!item.is_active?)
+    assert(!user1.wishlist.include?(item))
+  end
+
+  def test_get_all
+    user1 = Models::User.created("user1", "password1", "user1@mail.com")
+    user1.save
+
+    user2 = Models::User.created("user2", "password2", "user2@mail.com")
+    user2.save
+
+    assert(Models::User.get_all(user1).include?(user2))
+    assert(!Models::User.get_all(user1).include?(user1))
+  end
   # Fake test
   def test_user_item_create
     assert( @owner.list_items.size == 0, "Item list length should be 0" )
