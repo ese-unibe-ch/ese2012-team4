@@ -165,7 +165,7 @@ class User
         return false
       end
 
-      if !item_to_buy.wishlist_users.empty?
+      if !item_to_buy.wishlist_users.empty? and item_to_buy.quantity == quantity
         item_to_buy.wishlist_users.each {|user| user.remove_from_wishlist(item_to_buy); item_to_buy.wishlist_users.delete(user)}
       end
 
