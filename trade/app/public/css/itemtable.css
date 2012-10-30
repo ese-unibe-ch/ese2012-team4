@@ -10,7 +10,6 @@
 
 .itemtable tbody tr:hover td{
     background-color: #8FC9FF;
-
 }
 
 .itemtable thead{
@@ -22,11 +21,10 @@
     max-height: 20px;
     overflow: hidden;
     padding: 6px 8px;
-    /*border-left: 1px solid #8FC9FF;*/
-    /*border-top: 3px solid #8FC9FF;*/
     border-right:none;
     border-bottom: none;
 }
+
 .itemtable td{
     width:100%;
     padding-left: 5px;

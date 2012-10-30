@@ -1,12 +1,9 @@
-/* trial css */
 h1, h2, h3, a, p, body, td, tr, #status, .value, .name{
-    /*this is for textstyle and textsize*/
     font-family: Verdana, Arial, sans-serif;
     font-size:0.9em;
 }
 
 .value, td, tr {
-    /* this is for tables*/
     background-color: #E5FFF2;
     border-top: 1px solid #8FC9FF;
 }
@@ -26,8 +23,6 @@ body{
     margin: auto;
 }
 
-
-
 #content_pane{
     width:100px;
 }
@@ -43,12 +38,12 @@ body{
     border-top-right-radius: 5px;
     border-top-left-radius: 5px;
     min-width: 600px;
-    /*background-color: white;*/
     padding-top: 5px;
     padding-left: 20px;
     height:56px;
 
 }
+
 #page{
     position: relative;
     width:100%;
@@ -90,14 +85,12 @@ body{
 #statusbar{
     border-bottom: 3px solid #8FC9FF;
     float:right;
-    /*background-color: white;*/
     width:100%;
 }
 
 p{
     padding: 0;
     margin: 0;
-
 }
 .wholly_clickable{
     display:block;
@@ -128,16 +121,12 @@ a:visited{
     color:#4169e1;
 }
 
-a.menu:hover
-{
+a.menu:hover{
     text-decoration: none;
     background-color: #8FC9FF;
 }
 
-a.menu
-{
-    /* padding-left: 20px;*/
-    /*  padding-top: 2px;*/
+a.menu{
     display:block;
     text-align:left;
     width:200px;
@@ -145,14 +134,12 @@ a.menu
     text-decoration:none;
 }
 
-a.menu:link
-{
+a.menu:link{
     text-decoration: none;
     color: black;
 }
 
-a.menu:visited
-{
+a.menu:visited{
     text-decoration: none;
     color: black;
 }
@@ -167,12 +154,12 @@ a.status:hover{
     color: #656565;
 }
 
-
 td.navigation{
     width:150px;
     max-width: 150px;
     height: 350px;
 }
+
 td.header{
     padding-bottom: 0px;
     min-width: 600px;
@@ -181,6 +168,7 @@ td.header{
 .square{
     background-color: #8FC9FF;
 }
+
 .nomargin{
     margin:0;
 }
@@ -191,6 +179,7 @@ td.header{
     padding-top: 5px;
     padding-right: 5px;
 }
+
 .lineContainer{
     width: 100%;
     float:left;
@@ -201,11 +190,10 @@ td.header{
     float:left;
     width:30%;
 }
+
 .value{
     width: 65%;
     float: right;
-    /*background-color: #E5FFF2;*/
-    /*border-top: 3px solid #8FC9FF;*/
     padding-left:5px;
     word-break: break-all;
 }
@@ -224,20 +212,22 @@ textarea.textbox.value{
     margin-top: 5px;
     margin-bottom:3px;
 }
+
 .invisible{
     height: 0px;
     border:none;
     margin:0;
 }
+
 .tiny{
     width: 20px;
 }
 
-.main
-{
+.main{
     width: 100%;
     border-spacing: 5px;
 }
+
 .fixedwith{
     height: 100px;
     width:66.4%;
@@ -250,6 +240,7 @@ textarea.textbox.value{
 .rightalign{
     float:right
 }
+
 .leftalign{
     float:left
 }
@@ -298,12 +289,10 @@ img.smallpicturebox{
     width: 40px;
 }
 
-
 .ratingtable{
     width: 65%;
     float: right;
     padding-top: 10px;
     padding-left: 5px;
-
 }
 
