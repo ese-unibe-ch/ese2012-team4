@@ -1,4 +1,5 @@
--#%h2
+%h2
+  Itempage:
   :escaped
     #{@item.name}
 
@@ -6,13 +7,6 @@
 %a(href="/item/#{@item.id}/image" rel="lightbox" title="#{@item.name}")
   %img(src="/item/#{@item.id}/image" class = "bigpicturebox")
 %br
-.lineContainer
-  .textbox.name
-    Item Name:
-  .textbox.value
-    :escaped
-      #{@item.name}
-
 .lineContainer
   .textbox.name
     Description:
