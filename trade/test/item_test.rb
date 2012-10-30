@@ -181,4 +181,15 @@ class ItemTest < Test::Unit::TestCase
     item2 = @owner.create_item('bla', 20, 1)
     assert(Item.search("bla", @owner).include?(item2))
   end
+
+  def test_wishlist
+    @wisher = Models::User.created( "testuser2", "password", "test@mail.com" )
+    @fastbuyer = Models::User.created( "testuser3", "password", "test@mail.com")
+    item1 = @owner.create_item('item', 20,1,"descr")
+    @wisher.add_to_wishlist(item1)
+    assert(@wisher.wishlist.include? item1)
+    @fastbuyer.buy_new_item(item1, 1)
+    assert !(@wisher.wishlist.include? item1)
+  end
+
 end
