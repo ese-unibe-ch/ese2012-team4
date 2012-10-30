@@ -1,5 +1,10 @@
 %h2 Confirm your activation
 %br
+:javascript
+  $(document).ready(function() {
+    $("input[name=exp_date]").datepicker({ dateFormat: 'dd-mm-yy', minDate: 0 });
+    $('input[name=exp_time]').timepicker();
+  });
 %p
   Confirm your activation of #{@item.name} and choose an expiration date of this offer.
   (If you choose no Date, the offer wont expire)

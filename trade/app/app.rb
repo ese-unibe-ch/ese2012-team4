@@ -29,19 +29,31 @@ class App < Sinatra::Base
   set :public_folder, relative('public')
 
   configure :development do
-    userA = User.created( "Evil Simu", "password1", "e_mail_A@preset.com", "Music by Nino Rota" )
+    userA = User.created( "Don Simon", "password1", "e_mail_A@preset.com", "Music by Nino Rota" )
     userA.save
     userA.image = FileUtils::pwd+"/public/images/user_pix/shirsbrunner2.jpeg"
     aa = userA.create_item("Half-empty hair wax", 15, 1)
     ab = userA.create_item("Vespa Primavera ET3", 250, 1)
+    ac = userA.create_item("Borsalino", 60, 1)
+    ad = userA.create_item("Red roses", 1, 20)
+
+    aa.description = "My favourite brand (but got short hair now)"
     ab.description = "Rusty, but a true classic"
+    ac.description = "My old hat, great for family-business"
+    ad.description = "Always a great gift"
+
+    aa.active = true
     ab.active = true
-    ac = userA.create_item("Beretta Model 38/42", 60, 1)
-    ac.description = "Cheap, but only used once in family-business"
     ac.active = true
+    ad.active = true
+
+    aa.image = FileUtils::pwd+"/public/images/item_pix/Murrays.jpg"
+    ab.image = FileUtils::pwd+"/public/images/item_pix/Vespa.jpg"
+    ac.image = FileUtils::pwd+"/public/images/item_pix/Borsalino.jpg"
+    ad.image = FileUtils::pwd+"/public/images/item_pix/rose.jpg"
 
     for i in 0..10
-     userA.add_rating(rand(5))
+      userA.add_rating(rand(4)+1)
     end
 
     co = ac.comment(userA, "Great Item! Please buy it!")
@@ -63,18 +75,24 @@ class App < Sinatra::Base
       userB.add_rating(rand(5))
     end
 
-    userC = User.created( "Evil Lüku", "password1", "e_mail_C@preset.com" )
+    userC = User.created( "Evil Lüku", "password1", "e_mail_C@preset.com", "Buy or die! I got some hungrray sharks!" )
     userC.save
     userC.image = FileUtils::pwd+"/public/images/user_pix/ld_baaad.jpg"
     ca = userC.create_item("Rusty saber", 70, 1)
-    ca.description="YAAAAAAAAAAAAAAARRRRRRRRRRRRR!!!"
+    ca.description="Cuts coconuts and throats. Although, coconuts be sometimes too hard."
     ca.active = true
+    ca.image = FileUtils::pwd+"/public/images/item_pix/saber.jpg"
     cb = userC.create_item("Cheap rum", 10, 5)
-    cb.description = "Smells and tastes like a rotten fish, but it gets you wonderfully drunk"
+    cb.description = "Smells and tastes like a rot' fish, but it gets you wonderfully splice t' mainbrace."
     cc = userC.create_item("Ship", 2700, 1)
-    cc.description = "It's a bloody ship, mate! YAAAAARRRRRRR!!"
+    cc.description = "It's a bloody ship, mate! Has cannons, a jail aaand a kitchen! Crew not included, they're all dead. YAAAAARRRRRRR!!"
     cc.active = true
+    cc.image = FileUtils::pwd+"/public/images/item_pix/pirateship.jpg"
     co.answer(userC, "You're right, those things will scare my rum off my ship!")
+    cd = userC.create_item("Replica flag *BEST BUY* ocean-proof SHorT t1mE!!!", 70, 1)
+    cd.description="This be a very genuine flag. It makes everody fear you. Made in Bangladesh."
+    cd.active = true
+    cd.image = FileUtils::pwd+"/public/images/item_pix/flag.png"
 
     for i in 0..10
       userC.add_rating(rand(5))
