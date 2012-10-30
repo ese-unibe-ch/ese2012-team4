@@ -43,7 +43,7 @@ module Controllers
     get '/users/:id/:page' do
       redirect '/index' unless session[:id]
       @user = User.get_user(params[:id])
-      items_per_page = 20
+      items_per_page = 10
       page = params[:page].to_i
       items = @user.list_items
       (items.size%items_per_page)==0? page_count = (items.size/items_per_page).to_i : page_count = (items.size/items_per_page).to_i+1
