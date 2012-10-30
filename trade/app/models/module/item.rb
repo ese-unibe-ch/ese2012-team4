@@ -9,40 +9,28 @@ module Models
 
     # [String]: The item's name
     attr_accessor :name
-
     # [Integer]: The price in credits
     attr_accessor :price
-
     # [Boolean]: True, if the item can be bought
     attr_accessor :active
-
     # [User]: The item's owner
     attr_accessor :owner
-
     # [Integer]: Identifier
     attr_accessor :id
-
     # [String]: Detailed description
     attr_accessor :description
-
     # [Time]: Time the Item last changed
     attr_accessor :timestamp
-
     # [Integer]
     attr_accessor :quantity
-
     # [String]: Stores all error messages
     attr_accessor :errors
-
     # [String]: The path of an image
     attr_accessor :image
-
     # [Comment]: Comments on this Item
     attr_accessor :head_comments
-
     # [Time]: Stores when the item deactivates automatically
     attr_accessor :expiration_date
-
     # [Array]: Stores on whose wishlists the item is
     attr_accessor :wishlist_users
 

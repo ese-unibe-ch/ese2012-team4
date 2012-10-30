@@ -1,7 +1,3 @@
-# To change this template, choose Tools | Templates
-# and open the template in the editor.
-
-
 def save_image(image_file)
   if image_file && image_file != ""
     tempfile = image_file[:tempfile]

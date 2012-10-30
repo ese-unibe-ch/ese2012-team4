@@ -67,8 +67,7 @@ class User
       user
     end
 
-    # LD maybe we can use this some time. Creates a copy of an instance, while replacing the
-    # instance variables defined in the parameter hash
+    # Creates a copy of an instance, while replacing the instance variables defined in the parameter hash
     # usage: user1.copy(:name => "User 2")
     def copy( hash = {} )
       User.created(hash[:name] || self.name, "FdZ.(gJa)s'dFjKdaDGS+J1",
@@ -133,12 +132,12 @@ class User
     end
 
     # Lets the user create a new item
-    # -@param name
-    # -@param price
-    # -@param quantity
-    # -@param description
-    # -@param image
-    # -@return [Item]: the created item
+    # - @param name
+    # - @param price
+    # - @param quantity
+    # - @param description
+    # - @param image
+    # - @return [Item]: the created item
     def create_item(name, price, quantity, description="No description available", image="")
       new_item = Item.created( name, price, self, quantity, description, image)
       if !(identical = self.list_items_inactive.detect{|i| i.name== new_item.name and i.price == new_item.price and i.description==new_item.description}).nil?
@@ -151,7 +150,7 @@ class User
     end
 
     # Return a list of the user's active items
-    # @return [Array]: The users active items
+    # - @return [Array]: The users active items
     def list_items
       return_list = Array.new
       for s in self.item_list
@@ -162,8 +161,8 @@ class User
       return return_list
     end
 
-    #return a list of the user's inactive items
-    # @return [Array] The user's inactive items
+    # Return a list of the user's inactive items
+    # - @return [Array] The user's inactive items
     def list_items_inactive
       return_list = Array.new
       for s in self.item_list
@@ -292,7 +291,7 @@ class User
     end
 
     # Returns a json representation of the user's ratings
-    # LD removed the need for the json gem (because it requires the
+    # We removed the need for the json gem (because it requires the
     # additional DevKit installation on Windows, which is not
     # allowed in the deliverable). This generates a json-representation
     # the dirty way

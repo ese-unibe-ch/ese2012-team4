@@ -24,7 +24,6 @@ module Controllers
 
     before do
       @session_user = User.get_user(session[:id])
-
     end
 
     get '/search' do

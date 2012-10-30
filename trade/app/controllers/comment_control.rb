@@ -53,6 +53,6 @@ module Controllers
       item = Item.get_item(params[:item_id])
       item.comment(@session_user, params[:com])
       redirect "/comments/#{params[:item_id]}"
-    end  # To change this template use File | Settings | File Templates.
+    end
   end
 end
