@@ -11,17 +11,17 @@ require_relative('../app/models/module/comment')
 include Models
 
 class ItemTest < Test::Unit::TestCase
-  # runs before each test
+  # Runs before each test
   def setup
     @owner = Models::User.created( "testuser", "password", "test@mail.com" )
   end
 
-  # runs after every test
+  # Runs after every test
   def teardown
     @owner.delete
   end
 
-  #test static method get item
+  # Test static method get item
   def test_get_item
     item1 = @owner.create_item("testobject1", 50, 1)
     item2 = Item.created("testobject2", 50, @owner, 1, "bla")
@@ -32,7 +32,7 @@ class ItemTest < Test::Unit::TestCase
     assert(Item.get_item("#{item1.id+2}") == item3, "get_item should return the item")
   end
 
-  #Test static method get_all
+  # Test static method get_all
   def test_get_all
     item1 = @owner.create_item("testobject1", 50, 1)
     item2 = Item.created("testobject2", 50, @owner, 1, "bla")
@@ -63,7 +63,7 @@ class ItemTest < Test::Unit::TestCase
     assert( @owner.list_items[0].description.eql?("No description available"), "Should be mentioned that no description has been entered")
   end
 
-  #test if item is initialized correctly
+  # Test if item is initialized correctly
   def test_item_initialisation
     item = @owner.create_item("testobject", 50, 7, "Description-text")
     assert(item.name == "testobject", "Name should be returned")
@@ -73,7 +73,7 @@ class ItemTest < Test::Unit::TestCase
     assert(item.description.eql?("Description-text"), "Description should be returned")
   end
 
-  #test for item activation
+  # Test for item activation
   def test_item_activation
     item = @owner.create_item("testobject", 50, 1)
     assert(item.name == "testobject", "Name should be returned")
@@ -103,8 +103,10 @@ class ItemTest < Test::Unit::TestCase
     if new_owner.buy_new_item(item,1)
       old_owner.remove_item(item)
     end
-    assert(item.owner == new_owner, "Owner not set correctly")
-    assert(item.owner.name == "New", "Owner not set correctly")
+    # LD Removed this. This is already tested in user_test.rb, because
+    # it's a method of the User class. Maybe remove whole class?
+    # assert(item.owner == new_owner, "Owner not set correctly")
+    # assert(item.owner.name == "New", "Owner not set correctly")
   end
 
   #test for price validation
@@ -114,7 +116,7 @@ class ItemTest < Test::Unit::TestCase
     assert(Item.valid_integer?("9876543210"), "9876543210 should be a valid price")
     assert(Item.valid_integer?(9876543210), "9876543210 should be a valid price")
     assert(!Item.valid_integer?("010"), "Strings with zeros at the beginning should not be valid, because of wrong parsing")
-    # LD note: 010 (without quotes) is considered octal by ruby, and becomes 8 when converted to an Integer!
+    # 010 (without quotes) is considered octal by ruby, and becomes 8 when converted to an Integer!
     assert(!Item.valid_integer?(""), "Empty Strings should not be valid, an Item needs a price.")
     assert(!Item.valid_integer?(" "), "Empty Strings should not be valid, an Item needs a price.")
     assert(!Item.valid_integer?("dfafd"), "Letters should not be valid prices")
@@ -128,7 +130,7 @@ class ItemTest < Test::Unit::TestCase
     item = @owner.create_item("testobject", 50, 1)
     assert(item.is_owner?(1), "The owner should be recognized by its ID.")
     assert(!item.is_owner?(2), "Wrong IDs should not match")
-    #assert(!item.is_owner?("bla%ç&#12;%(/k"), "Wrong IDs should not match")
+    #assert(!item.is_owner?("bla%x&#12;%(/k"), "Wrong IDs should not match")
   end
 
   #test for editable? method
@@ -159,9 +161,42 @@ class ItemTest < Test::Unit::TestCase
 
   def test_validation
     item = @owner.create_item("testobject",50, 10)
-    print Item.valid_integer?(item.price)
-    assert item.is_valid, item.errors
-    # LD TODO: add more tests
+    assert(item.is_valid)
+    assert(item.errors="")
+    item.price="string"
+    assert(!item.is_valid)
+    assert(item.errors == "Price is not a valid number\n")
+    item.quantity="skdlf"
+    assert(!item.is_valid)
+    assert(item.errors == "Price is not a valid number\nQuantity is not a valid number\n")
+    item.price= 1
+    assert(!item.is_valid)
+    assert(item.errors == "Quantity is not a valid number\n")
+    item.quantity= "1"
+    assert(item.is_valid)
+    item.quantity= 1
+    assert(item.is_valid)
+
+    item.image=FileUtils::pwd+"/public/images/user_pix/"
+    assert(!item.is_valid)
+    assert(item.errors=="No valid image file selected\n")
+    item.image="..fasl"
+    assert(!item.is_valid)
+    assert(item.errors=="No valid image file selected\n")
+    item.image=FileUtils::pwd+"../../app/public/images/item_pix/placeholder_item.jpg"
+    assert(item.is_valid)
+    assert(item.errors=="")
+    item.image=""
+    assert(item.is_valid)
+
+    item.name="     "
+    assert(!item.is_valid)
+    assert(item.errors=="Item must have a name\n")
+    item.name=""
+    assert(!item.is_valid)
+    assert(item.errors=="Item must have a name\n")
+    item.name="name"
+    assert(item.is_valid)
   end
 
   def test_item_comment
@@ -180,4 +215,34 @@ class ItemTest < Test::Unit::TestCase
     item2 = @owner.create_item('bla', 20, 1)
     assert(Item.search("bla", @owner).include?(item2))
   end
+
+  def test_wishlist_other_buy_remove_from_list
+    @wisher = Models::User.created( "testuser2", "password", "test@mail.com" )
+    @fastbuyer = Models::User.created( "testuser3", "password", "test@mail.com")
+    item1 = @owner.create_item('item', 20,1,"descr")
+    @wisher.add_to_wishlist(item1)
+    assert(@wisher.wishlist.include? item1)
+    @fastbuyer.buy_new_item(item1, 1)
+    assert !(@wisher.wishlist.include? item1)
+  end
+
+  def test_wishlist_multiitem_stay_in_list
+    @wisher = Models::User.created( "testuser2", "password", "test@mail.com" )
+    @fastbuyer = Models::User.created( "testuser3", "password", "test@mail.com")
+    item1 = @owner.create_item('item', 20,2,"descr")
+    @wisher.add_to_wishlist(item1)
+    assert(@wisher.wishlist.include? item1)
+    @fastbuyer.buy_new_item(item1, 1)
+    assert (@wisher.wishlist.include? item1)
+  end
+
+  def test_wishlist_multiitem_ownbuy_stay_in_list
+    @wisher = Models::User.created( "testuser2", "password", "test@mail.com" )
+    item1 = @owner.create_item('item', 20,2,"descr")
+    @wisher.add_to_wishlist(item1)
+    assert(@wisher.wishlist.include? item1)
+    @wisher.buy_new_item(item1, 1)
+    assert (@wisher.wishlist.include? item1)
+  end
+
 end

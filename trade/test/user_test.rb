@@ -55,10 +55,22 @@ class UserTest < Test::Unit::TestCase
       old_owner.remove_item(sock)
     end
 
-    assert(old_owner.list_items.size==0)
-    assert(old_owner.list_items_inactive.size==0)
-    assert(new_owner.list_items.size==0)
-    assert(new_owner.list_items_inactive.size==1)
+    assert old_owner.list_items.size == 0
+    assert old_owner.list_items_inactive.size == 0
+    assert new_owner.list_items.size == 0
+    assert new_owner.list_items_inactive.size == 0
+
+    pending = Models::Holding.get_all.last
+    assert pending.item == sock
+    assert pending.seller == old_owner
+    assert pending.buyer == new_owner
+
+    pending.itemReceived
+
+    assert old_owner.list_items.size == 0
+    assert old_owner.list_items_inactive.size == 0
+    assert new_owner.list_items.size == 0
+    assert new_owner.list_items_inactive.size == 1
 
     assert( !sock.is_active?, "item should not be active, is")
     assert( !new_owner.list_items_inactive[0].is_active?, "item should not be active, is")
@@ -108,6 +120,7 @@ class UserTest < Test::Unit::TestCase
     assert(@owner.list_items_inactive[1].to_s == "testobject2, 50")
     @owner.list_items_inactive[0].active = true
     @owner.list_items_inactive[0].active = true
+    assert(@owner.list_items_inactive.empty? == true)
     assert(@owner.list_items[0].to_s == "testobject, 10")
     assert(@owner.list_items[1].to_s == "testobject2, 50")
     @owner.list_items[0].active = false
@@ -169,6 +182,7 @@ class UserTest < Test::Unit::TestCase
   def test_wishlist
     user1 = Models::User.created( "testuser1", "password", "test@mail.com" )
     item1 = user1.create_item("testobject", 10, 1)
+    id_before = item1.id
     item2 = user1.create_item("testobject2", 50, 1)
     user2 = Models::User.created( "testuser2", "password", "test@mail.com" )
     assert item1.owner.name == user1.name
@@ -177,7 +191,7 @@ class UserTest < Test::Unit::TestCase
     assert item2.wishlist_users.size == 0
     user2.add_to_wishlist(item1)
     assert item1.owner.eql?(user1)
-    assert item1.id == 8
+    assert item1.id == id_before
     item1.active = true
     assert user2.wishlist.size == 1
     assert item1.wishlist_users.size == 1

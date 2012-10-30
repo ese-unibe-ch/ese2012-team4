@@ -21,8 +21,6 @@
 .commenttable td{
     max-height: 20px;
     padding: 6px 8px;
-    /*border-left: 1px solid #8FC9FF;*/
-    /*border-top: 3px solid #8FC9FF;*/
     border-right:none;
     border-bottom: none;
 }

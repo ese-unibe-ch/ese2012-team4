@@ -43,7 +43,7 @@ module Controllers
     get '/users/:id/:page' do
       redirect '/index' unless session[:id]
       @user = User.get_user(params[:id])
-      items_per_page = 20
+      items_per_page = 10
       page = params[:page].to_i
       items = @user.list_items
       (items.size%items_per_page)==0? page_count = (items.size/items_per_page).to_i : page_count = (items.size/items_per_page).to_i+1
@@ -69,6 +69,19 @@ module Controllers
       else
         send_file(path)
       end
+    end
+
+    get "/rate/:id" do
+      redirect '/index' unless session[:id]
+      @user = User.get_user(params[:id])
+      haml :rate_user
+    end
+
+    post "/rate/:id" do
+      redirect '/index' unless session[:id]
+      user = User.get_user(params[:id])
+      user.add_rating(params[:rating]) unless params[:rating] == nil
+      redirect "/home"
     end
 
     post "/unauthenticate" do
@@ -115,6 +128,12 @@ module Controllers
       flash[:notice] = "Password has been updated"
       redirect "/"
     end
+    
+    get '/profile/pending' do
+      @inbox = @session_user.pending_inbox
+      @outbox = @session_user.pending_outbox
+      haml :pending_items
+    end
 
     get '/delete_link' do
       redirect '/index' unless session[:id]
@@ -141,7 +160,14 @@ module Controllers
       redirect '/index' unless session[:id]
       @item = Item.get_item(params[:itemid])
       @session_user.remove_from_wishlist(@item)
-      redirect "/wishlist"
+      redirect "#{back}"
+    end
+
+    post "/add_to_wishlist/:itemid" do
+      redirect '/index' unless session[:id]
+      @item = Item.get_item(params[:itemid])
+      @session_user.add_to_wishlist(@item)
+      redirect "#{back}"
     end
 
     post "/add_to_wishlist/:itemid" do

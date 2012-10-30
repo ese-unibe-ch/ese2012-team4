@@ -1,0 +1,20 @@
+%h2 Rating
+%br
+%p How happy were you with the service of #{@user.name}?
+%br
+%form(action = "/rate/#{@user.id}" method = "POST")
+  %input{:type => "radio", :name => "rating", :value => 4} Extremely
+  %br
+  %input{:type => "radio", :name => "rating", :value => 3} Quite a bit
+  %br
+  %input{:type => "radio", :name => "rating", :value => 2} Moderately
+  %br
+  %input{:type => "radio", :name => "rating", :value => 1} A little
+  %br
+  %input{:type => "radio", :name => "rating", :value => 0} Not at all
+  %br
+  %br
+  %input.square(type = "submit" value = "Save")
+%br
+%form.nomargin(action="/home" method="GET")
+  %input.square(type="submit" value="Don't rate user")

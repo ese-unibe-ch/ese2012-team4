@@ -1,0 +1,26 @@
+%h2 Confirm your activation
+%br
+:javascript
+  $(document).ready(function() {
+    // check if element is supported
+    var i = document.createElement('input');
+    i.setAttribute('type', 'date');
+    if( i.type == 'text' )
+      $("input[name=exp_date]").datepicker({ dateFormat: 'dd-mm-yy', minDate: 0 });
+    var j = document.createElement('input');
+    j.setAttribute('type', 'time');
+    if( j.type == 'text' )
+      $('input[name=exp_time]').timepicker();
+  });
+%p
+  Confirm your activation of #{@item.name} and choose an expiration date of this offer.
+  (If you choose no Date, the offer wont expire)
+%br
+.textbox.name
+  %p Expiration Date
+.textbox.value
+  %form.nomargin(action="/changestate/#{@item.id}/setactive" method="POST")
+    %input(type="date" name="exp_date")
+    %input(type="time" name="exp_time")
+    %hr.separator
+    %input.square.rightalign(type="submit" value="Set Active")
