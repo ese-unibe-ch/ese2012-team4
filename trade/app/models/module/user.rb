@@ -2,7 +2,6 @@ require 'rubygems'
 require 'bcrypt'
 require 'require_relative'
 require 'fileutils'
-require 'json'
 require_relative('../utility/mailer')
 require_relative('../utility/password_check')
 require_relative('item')
