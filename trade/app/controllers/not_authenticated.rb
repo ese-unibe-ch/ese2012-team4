@@ -41,7 +41,6 @@ module Controllers
         redirect "/login"
       else
         session[:id] = user.id
-        #session['auth'] = true
         flash[:notice] = "Welcome, #{user.name}. You are now logged in"
         redirect "/home"
       end
@@ -66,9 +65,6 @@ module Controllers
         flash[:notice] = "You are now registered. Please log in"
         redirect "/login"
       end
-      
-      #redirect "/signup/invalid_username" if username != username.delete("^a-zA-Z0-9")  
-      #BS: only needed if we don't allow special characters
     end
   end
 end

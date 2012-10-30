@@ -1,5 +1,13 @@
 module Models
+
+  # Sends Mails
+  # Uses the g-mail Address tradingsystem.mail@gmail.com to do this.
+  # Do not send private mails to this address, since its password is visible here and therefore visible online as well.
   class Mailer
+
+    # Sends an e-mail
+    # - @param [String] to: e-mail address of the receiver of this mail
+    # - @param [String] contents: Content in the mail, without signature and greetings, which is added automatically.
     def self.send_mail_to(to,contents)
     require 'rubygems'
     require 'tlsmail'

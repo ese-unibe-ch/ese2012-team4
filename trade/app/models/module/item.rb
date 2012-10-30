@@ -64,13 +64,17 @@ module Models
       self.errors = ""
       self.errors += "Price is not a valid number\n" unless Item.valid_integer?(self.price)
       self.errors += "Quantity is not a valid number\n" unless Item.valid_integer?(self.quantity)
-      self.errors += "Item must have a name" unless self.name.strip.delete(' ')!=""
+      self.errors += "Item must have a name\n" unless self.name.strip.delete(' ')!=""
       if image != ""
         self.errors += "Image is heavier than 400kB" unless image.size <= 400*1024
-        dim = Dimensions.dimensions(image)
-        self.errors += "Image is no square" unless dim[0] == dim[1]
-        unless image.size <= 400*1024 && dim[0] == dim[1]
-          FileUtils.rm(image, :force => true)
+        begin
+          dim = Dimensions.dimensions(image)
+          self.errors += "Image is no square" unless dim[0] == dim[1]
+          unless image.size <= 400*1024 && dim[0] == dim[1]
+            FileUtils.rm(image, :force => true)
+          end
+        rescue Errno::ENOENT
+          self.errors += "No valid image file selected\n"
         end
       end
       self.errors != "" ? false : true

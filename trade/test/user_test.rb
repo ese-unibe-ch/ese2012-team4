@@ -120,6 +120,7 @@ class UserTest < Test::Unit::TestCase
     assert(@owner.list_items_inactive[1].to_s == "testobject2, 50")
     @owner.list_items_inactive[0].active = true
     @owner.list_items_inactive[0].active = true
+    assert(@owner.list_items_inactive.empty? == true)
     assert(@owner.list_items[0].to_s == "testobject, 10")
     assert(@owner.list_items[1].to_s == "testobject2, 50")
     @owner.list_items[0].active = false
