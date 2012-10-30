@@ -173,6 +173,13 @@ class App < Sinatra::Base
 
     co = ac.comment(userA, "Great Item! Please buy it!")
 
+    crazy_misch = User.created("Misch", "misch1", "misch.wyss@hotmail.com", "If it tastes good, I'll take it!")
+    crazy_misch.save
+    crazy_misch.image = FileUtils::pwd+"/public/images/user_pix/crazy_misch.jpg"
+
+    good_misch = User.created("Good Misch", "misch2", "misch@preset.com", "I love all your Itemmmsssss! Shopping!")
+    good_misch.save
+    good_misch.image = FileUtils::pwd+"/public/images/user_pix/good_misch.jpg"
     end
 
   end
