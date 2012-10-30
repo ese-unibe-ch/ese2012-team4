@@ -29,19 +29,31 @@ class App < Sinatra::Base
   set :public_folder, relative('public')
 
   configure :development do
-    userA = User.created( "Evil Simu", "password1", "e_mail_A@preset.com", "Music by Nino Rota" )
+    userA = User.created( "Don Simon", "password1", "e_mail_A@preset.com", "Music by Nino Rota" )
     userA.save
     userA.image = FileUtils::pwd+"/public/images/user_pix/shirsbrunner2.jpeg"
     aa = userA.create_item("Half-empty hair wax", 15, 1)
     ab = userA.create_item("Vespa Primavera ET3", 250, 1)
+    ac = userA.create_item("Borsalino", 60, 1)
+    ad = userA.create_item("Red roses", 1, 20)
+
+    aa.description = "My favourite brand (but got short hair now)"
     ab.description = "Rusty, but a true classic"
+    ac.description = "My old hat, great for family-business"
+    ad.description = "Always a great gift"
+
+    aa.active = true
     ab.active = true
-    ac = userA.create_item("Beretta Model 38/42", 60, 1)
-    ac.description = "Cheap, but only used once in family-business"
     ac.active = true
+    ad.active = true
+
+    aa.image = FileUtils::pwd+"/public/images/item_pix/Murrays.jpg"
+    ab.image = FileUtils::pwd+"/public/images/item_pix/Vespa.jpg"
+    ac.image = FileUtils::pwd+"/public/images/item_pix/Borsalino.jpg"
+    ad.image = FileUtils::pwd+"/public/images/item_pix/rose.jpg"
 
     for i in 0..10
-     userA.add_rating(rand(5))
+     userA.add_rating(rand(4)+1)
     end
 
     co = ac.comment(userA, "Great Item! Please buy it!")
