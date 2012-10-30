@@ -29,7 +29,7 @@ module Controllers
 
     get '/search' do
       redirect '/index' unless session[:id]
-      haml :search , :locals => {:page_name => "Search"}
+      haml :search
     end
 
     post '/search/query' do
@@ -54,7 +54,7 @@ module Controllers
       for i in ((page-1)*items_per_page)..(page*items_per_page)-1
         @all_items<<items[i] unless items[i].nil?
       end
-      haml :search_result, :locals=> {:page_name => "result", :page => page, :page_count =>page_count}
+      haml :search_result, :locals=> {:page => page, :page_count =>page_count}
     end
 
     get '/search/result' do
@@ -88,7 +88,7 @@ module Controllers
       for i in ((inactive-1)*items_per_page)..(inactive*items_per_page)-1
         @inactive_items<<inactive_items[i] unless inactive_items[i].nil?
       end
-      haml :user_items, :locals => {:page_name => "My items", :active_page =>active, :active_page_count =>active_page_count, :inactive_page =>inactive, :inactive_page_count => inactive_page_count}
+      haml :user_items, :locals => {:active_page =>active, :active_page_count =>active_page_count, :inactive_page =>inactive, :inactive_page_count => inactive_page_count}
     end
 
     get '/home/items' do
@@ -99,14 +99,14 @@ module Controllers
     get '/home/new' do
       redirect '/index' unless session[:id]
       @item = Item.created("", "", "", "", "");
-      haml :item_edit, :locals =>{:action => "create", :button => "Create", :page_name => "New Item"}
+      haml :item_edit, :locals =>{:action => "create", :button => "Create"}
     end
 
     get '/home/edit_item/:itemid' do
       redirect '/index' unless session[:id]
       if Item.get_item(params[:itemid]).is_owner?(@session_user.id)
         @item = Item.get_item(params[:itemid])
-        haml :item_edit, :locals => {:action => "change/#{params[:itemid]}", :button => "Save changes", :page_name => "Edit Item"}
+        haml :item_edit, :locals => {:action => "change/#{params[:itemid]}", :button => "Save changes"}
       else
         redirect "/"
       end
@@ -124,7 +124,7 @@ module Controllers
       for i in ((page-1)*items_per_page)..(page*items_per_page)-1
         @all_items<<items[i] unless items[i].nil?
       end
-      haml :all_items, :locals => {:page_name => "Items", :page => page, :page_count => page_count}
+      haml :all_items, :locals => {:page => page, :page_count => page_count}
     end
 
     get '/items' do
@@ -136,7 +136,7 @@ module Controllers
       redirect '/index' unless session[:id]
       id = params[:itemid]
       @item = Item.get_item(id)
-      haml :item_page, :locals => {:page_name => "Item #{@item.name}"}
+      haml :item_page
     end
 
     post '/create' do
@@ -186,7 +186,7 @@ module Controllers
       redirect '/index' unless session[:id]
       if Item.get_item(params[:itemid]).is_owner?(@session_user.id)
         @item = Item.get_item(params[:itemid])
-        haml :activation_confirm, :locals => {:page_name => "Confirm Activation"}
+        haml :activation_confirm
       else
         redirect '/'
       end
