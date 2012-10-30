@@ -11,16 +11,14 @@ require_relative('../utility/holding')
 
 module Models
 
-  class User
-    #Users have a name.
-    #Users have an amount of credits.
-    #A new user has originally 100 credit.
-    #A user can add a new item to the system with a name and a price; the item is originally inactive.
-    #A user provides a method that lists his/her active items to sell.
-    #User possesses certain items
-    #A user can buy active items of another user (inactive items can't be bought). When a user buys an item, it becomes
-    #  the owner; credit are transferred accordingly; immediately after the trade, the item is inactive. The transaction
-    #  fails if the buyer has not enough credits.
+  # Users have a name.
+  # Users have an amount of credits.
+  # A new user has originally 100 credit.
+  # A user can add a new item to the system with a name and a price; the item is originally inactive.
+  # A user provides a method that lists his/her active items to sell.
+  # User possesses certain items
+  # A user can buy active items of another user.
+class User
 
     # generate getter and setter for name and price
     attr_accessor :name, :credits, :item_list, :password_hash, :password_salt, :description, :e_mail, :id, :errors, :image, :wishlist, :ratings
@@ -52,7 +50,7 @@ module Models
     # instance variables defined in the parameter hash
     # usage: user1.copy(:name => "User 2")
     def copy( hash = {} )
-      Models::User.created(hash[:name] || self.name, "FdZ.(gJa)s'dFjKdaDGS+J1",
+      User.created(hash[:name] || self.name, "FdZ.(gJa)s'dFjKdaDGS+J1",
                            hash[:e_mail] || self.e_mail,
                            hash[:description] || self.description)
     end
@@ -122,7 +120,7 @@ module Models
     # -@param image
     # -@return: the created item
     def create_item(name, price, quantity, description="No description available", image="")
-      new_item = Models::Item.created( name, price, self, quantity, description, image)
+      new_item = Item.created( name, price, self, quantity, description, image)
       if !(identical = self.list_items_inactive.detect{|i| i.name== new_item.name and i.price == new_item.price and i.description==new_item.description}).nil?
         identical.quantity += new_item.quantity
       else
@@ -154,10 +152,12 @@ module Models
       return return_list
     end
 
-    # buy an item
-    # @param item_to_buy
-    # @param quantity
-    # @return true if user can buy item, false if his credit amount is too small
+    # When a user buys an item, it becomes the owner;
+    # credit are transferred accordingly; immediately after the trade, the item is inactive.
+    # The transaction fails if the buyer has not enough credits.
+    # - @param item_to_buy
+    # - @param quantity: how many pieces of this item should be bought
+    # - @return true if user can buy item, false if his credit amount is too small
     def buy_new_item(item_to_buy, quantity)
       preowner = item_to_buy.owner
 
@@ -169,9 +169,9 @@ module Models
         item_to_buy.wishlist_users.each {|user| user.remove_from_wishlist(item_to_buy); item_to_buy.wishlist_users.delete(user)}
       end
 
-      Models::Holding.shipItem(item_to_buy, item_to_buy.owner, self, quantity)
+      Holding.shipItem(item_to_buy, item_to_buy.owner, self, quantity)
 
-      Models::Mailer.send_mail_to(preowner.e_mail, "Hi #{preowner.name}, \n #{self.name} bought your Item #{item_to_buy.name}.
+      Mailer.send_mail_to(preowner.e_mail, "Hi #{preowner.name}, \n #{self.name} bought your Item #{item_to_buy.name}.
         Please Contact him for completing the trade. His E-Mail is: #{self.e_mail}")
       return true
     end
