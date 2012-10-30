@@ -16,9 +16,6 @@
     #wrapper
       #headcombi
         #header
-          -#%h1
-            :escaped
-              Trading System: #{page_name}
         #statusbar
           #status
             -if not session[:id].nil?
@@ -30,7 +27,6 @@
               %a.status(href="/logout")Logout
             -else
               %a.status(href='/login')Login
-
       #page
         #navigation
           -if not session[:id].nil?
@@ -45,19 +41,14 @@
               %img(src="/images/legend/Pending_Items.png" class = "iamlegend")
             %a.menu(href="/wishlist")
               %img(src="/images/legend/Wishlist.png" class = "iamlegend")
-            -#%a.menu(href="/home/inactive") - My Inactive Items
-            -#%a.menu(href="/home/new") - Create Item
             %br
             %a.menu(href="/users")
               %img(src="/images/legend/All_Users.png" class = "iamlegend")
             %a.menu(href="/items")
               %img(src="/images/legend/All_Items.png" class = "iamlegend")
-            -#%a.menu(href="/search") - Search
             %br
-
             %a.menu(href="/logout")
               %img(src="/images/legend/Logout.png" class = "iamlegend")
-
           -else
             %h2.menu_header not logged in!
             %a.menu(href='/login')

@@ -1,5 +1,4 @@
 %h2 My pending items
-
 -unless @inbox.empty?
   %h4 Incoming
   %table.itemtable
@@ -30,8 +29,6 @@
         %td
           %form.nomargin(action="/items/#{holding.item.id}/delivered" method="POST")
             %input.square(type="submit" value="Arrived")
-
-
 -unless @outbox.empty?
   %h4 Outgoing
   %table.itemtable

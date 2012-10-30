@@ -2,8 +2,6 @@
   Itempage:
   :escaped
     #{@item.name}
-
--# this should check if the user has an upload, otherwise placeholder - there are no uploads yet.
 %a(href="/item/#{@item.id}/image" rel="lightbox" title="#{@item.name}")
   %img(src="/item/#{@item.id}/image" class = "bigpicturebox")
 %br

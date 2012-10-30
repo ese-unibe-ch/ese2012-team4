@@ -1,7 +1,6 @@
 %h2 Everything you have in Store
 %a(href="/home/new") Create new Item
 %h2 My Active Items
-
 -unless @active_items.empty?
   -unless active_page_count==1
     -unless active_page ==1
@@ -11,7 +10,6 @@
         %a(href = "/home/items/#{i}/#{inactive_page}") #{i}
       -else
         #{i}
-
   -unless active_page == active_page_count
     %a(href = "/home/items/#{active_page+1}/#{inactive_page}") next
   %table.itemtable
@@ -45,9 +43,7 @@
             %input.square(type="submit" value="Set inactive")
 -else
   %h3 No items
-
 %h2 My Inactive Items
-
 -unless @inactive_items.empty?
   -unless inactive_page_count==1
     -unless inactive_page ==1
