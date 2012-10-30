@@ -88,6 +88,23 @@ class App < Sinatra::Base
       ese.add_rating(4)
     end
 
+    userS = User.created( "Сиимон", "password1", "e_mail_A@preset.ru", "И доньт реаллы спеак руссиан" )
+    userS.save
+    userS.image = FileUtils::pwd+"/public/images/user_pix/shirsbrunner1.jpg"
+    sa = userS.create_item("Warm cap, siberian standard", 15, 149)
+    sb = userS.create_item("Creditcard-Data", 5, 10540)
+    sc = userS.create_item("Uranium-ore", 10000000, 1)
+    sa.description = "Cozy, good for harsh winters"
+    sa.active = true
+    sb.description = "First come first serve"
+    sb.active = true
+    sc.description = "Only for qualified buyers"
+
+    for i in 0..10
+      userA.add_rating(rand(5))
+    end
+
+    co = ac.comment(userA, "Great Item! Please buy it!")
 
     end
 
