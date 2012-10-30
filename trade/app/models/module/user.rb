@@ -19,8 +19,30 @@ module Models
   # A user can buy active items of another user.
 class User
 
-    # generate getter and setter for name and price
-    attr_accessor :name, :credits, :item_list, :password_hash, :password_salt, :description, :e_mail, :id, :errors, :image, :wishlist, :ratings
+    # [String]
+    attr_accessor :name
+    # [Integer]: The owned money in credits
+    attr_accessor :credits
+    # [Array]: All the items the user possesses
+    attr_accessor :item_list
+    # Save storage of the users password
+    attr_accessor :password_hash
+    # Save storage of the users password
+    attr_accessor :password_salt
+    # [String]: List interests or other things about this owner
+    attr_accessor :description
+    # [String]
+    attr_accessor :e_mail
+    # [Integer]
+    attr_accessor :id
+    # [String]: Stores all error messages
+    attr_accessor :errors
+    # [String]: The path of an image
+    attr_accessor :image
+    # [Array]: All the items, this user is interested in
+    attr_accessor :wishlist
+    # [Array]: Ratings of other users
+    attr_accessor :ratings
 
     @@users_by_name = {}
     @@users = {}
@@ -55,9 +77,9 @@ class User
     end
 
     # Checks whether a combination of an username, a password and a confirmation is valid or not.
-    # -@param [String] pw: a password.
-    # -@param [String] pw2: the confirmation of the password.
-    # -@param [boolean] check_username_exists: whether the username is already taken or not
+    # - @param [String] pw: a password.
+    # - @param [String] pw2: the confirmation of the password.
+    # - @param [boolean] check_username_exists: whether the username is already taken or not
     def is_valid(pw = nil, pw2 = nil, check_username_exists = true)
       self.errors = ""
       self.errors += "User must have a name\n" unless self.name.strip.delete(' ')!=""
@@ -91,9 +113,9 @@ class User
       self.password_hash = BCrypt::Engine.hash_secret(password, self.password_salt)
     end
 
-    # compares a string to the password of an user
-    # -@param [String] password: The password due for comparison
-    # -@return [boolean]: true if equal, false otherwise
+    # Compares a string to the password of an user
+    # - @param [String] password: The password due for comparison
+    # - @return [boolean]: true if equal, false otherwise
     def check_password(password)
       self.password_hash == BCrypt::Engine.hash_secret(password, self.password_salt)
     end
@@ -116,7 +138,7 @@ class User
     # -@param quantity
     # -@param description
     # -@param image
-    # -@return: the created item
+    # -@return [Item]: the created item
     def create_item(name, price, quantity, description="No description available", image="")
       new_item = Item.created( name, price, self, quantity, description, image)
       if !(identical = self.list_items_inactive.detect{|i| i.name== new_item.name and i.price == new_item.price and i.description==new_item.description}).nil?
@@ -128,7 +150,8 @@ class User
       return new_item
     end
 
-    #return a list of the user's active items
+    # Return a list of the user's active items
+    # @return [Array]: The users active items
     def list_items
       return_list = Array.new
       for s in self.item_list
@@ -140,6 +163,7 @@ class User
     end
 
     #return a list of the user's inactive items
+    # @return [Array] The user's inactive items
     def list_items_inactive
       return_list = Array.new
       for s in self.item_list
@@ -174,7 +198,7 @@ class User
       return true
     end
 
-    # removing item from user's item list
+    # Removing item from user's item list
     def remove_item(item_to_remove)
       self.item_list.delete(item_to_remove)
     end
@@ -189,6 +213,8 @@ class User
       item.active=true
     end
 
+    # Deactivates an item, removes it from everybody's wishlist and sets expiration_date to nil
+    # - @param [Integer] id: The Item's id
     def deactivate_item(id)
       item = Item.get_item(id)
       return false unless item.owner==self
@@ -204,20 +230,23 @@ class User
       end
     end
 
-    def self.login id, password
+    def self.login(id, password)
       user = @@users[id]
       return false if user.nil?
       user.password_hash == BCrypt::Engine.hash_secret(password, user.password_salt)
     end
 
+    # - @return [User]: the user with the given user_id
     def self.get_user(user_id)
       return @@users[user_id.to_i]
     end
 
+    # - @return [User]: the user with the given username
     def self.by_name(name)
       return @@users_by_name[name]
     end
 
+    # - @return [Array]: all users except the given viewer
     def self.get_all(viewer)
       new_array = @@users.to_a
       ret_array = Array.new
@@ -227,14 +256,17 @@ class User
       return ret_array.select {|s| !s.eql?(viewer)}
     end
 
-    def self.available? name
+    # - @return true, if the given name is the name of an existing user
+    def self.available?(name)
       not @@users_by_name.has_key? name.downcase
     end
-    
+
+    # - @return [Array]: all the pending items to buy of this user
     def pending_inbox
       Models::Holding.get_all.select {|s| s.buyer == self}
     end
-    
+
+    # - @return [Array]: all the pending items to sell of this user
     def pending_outbox
       Models::Holding.get_all.select {|s| s.seller == self}
     end
@@ -259,7 +291,7 @@ class User
       self.ratings.push rating
     end
 
-    # returns a json representation of the user's ratings
+    # Returns a json representation of the user's ratings
     # LD removed the need for the json gem (because it requires the
     # additional DevKit installation on Windows, which is not
     # allowed in the deliverable). This generates a json-representation
@@ -270,7 +302,7 @@ class User
                 '#ffcf02',
                 '#a4cc02',
                 '#88b131']    # color for good
-      
+
       values = Array.new(5, 0)  # size, initial value
       self.ratings.each do |v|
         values[v.to_i]+=1       # count number of votes for every rating value
@@ -283,8 +315,8 @@ class User
       data = data + "]"
       data
     end
-    
-    # returns the average rating of the user
+
+    # - @return [Integer]: the average rating of the user
     def rating
       counter = 0
       value = 0

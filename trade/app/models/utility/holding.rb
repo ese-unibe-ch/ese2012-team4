@@ -1,4 +1,6 @@
 module Models
+
+# Manages items that are sold, but not yet received by the buyer.
 class Holding
   require 'require_relative'
   require_relative '../module/item'
@@ -23,7 +25,7 @@ class Holding
     @@holder.push(holding)
   end
 
-  #moves Money after receiving & moves the item to buyers stack
+  # Moves money after receiving & moves the item to buyers stack
   def itemReceived
     seller.credits+=Integer(item.price)*quantity
 
@@ -54,7 +56,7 @@ class Holding
 
   end
 
-  #moves the item from seller to holding
+  # Moves the item from seller to holding
   def self.shipItem(item, seller, buyer, quantity)
     item_list = Models::Item.get_item_list
     item_list.delete(item)

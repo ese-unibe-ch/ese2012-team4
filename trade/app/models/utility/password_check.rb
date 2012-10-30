@@ -1,7 +1,7 @@
 module Models
   # A password check is able to test if a password is safe enough
   class PasswordCheck
-    #A password is safe, if it contains a small or capital letter and a number and is longer than 4 digits.
+    # A password is safe, if it contains a small or capital letter and a number and is longer than 4 digits.
     # - @param password to be checked
     def self.safe? (password)
        safe = false
