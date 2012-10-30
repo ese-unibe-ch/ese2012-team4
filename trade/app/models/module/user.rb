@@ -70,8 +70,7 @@ class User
             self.errors += "Password confirmation is required\n"
           else
             self.errors += "Passwords do not match\n" unless pw == pw2
-            password_check = Models::PasswordCheck.created
-            self.errors += "Password is not safe\n" unless password_check.safe?(pw)
+            self.errors += "Password is not safe\n" unless PasswordCheck.safe?(pw)
           end
         else
           self.errors += "Password is required"
@@ -112,7 +111,7 @@ class User
       "#{self.name} has currently #{self.credits} credits, #{list_items.size} active and #{list_items_inactive.size} inactive items"
     end
 
-    #lets the user create a new item
+    # Lets the user create a new item
     # -@param name
     # -@param price
     # -@param quantity
