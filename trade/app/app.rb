@@ -63,18 +63,24 @@ class App < Sinatra::Base
       userB.add_rating(rand(5))
     end
 
-    userC = User.created( "Evil Lüku", "password1", "e_mail_C@preset.com" )
+    userC = User.created( "Evil Lüku", "password1", "e_mail_C@preset.com", "Buy or die! I got some hungrray sharks!" )
     userC.save
     userC.image = FileUtils::pwd+"/public/images/user_pix/ld_baaad.jpg"
     ca = userC.create_item("Rusty saber", 70, 1)
-    ca.description="YAAAAAAAAAAAAAAARRRRRRRRRRRRR!!!"
+    ca.description="Cuts coconuts and throats. Although, coconuts be sometimes too hard."
     ca.active = true
+    ca.image = FileUtils::pwd+"/public/images/item_pix/saber.jpg"
     cb = userC.create_item("Cheap rum", 10, 5)
-    cb.description = "Smells and tastes like a rotten fish, but it gets you wonderfully drunk"
+    cb.description = "Smells and tastes like a rot' fish, but it gets you wonderfully splice t' mainbrace."
     cc = userC.create_item("Ship", 2700, 1)
-    cc.description = "It's a bloody ship, mate! YAAAAARRRRRRR!!"
+    cc.description = "It's a bloody ship, mate! Has cannons, a jail aaand a kitchen! Crew not included, they're all dead. YAAAAARRRRRRR!!"
     cc.active = true
+    cc.image = FileUtils::pwd+"/public/images/item_pix/pirateship.jpg"
     co.answer(userC, "You're right, those things will scare my rum off my ship!")
+    cd = userC.create_item("Replica flag *BEST BUY* ocean-proof SHorT t1mE!!!", 70, 1)
+    cd.description="This be a very genuine flag. It makes everody fear you. Made in Bangladesh."
+    cd.active = true
+    cd.image = FileUtils::pwd+"/public/images/item_pix/flag.png"
 
     for i in 0..10
       userC.add_rating(rand(5))
