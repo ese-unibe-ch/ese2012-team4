@@ -3,13 +3,14 @@
 %h2 My Active Items
 
 -unless @active_items.empty?
-  -unless active_page ==1
-    %a(href = "/home/items/#{active_page-1}/#{inactive_page}") previous
-  -for i in 1..active_page_count
-    -if i != active_page
-      %a(href = "/home/items/#{i}/#{inactive_page}") #{i}
-    -else
-      #{i}
+  -unless active_page_count==1
+    -unless active_page ==1
+      %a(href = "/home/items/#{active_page-1}/#{inactive_page}") previous
+    -for i in 1..active_page_count
+      -if i != active_page
+        %a(href = "/home/items/#{i}/#{inactive_page}") #{i}
+      -else
+        #{i}
 
   -unless active_page == active_page_count
     %a(href = "/home/items/#{active_page+1}/#{inactive_page}") next
@@ -48,13 +49,14 @@
 %h2 My Inactive Items
 
 -unless @inactive_items.empty?
-  -unless inactive_page ==1
-    %a(href = "/home/items/#{active_page}/#{inactive_page-1}") previous
-  -for i in 1..inactive_page_count
-    -if i != inactive_page
-      %a(href = "/home/items/#{active_page}/#{i}") #{i}
-    -else
-      #{i}
+  -unless inactive_page_count==1
+    -unless inactive_page ==1
+      %a(href = "/home/items/#{active_page}/#{inactive_page-1}") previous
+    -for i in 1..inactive_page_count
+      -if i != inactive_page
+        %a(href = "/home/items/#{active_page}/#{i}") #{i}
+      -else
+        #{i}
   -unless inactive_page == inactive_page_count
     %a(href = "/home/items/#{active_page}/#{inactive_page+1}") next
   %table.itemtable
