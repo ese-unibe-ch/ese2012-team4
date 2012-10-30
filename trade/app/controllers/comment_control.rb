@@ -26,19 +26,19 @@ module Controllers
       redirect "/index" unless session[:id]
       item_name = Item.get_item(params[:item_id]).name
       @item = Item.get_item(params[:item_id])
-      haml :comments, :locals => {:page_name => "Comments on #{@item.name}"}
+      haml :comments
     end
 
     get '/reply/:comment_id' do
       redirect "/index" unless session[:id]
       @comment = Comment.by_id(params[:comment_id])
-      haml :reply, :locals => {:page_name => "Reply on #{@comment.author.name}'s comment"}
+      haml :reply
     end
 
     get '/comment/:item_id' do
       redirect "/index" unless session[:id]
       @item = Item.get_item(params[:item_id])
-      haml :create_comment, :locals => {:page_name => "Write a comment for #{@item.name}"}
+      haml :create_comment
     end
 
     post '/answer/:comment_id' do

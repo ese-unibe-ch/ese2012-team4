@@ -2,7 +2,6 @@ require 'rubygems'
 require 'bcrypt'
 require 'require_relative'
 require 'fileutils'
-require 'json'
 require_relative('../utility/mailer')
 require_relative('../utility/password_check')
 require_relative('item')
@@ -260,7 +259,11 @@ class User
       self.ratings.push rating
     end
 
-    #returns a json representation of the user's ratings
+    # returns a json representation of the user's ratings
+    # LD removed the need for the json gem (because it requires the
+    # additional DevKit installation on Windows, which is not
+    # allowed in the deliverable). This generates a json-representation
+    # the dirty way
     def ratings_json
       colors = ['#ff6f31',   # color for bad
                 '#ff9f02',
@@ -270,18 +273,18 @@ class User
       
       values = Array.new(5, 0)  # size, initial value
       self.ratings.each do |v|
-        values[v.to_i]+=1
+        values[v.to_i]+=1       # count number of votes for every rating value
       end
-      data = []
+      data = "["                # generate json
       values.each_with_index do |value, index|
-        hash = Hash.new
-        hash[:data] = [[values[index], index+1]]
-        hash[:color] = colors[index]
-        data.push(hash)
+        entry = "{'data':[["+values[index].to_s+","+(index+1).to_s+"]],'color':'"+colors[index]+"'},"
+        data = data + entry
       end
-      data.to_json
+      data = data + "]"
+      data
     end
     
+    # returns the average rating of the user
     def rating
       counter = 0
       value = 0
