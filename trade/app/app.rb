@@ -60,7 +60,7 @@ class App < Sinatra::Base
 
 
 
-    userB = User.created( "Evil Giänu", "password1", "e_mail_B@preset.com" )
+    userB = User.created( "sleazy Giänu", "password1", "e_mail_B@preset.com", "I like dark alleys and the smell of chloroform" )
     userB.save
     userB.image = FileUtils::pwd+"/public/images/user_pix/gl2.jpg"
     ba = userB.create_item("Black leather suitcase", 10, 2)
@@ -73,6 +73,22 @@ class App < Sinatra::Base
 
     for i in 0..10
       userB.add_rating(rand(5))
+    end
+
+    userG = User.created( "Giänu", "password1", "e_mail_B@preset.com", "Fan of all the good stuff" )
+    userG.save
+    userG.image = FileUtils::pwd+"/public/images/user_pix/gl1.jpg"
+    ga = userG.create_item("Green Sweater", 45, 1)
+    ga.active = true
+    ga.image = FileUtils::pwd+"/public/images/item_pix/sweater.jpg"
+    ga.description = "Warm, stylish, represents the very best of men's clothing culture"
+    gb = userG.create_item("Purple Wig", 25, 1)
+    gb.image = FileUtils::pwd+"/public/images/item_pix/wig.jpg"
+    gb.active = true
+    gb.description = "No longer needed, top condition though."
+
+    for i in 0..10
+      userG.add_rating(rand(5))
     end
 
     userC = User.created( "Evil Lüku", "password1", "e_mail_C@preset.com", "Buy or die! I got some hungrray sharks!" )
@@ -127,6 +143,9 @@ class App < Sinatra::Base
     ese = User.created( "ese", "ese", "ese@preset.com", "fancy code-snippets" )
     ese.save
     ese.image = FileUtils::pwd+"/public/images/user_pix/ese.jpeg"
+    gtg = ese.create_item("A guide to git", 20, 200, "Everything you should know but somehow didn't learn in P2")
+    gtg.image = ea.image = FileUtils::pwd+"/public/images/item_pix/git.jpg"
+
 
     for i in 0..10
       ese.add_rating(4)
