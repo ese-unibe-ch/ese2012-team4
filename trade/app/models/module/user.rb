@@ -57,6 +57,10 @@ module Models
                            hash[:description] || self.description)
     end
 
+    # Checks whether a combination of an username, a password and a confirmation is valid or not.
+    # -@param [String] pw: a password.
+    # -@param [String] pw2: the confirmation of the password.
+    # -@param [boolean] check_username_exists: whether the username is already taken or not
     def is_valid(pw = nil, pw2 = nil, check_username_exists = true)
       self.errors = ""
       self.errors += "User must have a name\n" unless self.name.strip.delete(' ')!=""
@@ -91,6 +95,9 @@ module Models
       self.password_hash = BCrypt::Engine.hash_secret(password, self.password_salt)
     end
 
+    # compares a string to the password of an user
+    # -@param [String] password: The password due for comparison
+    # -@return [boolean]: true if equal, false otherwise
     def check_password(password)
       self.password_hash == BCrypt::Engine.hash_secret(password, self.password_salt)
     end
@@ -107,7 +114,13 @@ module Models
       "#{self.name} has currently #{self.credits} credits, #{list_items.size} active and #{list_items_inactive.size} inactive items"
     end
 
-    #let the user create a new item
+    #lets the user create a new item
+    # -@param name
+    # -@param price
+    # -@param quantity
+    # -@param description
+    # -@param image
+    # -@return: the created item
     def create_item(name, price, quantity, description="No description available", image="")
       new_item = Models::Item.created( name, price, self, quantity, description, image)
       if !(identical = self.list_items_inactive.detect{|i| i.name== new_item.name and i.price == new_item.price and i.description==new_item.description}).nil?
@@ -119,7 +132,7 @@ module Models
       return new_item
     end
 
-    #return users item list active
+    #return a list of the user's active items
     def list_items
       return_list = Array.new
       for s in self.item_list
@@ -130,7 +143,7 @@ module Models
       return return_list
     end
 
-    #return users item list inactive
+    #return a list of the user's inactive items
     def list_items_inactive
       return_list = Array.new
       for s in self.item_list
@@ -142,6 +155,8 @@ module Models
     end
 
     # buy an item
+    # @param item_to_buy
+    # @param quantity
     # @return true if user can buy item, false if his credit amount is too small
     def buy_new_item(item_to_buy, quantity)
       preowner = item_to_buy.owner
@@ -161,7 +176,7 @@ module Models
       return true
     end
 
-    # removing item from users item_list
+    # removing item from user's item list
     def remove_item(item_to_remove)
       self.item_list.delete(item_to_remove)
     end
@@ -245,7 +260,8 @@ module Models
     def add_rating(rating)
       self.ratings.push rating
     end
-    
+
+    #returns a json representation of the user's ratings
     def ratings_json
       colors = ['#ff6f31',   # color for bad
                 '#ff9f02',
