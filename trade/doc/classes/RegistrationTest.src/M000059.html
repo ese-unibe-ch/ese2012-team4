@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>test_Gretel_should_register_without_image (RegistrationTest)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File test/integration/register.rb, line 19</span>
+  <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">test_Gretel_should_register_without_image</span>
+    <span class="ruby-identifier">b</span> = <span class="ruby-constant">Watir</span><span class="ruby-operator">::</span><span class="ruby-constant">Browser</span>.<span class="ruby-identifier">new</span>
+    <span class="ruby-identifier">b</span>.<span class="ruby-identifier">goto</span> <span class="ruby-value str">'127.0.0.1:4567/signup'</span>
+    <span class="ruby-identifier">b</span>.<span class="ruby-identifier">text_field</span>(<span class="ruby-identifier">:name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'username'</span>).<span class="ruby-identifier">set</span> <span class="ruby-value str">'Gretel'</span>
+    <span class="ruby-identifier">b</span>.<span class="ruby-identifier">text_field</span>(<span class="ruby-identifier">:name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'e_mail'</span>).<span class="ruby-identifier">set</span> <span class="ruby-value str">'gretel@gmail.com'</span>
+    <span class="ruby-identifier">b</span>.<span class="ruby-identifier">text_field</span>(<span class="ruby-identifier">:name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'description'</span>).<span class="ruby-identifier">set</span> <span class="ruby-value str">'cooking, cleaning and shopping'</span>
+    <span class="ruby-identifier">b</span>.<span class="ruby-identifier">text_field</span>(<span class="ruby-identifier">:name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'password1'</span>).<span class="ruby-identifier">set</span> <span class="ruby-value str">'asdf1'</span>
+    <span class="ruby-identifier">b</span>.<span class="ruby-identifier">text_field</span>(<span class="ruby-identifier">:name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'password2'</span>).<span class="ruby-identifier">set</span> <span class="ruby-value str">'asdf1'</span>
+    <span class="ruby-identifier">b</span>.<span class="ruby-identifier">button</span>(<span class="ruby-identifier">:value</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'Sign up!'</span>).<span class="ruby-identifier">click</span>
+    <span class="ruby-identifier">assert</span>(<span class="ruby-identifier">b</span>.<span class="ruby-identifier">text</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-value str">&quot;You are now registered&quot;</span>), <span class="ruby-value str">&quot;User should be able to register without image&quot;</span>)
+    <span class="ruby-identifier">b</span>.<span class="ruby-identifier">close</span>
+  <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>

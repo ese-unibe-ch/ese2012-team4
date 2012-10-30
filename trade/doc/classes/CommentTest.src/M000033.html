@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>test_answer (CommentTest)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File test/comment_test.rb, line 53</span>
+  <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">test_answer</span>
+    <span class="ruby-identifier">comment</span> = <span class="ruby-constant">Comment</span>.<span class="ruby-identifier">created</span>(<span class="ruby-ivar">@uathor</span>, <span class="ruby-ivar">@item</span>, <span class="ruby-value str">'head comment'</span>)
+    <span class="ruby-identifier">answer</span> = <span class="ruby-identifier">comment</span>.<span class="ruby-identifier">answer</span>(<span class="ruby-ivar">@author</span>, <span class="ruby-value str">'subcomment'</span>)
+
+    <span class="ruby-identifier">assert</span>(<span class="ruby-operator">!</span><span class="ruby-identifier">answer</span>.<span class="ruby-identifier">is_head_comment?</span>, <span class="ruby-value str">&quot;this is no head comment!&quot;</span>)
+    <span class="ruby-identifier">assert</span>(<span class="ruby-identifier">comment</span>.<span class="ruby-identifier">sub_comments</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">answer</span>))
+
+    <span class="ruby-identifier">answer</span>.<span class="ruby-identifier">delete</span>
+    <span class="ruby-identifier">assert</span>(<span class="ruby-operator">!</span><span class="ruby-identifier">comment</span>.<span class="ruby-identifier">sub_comments</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">answer</span>))
+  <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>

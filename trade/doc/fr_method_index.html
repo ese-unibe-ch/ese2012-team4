@@ -1,0 +1,149 @@
+
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<!--
+
+    Methods
+
+  -->
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Methods</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="rdoc-style.css" type="text/css" />
+  <base target="docwin" />
+</head>
+<body>
+<div id="index">
+  <h1 class="section-bar">Methods</h1>
+  <div id="index-entries">
+    <a href="classes/Models/User.html#M000075">activate_item (Models::User)</a><br />
+    <a href="classes/Models/User.html#M000087">add_rating (Models::User)</a><br />
+    <a href="classes/Models/User.html#M000085">add_to_wishlist (Models::User)</a><br />
+    <a href="classes/Models/Item.html#M000107">add_user_to_wishlist (Models::Item)</a><br />
+    <a href="classes/Models/Comment.html#M000115">answer (Models::Comment)</a><br />
+    <a href="classes/Models/User.html#M000081">available? (Models::User)</a><br />
+    <a href="classes/Models/User.html#M000073">buy_new_item (Models::User)</a><br />
+    <a href="classes/Models/Comment.html#M000114">by_id (Models::Comment)</a><br />
+    <a href="classes/Models/User.html#M000079">by_name (Models::User)</a><br />
+    <a href="classes/Models/User.html#M000066">change_password (Models::User)</a><br />
+    <a href="classes/Models/User.html#M000067">check_password (Models::User)</a><br />
+    <a href="classes/Models/Item.html#M000105">comment (Models::Item)</a><br />
+    <a href="classes/Models/User.html#M000064">copy (Models::User)</a><br />
+    <a href="classes/Models/Item.html#M000092">copy (Models::Item)</a><br />
+    <a href="classes/Models/User.html#M000070">create_item (Models::User)</a><br />
+    <a href="classes/Models/Comment.html#M000109">created (Models::Comment)</a><br />
+    <a href="classes/Models/Item.html#M000091">created (Models::Item)</a><br />
+    <a href="classes/Models/Holding.html#M000120">created (Models::Holding)</a><br />
+    <a href="classes/Models/User.html#M000063">created (Models::User)</a><br />
+    <a href="classes/Models/User.html#M000076">deactivate_item (Models::User)</a><br />
+    <a href="classes/Models/User.html#M000084">delete (Models::User)</a><br />
+    <a href="classes/Models/Item.html#M000104">delete (Models::Item)</a><br />
+    <a href="classes/Models/Comment.html#M000112">delete (Models::Comment)</a><br />
+    <a href="classes/Models/Item.html#M000095">edit (Models::Item)</a><br />
+    <a href="classes/Models/Item.html#M000101">editable? (Models::Item)</a><br />
+    <a href="classes/Models/Item.html#M000097">expired? (Models::Item)</a><br />
+    <a href="classes/Models/Item.html#M000103">get_all (Models::Item)</a><br />
+    <a href="classes/Models/User.html#M000080">get_all (Models::User)</a><br />
+    <a href="classes/Models/Holding.html#M000119">get_all (Models::Holding)</a><br />
+    <a href="classes/Models/Item.html#M000102">get_item (Models::Item)</a><br />
+    <a href="classes/Models/Item.html#M000090">get_item_list (Models::Item)</a><br />
+    <a href="classes/Models/User.html#M000078">get_user (Models::User)</a><br />
+    <a href="classes/Models/Item.html#M000096">is_active? (Models::Item)</a><br />
+    <a href="classes/Models/Comment.html#M000113">is_head_comment? (Models::Comment)</a><br />
+    <a href="classes/Models/Item.html#M000099">is_owner? (Models::Item)</a><br />
+    <a href="classes/Models/Item.html#M000093">is_valid (Models::Item)</a><br />
+    <a href="classes/Models/User.html#M000065">is_valid (Models::User)</a><br />
+    <a href="classes/Models/Holding.html#M000121">itemReceived (Models::Holding)</a><br />
+    <a href="classes/Models/Comment.html#M000110">list_comments (Models::Comment)</a><br />
+    <a href="classes/Models/User.html#M000071">list_items (Models::User)</a><br />
+    <a href="classes/Models/User.html#M000072">list_items_inactive (Models::User)</a><br />
+    <a href="classes/Models/User.html#M000077">login (Models::User)</a><br />
+    <a href="classes/Models/TimeHandler.html#M000118">parseTime (Models::TimeHandler)</a><br />
+    <a href="classes/Models/User.html#M000082">pending_inbox (Models::User)</a><br />
+    <a href="classes/Models/User.html#M000083">pending_outbox (Models::User)</a><br />
+    <a href="classes/Models/User.html#M000089">rating (Models::User)</a><br />
+    <a href="classes/Models/User.html#M000088">ratings_json (Models::User)</a><br />
+    <a href="files/test/user_test_rb.html#M000008">relative (test/user_test.rb)</a><br />
+    <a href="files/app/controllers/not_authenticated_rb.html#M000005">relative (app/controllers/not_authenticated.rb)</a><br />
+    <a href="files/app/controllers/item_control_rb.html#M000004">relative (app/controllers/item_control.rb)</a><br />
+    <a href="files/app/controllers/comment_control_rb.html#M000002">relative (app/controllers/comment_control.rb)</a><br />
+    <a href="files/test/item_test_rb.html#M000007">relative (test/item_test.rb)</a><br />
+    <a href="files/app/controllers/user_control_rb.html#M000006">relative (app/controllers/user_control.rb)</a><br />
+    <a href="files/app/app_rb.html#M000001">relative (app/app.rb)</a><br />
+    <a href="classes/Models/User.html#M000086">remove_from_wishlist (Models::User)</a><br />
+    <a href="classes/Models/User.html#M000074">remove_item (Models::User)</a><br />
+    <a href="classes/Models/Item.html#M000108">remove_user_from_wishlist (Models::Item)</a><br />
+    <a href="classes/Models/PasswordCheck.html#M000116">safe? (Models::PasswordCheck)</a><br />
+    <a href="classes/Models/User.html#M000068">save (Models::User)</a><br />
+    <a href="classes/Models/Item.html#M000094">save (Models::Item)</a><br />
+    <a href="classes/Models/Comment.html#M000111">save (Models::Comment)</a><br />
+    <a href="files/app/controllers/helper_rb.html#M000003">save_image (app/controllers/helper.rb)</a><br />
+    <a href="classes/Models/Item.html#M000106">search (Models::Item)</a><br />
+    <a href="classes/Models/Mailer.html#M000123">send_mail_to (Models::Mailer)</a><br />
+    <a href="classes/UserTest.html#M000034">setup (UserTest)</a><br />
+    <a href="classes/CommentTest.html#M000028">setup (CommentTest)</a><br />
+    <a href="classes/ItemTest.html#M000009">setup (ItemTest)</a><br />
+    <a href="classes/Models/Holding.html#M000122">shipItem (Models::Holding)</a><br />
+    <a href="classes/UserTest.html#M000035">teardown (UserTest)</a><br />
+    <a href="classes/ItemTest.html#M000010">teardown (ItemTest)</a><br />
+    <a href="classes/LoginTest.html#M000060">test_ESE_should_log_in (LoginTest)</a><br />
+    <a href="classes/RegistrationTest.html#M000059">test_Gretel_should_register_without_image (RegistrationTest)</a><br />
+    <a href="classes/RegistrationTest.html#M000058">test_Haensel_should_register_without_image_and_interests (RegistrationTest)</a><br />
+    <a href="classes/UserTest.html#M000036">test_activate_item (UserTest)</a><br />
+    <a href="classes/CommentTest.html#M000033">test_answer (CommentTest)</a><br />
+    <a href="classes/UserTest.html#M000045">test_auth (UserTest)</a><br />
+    <a href="classes/UserTest.html#M000046">test_available (UserTest)</a><br />
+    <a href="classes/UserTest.html#M000040">test_create_user (UserTest)</a><br />
+    <a href="classes/UserTest.html#M000037">test_deactivate_item (UserTest)</a><br />
+    <a href="classes/CommentTest.html#M000032">test_delete (CommentTest)</a><br />
+    <a href="classes/UserTest.html#M000047">test_delete (UserTest)</a><br />
+    <a href="classes/ItemTest.html#M000021">test_edit (ItemTest)</a><br />
+    <a href="classes/ItemTest.html#M000020">test_editable (ItemTest)</a><br />
+    <a href="classes/UserTest.html#M000038">test_get_all (UserTest)</a><br />
+    <a href="classes/ItemTest.html#M000012">test_get_all (ItemTest)</a><br />
+    <a href="classes/ItemTest.html#M000011">test_get_item (ItemTest)</a><br />
+    <a href="classes/CommentTest.html#M000029">test_initialization (CommentTest)</a><br />
+    <a href="classes/CommentTest.html#M000030">test_is_head_comment (CommentTest)</a><br />
+    <a href="classes/ItemTest.html#M000019">test_is_owner (ItemTest)</a><br />
+    <a href="classes/ItemTest.html#M000015">test_item_activation (ItemTest)</a><br />
+    <a href="classes/ItemTest.html#M000023">test_item_comment (ItemTest)</a><br />
+    <a href="classes/ItemTest.html#M000013">test_item_create_by_user (ItemTest)</a><br />
+    <a href="classes/ItemTest.html#M000014">test_item_initialisation (ItemTest)</a><br />
+    <a href="classes/ItemTest.html#M000016">test_item_owner (ItemTest)</a><br />
+    <a href="classes/ItemTest.html#M000017">test_item_owner_after_selling (ItemTest)</a><br />
+    <a href="classes/UserTest.html#M000043">test_method_list_active (UserTest)</a><br />
+    <a href="classes/UserTest.html#M000044">test_method_list_inactive (UserTest)</a><br />
+    <a href="classes/TimeHandlerTest.html#M000057">test_parse_time (TimeHandlerTest)</a><br />
+    <a href="classes/PasswordCheckTest.html#M000055">test_password_contains_letters (PasswordCheckTest)</a><br />
+    <a href="classes/PasswordCheckTest.html#M000054">test_password_contains_numbers (PasswordCheckTest)</a><br />
+    <a href="classes/PasswordCheckTest.html#M000053">test_password_length_check (PasswordCheckTest)</a><br />
+    <a href="classes/UserTest.html#M000041">test_sales (UserTest)</a><br />
+    <a href="classes/UserTest.html#M000042">test_sales_not_possible_because_of_price (UserTest)</a><br />
+    <a href="classes/CommentTest.html#M000031">test_save (CommentTest)</a><br />
+    <a href="classes/ItemTest.html#M000024">test_search (ItemTest)</a><br />
+    <a href="classes/ItemTransaction.html#M000061">test_system_should_lock_item_after_modification (ItemTransaction)</a><br />
+    <a href="classes/UserTest.html#M000039">test_user_item_create (UserTest)</a><br />
+    <a href="classes/ItemTransaction.html#M000062">test_user_should_buy_item (ItemTransaction)</a><br />
+    <a href="classes/ItemTest.html#M000018">test_valid_price (ItemTest)</a><br />
+    <a href="classes/TimeHandlerTest.html#M000056">test_valid_time (TimeHandlerTest)</a><br />
+    <a href="classes/UserTest.html#M000048">test_validation (UserTest)</a><br />
+    <a href="classes/ItemTest.html#M000022">test_validation (ItemTest)</a><br />
+    <a href="classes/UserTest.html#M000049">test_validation_duplicate_username (UserTest)</a><br />
+    <a href="classes/UserTest.html#M000050">test_validation_missing_name_e_mail (UserTest)</a><br />
+    <a href="classes/UserTest.html#M000051">test_validation_password (UserTest)</a><br />
+    <a href="classes/UserTest.html#M000052">test_wishlist (UserTest)</a><br />
+    <a href="classes/ItemTest.html#M000027">test_wishlist_multiitem_ownbuy_stay_in_list (ItemTest)</a><br />
+    <a href="classes/ItemTest.html#M000026">test_wishlist_multiitem_stay_in_list (ItemTest)</a><br />
+    <a href="classes/ItemTest.html#M000025">test_wishlist_other_buy_remove_from_list (ItemTest)</a><br />
+    <a href="classes/Models/Item.html#M000100">to_s (Models::Item)</a><br />
+    <a href="classes/Models/User.html#M000069">to_s (Models::User)</a><br />
+    <a href="classes/Models/TimeHandler.html#M000117">validTime? (Models::TimeHandler)</a><br />
+    <a href="classes/Models/Item.html#M000098">valid_integer? (Models::Item)</a><br />
+  </div>
+</div>
+</body>
+</html>

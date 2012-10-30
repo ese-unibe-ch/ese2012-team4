@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>test_parse_time (TimeHandlerTest)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File test/time_handler_test.rb, line 16</span>
+  <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">test_parse_time</span>
+    <span class="ruby-identifier">assert</span>(<span class="ruby-constant">TimeHandler</span>.<span class="ruby-identifier">parseTime</span>(<span class="ruby-value str">&quot;20.5.2010&quot;</span>, <span class="ruby-value str">&quot;19:00&quot;</span>).<span class="ruby-identifier">eql?</span>(<span class="ruby-constant">Time</span>.<span class="ruby-identifier">local</span>(<span class="ruby-value">2010</span>, <span class="ruby-value str">&quot;may&quot;</span>, <span class="ruby-value">20</span>, <span class="ruby-value">19</span>, <span class="ruby-value">0</span>, <span class="ruby-value">0</span>)))
+    <span class="ruby-identifier">assert</span>(<span class="ruby-constant">TimeHandler</span>.<span class="ruby-identifier">parseTime</span>(<span class="ruby-value str">&quot;10-5-1980&quot;</span>,<span class="ruby-value str">&quot; 22:00 &quot;</span>).<span class="ruby-identifier">eql?</span>(<span class="ruby-constant">Time</span>.<span class="ruby-identifier">local</span>(<span class="ruby-value">1980</span>, <span class="ruby-value str">&quot;may&quot;</span>, <span class="ruby-value">10</span>, <span class="ruby-value">22</span>, <span class="ruby-value">0</span>, <span class="ruby-value">0</span>)))
+    <span class="ruby-identifier">assert</span>(<span class="ruby-constant">TimeHandler</span>.<span class="ruby-identifier">parseTime</span>(<span class="ruby-value str">&quot;04-12-1&quot;</span>, <span class="ruby-value str">&quot;00:15&quot;</span>).<span class="ruby-identifier">eql?</span>(<span class="ruby-constant">Time</span>.<span class="ruby-identifier">local</span>(<span class="ruby-value">2004</span>, <span class="ruby-value str">&quot;dec&quot;</span>, <span class="ruby-value">1</span>, <span class="ruby-value">00</span>, <span class="ruby-value">15</span>, <span class="ruby-value">0</span>)))
+  <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>

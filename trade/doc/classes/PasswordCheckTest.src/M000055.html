@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>test_password_contains_letters (PasswordCheckTest)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File test/password_check_test.rb, line 22</span>
+  <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">test_password_contains_letters</span>
+    <span class="ruby-identifier">assert</span>(<span class="ruby-constant">PasswordCheck</span>.<span class="ruby-identifier">safe?</span>(<span class="ruby-value str">&quot;123%4a&quot;</span>), <span class="ruby-value str">&quot;Passwords containing a letter and numbers should be safe.&quot;</span>)
+    <span class="ruby-identifier">assert</span>(<span class="ruby-constant">PasswordCheck</span>.<span class="ruby-identifier">safe?</span>(<span class="ruby-value str">&quot;123%4k&quot;</span>), <span class="ruby-value str">&quot;Passwords containing a letter and numbers should be safe.&quot;</span>)
+    <span class="ruby-identifier">assert</span>(<span class="ruby-constant">PasswordCheck</span>.<span class="ruby-identifier">safe?</span>(<span class="ruby-value str">&quot;123%4z&quot;</span>), <span class="ruby-value str">&quot;Passwords containing a letter and numbers should be safe.&quot;</span>)
+    <span class="ruby-identifier">assert</span>(<span class="ruby-operator">!</span><span class="ruby-constant">PasswordCheck</span>.<span class="ruby-identifier">safe?</span>(<span class="ruby-value str">&quot;123**&quot;</span>), <span class="ruby-value str">&quot;Passwords containing no letter should be unsafe&quot;</span>)
+    <span class="ruby-identifier">assert</span>(<span class="ruby-constant">PasswordCheck</span>.<span class="ruby-identifier">safe?</span>(<span class="ruby-value str">&quot;123*A&quot;</span>), <span class="ruby-value str">&quot;Passwords containing a capital letter and numbers should be safe&quot;</span>)
+    <span class="ruby-identifier">assert</span>(<span class="ruby-constant">PasswordCheck</span>.<span class="ruby-identifier">safe?</span>(<span class="ruby-value str">&quot;123*F&quot;</span>), <span class="ruby-value str">&quot;Passwords containing a capital letter and numbers should be safe&quot;</span>)
+    <span class="ruby-identifier">assert</span>(<span class="ruby-constant">PasswordCheck</span>.<span class="ruby-identifier">safe?</span>(<span class="ruby-value str">&quot;123*Z&quot;</span>), <span class="ruby-value str">&quot;Passwords containing a capital letter and numbers should be safe&quot;</span>)
+  <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>
