@@ -42,7 +42,7 @@ module Controllers
     get '/search/result/:page' do
       redirect '/index' unless session[:id]
       redirect '/search' if @@item_map[session[:id]].nil?
-      items_per_page = 20
+      items_per_page = 10
       page = params[:page].to_i
       items = @@item_map[session[:id]]
       (items.size%items_per_page)==0? page_count = (items.size/items_per_page).to_i : page_count = (items.size/items_per_page).to_i+1
@@ -115,7 +115,7 @@ module Controllers
     get '/items/:page' do
       redirect '/index' unless session[:id]
 
-      items_per_page = 20
+      items_per_page = 10
       page = params[:page].to_i
       items = Item.get_all(@session_user.name)
       (items.size%items_per_page)==0? page_count = (items.size/items_per_page).to_i : page_count = (items.size/items_per_page).to_i+1
