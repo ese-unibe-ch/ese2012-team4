@@ -26,12 +26,12 @@ module Controllers
 
     get '/index' do
       redirect '/home' unless session[:id].nil?
-      haml :index, :locals => {:page_name => "Home"}
+      haml :index
     end
 
     get '/login' do
       redirect '/home' unless session[:id].nil?
-      haml :login, :locals => {:page_name => "Log in"}
+      haml :login
     end
 
     post "/authenticate" do
@@ -48,7 +48,7 @@ module Controllers
 
     get '/signup' do
       redirect '/home' unless session[:id].nil?
-      haml :signup, :locals => {:page_name => "Sign up"}
+      haml :signup
     end
 
     post '/signup' do

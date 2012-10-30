@@ -144,7 +144,7 @@ class App < Sinatra::Base
     ese.save
     ese.image = FileUtils::pwd+"/public/images/user_pix/ese.jpeg"
     gtg = ese.create_item("A guide to git", 20, 200, "Everything you should know but somehow didn't learn in P2")
-    gtg.image = ea.image = FileUtils::pwd+"/public/images/item_pix/git.jpg"
+    gtg.image = FileUtils::pwd+"/public/images/item_pix/git.jpg"
 
 
     for i in 0..10
