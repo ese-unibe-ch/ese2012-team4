@@ -98,6 +98,32 @@ class App < Sinatra::Base
       userC.add_rating(rand(5))
     end
 
+    userD = User.created( "Smoky Remo", "password1", "e_mail_D@preset.com", "Wanna try?" )
+    userD.save
+    userD.image = FileUtils::pwd+"/public/images/user_pix/Remo2.jpg"
+    da = userD.create_item("Massive Shisha", 90, 1)
+    da.description="Very good quality Waterpipe, as they told me in Egypt. You will have tons of smoke!"
+    da.active = true
+    da.image = FileUtils::pwd+"/public/images/item_pix/Shisha.jpg"
+    db = userC.create_item("Cherry Tabacco", 20, 10)
+    db.description = "Best flavor in town!"
+    dbc = db.comment(userB, "I don't like it at all, sorry but can't you offer some good one?")
+
+    for i in 0..10
+      userD.add_rating(rand(4)+1)
+    end
+
+    userE = User.created( "Remo", "password1", "remo_burn@hotmail.com", "-nice hardware\n-movies" )
+    userE.save
+    userE.image = FileUtils::pwd+"/public/images/user_pix/Remo1.jpg"
+    ea = userE.create_item("The Lord of The Rings, The Return of the King DVD", 5, 1)
+    ea.description = "2 DVD Pack, no scratches!"
+    ea.image = FileUtils::pwd+"/public/images/item_pix/LOTR.jpg"
+
+    for i in 0..10
+      userE.add_rating(rand(4)+1)
+    end
+
     ese = User.created( "ese", "ese", "ese@preset.com", "fancy code-snippets" )
     ese.save
     ese.image = FileUtils::pwd+"/public/images/user_pix/ese.jpeg"

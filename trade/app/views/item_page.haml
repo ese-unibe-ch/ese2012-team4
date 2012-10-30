@@ -34,7 +34,10 @@
   .textbox.name
     Expires on:
   .textbox.value
-    #{@item.expiration_date}
+    - if !@item.expiration_date.nil?
+      #{@item.expiration_date.asctime}
+    - else
+      No Expiration Date selected
 %br
 .lineContainer
   .textbox.name
