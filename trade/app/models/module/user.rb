@@ -225,7 +225,7 @@ class User
       for e in new_array
         ret_array.push(e[1])
       end
-      return ret_array.select {|s| s.name !=  viewer}
+      return ret_array.select {|s| !s.eql?(viewer)}
     end
 
     def self.available? name
