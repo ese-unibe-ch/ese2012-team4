@@ -29,6 +29,7 @@
 }
 .itemtable td{
     width:100%;
+    padding-left: 5px;
 }
 
 .itemtable td.buyform {
