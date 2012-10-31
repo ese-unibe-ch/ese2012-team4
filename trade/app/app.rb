@@ -180,6 +180,41 @@ class App < Sinatra::Base
     good_misch = User.created("Good Misch", "misch2", "misch@preset.com", "I love all your Itemmmsssss! Shopping!")
     good_misch.save
     good_misch.image = FileUtils::pwd+"/public/images/user_pix/good_misch.jpg"
+
+
+    userF = User.created( "Evil Bensch", "password1", "e_mail_D@preset.com")
+    userF.save
+    userF.image = FileUtils::pwd+"/public/images/user_pix/Bensch1.JPG"
+    fa = userF.create_item("Cannon Ball", 20, 10)
+    fa.image = FileUtils::pwd+"/public/images/item_pix/Cannonball.jpg"
+    fa.active = true
+    fb = userF.create_item("Brand New Bike", 50, 1)
+    fb.image = FileUtils::pwd+"/public/images/item_pix/OldBike.jpeg"
+    fb.description = "Has a nice colour and is in great condition. \n
+                      Come by and take it for a test ride."
+    fb.active = true
+    for i in 0..10
+      userF.add_rating(rand(5))
+    end
+
+    userG = User.created( "Bensch", "password1", "e_mail_E@preset.com")
+    userG.save
+    userG.image = FileUtils::pwd+"/public/images/user_pix/Bensch2.jpg"
+    ga = userG.create_item("St. Peter's Basilica", 500, 1)
+    ga.image = FileUtils::pwd+"/public/images/item_pix/StPeters.JPG"
+    ga.description = "Very nice and big building. \n
+                      Special price, only for a short time! \n
+                      Has to be picked up by buyer!"
+    ga.active = true
+    gb = userG.create_item("Dessert", 5, 100)
+    gb.image = FileUtils::pwd+"/public/images/item_pix/Dessert.JPG"
+    gb.description = "DIG IN!!!"
+    gb.active = true
+
+    for i in 0..10
+      userG.add_rating(rand(4))
+    end
+
     end
 
   end
