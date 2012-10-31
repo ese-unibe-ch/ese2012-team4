@@ -5,19 +5,20 @@
 
 <html>
 <head>
-  <title>get_all (Models::User)</title>
+  <title>activate_item (Models::User)</title>
   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
   <link rel="stylesheet" href="../../.././rdoc-style.css" type="text/css" media="screen" />
 </head>
 <body class="standalone-code">
-  <pre><span class="ruby-comment cmt"># File app/models/module/user.rb, line 249</span>
-    <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">get_all</span>(<span class="ruby-identifier">viewer</span>)
-      <span class="ruby-identifier">new_array</span> = <span class="ruby-ivar">@@users</span>.<span class="ruby-identifier">to_a</span>
-      <span class="ruby-identifier">ret_array</span> = <span class="ruby-constant">Array</span>.<span class="ruby-identifier">new</span>
-      <span class="ruby-keyword kw">for</span> <span class="ruby-identifier">e</span> <span class="ruby-keyword kw">in</span> <span class="ruby-identifier">new_array</span>
-        <span class="ruby-identifier">ret_array</span>.<span class="ruby-identifier">push</span>(<span class="ruby-identifier">e</span>[<span class="ruby-value">1</span>])
+  <pre><span class="ruby-comment cmt"># File app/models/module/user.rb, line 205</span>
+    <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">activate_item</span>(<span class="ruby-identifier">id</span>)
+      <span class="ruby-identifier">item</span> = <span class="ruby-constant">Item</span>.<span class="ruby-identifier">get_item</span>(<span class="ruby-identifier">id</span>)
+      <span class="ruby-keyword kw">return</span> <span class="ruby-keyword kw">false</span> <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">item</span>.<span class="ruby-identifier">owner</span><span class="ruby-operator">==</span><span class="ruby-keyword kw">self</span>
+      <span class="ruby-keyword kw">if</span> <span class="ruby-operator">!</span>(<span class="ruby-identifier">identical</span> = <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">list_items</span>.<span class="ruby-identifier">detect</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">i</span><span class="ruby-operator">|</span> <span class="ruby-identifier">i</span>.<span class="ruby-identifier">name</span><span class="ruby-operator">==</span> <span class="ruby-identifier">item</span>.<span class="ruby-identifier">name</span> <span class="ruby-keyword kw">and</span> <span class="ruby-identifier">i</span>.<span class="ruby-identifier">price</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">item</span>.<span class="ruby-identifier">price</span> <span class="ruby-keyword kw">and</span> <span class="ruby-identifier">i</span>.<span class="ruby-identifier">description</span><span class="ruby-operator">==</span><span class="ruby-identifier">item</span>.<span class="ruby-identifier">description</span>}).<span class="ruby-identifier">nil?</span>
+        <span class="ruby-identifier">identical</span>.<span class="ruby-identifier">quantity</span><span class="ruby-operator">+=</span><span class="ruby-identifier">item</span>.<span class="ruby-identifier">quantity</span>
+        <span class="ruby-identifier">item</span>.<span class="ruby-identifier">delete</span>
       <span class="ruby-keyword kw">end</span>
-      <span class="ruby-keyword kw">return</span> <span class="ruby-identifier">ret_array</span>.<span class="ruby-identifier">select</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">s</span><span class="ruby-operator">|</span> <span class="ruby-operator">!</span><span class="ruby-identifier">s</span>.<span class="ruby-identifier">eql?</span>(<span class="ruby-identifier">viewer</span>)}
+      <span class="ruby-identifier">item</span>.<span class="ruby-identifier">active</span>=<span class="ruby-keyword kw">true</span>
     <span class="ruby-keyword kw">end</span></pre>
 </body>
 </html>

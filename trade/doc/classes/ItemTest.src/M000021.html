@@ -5,26 +5,24 @@
 
 <html>
 <head>
-  <title>test_edit (ItemTest)</title>
+  <title>test_valid_price (ItemTest)</title>
   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
   <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
 </head>
 <body class="standalone-code">
-  <pre><span class="ruby-comment cmt"># File test/item_test.rb, line 146</span>
-  <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">test_edit</span>
-    <span class="ruby-identifier">item</span> = <span class="ruby-ivar">@owner</span>.<span class="ruby-identifier">create_item</span>(<span class="ruby-value str">&quot;testobject&quot;</span>,<span class="ruby-value">50</span>, <span class="ruby-value">10</span>)
-
-    <span class="ruby-identifier">assert</span>(<span class="ruby-identifier">item</span>.<span class="ruby-identifier">name</span>.<span class="ruby-identifier">eql?</span>(<span class="ruby-value str">&quot;testobject&quot;</span>), <span class="ruby-value str">&quot;Item should have a name&quot;</span>)
-    <span class="ruby-identifier">assert</span>(<span class="ruby-identifier">item</span>.<span class="ruby-identifier">price</span>.<span class="ruby-identifier">eql?</span>(<span class="ruby-value">50</span>), <span class="ruby-value str">&quot;Item should have a price&quot;</span>)
-    <span class="ruby-identifier">assert</span>(<span class="ruby-identifier">item</span>.<span class="ruby-identifier">description</span>.<span class="ruby-identifier">eql?</span>(<span class="ruby-value str">&quot;No description available&quot;</span>), <span class="ruby-value str">&quot;No description was entered&quot;</span>)
-    <span class="ruby-identifier">assert</span>(<span class="ruby-identifier">item</span>.<span class="ruby-identifier">quantity</span>.<span class="ruby-identifier">eql?</span>(<span class="ruby-value">10</span>), <span class="ruby-value str">&quot;Quantity should be set correctly&quot;</span>)
-
-    <span class="ruby-identifier">item</span>.<span class="ruby-identifier">edit</span>(<span class="ruby-value str">&quot;new_name&quot;</span>,<span class="ruby-value">23</span>,<span class="ruby-value">1</span>,<span class="ruby-value str">&quot;new description&quot;</span>)
-
-    <span class="ruby-identifier">assert</span>(<span class="ruby-identifier">item</span>.<span class="ruby-identifier">name</span>.<span class="ruby-identifier">eql?</span>(<span class="ruby-value str">&quot;new_name&quot;</span>), <span class="ruby-value str">&quot;Item's name should have changed&quot;</span>)
-    <span class="ruby-identifier">assert</span>(<span class="ruby-identifier">item</span>.<span class="ruby-identifier">price</span>.<span class="ruby-identifier">eql?</span>(<span class="ruby-value">23</span>), <span class="ruby-value str">&quot;Item's price should have changed&quot;</span>)
-    <span class="ruby-identifier">assert</span>(<span class="ruby-identifier">item</span>.<span class="ruby-identifier">description</span>.<span class="ruby-identifier">eql?</span>(<span class="ruby-value str">&quot;new description&quot;</span>), <span class="ruby-value str">&quot;Item should now have a description&quot;</span>)
-    <span class="ruby-identifier">assert</span>(<span class="ruby-identifier">item</span>.<span class="ruby-identifier">quantity</span>.<span class="ruby-identifier">eql?</span>(<span class="ruby-value">1</span>), <span class="ruby-value str">&quot;Item's quantity should have changed&quot;</span>)
+  <pre><span class="ruby-comment cmt"># File test/item_test.rb, line 113</span>
+  <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">test_valid_price</span>
+    <span class="ruby-identifier">assert</span>(<span class="ruby-constant">Item</span>.<span class="ruby-identifier">valid_integer?</span>(<span class="ruby-value str">&quot;10&quot;</span>), <span class="ruby-value str">&quot;10 should be a valid price&quot;</span>)
+    <span class="ruby-identifier">assert</span>(<span class="ruby-constant">Item</span>.<span class="ruby-identifier">valid_integer?</span>(<span class="ruby-value">10</span>), <span class="ruby-value str">&quot;10 should be a valid price&quot;</span>)
+    <span class="ruby-identifier">assert</span>(<span class="ruby-constant">Item</span>.<span class="ruby-identifier">valid_integer?</span>(<span class="ruby-value str">&quot;9876543210&quot;</span>), <span class="ruby-value str">&quot;9876543210 should be a valid price&quot;</span>)
+    <span class="ruby-identifier">assert</span>(<span class="ruby-constant">Item</span>.<span class="ruby-identifier">valid_integer?</span>(<span class="ruby-value">9876543210</span>), <span class="ruby-value str">&quot;9876543210 should be a valid price&quot;</span>)
+    <span class="ruby-identifier">assert</span>(<span class="ruby-operator">!</span><span class="ruby-constant">Item</span>.<span class="ruby-identifier">valid_integer?</span>(<span class="ruby-value str">&quot;010&quot;</span>), <span class="ruby-value str">&quot;Strings with zeros at the beginning should not be valid, because of wrong parsing&quot;</span>)
+    <span class="ruby-comment cmt"># 010 (without quotes) is considered octal by ruby, and becomes 8 when converted to an Integer!</span>
+    <span class="ruby-identifier">assert</span>(<span class="ruby-operator">!</span><span class="ruby-constant">Item</span>.<span class="ruby-identifier">valid_integer?</span>(<span class="ruby-value str">&quot;&quot;</span>), <span class="ruby-value str">&quot;Empty Strings should not be valid, an Item needs a price.&quot;</span>)
+    <span class="ruby-identifier">assert</span>(<span class="ruby-operator">!</span><span class="ruby-constant">Item</span>.<span class="ruby-identifier">valid_integer?</span>(<span class="ruby-value str">&quot; &quot;</span>), <span class="ruby-value str">&quot;Empty Strings should not be valid, an Item needs a price.&quot;</span>)
+    <span class="ruby-identifier">assert</span>(<span class="ruby-operator">!</span><span class="ruby-constant">Item</span>.<span class="ruby-identifier">valid_integer?</span>(<span class="ruby-value str">&quot;dfafd&quot;</span>), <span class="ruby-value str">&quot;Letters should not be valid prices&quot;</span>)
+    <span class="ruby-identifier">assert</span>(<span class="ruby-operator">!</span><span class="ruby-constant">Item</span>.<span class="ruby-identifier">valid_integer?</span>(<span class="ruby-value str">&quot;-&quot;</span>), <span class="ruby-value str">&quot;Operators should not be valid prices&quot;</span>)
+    <span class="ruby-identifier">assert</span>(<span class="ruby-operator">!</span><span class="ruby-constant">Item</span>.<span class="ruby-identifier">valid_integer?</span>(<span class="ruby-value str">&quot;*&quot;</span>), <span class="ruby-value str">&quot;Operators should not be valid prices&quot;</span>)
   <span class="ruby-keyword kw">end</span></pre>
 </body>
 </html>

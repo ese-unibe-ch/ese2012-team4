@@ -5,20 +5,14 @@
 
 <html>
 <head>
-  <title>list_items_inactive (Models::User)</title>
+  <title>check_password (Models::User)</title>
   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
   <link rel="stylesheet" href="../../.././rdoc-style.css" type="text/css" media="screen" />
 </head>
 <body class="standalone-code">
-  <pre><span class="ruby-comment cmt"># File app/models/module/user.rb, line 166</span>
-    <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">list_items_inactive</span>
-      <span class="ruby-identifier">return_list</span> = <span class="ruby-constant">Array</span>.<span class="ruby-identifier">new</span>
-      <span class="ruby-keyword kw">for</span> <span class="ruby-identifier">s</span> <span class="ruby-keyword kw">in</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">item_list</span>
-        <span class="ruby-keyword kw">if</span> <span class="ruby-operator">!</span><span class="ruby-identifier">s</span>.<span class="ruby-identifier">active</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-operator">!</span><span class="ruby-identifier">s</span>.<span class="ruby-identifier">expired?</span>
-          <span class="ruby-identifier">return_list</span>.<span class="ruby-identifier">push</span>(<span class="ruby-identifier">s</span>)
-        <span class="ruby-keyword kw">end</span>
-      <span class="ruby-keyword kw">end</span>
-      <span class="ruby-keyword kw">return</span> <span class="ruby-identifier">return_list</span>
+  <pre><span class="ruby-comment cmt"># File app/models/module/user.rb, line 118</span>
+    <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">check_password</span>(<span class="ruby-identifier">password</span>)
+      <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">password_hash</span> <span class="ruby-operator">==</span> <span class="ruby-constant">BCrypt</span><span class="ruby-operator">::</span><span class="ruby-constant">Engine</span>.<span class="ruby-identifier">hash_secret</span>(<span class="ruby-identifier">password</span>, <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">password_salt</span>)
     <span class="ruby-keyword kw">end</span></pre>
 </body>
 </html>

@@ -5,14 +5,16 @@
 
 <html>
 <head>
-  <title>to_s (Models::User)</title>
+  <title>copy (Models::User)</title>
   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
   <link rel="stylesheet" href="../../.././rdoc-style.css" type="text/css" media="screen" />
 </head>
 <body class="standalone-code">
-  <pre><span class="ruby-comment cmt"># File app/models/module/user.rb, line 130</span>
-    <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">to_s</span>
-      <span class="ruby-node">&quot;#{self.name} has currently #{self.credits} credits, #{list_items.size} active and #{list_items_inactive.size} inactive items&quot;</span>
+  <pre><span class="ruby-comment cmt"># File app/models/module/user.rb, line 72</span>
+    <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">copy</span>( <span class="ruby-identifier">hash</span> = {} )
+      <span class="ruby-constant">User</span>.<span class="ruby-identifier">created</span>(<span class="ruby-identifier">hash</span>[<span class="ruby-identifier">:name</span>] <span class="ruby-operator">||</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">name</span>, <span class="ruby-value str">&quot;FdZ.(gJa)s'dFjKdaDGS+J1&quot;</span>,
+                           <span class="ruby-identifier">hash</span>[<span class="ruby-identifier">:e_mail</span>] <span class="ruby-operator">||</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">e_mail</span>,
+                           <span class="ruby-identifier">hash</span>[<span class="ruby-identifier">:description</span>] <span class="ruby-operator">||</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">description</span>)
     <span class="ruby-keyword kw">end</span></pre>
 </body>
 </html>

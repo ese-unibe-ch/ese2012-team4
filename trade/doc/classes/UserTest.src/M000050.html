@@ -5,21 +5,17 @@
 
 <html>
 <head>
-  <title>test_validation_missing_name_e_mail (UserTest)</title>
+  <title>test_available (UserTest)</title>
   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
   <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
 </head>
 <body class="standalone-code">
-  <pre><span class="ruby-comment cmt"># File test/user_test.rb, line 199</span>
-  <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">test_validation_missing_name_e_mail</span>
-    <span class="ruby-identifier">user1</span> = <span class="ruby-constant">User</span>.<span class="ruby-identifier">created</span>( <span class="ruby-value str">&quot;&quot;</span>, <span class="ruby-value str">&quot;password&quot;</span>, <span class="ruby-value str">&quot;test@mail.com&quot;</span> )
-    <span class="ruby-identifier">assert</span> <span class="ruby-operator">!</span><span class="ruby-identifier">user1</span>.<span class="ruby-identifier">is_valid</span>
-    <span class="ruby-identifier">user2</span> = <span class="ruby-constant">User</span>.<span class="ruby-identifier">created</span>( <span class="ruby-value str">&quot;testuser&quot;</span>, <span class="ruby-value str">&quot;password&quot;</span>, <span class="ruby-value str">&quot;&quot;</span> )
-    <span class="ruby-identifier">assert</span> <span class="ruby-operator">!</span><span class="ruby-identifier">user2</span>.<span class="ruby-identifier">is_valid</span>
-    <span class="ruby-identifier">user3</span> = <span class="ruby-constant">User</span>.<span class="ruby-identifier">created</span>( <span class="ruby-value str">&quot;testuser&quot;</span>, <span class="ruby-value str">&quot;password&quot;</span>, <span class="ruby-value str">&quot;testmail.com&quot;</span> )
-    <span class="ruby-identifier">assert</span> <span class="ruby-operator">!</span><span class="ruby-identifier">user3</span>.<span class="ruby-identifier">is_valid</span>
-    <span class="ruby-identifier">user4</span> = <span class="ruby-constant">User</span>.<span class="ruby-identifier">created</span>( <span class="ruby-value str">&quot;testuser&quot;</span>, <span class="ruby-value str">&quot;password&quot;</span>, <span class="ruby-value str">&quot;test@mailcom&quot;</span> )
-    <span class="ruby-identifier">assert</span> <span class="ruby-operator">!</span><span class="ruby-identifier">user4</span>.<span class="ruby-identifier">is_valid</span>
+  <pre><span class="ruby-comment cmt"># File test/user_test.rb, line 175</span>
+  <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">test_available</span>
+    <span class="ruby-identifier">assert</span> (<span class="ruby-ivar">@owner</span>.<span class="ruby-identifier">name</span> <span class="ruby-operator">==</span> <span class="ruby-value str">&quot;testuser&quot;</span>)
+    <span class="ruby-identifier">assert</span> (<span class="ruby-constant">User</span>.<span class="ruby-identifier">available?</span> <span class="ruby-value str">&quot;testuser&quot;</span>)
+    <span class="ruby-ivar">@owner</span>.<span class="ruby-identifier">save</span>
+    <span class="ruby-identifier">assert</span> (<span class="ruby-operator">!</span><span class="ruby-constant">User</span>.<span class="ruby-identifier">available?</span> <span class="ruby-value str">&quot;testuser&quot;</span>)
   <span class="ruby-keyword kw">end</span></pre>
 </body>
 </html>

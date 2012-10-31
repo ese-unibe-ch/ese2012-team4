@@ -5,26 +5,16 @@
 
 <html>
 <head>
-  <title>test_method_list_inactive (UserTest)</title>
+  <title>test_create_user (UserTest)</title>
   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
   <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
 </head>
 <body class="standalone-code">
-  <pre><span class="ruby-comment cmt"># File test/user_test.rb, line 154</span>
-  <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">test_method_list_inactive</span>
-    <span class="ruby-ivar">@owner</span>.<span class="ruby-identifier">create_item</span>(<span class="ruby-value str">&quot;testobject&quot;</span>, <span class="ruby-value">10</span>, <span class="ruby-value">1</span>)
-    <span class="ruby-ivar">@owner</span>.<span class="ruby-identifier">create_item</span>(<span class="ruby-value str">&quot;testobject2&quot;</span>, <span class="ruby-value">50</span>, <span class="ruby-value">1</span>)
-    <span class="ruby-identifier">assert</span>(<span class="ruby-ivar">@owner</span>.<span class="ruby-identifier">list_items_inactive</span>[<span class="ruby-value">0</span>].<span class="ruby-identifier">to_s</span> <span class="ruby-operator">==</span> <span class="ruby-value str">&quot;testobject, 10&quot;</span>)
-    <span class="ruby-identifier">assert</span>(<span class="ruby-ivar">@owner</span>.<span class="ruby-identifier">list_items_inactive</span>[<span class="ruby-value">1</span>].<span class="ruby-identifier">to_s</span> <span class="ruby-operator">==</span> <span class="ruby-value str">&quot;testobject2, 50&quot;</span>)
-    <span class="ruby-ivar">@owner</span>.<span class="ruby-identifier">list_items_inactive</span>[<span class="ruby-value">0</span>].<span class="ruby-identifier">active</span> = <span class="ruby-keyword kw">true</span>
-    <span class="ruby-ivar">@owner</span>.<span class="ruby-identifier">list_items_inactive</span>[<span class="ruby-value">0</span>].<span class="ruby-identifier">active</span> = <span class="ruby-keyword kw">true</span>
-    <span class="ruby-identifier">assert</span>(<span class="ruby-ivar">@owner</span>.<span class="ruby-identifier">list_items_inactive</span>.<span class="ruby-identifier">empty?</span> <span class="ruby-operator">==</span> <span class="ruby-keyword kw">true</span>)
-    <span class="ruby-identifier">assert</span>(<span class="ruby-ivar">@owner</span>.<span class="ruby-identifier">list_items</span>[<span class="ruby-value">0</span>].<span class="ruby-identifier">to_s</span> <span class="ruby-operator">==</span> <span class="ruby-value str">&quot;testobject, 10&quot;</span>)
-    <span class="ruby-identifier">assert</span>(<span class="ruby-ivar">@owner</span>.<span class="ruby-identifier">list_items</span>[<span class="ruby-value">1</span>].<span class="ruby-identifier">to_s</span> <span class="ruby-operator">==</span> <span class="ruby-value str">&quot;testobject2, 50&quot;</span>)
-    <span class="ruby-ivar">@owner</span>.<span class="ruby-identifier">list_items</span>[<span class="ruby-value">0</span>].<span class="ruby-identifier">active</span> = <span class="ruby-keyword kw">false</span>
-    <span class="ruby-ivar">@owner</span>.<span class="ruby-identifier">list_items</span>[<span class="ruby-value">0</span>].<span class="ruby-identifier">active</span> = <span class="ruby-keyword kw">false</span>
-    <span class="ruby-identifier">assert</span>(<span class="ruby-ivar">@owner</span>.<span class="ruby-identifier">list_items_inactive</span>[<span class="ruby-value">0</span>].<span class="ruby-identifier">to_s</span> <span class="ruby-operator">==</span> <span class="ruby-value str">&quot;testobject, 10&quot;</span>)
-    <span class="ruby-identifier">assert</span>(<span class="ruby-ivar">@owner</span>.<span class="ruby-identifier">list_items_inactive</span>[<span class="ruby-value">1</span>].<span class="ruby-identifier">to_s</span> <span class="ruby-operator">==</span> <span class="ruby-value str">&quot;testobject2, 50&quot;</span>)
+  <pre><span class="ruby-comment cmt"># File test/user_test.rb, line 74</span>
+  <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">test_create_user</span>
+    <span class="ruby-identifier">assert</span>( <span class="ruby-ivar">@owner</span>.<span class="ruby-identifier">name</span> <span class="ruby-operator">==</span> <span class="ruby-value str">&quot;testuser&quot;</span>, <span class="ruby-value str">&quot;Name should be correct&quot;</span>)
+    <span class="ruby-identifier">assert</span>( <span class="ruby-ivar">@owner</span>.<span class="ruby-identifier">credits</span> <span class="ruby-operator">==</span> <span class="ruby-value">100</span>, <span class="ruby-value str">&quot;Credits should be 100 first&quot;</span>)
+    <span class="ruby-identifier">assert</span>( <span class="ruby-ivar">@owner</span>.<span class="ruby-identifier">to_s</span> <span class="ruby-operator">==</span> <span class="ruby-value str">&quot;testuser has currently 100 credits, 0 active and 0 inactive items&quot;</span>, <span class="ruby-value str">&quot;String representation is wrong generated&quot;</span>)
   <span class="ruby-keyword kw">end</span></pre>
 </body>
 </html>

@@ -5,14 +5,14 @@
 
 <html>
 <head>
-  <title>pending_outbox (Models::User)</title>
+  <title>get_user (Models::User)</title>
   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
   <link rel="stylesheet" href="../../.././rdoc-style.css" type="text/css" media="screen" />
 </head>
 <body class="standalone-code">
-  <pre><span class="ruby-comment cmt"># File app/models/module/user.rb, line 269</span>
-    <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">pending_outbox</span>
-      <span class="ruby-constant">Models</span><span class="ruby-operator">::</span><span class="ruby-constant">Holding</span>.<span class="ruby-identifier">get_all</span>.<span class="ruby-identifier">select</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">s</span><span class="ruby-operator">|</span> <span class="ruby-identifier">s</span>.<span class="ruby-identifier">seller</span> <span class="ruby-operator">==</span> <span class="ruby-keyword kw">self</span>}
+  <pre><span class="ruby-comment cmt"># File app/models/module/user.rb, line 239</span>
+    <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">get_user</span>(<span class="ruby-identifier">user_id</span>)
+      <span class="ruby-keyword kw">return</span> <span class="ruby-ivar">@@users</span>[<span class="ruby-identifier">user_id</span>.<span class="ruby-identifier">to_i</span>]
     <span class="ruby-keyword kw">end</span></pre>
 </body>
 </html>

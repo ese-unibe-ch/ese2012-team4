@@ -5,20 +5,16 @@
 
 <html>
 <head>
-  <title>rating (Models::User)</title>
+  <title>delete (Models::User)</title>
   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
   <link rel="stylesheet" href="../../.././rdoc-style.css" type="text/css" media="screen" />
 </head>
 <body class="standalone-code">
-  <pre><span class="ruby-comment cmt"># File app/models/module/user.rb, line 319</span>
-    <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">rating</span>
-      <span class="ruby-identifier">counter</span> = <span class="ruby-value">0</span>
-      <span class="ruby-identifier">value</span> = <span class="ruby-value">0</span>
-      <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">ratings</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">v</span><span class="ruby-operator">|</span>
-        <span class="ruby-identifier">value</span> = <span class="ruby-identifier">value</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">v</span>
-        <span class="ruby-identifier">counter</span> = <span class="ruby-identifier">counter</span> <span class="ruby-operator">+</span> <span class="ruby-value">1</span>
-      <span class="ruby-keyword kw">end</span>
-      <span class="ruby-identifier">value</span><span class="ruby-operator">/</span><span class="ruby-identifier">counter</span>
+  <pre><span class="ruby-comment cmt"># File app/models/module/user.rb, line 273</span>
+    <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">delete</span>
+      <span class="ruby-constant">FileUtils</span><span class="ruby-operator">::</span><span class="ruby-identifier">rm</span>(<span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">image</span>, <span class="ruby-identifier">:force</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword kw">true</span>)
+      <span class="ruby-ivar">@@users</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">id</span>)
+      <span class="ruby-ivar">@@users_by_name</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">name</span>.<span class="ruby-identifier">downcase</span>)
     <span class="ruby-keyword kw">end</span></pre>
 </body>
 </html>

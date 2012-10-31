@@ -5,14 +5,16 @@
 
 <html>
 <head>
-  <title>pending_inbox (Models::User)</title>
+  <title>login (Models::User)</title>
   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
   <link rel="stylesheet" href="../../.././rdoc-style.css" type="text/css" media="screen" />
 </head>
 <body class="standalone-code">
-  <pre><span class="ruby-comment cmt"># File app/models/module/user.rb, line 264</span>
-    <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">pending_inbox</span>
-      <span class="ruby-constant">Models</span><span class="ruby-operator">::</span><span class="ruby-constant">Holding</span>.<span class="ruby-identifier">get_all</span>.<span class="ruby-identifier">select</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">s</span><span class="ruby-operator">|</span> <span class="ruby-identifier">s</span>.<span class="ruby-identifier">buyer</span> <span class="ruby-operator">==</span> <span class="ruby-keyword kw">self</span>}
+  <pre><span class="ruby-comment cmt"># File app/models/module/user.rb, line 232</span>
+    <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">login</span>(<span class="ruby-identifier">id</span>, <span class="ruby-identifier">password</span>)
+      <span class="ruby-identifier">user</span> = <span class="ruby-ivar">@@users</span>[<span class="ruby-identifier">id</span>]
+      <span class="ruby-keyword kw">return</span> <span class="ruby-keyword kw">false</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">user</span>.<span class="ruby-identifier">nil?</span>
+      <span class="ruby-identifier">user</span>.<span class="ruby-identifier">password_hash</span> <span class="ruby-operator">==</span> <span class="ruby-constant">BCrypt</span><span class="ruby-operator">::</span><span class="ruby-constant">Engine</span>.<span class="ruby-identifier">hash_secret</span>(<span class="ruby-identifier">password</span>, <span class="ruby-identifier">user</span>.<span class="ruby-identifier">password_salt</span>)
     <span class="ruby-keyword kw">end</span></pre>
 </body>
 </html>

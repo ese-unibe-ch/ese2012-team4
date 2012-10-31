@@ -5,14 +5,14 @@
 
 <html>
 <head>
-  <title>add_rating (Models::User)</title>
+  <title>pending_inbox (Models::User)</title>
   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
   <link rel="stylesheet" href="../../.././rdoc-style.css" type="text/css" media="screen" />
 </head>
 <body class="standalone-code">
-  <pre><span class="ruby-comment cmt"># File app/models/module/user.rb, line 289</span>
-    <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">add_rating</span>(<span class="ruby-identifier">rating</span>)
-      <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">ratings</span>.<span class="ruby-identifier">push</span> <span class="ruby-identifier">rating</span>
+  <pre><span class="ruby-comment cmt"># File app/models/module/user.rb, line 264</span>
+    <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">pending_inbox</span>
+      <span class="ruby-constant">Models</span><span class="ruby-operator">::</span><span class="ruby-constant">Holding</span>.<span class="ruby-identifier">get_all</span>.<span class="ruby-identifier">select</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">s</span><span class="ruby-operator">|</span> <span class="ruby-identifier">s</span>.<span class="ruby-identifier">buyer</span> <span class="ruby-operator">==</span> <span class="ruby-keyword kw">self</span>}
     <span class="ruby-keyword kw">end</span></pre>
 </body>
 </html>

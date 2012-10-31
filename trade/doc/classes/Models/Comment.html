@@ -83,7 +83,7 @@
 A <a href="Comment.html">Comment</a> has an id (identifier), an author and
 there&#8216;s an item on which the comment corresponds. A <a
 href="Comment.html">Comment</a> may be the <a
-href="Comment.html#M000115">answer</a> on a previous comment, but does not
+href="Comment.html#M000102">answer</a> on a previous comment, but does not
 have to. Of course, a comment also has a text. There will be 2 levels of
 Comments:
 </p>
@@ -101,13 +101,13 @@ Comments:
       <h3 class="section-bar">Methods</h3>
 
       <div class="name-list">
-      <a href="#M000115">answer</a>&nbsp;&nbsp;
-      <a href="#M000114">by_id</a>&nbsp;&nbsp;
-      <a href="#M000109">created</a>&nbsp;&nbsp;
-      <a href="#M000112">delete</a>&nbsp;&nbsp;
-      <a href="#M000113">is_head_comment?</a>&nbsp;&nbsp;
-      <a href="#M000110">list_comments</a>&nbsp;&nbsp;
-      <a href="#M000111">save</a>&nbsp;&nbsp;
+      <a href="#M000102">answer</a>&nbsp;&nbsp;
+      <a href="#M000101">by_id</a>&nbsp;&nbsp;
+      <a href="#M000096">created</a>&nbsp;&nbsp;
+      <a href="#M000099">delete</a>&nbsp;&nbsp;
+      <a href="#M000100">is_head_comment?</a>&nbsp;&nbsp;
+      <a href="#M000097">list_comments</a>&nbsp;&nbsp;
+      <a href="#M000098">save</a>&nbsp;&nbsp;
       </div>
     </div>
 
@@ -187,12 +187,12 @@ href="Comment.html">Comment</a>
     <div id="methods">
       <h3 class="section-bar">Public Class methods</h3>
 
-      <div id="method-M000114" class="method-detail">
-        <a name="M000114"></a>
+      <div id="method-M000101" class="method-detail">
+        <a name="M000101"></a>
 
         <div class="method-heading">
-          <a href="Comment.src/M000114.html" target="Code" class="method-signature"
-            onclick="popupCode('Comment.src/M000114.html');return false;">
+          <a href="Comment.src/M000101.html" target="Code" class="method-signature"
+            onclick="popupCode('Comment.src/M000101.html');return false;">
           <span class="method-name">by_id</span><span class="method-args">(id)</span>
           </a>
         </div>
@@ -201,12 +201,12 @@ href="Comment.html">Comment</a>
         </div>
       </div>
 
-      <div id="method-M000109" class="method-detail">
-        <a name="M000109"></a>
+      <div id="method-M000096" class="method-detail">
+        <a name="M000096"></a>
 
         <div class="method-heading">
-          <a href="Comment.src/M000109.html" target="Code" class="method-signature"
-            onclick="popupCode('Comment.src/M000109.html');return false;">
+          <a href="Comment.src/M000096.html" target="Code" class="method-signature"
+            onclick="popupCode('Comment.src/M000096.html');return false;">
           <span class="method-name">created</span><span class="method-args">(author, correspondent_item, text, previous_comment = nil)</span>
           </a>
         </div>
@@ -229,12 +229,12 @@ href="Comment.html">Comment</a>
         </div>
       </div>
 
-      <div id="method-M000110" class="method-detail">
-        <a name="M000110"></a>
+      <div id="method-M000097" class="method-detail">
+        <a name="M000097"></a>
 
         <div class="method-heading">
-          <a href="Comment.src/M000110.html" target="Code" class="method-signature"
-            onclick="popupCode('Comment.src/M000110.html');return false;">
+          <a href="Comment.src/M000097.html" target="Code" class="method-signature"
+            onclick="popupCode('Comment.src/M000097.html');return false;">
           <span class="method-name">list_comments</span><span class="method-args">(item)</span>
           </a>
         </div>
@@ -245,12 +245,12 @@ href="Comment.html">Comment</a>
 
       <h3 class="section-bar">Public Instance methods</h3>
 
-      <div id="method-M000115" class="method-detail">
-        <a name="M000115"></a>
+      <div id="method-M000102" class="method-detail">
+        <a name="M000102"></a>
 
         <div class="method-heading">
-          <a href="Comment.src/M000115.html" target="Code" class="method-signature"
-            onclick="popupCode('Comment.src/M000115.html');return false;">
+          <a href="Comment.src/M000102.html" target="Code" class="method-signature"
+            onclick="popupCode('Comment.src/M000102.html');return false;">
           <span class="method-name">answer</span><span class="method-args">(author, text)</span>
           </a>
         </div>
@@ -275,12 +275,12 @@ or false, if it is no head-comment
         </div>
       </div>
 
-      <div id="method-M000112" class="method-detail">
-        <a name="M000112"></a>
+      <div id="method-M000099" class="method-detail">
+        <a name="M000099"></a>
 
         <div class="method-heading">
-          <a href="Comment.src/M000112.html" target="Code" class="method-signature"
-            onclick="popupCode('Comment.src/M000112.html');return false;">
+          <a href="Comment.src/M000099.html" target="Code" class="method-signature"
+            onclick="popupCode('Comment.src/M000099.html');return false;">
           <span class="method-name">delete</span><span class="method-args">()</span>
           </a>
         </div>
@@ -289,18 +289,18 @@ or false, if it is no head-comment
           <p>
 Removes a comment (and with it all its subcomments) from the @@comments
 list, if it&#8216;s a head comment. If it&#8216;s a subcomment, it will <a
-href="Comment.html#M000112">delete</a> it from the head <a
+href="Comment.html#M000099">delete</a> it from the head <a
 href="Comment.html">Comment</a>&#8216;s list &#8216;sub_comments&#8216;
 </p>
         </div>
       </div>
 
-      <div id="method-M000113" class="method-detail">
-        <a name="M000113"></a>
+      <div id="method-M000100" class="method-detail">
+        <a name="M000100"></a>
 
         <div class="method-heading">
-          <a href="Comment.src/M000113.html" target="Code" class="method-signature"
-            onclick="popupCode('Comment.src/M000113.html');return false;">
+          <a href="Comment.src/M000100.html" target="Code" class="method-signature"
+            onclick="popupCode('Comment.src/M000100.html');return false;">
           <span class="method-name">is_head_comment?</span><span class="method-args">()</span>
           </a>
         </div>
@@ -309,12 +309,12 @@ href="Comment.html">Comment</a>&#8216;s list &#8216;sub_comments&#8216;
         </div>
       </div>
 
-      <div id="method-M000111" class="method-detail">
-        <a name="M000111"></a>
+      <div id="method-M000098" class="method-detail">
+        <a name="M000098"></a>
 
         <div class="method-heading">
-          <a href="Comment.src/M000111.html" target="Code" class="method-signature"
-            onclick="popupCode('Comment.src/M000111.html');return false;">
+          <a href="Comment.src/M000098.html" target="Code" class="method-signature"
+            onclick="popupCode('Comment.src/M000098.html');return false;">
           <span class="method-name">save</span><span class="method-args">()</span>
           </a>
         </div>

@@ -5,19 +5,19 @@
 
 <html>
 <head>
-  <title>test_wishlist_multiitem_ownbuy_stay_in_list (ItemTest)</title>
+  <title>test_search (ItemTest)</title>
   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
   <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
 </head>
 <body class="standalone-code">
-  <pre><span class="ruby-comment cmt"># File test/item_test.rb, line 239</span>
-  <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">test_wishlist_multiitem_ownbuy_stay_in_list</span>
-    <span class="ruby-ivar">@wisher</span> = <span class="ruby-constant">Models</span><span class="ruby-operator">::</span><span class="ruby-constant">User</span>.<span class="ruby-identifier">created</span>( <span class="ruby-value str">&quot;testuser2&quot;</span>, <span class="ruby-value str">&quot;password&quot;</span>, <span class="ruby-value str">&quot;test@mail.com&quot;</span> )
-    <span class="ruby-identifier">item1</span> = <span class="ruby-ivar">@owner</span>.<span class="ruby-identifier">create_item</span>(<span class="ruby-value str">'item'</span>, <span class="ruby-value">20</span>,<span class="ruby-value">2</span>,<span class="ruby-value str">&quot;descr&quot;</span>)
-    <span class="ruby-ivar">@wisher</span>.<span class="ruby-identifier">add_to_wishlist</span>(<span class="ruby-identifier">item1</span>)
-    <span class="ruby-identifier">assert</span>(<span class="ruby-ivar">@wisher</span>.<span class="ruby-identifier">wishlist</span>.<span class="ruby-identifier">include?</span> <span class="ruby-identifier">item1</span>)
-    <span class="ruby-ivar">@wisher</span>.<span class="ruby-identifier">buy_new_item</span>(<span class="ruby-identifier">item1</span>, <span class="ruby-value">1</span>)
-    <span class="ruby-identifier">assert</span> (<span class="ruby-ivar">@wisher</span>.<span class="ruby-identifier">wishlist</span>.<span class="ruby-identifier">include?</span> <span class="ruby-identifier">item1</span>)
+  <pre><span class="ruby-comment cmt"># File test/item_test.rb, line 210</span>
+  <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">test_search</span>
+    <span class="ruby-identifier">item1</span> = <span class="ruby-ivar">@owner</span>.<span class="ruby-identifier">create_item</span>(<span class="ruby-value str">'item'</span>, <span class="ruby-value">20</span>, <span class="ruby-value">1</span>, <span class="ruby-value str">&quot;descr&quot;</span>)
+    <span class="ruby-identifier">assert</span>(<span class="ruby-constant">Item</span>.<span class="ruby-identifier">search</span>(<span class="ruby-value str">&quot;item&quot;</span>, <span class="ruby-ivar">@owner</span> ).<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">item1</span>), <span class="ruby-value str">&quot;Searching for the name should return the item-id.&quot;</span>)
+    <span class="ruby-identifier">assert</span>(<span class="ruby-constant">Item</span>.<span class="ruby-identifier">search</span>(<span class="ruby-value str">&quot;descr&quot;</span>, <span class="ruby-ivar">@owner</span>).<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">item1</span>), <span class="ruby-value str">&quot;Searching for the description should return the item-id.&quot;</span>)
+    <span class="ruby-identifier">assert</span>(<span class="ruby-constant">Item</span>.<span class="ruby-identifier">search</span>(<span class="ruby-value str">&quot;des&quot;</span>, <span class="ruby-ivar">@owner</span>).<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">item1</span>), <span class="ruby-value str">&quot;Searching for parts of the description should return the item-id.&quot;</span>)
+    <span class="ruby-identifier">item2</span> = <span class="ruby-ivar">@owner</span>.<span class="ruby-identifier">create_item</span>(<span class="ruby-value str">'bla'</span>, <span class="ruby-value">20</span>, <span class="ruby-value">1</span>)
+    <span class="ruby-identifier">assert</span>(<span class="ruby-constant">Item</span>.<span class="ruby-identifier">search</span>(<span class="ruby-value str">&quot;bla&quot;</span>, <span class="ruby-ivar">@owner</span>).<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">item2</span>))
   <span class="ruby-keyword kw">end</span></pre>
 </body>
 </html>

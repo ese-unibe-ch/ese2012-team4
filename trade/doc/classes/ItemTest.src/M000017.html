@@ -5,26 +5,19 @@
 
 <html>
 <head>
-  <title>test_item_owner_after_selling (ItemTest)</title>
+  <title>test_item_initialisation (ItemTest)</title>
   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
   <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
 </head>
 <body class="standalone-code">
-  <pre><span class="ruby-comment cmt"># File test/item_test.rb, line 96</span>
-  <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">test_item_owner_after_selling</span>
-    <span class="ruby-identifier">old_owner</span> = <span class="ruby-constant">User</span>.<span class="ruby-identifier">created</span>(<span class="ruby-value str">&quot;Old&quot;</span>, <span class="ruby-value str">&quot;password&quot;</span>, <span class="ruby-value str">&quot;test@mail.com&quot;</span>)
-    <span class="ruby-identifier">new_owner</span> = <span class="ruby-constant">User</span>.<span class="ruby-identifier">created</span>(<span class="ruby-value str">&quot;New&quot;</span>, <span class="ruby-value str">&quot;password&quot;</span>, <span class="ruby-value str">&quot;test@mail.com&quot;</span>)
-    <span class="ruby-identifier">item</span> = <span class="ruby-identifier">old_owner</span>.<span class="ruby-identifier">create_item</span>(<span class="ruby-value str">&quot;sock&quot;</span>,<span class="ruby-value">10</span>, <span class="ruby-value">1</span>)
-    <span class="ruby-identifier">assert</span>(<span class="ruby-identifier">item</span>.<span class="ruby-identifier">owner</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">old_owner</span>, <span class="ruby-value str">&quot;Owner not set correctly&quot;</span>)
-    <span class="ruby-identifier">assert</span>(<span class="ruby-identifier">item</span>.<span class="ruby-identifier">owner</span>.<span class="ruby-identifier">name</span> <span class="ruby-operator">==</span> <span class="ruby-value str">&quot;Old&quot;</span>, <span class="ruby-value str">&quot;Owner not set correctly&quot;</span>)
-    <span class="ruby-identifier">old_owner</span>.<span class="ruby-identifier">list_items_inactive</span>[<span class="ruby-value">0</span>].<span class="ruby-identifier">active</span> = <span class="ruby-keyword kw">true</span>
-    <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">new_owner</span>.<span class="ruby-identifier">buy_new_item</span>(<span class="ruby-identifier">item</span>,<span class="ruby-value">1</span>)
-      <span class="ruby-identifier">old_owner</span>.<span class="ruby-identifier">remove_item</span>(<span class="ruby-identifier">item</span>)
-    <span class="ruby-keyword kw">end</span>
-    <span class="ruby-comment cmt"># LD Removed this. This is already tested in user_test.rb, because</span>
-    <span class="ruby-comment cmt"># it's a method of the User class. Maybe remove whole class?</span>
-    <span class="ruby-comment cmt"># assert(item.owner == new_owner, &quot;Owner not set correctly&quot;)</span>
-    <span class="ruby-comment cmt"># assert(item.owner.name == &quot;New&quot;, &quot;Owner not set correctly&quot;)</span>
+  <pre><span class="ruby-comment cmt"># File test/item_test.rb, line 67</span>
+  <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">test_item_initialisation</span>
+    <span class="ruby-identifier">item</span> = <span class="ruby-ivar">@owner</span>.<span class="ruby-identifier">create_item</span>(<span class="ruby-value str">&quot;testobject&quot;</span>, <span class="ruby-value">50</span>, <span class="ruby-value">7</span>, <span class="ruby-value str">&quot;Description-text&quot;</span>)
+    <span class="ruby-identifier">assert</span>(<span class="ruby-identifier">item</span>.<span class="ruby-identifier">name</span> <span class="ruby-operator">==</span> <span class="ruby-value str">&quot;testobject&quot;</span>, <span class="ruby-value str">&quot;Name should be returned&quot;</span>)
+    <span class="ruby-identifier">assert</span>(<span class="ruby-identifier">item</span>.<span class="ruby-identifier">price</span> <span class="ruby-operator">==</span> <span class="ruby-value">50</span>, <span class="ruby-value str">&quot;Should return price&quot;</span>)
+    <span class="ruby-identifier">assert</span>(<span class="ruby-operator">!</span><span class="ruby-identifier">item</span>.<span class="ruby-identifier">is_active?</span>, <span class="ruby-value str">&quot;Should not be active&quot;</span>)
+    <span class="ruby-identifier">assert</span>(<span class="ruby-identifier">item</span>.<span class="ruby-identifier">quantity</span> <span class="ruby-operator">==</span> <span class="ruby-value">7</span>, <span class="ruby-value str">&quot;Quantity should be returned&quot;</span>)
+    <span class="ruby-identifier">assert</span>(<span class="ruby-identifier">item</span>.<span class="ruby-identifier">description</span>.<span class="ruby-identifier">eql?</span>(<span class="ruby-value str">&quot;Description-text&quot;</span>), <span class="ruby-value str">&quot;Description should be returned&quot;</span>)
   <span class="ruby-keyword kw">end</span></pre>
 </body>
 </html>

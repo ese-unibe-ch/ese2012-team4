@@ -5,18 +5,18 @@
 
 <html>
 <head>
-  <title>test_item_comment (ItemTest)</title>
+  <title>test_editable (ItemTest)</title>
   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
   <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
 </head>
 <body class="standalone-code">
-  <pre><span class="ruby-comment cmt"># File test/item_test.rb, line 202</span>
-  <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">test_item_comment</span>
-    <span class="ruby-identifier">item</span> = <span class="ruby-ivar">@owner</span>.<span class="ruby-identifier">create_item</span>(<span class="ruby-value str">'test_item'</span>, <span class="ruby-value">20</span>, <span class="ruby-value">1</span>)
-    <span class="ruby-identifier">comment_author</span> = <span class="ruby-constant">User</span>.<span class="ruby-identifier">created</span>(<span class="ruby-value str">'fritz'</span>,<span class="ruby-value str">'1234a'</span>,<span class="ruby-value str">'fritz@testmail.mail'</span>)
-    <span class="ruby-identifier">comment</span> = <span class="ruby-identifier">item</span>.<span class="ruby-identifier">comment</span>(<span class="ruby-identifier">comment_author</span>, <span class="ruby-value str">&quot;This is a comment to the item&quot;</span>)
-    <span class="ruby-identifier">assert</span>(<span class="ruby-constant">Comment</span>.<span class="ruby-identifier">by_id</span>(<span class="ruby-node">&quot;#{comment.id}&quot;</span>).<span class="ruby-identifier">author</span>.<span class="ruby-identifier">eql?</span>(<span class="ruby-identifier">comment_author</span>), <span class="ruby-value str">&quot;item not correctly saved&quot;</span>)
-    <span class="ruby-identifier">assert_not_nil</span>(<span class="ruby-identifier">item</span>.<span class="ruby-identifier">head_comments</span>[<span class="ruby-value">0</span>], <span class="ruby-value str">&quot;item should have a head comment at first place&quot;</span>)
+  <pre><span class="ruby-comment cmt"># File test/item_test.rb, line 137</span>
+  <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">test_editable</span>
+    <span class="ruby-identifier">item</span> = <span class="ruby-ivar">@owner</span>.<span class="ruby-identifier">create_item</span>(<span class="ruby-value str">&quot;testobject&quot;</span>, <span class="ruby-value">50</span>, <span class="ruby-value">5</span>, <span class="ruby-value str">&quot;descr&quot;</span>)
+    <span class="ruby-identifier">item</span>.<span class="ruby-identifier">active</span>= <span class="ruby-keyword kw">true</span>
+    <span class="ruby-identifier">assert</span>(<span class="ruby-operator">!</span><span class="ruby-identifier">item</span>.<span class="ruby-identifier">editable?</span>, <span class="ruby-value str">&quot;Active Items should not be editable.&quot;</span>)
+    <span class="ruby-identifier">item</span>.<span class="ruby-identifier">active</span>= <span class="ruby-keyword kw">false</span>
+    <span class="ruby-identifier">assert</span>(<span class="ruby-identifier">item</span>.<span class="ruby-identifier">editable?</span>, <span class="ruby-value str">&quot;Inactive Items should be editable.&quot;</span>)
   <span class="ruby-keyword kw">end</span></pre>
 </body>
 </html>
