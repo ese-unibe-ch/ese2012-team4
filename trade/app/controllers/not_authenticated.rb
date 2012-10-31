@@ -36,7 +36,8 @@ module Controllers
 
     post "/authenticate" do
       user = User.by_name params[:username].strip.downcase
-      unless User.login user.id, params[:password]
+
+      if !User.login user.id, params[:password] or user.nil?
         flash[:error] = "No such login"
         redirect "/login"
       else
