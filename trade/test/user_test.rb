@@ -237,4 +237,27 @@ class UserTest < Test::Unit::TestCase
     assert item1.owner.name == user1.name
   end
 
+  def test_add_rating
+    @owner.add_rating(2)
+    @owner.add_rating(3)
+    @owner.add_rating(4)
+    assert @owner.ratings.length == 3
+    assert @owner.ratings.include?(2)
+    assert @owner.ratings.include?(3)
+    assert @owner.ratings.include?(4)
+  end
+
+  def test_ratings_json
+    @owner.add_rating(2)
+    @owner.add_rating(3)
+    @owner.add_rating(4)
+    assert @owner.ratings_json == "[{'data':[[0,1]],'color':'#ff6f31'},{'data':[[0,2]],'color':'#ff9f02'},{'data':[[1,3]],'color':'#ffcf02'},{'data':[[1,4]],'color':'#a4cc02'},{'data':[[1,5]],'color':'#88b131'},]"
+  end
+
+  def test_rating_average
+    @owner.add_rating(2)
+    @owner.add_rating(3)
+    @owner.add_rating(4)
+    assert @owner.rating == 3
+  end
 end
