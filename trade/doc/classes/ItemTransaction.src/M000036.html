@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>test_user_should_buy_item (ItemTransaction)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File test/integration/item_transaction.rb, line 49</span>
+  <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">test_user_should_buy_item</span>
+    <span class="ruby-identifier">b</span> = <span class="ruby-constant">Watir</span><span class="ruby-operator">::</span><span class="ruby-constant">Browser</span>.<span class="ruby-identifier">new</span>
+    <span class="ruby-identifier">b</span>.<span class="ruby-identifier">goto</span> <span class="ruby-value str">'127.0.0.1:4567/login'</span>
+    <span class="ruby-identifier">b</span>.<span class="ruby-identifier">text_field</span>(<span class="ruby-identifier">:name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'username'</span>).<span class="ruby-identifier">set</span> <span class="ruby-value str">'ese'</span>
+    <span class="ruby-identifier">b</span>.<span class="ruby-identifier">text_field</span>(<span class="ruby-identifier">:name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'password'</span>).<span class="ruby-identifier">set</span> <span class="ruby-value str">'ese'</span>
+    <span class="ruby-identifier">b</span>.<span class="ruby-identifier">button</span>(<span class="ruby-identifier">:value</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'Login'</span>).<span class="ruby-identifier">click</span>
+    <span class="ruby-identifier">assert</span>(<span class="ruby-identifier">b</span>.<span class="ruby-identifier">text</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-value str">&quot;logged in&quot;</span>), <span class="ruby-value str">&quot;User should be logged in&quot;</span>)
+
+    <span class="ruby-identifier">b</span>.<span class="ruby-identifier">goto</span> <span class="ruby-value str">'http://127.0.0.1:4567/users/2/1'</span>
+    <span class="ruby-identifier">b</span>.<span class="ruby-identifier">button</span>(<span class="ruby-identifier">:value</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'Buy'</span>).<span class="ruby-identifier">click</span>
+    <span class="ruby-identifier">assert</span>(<span class="ruby-identifier">b</span>.<span class="ruby-identifier">text</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-value str">&quot;bought&quot;</span>), <span class="ruby-value str">&quot;User should have bought the item&quot;</span>)
+
+    <span class="ruby-identifier">b</span>.<span class="ruby-identifier">goto</span> <span class="ruby-value str">'http://127.0.0.1:4567/profile/pending'</span>
+    <span class="ruby-identifier">b</span>.<span class="ruby-identifier">button</span>(<span class="ruby-identifier">:value</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'Arrived'</span>).<span class="ruby-identifier">click</span>
+    <span class="ruby-identifier">assert</span>(<span class="ruby-identifier">b</span>.<span class="ruby-identifier">text</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-value str">&quot;completed&quot;</span>), <span class="ruby-value str">&quot;Transfer should be completed&quot;</span>)
+
+    <span class="ruby-identifier">b</span>.<span class="ruby-identifier">radio</span>(<span class="ruby-identifier">:name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'rating'</span>).<span class="ruby-identifier">set</span>
+    <span class="ruby-identifier">b</span>.<span class="ruby-identifier">button</span>(<span class="ruby-identifier">:value</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'Save'</span>).<span class="ruby-identifier">click</span>
+    <span class="ruby-identifier">assert</span>(<span class="ruby-identifier">b</span>.<span class="ruby-identifier">text</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-value str">&quot;ese&quot;</span>), <span class="ruby-value str">&quot;Rating should be completed&quot;</span>)
+
+    <span class="ruby-identifier">b</span>.<span class="ruby-identifier">close</span>
+  <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>

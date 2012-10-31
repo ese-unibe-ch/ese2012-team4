@@ -26,24 +26,24 @@ module Controllers
 
     get '/logout' do
       redirect '/index' unless session[:id]
-      haml :logout, :locals => {:page_name => "Logout"}
+      haml :logout
     end
 
     get '/home' do
       redirect '/index' unless session[:id]
-      haml :home, :locals => {:page_name => "Home"}
+      haml :home
     end
 
     get '/users' do
       redirect '/index' unless session[:id]
       @all_users = User.get_all("")
-      haml :users, :locals => {:page_name => "Users"}
+      haml :users
     end
 
     get '/users/:id/:page' do
       redirect '/index' unless session[:id]
       @user = User.get_user(params[:id])
-      items_per_page = 20
+      items_per_page = 10
       page = params[:page].to_i
       items = @user.list_items
       (items.size%items_per_page)==0? page_count = (items.size/items_per_page).to_i : page_count = (items.size/items_per_page).to_i+1
@@ -55,7 +55,7 @@ module Controllers
       for i in ((page-1)*items_per_page)..(page*items_per_page)-1
         @all_items<<items[i] unless items[i].nil?
       end
-      haml :user_page, :locals => {:page_name => "User #{@user.name}", :page => page, :page_count => page_count}
+      haml :user_page, :locals => {:page => page, :page_count => page_count}
     end
     get '/users/:id' do
       redirect "/users/#{params[:id]}/1"
@@ -71,6 +71,19 @@ module Controllers
       end
     end
 
+    get "/rate/:id" do
+      redirect '/index' unless session[:id]
+      @user = User.get_user(params[:id])
+      haml :rate_user
+    end
+
+    post "/rate/:id" do
+      redirect '/index' unless session[:id]
+      user = User.get_user(params[:id])
+      user.add_rating(params[:rating]) unless params[:rating] == nil
+      redirect "/home"
+    end
+
     post "/unauthenticate" do
       redirect '/index' unless session[:id]
       session[:id] = nil
@@ -81,7 +94,7 @@ module Controllers
 
     get '/profile' do
       redirect '/index' unless session[:id]
-      haml :profile, :locals => {:page_name => "My profile"}
+      haml :profile
     end
 
     post "/change_profile" do
@@ -115,10 +128,16 @@ module Controllers
       flash[:notice] = "Password has been updated"
       redirect "/"
     end
+    
+    get '/profile/pending' do
+      @inbox = @session_user.pending_inbox
+      @outbox = @session_user.pending_outbox
+      haml :pending_items
+    end
 
     get '/delete_link' do
       redirect '/index' unless session[:id]
-      haml :delete_user, :locals =>{:page_name => "Delete Your Account"}
+      haml :delete_user
     end
 
 
@@ -129,7 +148,27 @@ module Controllers
       #close session
       session[:id] = nil
       redirect '/index' unless session[:id]
-      haml :logout, :locals => {:page_name => "Logout"}
+      haml :logout
     end
+
+    get '/wishlist' do
+      redirect '/index' unless session[:id]
+      haml :wishlist
+    end
+
+    post "/remove_from_wishlist/:itemid" do
+      redirect '/index' unless session[:id]
+      @item = Item.get_item(params[:itemid])
+      @session_user.remove_from_wishlist(@item)
+      redirect "#{back}"
+    end
+
+    post "/add_to_wishlist/:itemid" do
+      redirect '/index' unless session[:id]
+      @item = Item.get_item(params[:itemid])
+      @session_user.add_to_wishlist(@item)
+      redirect "#{back}"
+    end
+
   end
 end

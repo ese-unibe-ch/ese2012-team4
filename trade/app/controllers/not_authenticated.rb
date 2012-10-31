@@ -26,12 +26,12 @@ module Controllers
 
     get '/index' do
       redirect '/home' unless session[:id].nil?
-      haml :index, :locals => {:page_name => "Home"}
+      haml :index
     end
 
     get '/login' do
       redirect '/home' unless session[:id].nil?
-      haml :login, :locals => {:page_name => "Log in"}
+      haml :login
     end
 
     post "/authenticate" do
@@ -41,15 +41,14 @@ module Controllers
         redirect "/login"
       else
         session[:id] = user.id
-        #session['auth'] = true
-        flash[:notice] = "You are now logged in"
+        flash[:notice] = "Welcome, #{user.name}. You are now logged in"
         redirect "/home"
       end
     end
 
     get '/signup' do
       redirect '/home' unless session[:id].nil?
-      haml :signup, :locals => {:page_name => "Sign up"}
+      haml :signup
     end
 
     post '/signup' do
@@ -66,9 +65,6 @@ module Controllers
         flash[:notice] = "You are now registered. Please log in"
         redirect "/login"
       end
-      
-      #redirect "/signup/invalid_username" if username != username.delete("^a-zA-Z0-9")  
-      #BS: only needed if we don't allow special characters
     end
   end
 end

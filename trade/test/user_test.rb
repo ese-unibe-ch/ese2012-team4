@@ -7,10 +7,12 @@ require 'require_relative'
 require_relative('../app/models/module/user')
 require_relative('../app/models/module/item')
 
+include Models
+
 class UserTest < Test::Unit::TestCase
   # runs before each test
   def setup
-    @owner = Models::User.created( "testuser", "password", "test@mail.com" )
+    @owner = User.created( "testuser", "password", "test@mail.com" )
   end
 
   # runs after every test
@@ -18,6 +20,42 @@ class UserTest < Test::Unit::TestCase
     @owner.delete
   end
 
+  def test_activate_item
+    item = @owner.create_item("testobject", 5, 2)
+    assert(!item.is_active?)
+    @owner.activate_item("#{item.id}")
+    assert(item.is_active?)
+
+    more_of_same_item = @owner.create_item("testobject", 5, 2)
+    assert(!more_of_same_item.is_active?)
+    @owner.activate_item("#{more_of_same_item.id}")
+    assert(item.quantity.eql?(4))
+  end
+
+  def test_deactivate_item
+    item = @owner.create_item("testobject", 5, 2)
+    @owner.activate_item("#{item.id}")
+    assert(item.is_active?)
+
+    user1 = User.created("user1", "password1", "user1@mail.com")
+    user1.add_to_wishlist(item)
+    assert(user1.wishlist.include?(item))
+
+    @owner.deactivate_item("#{item.id}")
+    assert(!item.is_active?)
+    assert(!user1.wishlist.include?(item))
+  end
+
+  def test_get_all
+    user1 = User.created("user1", "password1", "user1@mail.com")
+    user1.save
+
+    user2 = User.created("user2", "password2", "user2@mail.com")
+    user2.save
+
+    assert(User.get_all(user1).include?(user2))
+    assert(!User.get_all(user1).include?(user1))
+  end
   # Fake test
   def test_user_item_create
     assert( @owner.list_items.size == 0, "Item list length should be 0" )
@@ -40,8 +78,8 @@ class UserTest < Test::Unit::TestCase
   end
 
   def test_sales
-    old_owner = Models::User.created("Old", "password", "test@mail.com")
-    new_owner = Models::User.created("New", "password", "test@mail.com")
+    old_owner = User.created("Old", "password", "test@mail.com")
+    new_owner = User.created("New", "password", "test@mail.com")
 
     sock = old_owner.create_item("sock",10, 1)
     assert( !sock.is_active?, "item should not be active, is")
@@ -55,10 +93,22 @@ class UserTest < Test::Unit::TestCase
       old_owner.remove_item(sock)
     end
 
-    assert(old_owner.list_items.size==0)
-    assert(old_owner.list_items_inactive.size==0)
-    assert(new_owner.list_items.size==0)
-    assert(new_owner.list_items_inactive.size==1)
+    assert old_owner.list_items.size == 0
+    assert old_owner.list_items_inactive.size == 0
+    assert new_owner.list_items.size == 0
+    assert new_owner.list_items_inactive.size == 0
+
+    pending = Holding.get_all.last
+    assert pending.item == sock
+    assert pending.seller == old_owner
+    assert pending.buyer == new_owner
+
+    pending.itemReceived
+
+    assert old_owner.list_items.size == 0
+    assert old_owner.list_items_inactive.size == 0
+    assert new_owner.list_items.size == 0
+    assert new_owner.list_items_inactive.size == 1
 
     assert( !sock.is_active?, "item should not be active, is")
     assert( !new_owner.list_items_inactive[0].is_active?, "item should not be active, is")
@@ -68,8 +118,8 @@ class UserTest < Test::Unit::TestCase
   end
 
   def test_sales_not_possible_because_of_price
-    old_owner = Models::User.created("Old", "password", "test@mail.com")
-    new_owner = Models::User.created("New", "password", "test@mail.com")
+    old_owner = User.created("Old", "password", "test@mail.com")
+    new_owner = User.created("New", "password", "test@mail.com")
 
     sock = old_owner.create_item("sock",210,1)
     assert( !sock.is_active?, "item should not be active, is")
@@ -108,6 +158,7 @@ class UserTest < Test::Unit::TestCase
     assert(@owner.list_items_inactive[1].to_s == "testobject2, 50")
     @owner.list_items_inactive[0].active = true
     @owner.list_items_inactive[0].active = true
+    assert(@owner.list_items_inactive.empty? == true)
     assert(@owner.list_items[0].to_s == "testobject, 10")
     assert(@owner.list_items[1].to_s == "testobject2, 50")
     @owner.list_items[0].active = false
@@ -118,21 +169,21 @@ class UserTest < Test::Unit::TestCase
 
   def test_auth
     @owner.save
-    assert (Models::User.login @owner.id, "password")
+    assert (User.login @owner.id, "password")
   end
 
   def test_available
     assert (@owner.name == "testuser")
-    assert (Models::User.available? "testuser")
+    assert (User.available? "testuser")
     @owner.save
-    assert (!Models::User.available? "testuser")
+    assert (!User.available? "testuser")
   end
 
   def test_delete
     @owner.save
-    assert (!Models::User.available? "testuser")
+    assert (!User.available? "testuser")
     @owner.delete
-    assert (Models::User.available? "testuser")
+    assert (User.available? "testuser")
   end
 
   def test_validation
@@ -141,18 +192,18 @@ class UserTest < Test::Unit::TestCase
 
   def test_validation_duplicate_username
     @owner.save
-    user1 = Models::User.created( "testuser", "password", "test@mail.com" )
+    user1 = User.created( "testuser", "password", "test@mail.com" )
     assert !user1.is_valid
   end
 
   def test_validation_missing_name_e_mail
-    user1 = Models::User.created( "", "password", "test@mail.com" )
+    user1 = User.created( "", "password", "test@mail.com" )
     assert !user1.is_valid
-    user2 = Models::User.created( "testuser", "password", "" )
+    user2 = User.created( "testuser", "password", "" )
     assert !user2.is_valid
-    user3 = Models::User.created( "testuser", "password", "testmail.com" )
+    user3 = User.created( "testuser", "password", "testmail.com" )
     assert !user3.is_valid
-    user4 = Models::User.created( "testuser", "password", "test@mailcom" )
+    user4 = User.created( "testuser", "password", "test@mailcom" )
     assert !user4.is_valid
   end
 
@@ -164,5 +215,49 @@ class UserTest < Test::Unit::TestCase
     assert !@owner.is_valid("", "asdfasdf1")
     assert !@owner.is_valid("asdf", "asdf")
     assert @owner.is_valid("aSdfasdf1", "aSdfasdf1")
+  end
+
+  def test_wishlist
+    user1 = User.created( "testuser1", "password", "test@mail.com" )
+    item1 = user1.create_item("testobject", 10, 1)
+    id_before = item1.id
+    item2 = user1.create_item("testobject2", 50, 1)
+    user2 = User.created( "testuser2", "password", "test@mail.com" )
+    assert item1.owner.name == user1.name
+    assert user2.wishlist.size == 0
+    assert item1.wishlist_users.size == 0
+    assert item2.wishlist_users.size == 0
+    user2.add_to_wishlist(item1)
+    assert item1.owner.eql?(user1)
+    assert item1.id == id_before
+    item1.active = true
+    assert user2.wishlist.size == 1
+    assert item1.wishlist_users.size == 1
+    assert item2.wishlist_users.size == 0
+    assert item1.owner.name == user1.name
+  end
+
+  def test_add_rating
+    @owner.add_rating(2)
+    @owner.add_rating(3)
+    @owner.add_rating(4)
+    assert @owner.ratings.length == 3
+    assert @owner.ratings.include?(2)
+    assert @owner.ratings.include?(3)
+    assert @owner.ratings.include?(4)
+  end
+
+  def test_ratings_json
+    @owner.add_rating(2)
+    @owner.add_rating(3)
+    @owner.add_rating(4)
+    assert @owner.ratings_json == "[{'data':[[0,1]],'color':'#ff6f31'},{'data':[[0,2]],'color':'#ff9f02'},{'data':[[1,3]],'color':'#ffcf02'},{'data':[[1,4]],'color':'#a4cc02'},{'data':[[1,5]],'color':'#88b131'},]"
+  end
+
+  def test_rating_average
+    @owner.add_rating(2)
+    @owner.add_rating(3)
+    @owner.add_rating(4)
+    assert @owner.rating == 3
   end
 end

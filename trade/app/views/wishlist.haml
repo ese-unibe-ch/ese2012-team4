@@ -1,0 +1,46 @@
+%h2 Your wishlist
+-unless @session_user.wishlist.empty?
+  -stored = @session_user.wishlist
+  %table.itemtable
+    %thead
+      %tr
+        %td
+          %p.table_header Name
+        %td
+          %p.table_header Picture
+        %td
+          %p.table_header Price
+        %td
+          %p.table_header Qty
+        %td
+          %p.table_header Seller
+        %td
+          %p.table_header Buy
+        %td
+          %p
+    - for item in stored
+      %tr(title = "#{item.description}")
+        %td.nopadding
+          %a.wholly_clickable(href="/item/#{item.id}" )
+            :escaped
+              #{item.name}
+        %td
+          %a(href="/item/#{item.id}/image" rel="lightbox" title="#{item.name}")
+            %img(src="/item/#{item.id}/image" class = "smallpicturebox")
+        %td
+          %p #{item.price}
+        %td
+          %p #{item.quantity}
+        %td
+          %a(href="/users/#{item.owner.id}" )
+            :escaped
+              #{item.owner.name}
+        %td.buyform
+          %form.nomargin(action="/buy/#{item.id}/#{(stored.select {|tobuy| tobuy.id==item.id})[0].timestamp}" method="POST")
+            %input.tiny(type = "text" name = "quantity" value = "1")
+            %input.square.rightalign(type="submit" value="Buy")
+        %td.buyform
+          %form.nomargin(action="/remove_from_wishlist/#{item.id}" method="POST")
+            %input.square.rightalign(type="submit" value="Remove")
+-else
+  %h3 No items

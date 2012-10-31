@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>test_system_should_lock_item_after_modification (ItemTransaction)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File test/integration/item_transaction.rb, line 7</span>
+  <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">test_system_should_lock_item_after_modification</span>
+    <span class="ruby-identifier">b</span> = <span class="ruby-constant">Watir</span><span class="ruby-operator">::</span><span class="ruby-constant">Browser</span>.<span class="ruby-identifier">new</span>
+    <span class="ruby-identifier">b</span>.<span class="ruby-identifier">goto</span> <span class="ruby-value str">'127.0.0.1:4567/login'</span>
+    <span class="ruby-identifier">b</span>.<span class="ruby-identifier">text_field</span>(<span class="ruby-identifier">:name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'username'</span>).<span class="ruby-identifier">set</span> <span class="ruby-value str">'ese'</span>
+    <span class="ruby-identifier">b</span>.<span class="ruby-identifier">text_field</span>(<span class="ruby-identifier">:name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'password'</span>).<span class="ruby-identifier">set</span> <span class="ruby-value str">'ese'</span>
+    <span class="ruby-identifier">b</span>.<span class="ruby-identifier">button</span>(<span class="ruby-identifier">:value</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'Login'</span>).<span class="ruby-identifier">click</span>
+    <span class="ruby-identifier">assert</span>(<span class="ruby-identifier">b</span>.<span class="ruby-identifier">text</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-value str">&quot;logged in&quot;</span>), <span class="ruby-value str">&quot;User should be logged in&quot;</span>)
+    <span class="ruby-identifier">b</span>.<span class="ruby-identifier">goto</span> <span class="ruby-value str">'127.0.0.1:4567/home/new'</span>
+    <span class="ruby-identifier">b</span>.<span class="ruby-identifier">text_field</span>(<span class="ruby-identifier">:name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'name'</span>).<span class="ruby-identifier">set</span> <span class="ruby-value str">'myItem'</span>
+    <span class="ruby-identifier">b</span>.<span class="ruby-identifier">text_field</span>(<span class="ruby-identifier">:name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'price'</span>).<span class="ruby-identifier">set</span> <span class="ruby-value str">'1'</span>
+    <span class="ruby-identifier">b</span>.<span class="ruby-identifier">text_field</span>(<span class="ruby-identifier">:name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'quantity'</span>).<span class="ruby-identifier">set</span> <span class="ruby-value str">'20'</span>
+    <span class="ruby-identifier">b</span>.<span class="ruby-identifier">button</span>(<span class="ruby-identifier">:value</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'Create'</span>).<span class="ruby-identifier">click</span>
+    <span class="ruby-identifier">assert</span>(<span class="ruby-identifier">b</span>.<span class="ruby-identifier">text</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-value str">&quot;created&quot;</span>), <span class="ruby-value str">&quot;Item should be created&quot;</span>)
+    <span class="ruby-identifier">b</span>.<span class="ruby-identifier">button</span>(<span class="ruby-identifier">:value</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'Set active'</span>).<span class="ruby-identifier">click</span>
+    <span class="ruby-identifier">b</span>.<span class="ruby-identifier">button</span>(<span class="ruby-identifier">:value</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'Set Active'</span>).<span class="ruby-identifier">click</span>
+    <span class="ruby-identifier">assert</span>(<span class="ruby-identifier">b</span>.<span class="ruby-identifier">text</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-value str">&quot;activated&quot;</span>), <span class="ruby-value str">&quot;Item should be activated&quot;</span>)
+    
+    <span class="ruby-identifier">c</span> = <span class="ruby-constant">Watir</span><span class="ruby-operator">::</span><span class="ruby-constant">Browser</span>.<span class="ruby-identifier">new</span>
+    <span class="ruby-identifier">c</span>.<span class="ruby-identifier">goto</span> <span class="ruby-value str">'127.0.0.1:4567/login'</span>
+    <span class="ruby-identifier">c</span>.<span class="ruby-identifier">text_field</span>(<span class="ruby-identifier">:name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'username'</span>).<span class="ruby-identifier">set</span> <span class="ruby-value str">'userA'</span>
+    <span class="ruby-identifier">c</span>.<span class="ruby-identifier">text_field</span>(<span class="ruby-identifier">:name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'password'</span>).<span class="ruby-identifier">set</span> <span class="ruby-value str">'passwordA'</span>
+    <span class="ruby-identifier">c</span>.<span class="ruby-identifier">button</span>(<span class="ruby-identifier">:value</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'Login'</span>).<span class="ruby-identifier">click</span>
+    <span class="ruby-identifier">assert</span>(<span class="ruby-identifier">c</span>.<span class="ruby-identifier">text</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-value str">&quot;You are now logged in&quot;</span>), <span class="ruby-value str">&quot;User should be logged in&quot;</span>)
+    <span class="ruby-identifier">c</span>.<span class="ruby-identifier">goto</span> <span class="ruby-value str">'127.0.0.1:4567/users/4/1'</span> <span class="ruby-comment cmt">#open ese's page</span>
+
+    <span class="ruby-identifier">b</span>.<span class="ruby-identifier">button</span>(<span class="ruby-identifier">:value</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'Set inactive'</span>).<span class="ruby-identifier">click</span>
+    <span class="ruby-identifier">assert</span>(<span class="ruby-identifier">b</span>.<span class="ruby-identifier">text</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-value str">&quot;deactivated&quot;</span>), <span class="ruby-value str">&quot;Item should be deactivated&quot;</span>)
+    <span class="ruby-identifier">b</span>.<span class="ruby-identifier">button</span>(<span class="ruby-identifier">:value</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'Edit'</span>).<span class="ruby-identifier">click</span>
+    <span class="ruby-identifier">b</span>.<span class="ruby-identifier">text_field</span>(<span class="ruby-identifier">:name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'quantity'</span>).<span class="ruby-identifier">set</span> <span class="ruby-value str">'10'</span>
+    <span class="ruby-identifier">b</span>.<span class="ruby-identifier">button</span>(<span class="ruby-identifier">:value</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'Save changes'</span>).<span class="ruby-identifier">click</span>
+    <span class="ruby-identifier">assert</span>(<span class="ruby-identifier">b</span>.<span class="ruby-identifier">text</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-value str">&quot;changed&quot;</span>), <span class="ruby-value str">&quot;Item should be changed&quot;</span>)
+    <span class="ruby-identifier">b</span>.<span class="ruby-identifier">button</span>(<span class="ruby-identifier">:value</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'Set active'</span>).<span class="ruby-identifier">click</span>
+    <span class="ruby-identifier">b</span>.<span class="ruby-identifier">button</span>(<span class="ruby-identifier">:value</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'Set Active'</span>).<span class="ruby-identifier">click</span>
+    <span class="ruby-identifier">assert</span>(<span class="ruby-identifier">b</span>.<span class="ruby-identifier">text</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-value str">&quot;activated&quot;</span>), <span class="ruby-value str">&quot;Item should be re-activated&quot;</span>)
+
+    <span class="ruby-identifier">c</span>.<span class="ruby-identifier">button</span>(<span class="ruby-identifier">:value</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'Buy'</span>).<span class="ruby-identifier">click</span>
+    <span class="ruby-identifier">assert</span>(<span class="ruby-identifier">c</span>.<span class="ruby-identifier">text</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-value str">&quot;has been edited&quot;</span>), <span class="ruby-value str">&quot;System should display modification&quot;</span>)
+
+    <span class="ruby-identifier">b</span>.<span class="ruby-identifier">close</span>
+    <span class="ruby-identifier">c</span>.<span class="ruby-identifier">close</span>
+  <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>

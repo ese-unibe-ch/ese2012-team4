@@ -1,8 +1,7 @@
--#%h2
+%h2
+  Itempage:
   :escaped
     #{@item.name}
-
--# this should check if the user has an upload, otherwise placeholder - there are no uploads yet.
 %a(href="/item/#{@item.id}/image" rel="lightbox" title="#{@item.name}")
   %img(src="/item/#{@item.id}/image" class = "bigpicturebox")
 %br
@@ -31,6 +30,15 @@
 %br
 .lineContainer
   .textbox.name
+    Expires on:
+  .textbox.value
+    - if !@item.expiration_date.nil?
+      #{@item.expiration_date.asctime}
+    - else
+      No Expiration Date selected
+%br
+.lineContainer
+  .textbox.name
     Owner:
   .textbox.value
     %a(href="/users/#{@item.owner.id}" )
@@ -53,3 +61,12 @@
       %form.nomargin(action="/buy/#{@item.id}/#{@item.timestamp}" method="POST")
         %input.tiny.rightalign(type = "text" name = "quantity" value = "1")
         %input.square.rightalign(type="submit" value="Buy")
+  - if @session_user.wishlist.include?(@item)
+    %td
+      %form.nomargin(action="/remove_from_wishlist/#{@item.id}" method="POST")
+        %input.square.rightalign(type="submit" value = "Remove from Wishlist")
+  -else
+    - if !@item.owner.eql?(@session_user)
+      %td
+        %form.nomargin(action="/add_to_wishlist/#{@item.id}" method="POST")
+          %input.square.rightalign(type = "submit" value ="Add to wishlist")

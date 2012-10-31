@@ -1,8 +1,21 @@
--#%h2
+%script(type="text/javascript" src="/js/rating.js")
+%h2
+  Userpage:
   :escaped
     #{@user.name}
-%a(href="/user/#{@user.id}/image" rel="lightbox" title="#{@user.name}")
-  %img(src="/user/#{@user.id}/image" class = "bigpicturebox")
+.lineContainer
+  .textbox.name
+    %a(href="/user/#{@user.id}/image" rel="lightbox" title="#{@user.name}")
+      %img(src="/user/#{@user.id}/image" class = "bigpicturebox")
+  .ratingtable
+    %p Other users' happiness with #{@user.name}:
+    %br
+    :javascript
+      var data = #{@user.ratings_json};
+      $(document).ready(function (e) {
+        $.plot($("#placeholder"), data, options);
+      });
+    %div(id="placeholder" style="width:250px; height:100px;")
 %br
 .lineContainer
   .textbox.name
@@ -25,7 +38,6 @@
           %br
 %br
 %hr.separator
-
 .textbox.name
   %p
     :escaped
@@ -37,15 +49,16 @@
       #{@user.name}'s Active_items
 -unless @all_items.empty?
   -stored = @all_items
-  -unless page ==1
-    %a(href = "/items/#{page-1}") previous
-  -for i in 1..page_count
-    -if page!=i
-      %a(href = "/items/#{i}") #{i}
-    -else
-      #{i}
-  -unless page == page_count
-    %a(href = "/items/#{page+1}") next
+  -unless page_count==1
+    -unless page ==1
+      %a(href = "/users/#{@user.id}/#{page-1}") previous
+    -for i in 1..page_count
+      -if page!=i
+        %a(href = "/users/#{@user.id}/#{i}") #{i}
+      -else
+        #{i}
+    -unless page == page_count
+      %a(href = "/users/#{@user.id}#{page+1}") next
   %table.itemtable.right
     %thead
       %tr

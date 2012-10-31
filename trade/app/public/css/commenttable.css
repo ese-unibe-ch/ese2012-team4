@@ -1,0 +1,34 @@
+.commenttable{
+    table-layout: fixed;
+    width: 100%;
+    padding: 0px;
+    border-collapse: collapse;
+    text-align: left;
+    border-spacing: 0px;
+    border-bottom: 3px solid #8FC9FF;
+}
+.commenttable thead{
+    vertical-align: middle;
+}
+.commenttable td.comment{
+    width: 450;
+    word-wrap: break-word;
+
+}
+.commenttable td.blue{
+    background-color: #E5FFF2;
+}
+.commenttable td{
+    max-height: 20px;
+    padding: 6px 8px;
+    border-right:none;
+    border-bottom: none;
+}
+
+.commenttable td.nopadding{
+    padding: 0;
+}
+
+.commenttable td.subcomment{
+    background-color: lightgray;
+}
