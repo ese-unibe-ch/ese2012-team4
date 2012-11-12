@@ -325,5 +325,11 @@ class User
       end
       value/counter
     end
+
+  # AS intermezzo sets an item as auction
+  def set_to_auction(item)
+    self.item_list.delete(item) #AS Not sure if it works that simple, because they have concepts like quantity. But let's face the problems as they appear.
+    self.auctions_list.push(item)
+  end
   end
 end
