@@ -1,8 +1,6 @@
 module Models
   class Auction
-    attr_accessor :item, :owner, :increment, :min_prize, :end_time, :bids, :current_winner
-
-
+    attr_accessor :item, :owner, :increment, :min_prize, :end_time, :bids, :current_winner, :current_selling_price
 
     def self.create(owner, item, increment, min_prize, end_time)
       self.item= item
@@ -28,6 +26,7 @@ module Models
                                   end
       }
       @current_winner = temp_winner
+      @current_selling_price = @bids[@current_winner]-1 + increment
     end
   end
 end
