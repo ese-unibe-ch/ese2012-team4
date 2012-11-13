@@ -22,9 +22,9 @@ module Models
       self.increment= increment
       self.min_price= min_price
       self.end_time= end_time
-      self.current_selling_price = min_price
+      self.current_selling_price = 0
       @editable = true
-      @bids = Hash.new(min_price)
+      @bids = Hash.new(min_price - increment)
       @@auctions << self
       puts "added an auction"
     end
@@ -33,8 +33,7 @@ module Models
       return :not_enough_credits if bidder.credits < bid
       return :invalid_bid if @bids[bidder] > bid or bid <= @current_selling_price
       return :bid_already_made if @bids.values.detect { |b| b==bid }
-      @bids[bidder] = bid
-      update_current_winner(bidder)
+      update_current_winner(bidder, bid)
       @editable = false
       return :success
     end
@@ -43,17 +42,18 @@ module Models
       @editable
     end
 
-    def update_current_winner(new_bidder)
+    def update_current_winner(new_bidder, bid)
 
-      if @bids[new_bidder] > @bids[current_winner]
+      if bid > @bids[@current_winner]
         old_winner = @current_winner
         @current_winner = new_bidder
         unless old_winner.nil?
           old_winner.credits += @bids[old_winner] #SH Gives the money of the previous winner back
-          Mailer.new_winner(old_winner, self)
+          #Mailer.new_winner(old_winner, self)
         end
-        @current_winner.credits -= @bids[@current_winner] #SH Deduct the money from the current winner
         @current_selling_price = @bids[old_winner] + increment
+        @bids[new_bidder] = bid
+        @current_winner.credits -= @bids[@current_winner] #SH Deduct the money from the current winner
       end
     end
 
