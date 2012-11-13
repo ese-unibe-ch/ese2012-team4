@@ -1,0 +1,66 @@
+%h2
+  Auction for Item:
+  :escaped
+    #{@item.name}
+%a(href="/item/#{@item.id}/image" rel="lightbox" title="#{@item.name}")
+  %img(src="/item/#{@item.id}/image" class = "bigpicturebox")
+%br
+
+%br
+.lineContainer
+  .textbox.name
+    Description:
+  .textbox.value
+    %p
+      -if !@item.description.empty?
+        -@item.description.each do |line|
+          :escaped
+            #{line}
+          %br
+
+.lineContainer
+  .textbox.name
+    Min price:
+  .textbox.value
+    %p
+      #{@auction.min_price}
+%br
+.lineContainer
+  .textbox.name
+    Current selling price:
+  .textbox.value
+    #{@auction.current_selling_price}
+%br
+.lineContainer
+  .textbox.name
+    Increment:
+  .textbox.value
+    #{@auction.increment}
+%br
+.lineContainer
+  .textbox.name
+    Expires on:
+  .textbox.value
+    #{@auction.end_time.asctime}
+
+%br
+.lineContainer
+  .textbox.name
+    Owner:
+  .textbox.value
+    %a(href="/users/#{@item.owner.id}" )
+      :escaped
+        #{@item.owner.name}
+
+%hr.separator.invisible
+-if @item.owner.name == @session_user.name
+  -if @auction.editable?
+    %p
+      %form.nomargin(action="/auction/#{@item.id}/edit" method="GET")
+        %input.square.rightalign(type="submit" value="Edit")
+-else
+  %td.buyform
+    %form.nomargin(action="/auction/#{@item.id}/bid" method="POST")
+      %input.rightalign(type = "text" name ="bid" value = "#{@auction.current_selling_price}")
+      %input.square.rightalign(type="submit" value="Bid")
+

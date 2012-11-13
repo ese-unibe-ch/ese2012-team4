@@ -29,6 +29,12 @@ module Controllers
       haml :create_auction
     end
 
+    get '/auction/:item_id' do
+      @item = Item.get_item(params[:item_id])
+      @auction = Auction.auction_by_item(@item)
+      haml :auction_page
+    end
+
     post '/auction/:id/create' do
       redirect '/index' unless session[:id]
       id = params[:id]
@@ -62,12 +68,9 @@ module Controllers
       redirect "/home/items"
     end
 
-    get 'auction/:item_id/bid' do
-
-    end
-
-    post 'auction/:item_id/bid' do
-
+    post '/auction/:item_id/bid' do
+       puts "placed a bid of " + params[:bid]
+       redirect "/auction/#{params[:item_id]}"
     end
 
   end

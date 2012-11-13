@@ -23,6 +23,7 @@ module Models
       self.min_price= min_price
       self.end_time= end_time
       self.current_selling_price = min_price
+      @editable = true
       @bids = Hash.new(-10000)
       @@auctions << self
       puts "added an auction"
@@ -34,7 +35,12 @@ module Models
       return :bid_already_made if @bids.values.detect { |bid| bid==price }
       @bids[owner] = price
       update_current_winner(owner)
+      @editable = false
       return :success
+    end
+
+    def editable?
+      @editable
     end
 
     def update_current_winner(new_bidder)
