@@ -1,15 +1,31 @@
 module Models
   class Auction
-    attr_accessor :item, :owner, :increment, :min_prize, :end_time, :bids, :current_winner, :current_selling_price
+    attr_accessor :item, :owner, :increment, :min_price, :end_time, :bids, :current_winner, :current_selling_price
 
-    def self.create(owner, item, increment, min_prize, end_time)
+    @@auctions = Array.new
+
+    def self.create(owner, item, increment, min_price, end_time)
+      Auction.new(owner, item, increment, min_price, end_time)
+    end
+
+    def self.auctions_by_user(user)
+       return @@auctions.select { |auction| auction.owner == user}
+    end
+
+    def self.auction_by_item(item)
+      return @@auctions.detect { |auction| auction.item == item}
+    end
+
+    def initialize(owner, item, increment, min_price, end_time)
       self.item= item
       self.owner= owner
       self.increment= increment
-      self.min_prize= min_prize
+      self.min_price= min_price
       self.end_time= end_time
-      self.current_selling_price = price + increment
+      self.current_selling_price = min_price
       @bids = Hash.new(-10000)
+      @@auctions << self
+      puts "added an auction"
     end
 
     def place_bid(owner, price)

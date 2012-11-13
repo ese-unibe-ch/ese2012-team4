@@ -9,6 +9,7 @@ require 'sinatra/content_for'
 require 'rack-flash'
 require_relative('../models/module/user')
 require_relative('../models/module/item')
+require_relative('../models/module/auction')
 
 include Models
 
@@ -33,18 +34,40 @@ module Controllers
       id = params[:id]
       owner = Item.get_item(id).owner
       item = Item.get_item(id)
+      #TODO deny item with more than one element...
       if(TimeHandler.validTime?(params[:exp_date], params[:exp_time]))
         if ((params[:exp_date].eql?("") and params[:exp_time].eql?("")))
           flash[:error] = "You must enter an end date"
         else
-          expiration_date= TimeHandler.parseTime(params[:exp_date], params[:exp_time])
-          owner.add_auction(item,params[:min_price],params[:increment],expiration_date)
-          flash[:notice] = "Auction for item #{item.name} has been created!"
+          if params[:increment].to_i > 0
+            if params[:min_price].to_i > 0
+              if Auction.auction_by_item(item)
+                flash[:error] = "Auction with this item already exists."
+              else
+                end_date = TimeHandler.parseTime(params[:exp_date], params[:exp_time])
+                Auction.create(owner, item, params[:increment], params[:min_price], end_date)
+                flash[:notice] = "Auction for item #{item.name} has been created!"
+              end
+            else
+              flash[:error] = "Please specify a valid minimal price (greater than 0)"
+            end
+          else
+            flash[:error] = "Please specify a valid increment (greater than 0)"
+          end
+
         end
       else
         flash[:error] = "You did not put in a valid Time"
       end
       redirect "/home/items"
+    end
+
+    get 'auction/:item_id/bid' do
+
+    end
+
+    post 'auction/:item_id/bid' do
+
     end
 
   end

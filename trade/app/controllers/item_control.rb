@@ -87,6 +87,7 @@ module Controllers
       for i in ((inactive-1)*items_per_page)..(inactive*items_per_page)-1
         @inactive_items<<inactive_items[i] unless inactive_items[i].nil?
       end
+      @auctions = Auction.auctions_by_user(@session_user)
       haml :user_items, :locals => {:active_page =>active, :active_page_count =>active_page_count, :inactive_page =>inactive, :inactive_page_count => inactive_page_count}
     end
 

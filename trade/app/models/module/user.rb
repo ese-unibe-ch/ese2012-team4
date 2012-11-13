@@ -166,7 +166,7 @@ class User
     def list_items_inactive
       return_list = Array.new
       for s in self.item_list
-        if !s.active && !s.expired?
+        if !s.active && !s.expired? && !Auction.auction_by_item(s)
           return_list.push(s)
         end
       end

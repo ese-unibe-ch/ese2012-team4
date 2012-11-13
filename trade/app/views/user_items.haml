@@ -96,4 +96,37 @@
             %input.square(type="submit" value="Edit")
 -else
   %h3 No items
+%h2 My Auctions
+-unless @auctions.empty?
+  %table.itemtable
+    %thead
+      %tr
+        %td
+          %p.table_header Item Name
+        %td
+          %p.table_header Picture
+        %td
+          %p.table_header Min price
+        %td
+          %p.table_header Increment
+        %td
+          %p.table_header Edit
+    - for auction in @auctions
+      %tr(title = "#{auction.item.description}")
+        %td.nopadding
+          %a.wholly_clickable(href="/auction/#{auction.item.id}" )
+            :escaped
+              #{auction.item.name}
+        %td
+          %a(href="/item/#{auction.item.id}/image" rel="lightbox" title="#{auction.item.name}")
+            %img(src="/item/#{auction.item.id}/image" class = "smallpicturebox")
+        %td
+          %p #{auction.min_price}
+        %td
+          %p #{auction.increment}
+        %td
+          %form.nomargin(action="/auction/#{auction.item.id}/edit" method="GET")
+            %input.square(type="submit" value="Edit")
+-else
+  %h3 No auctions
 
