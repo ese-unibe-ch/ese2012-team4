@@ -5,6 +5,7 @@ require 'rubygems'
 require 'require_relative'
 require 'sinatra'
 require 'haml'
+require 'rufus-scheduler'
 require_relative('controllers/not_authenticated')
 require_relative('controllers/item_control')
 require_relative('controllers/user_control')
@@ -218,7 +219,18 @@ class App < Sinatra::Base
       userG.add_rating(rand(4))
     end
 
+    scheduler = Rufus::Scheduler.start_new
+
+    scheduler.every '1m' do
+      for auction in Auction.all_auctions
+        if auction.over?
+          auction.end_auction
+          puts "ended auction for #{auction.item.name}"
+        end
+      end
     end
+
+  end
 
   end
 

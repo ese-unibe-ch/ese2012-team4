@@ -38,6 +38,10 @@ module Models
       return :success
     end
 
+    def self.all_auctions
+      @@auctions
+    end
+
     def valid_bid?(bidder, bid)
       if @current_selling_price == 0
         return bid >= self.min_price
@@ -77,14 +81,18 @@ module Models
       end
     end
 
+    def over?
+      Time.now > self.end_time
+    end
+
     def end_auction
       unless @current_winner == nil
         @item.owner = @current_winner
         @owner.credits += @current_selling_price
         @current_winner.credits += @bids[@current_winner] - @current_selling_price
-        @@auctions.delete(self)
         Mailer.bid_over(@current_winner, self)
       end
+      @@auctions.delete(self)
     end
   end
 end
