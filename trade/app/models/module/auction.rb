@@ -8,13 +8,14 @@ module Models
       self.increment= increment
       self.min_prize= min_prize
       self.end_time= end_time
+      self.current_selling_price = price + increment
       @bids = Hash.new(-10000)
     end
 
     def place_bid(owner, price)
       return :not_enough_credits if owner.credits < price
-      return :invalid_bid if @bids[owner] > price or price <= self.min_prize
-      return :bid_already_made if @bids.values.detect {|bid| bid==price}
+      return :invalid_bid if @bids[owner] > price or price <= @current_selling_price
+      return :bid_already_made if @bids.values.detect { |bid| bid==price }
       @bids[owner] = price
       update_current_winner(owner)
       return :success
@@ -30,7 +31,16 @@ module Models
         Mailer.new_winner(old_winner, self)
 
         @current_winner.credits -= @bids[@current_winner] #SH Deduct the money from the current winner
-        @current_selling_price = @bids[@current_winner] + increment
+        @current_selling_price = @bids[old_winner] + increment
+      end
+    end
+
+    def end_auction
+      unless @current_winner == nil
+        @item.owner = @current_winner
+        @owner.credits += @current_selling_price
+        @current_winner.credits += @bids[@current_winner] - @current_selling_price
+        Mailer.bid_over(@current_winner, self)
       end
     end
   end
