@@ -78,6 +78,6 @@
 -else
   %td.buyform
     %form.nomargin(action="/auction/#{@item.id}/bid" method="POST")
-      %input.rightalign(type = "text" name ="bid" value = "#{@auction.current_selling_price}")
+      %input.rightalign(type = "text" name ="bid" value = "#{@auction.current_selling_price + @auction.increment}")
       %input.square.rightalign(type="submit" value="Bid")
 

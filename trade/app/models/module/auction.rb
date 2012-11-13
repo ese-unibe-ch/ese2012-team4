@@ -24,18 +24,26 @@ module Models
       self.end_time= end_time
       self.current_selling_price = 0
       @editable = true
-      @bids = Hash.new(min_price - increment)
+      @bids = Hash.new(0)
       @@auctions << self
       puts "added an auction"
     end
 
     def place_bid(bidder, bid)
       return :not_enough_credits if bidder.credits < bid - @bids[bidder]
-      return :invalid_bid if @bids[bidder] > bid or bid <= @current_selling_price
+      return :invalid_bid unless self.valid_bid?(bidder, bid)
       return :bid_already_made if @bids.values.detect { |b| b==bid }
       update_current_winner(bidder, bid)
       @editable = false
       return :success
+    end
+
+    def valid_bid?(bidder, bid)
+      if @current_selling_price == 0
+        return bid >= self.min_price
+      else
+        return @bids[bidder] < bid && bid >= @current_selling_price
+      end
     end
 
     def editable?
@@ -59,7 +67,12 @@ module Models
           end
           @bids[new_bidder] = bid
           @current_winner.credits -= @bids[@current_winner] #SH Deduct the money from the current winner
-          @current_selling_price = @bids[old_winner] + increment
+          if (@current_selling_price > 0)
+            @current_selling_price = @bids[old_winner] + self.increment
+          else
+            @current_selling_price = self.min_price
+          end
+
         end
       end
     end
