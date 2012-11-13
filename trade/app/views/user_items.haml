@@ -124,9 +124,10 @@
           %p #{auction.min_price}
         %td
           %p #{auction.increment}
-        %td
-          %form.nomargin(action="/auction/#{auction.item.id}/edit" method="GET")
-            %input.square(type="submit" value="Edit")
+        - if auction.editable?
+          %td
+            %form.nomargin(action="/auction/#{auction.item.id}/edit" method="GET")
+              %input.square(type="submit" value="Edit")
 -else
   %h3 No auctions
 

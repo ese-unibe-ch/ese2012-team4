@@ -37,6 +37,23 @@
   .textbox.value
     #{@auction.increment}
 %br
+- unless @auction.current_winner.nil?
+  .lineContainer
+    .textbox.name
+      Current Winner:
+    .textbox.value
+      #{@auction.current_winner.name}
+
+- unless @auction.bids[@session_user] == 0
+  .lineContainer
+    .textbox.name
+      Placed Bid:
+    .textbox.value
+      - if @auction.current_winner == @session_user
+        placed winning bid: #{@auction.bids[@session_user]}
+      - else
+        placed unsuccessful bid: #{@auction.bids[@session_user]}
+%br
 .lineContainer
   .textbox.name
     Expires on:

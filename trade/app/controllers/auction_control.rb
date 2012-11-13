@@ -51,7 +51,7 @@ module Controllers
                 flash[:error] = "Auction with this item already exists."
               else
                 end_date = TimeHandler.parseTime(params[:exp_date], params[:exp_time])
-                Auction.create(owner, item, params[:increment], params[:min_price], end_date)
+                Auction.create(owner, item, params[:increment].to_i, params[:min_price].to_i, end_date)
                 flash[:notice] = "Auction for item #{item.name} has been created!"
               end
             else
@@ -89,11 +89,52 @@ module Controllers
         if success == :success
           flash[:notice] = "Bid of #{params[:bid]} placed for item #{@item.name}!"
         end
-
-
       end
-
        redirect "/auction/#{params[:item_id]}"
+    end
+
+    get "/auction/:item_id/edit" do
+      redirect '/index' unless session[:id]
+      @item = Item.get_item(params[:item_id])
+      @auction = Auction.auction_by_item(@item)
+      haml :auction_edit
+    end
+
+    post "/auction/:item_id/edit" do
+      redirect '/index' unless session[:id]
+      @item = Item.get_item(params[:item_id])
+      @auction = Auction.auction_by_item(@item)
+      unless @auction.nil?
+        if @auction.editable?
+          if(TimeHandler.validTime?(params[:exp_date], params[:exp_time]))
+            if ((params[:exp_date].eql?("") and params[:exp_time].eql?("")))
+              flash[:error] = "You must enter an end date"
+            else
+              if params[:increment].to_i > 0
+                if params[:min_price].to_i > 0
+                  end_date = TimeHandler.parseTime(params[:exp_date], params[:exp_time])
+                  @auction.min_price = params[:min_price].to_i
+                  @auction.end_time = end_date
+                  @auction.increment = params[:increment].to_i
+                  flash[:notice] = "Auction for item #{@item.name} has been edited!"
+                else
+                  flash[:error] = "Please specify a valid minimal price (greater than 0)"
+                end
+              else
+                flash[:error] = "Please specify a valid increment (greater than 0)"
+              end
+
+            end
+          else
+            flash[:error] = "You did not put in a valid Time"
+          end
+        else
+          flash[:error] = "Item cannot be edited."
+        end
+      else
+        flash[:error] = "Auction does not exist."
+      end
+      redirect "/home/items"
     end
 
   end

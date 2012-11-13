@@ -30,7 +30,7 @@ module Models
     end
 
     def place_bid(bidder, bid)
-      return :not_enough_credits if bidder.credits < bid
+      return :not_enough_credits if bidder.credits < bid - @bids[bidder]
       return :invalid_bid if @bids[bidder] > bid or bid <= @current_selling_price
       return :bid_already_made if @bids.values.detect { |b| b==bid }
       update_current_winner(bidder, bid)
@@ -44,16 +44,23 @@ module Models
 
     def update_current_winner(new_bidder, bid)
 
-      if bid > @bids[@current_winner]
-        old_winner = @current_winner
-        @current_winner = new_bidder
-        unless old_winner.nil?
-          old_winner.credits += @bids[old_winner] #SH Gives the money of the previous winner back
-          #Mailer.new_winner(old_winner, self)
-        end
-        @current_selling_price = @bids[old_winner] + increment
+      # if you are overbidding yourself...
+      if @current_winner == new_bidder
+        new_bidder.credits -= bid - @bids[new_bidder]
         @bids[new_bidder] = bid
-        @current_winner.credits -= @bids[@current_winner] #SH Deduct the money from the current winner
+        # no need to change the current selling price
+      else
+        if bid > @bids[@current_winner]
+          old_winner = @current_winner
+          @current_winner = new_bidder
+          unless old_winner.nil?
+            old_winner.credits += @bids[old_winner] #SH Gives the money of the previous winner back
+            #Mailer.new_winner(old_winner, self)
+          end
+          @bids[new_bidder] = bid
+          @current_winner.credits -= @bids[@current_winner] #SH Deduct the money from the current winner
+          @current_selling_price = @bids[old_winner] + increment
+        end
       end
     end
 
@@ -62,6 +69,7 @@ module Models
         @item.owner = @current_winner
         @owner.credits += @current_selling_price
         @current_winner.credits += @bids[@current_winner] - @current_selling_price
+        @@auctions.delete(self)
         Mailer.bid_over(@current_winner, self)
       end
     end
