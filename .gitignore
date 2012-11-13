@@ -18,3 +18,5 @@ Gemfile.lock
 .yardoc
 _yardoc
 
+
+*.iml

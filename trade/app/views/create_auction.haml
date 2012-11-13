@@ -1,0 +1,31 @@
+%h2 Create an auction
+%br
+:javascript
+  $(document).ready(function() {
+    // check if element is supported
+    var i = document.createElement('input');
+    i.setAttribute('type', 'date');
+    if( i.type == 'text' )
+      $("input[name=exp_date]").datepicker({ dateFormat: 'dd-mm-yy', minDate: 0 });
+    var j = document.createElement('input');
+    j.setAttribute('type', 'time');
+    if( j.type == 'text' )
+      $('input[name=exp_time]').timepicker();
+  });
+%p
+  Please set the expiration date, minimal price and step.
+%br
+.textbox.name
+  %p Auction end date
+.textbox.value
+  %form.nomargin(action="/auction/#{@item.id}/create" method="POST")
+    %input(type="date" name="exp_date")
+    %input(type="time" name="exp_time")
+    %hr.separator
+    %label.textbox.name
+      %p Price:
+    %input.textbox.value(type="text" name="min_price" value="#{@item.price}")
+    %label.textbox.name
+      %p Increment:
+    %input.textbox.value(type="text" name="increment" value="5")
+    %input.square.rightalign(type="submit" value="Create Auction")

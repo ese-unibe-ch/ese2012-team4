@@ -69,6 +69,8 @@
         %td
           %p.table_header Activate
         %td
+          %p.table_header Auction
+        %td
           %p.table_header Edit
     - for item in @inactive_items
       %tr(title = "#{item.description}")
@@ -86,6 +88,9 @@
         %td
           %form.nomargin(action="/changestate/#{item.id}/activation" method="GET")
             %input.square(type="submit" value="Set active")
+        %td
+          %form.nomargin(action="/auction/#{item.id}/create" method="GET")
+            %input.square(type="submit" value="Create Auction")
         %td
           %form.nomargin(action="/home/edit_item/#{item.id}" method="GET")
             %input.square(type="submit" value="Edit")

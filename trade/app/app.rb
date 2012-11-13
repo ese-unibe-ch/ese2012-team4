@@ -9,6 +9,7 @@ require_relative('controllers/not_authenticated')
 require_relative('controllers/item_control')
 require_relative('controllers/user_control')
 require_relative('controllers/comment_control')
+require_relative('controllers/auction_control')
 
 require_relative('../../trade/app/models/module/item')
 require_relative('../../trade/app/models/module/user')
@@ -22,6 +23,7 @@ class App < Sinatra::Base
   use ItemControl
   use CommentControl
   use UserControl
+  use AuctionControl
 
   enable :sessions
   enable :method_override
