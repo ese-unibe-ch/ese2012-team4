@@ -16,23 +16,22 @@ module Models
       return :invalid_bid if @bids[owner] > price or price <= self.min_prize
       return :bid_already_made if @bids.values.detect {|bid| bid==price}
       @bids[owner] = price
-      update_current_winner
+      update_current_winner(owner)
       return :success
     end
 
-    def update_current_winner
-      temp_winner = nil
-      @current_winner.credits += @bids[@current_winner] #SH Gives the money of the previous winner back
+    def update_current_winner(new_bidder)
 
-      @bids.each{ |owner, price|
-        if @bids[temp_winner] < price
-          temp_winner = owner
-        end
-      }
+      if @bids[new_bidder] > @bids[current_winner]
+        old_winner = @current_winner
+        @current_winner = new_bidder
+        old_winner.credits += @bids[old_winner] #SH Gives the money of the previous winner back
 
-      @current_winner = temp_winner
-      @current_winner.credits -= @bids[@current_winner] #SH Deduct the money from the current winner
-      @current_selling_price = @bids[@current_winner] + increment
+        Mailer.new_winner(old_winner, self)
+
+        @current_winner.credits -= @bids[@current_winner] #SH Deduct the money from the current winner
+        @current_selling_price = @bids[@current_winner] + increment
+      end
     end
   end
 end
