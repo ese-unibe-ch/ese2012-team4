@@ -32,7 +32,7 @@ module Models
 
       @current_winner = temp_winner
       @current_winner.credits -= @bids[@current_winner] #SH Deduct the money from the current winner
-      @current_selling_price = @bids[@current_winner]-1 + increment
+      @current_selling_price = @bids[@current_winner] + increment
     end
   end
 end
