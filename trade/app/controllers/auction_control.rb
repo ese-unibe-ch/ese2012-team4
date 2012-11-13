@@ -69,7 +69,30 @@ module Controllers
     end
 
     post '/auction/:item_id/bid' do
-       puts "placed a bid of " + params[:bid]
+      @item = Item.get_item(params[:item_id])
+      @auction = Auction.auction_by_item(@item)
+
+      if (@session_user == @auction.owner)
+        flash[:error] = "Can't bid on yur own item!'"
+      else
+        success = @auction.place_bid(@session_user, params[:bid].to_i)
+        if success == :not_enough_credits
+          flash[:error] = "you don't have enough credits!'"
+        end
+        if  success == :invalid_bid
+          flash[:error] = "this bid is too low!'"
+        end
+        if success == :bid_already_made
+          flash[:error] = "this bid already exists'"
+        end
+
+        if success == :success
+          flash[:notice] = "Bid of #{params[:bid]} placed for item #{@item.name}!"
+        end
+
+
+      end
+
        redirect "/auction/#{params[:item_id]}"
     end
 

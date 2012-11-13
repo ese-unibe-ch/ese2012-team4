@@ -91,6 +91,40 @@
 -else
   .textbox.value
     %p No Items
+
+
+%hr.separator
+.textbox.name
+  %p
+    :escaped
+      #{@user.name}'s auctions:
+%br
+- content_for :name do
+  %p
+    :escaped
+      #{@user.name}'s auctions
+-unless @auctions.empty?
+  %table.itemtable.right
+    %thead
+      %tr
+        %td
+          %p.table_header Name
+        %td
+          %p.table_header Current price
+    - for auction in @auctions
+      %tr(title = "#{auction.item.description}")
+        %td.nopadding
+          %a.wholly_clickable(href="/auction/#{auction.item.id}" )
+            :escaped
+              #{auction.item.name}
+        %td
+          %p
+          :escaped
+            #{auction.current_selling_price}
+-else
+  .textbox.value
+    %p No Auctions
+
 -unless @user.name != @session_user.name
   %hr.separator.invisible
     %form.nomargin(action="/profile" method="GET")
