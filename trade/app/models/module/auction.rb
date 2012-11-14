@@ -67,7 +67,7 @@ module Models
           @current_winner = new_bidder
           unless old_winner.nil?
             old_winner.credits += @bids[old_winner] #SH Gives the money of the previous winner back
-            #Mailer.new_winner(old_winner, self)
+            Mailer.new_winner(old_winner, self)
           end
           @bids[new_bidder] = bid
           @current_winner.credits -= @bids[@current_winner] #SH Deduct the money from the current winner
