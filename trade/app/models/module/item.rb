@@ -93,8 +93,9 @@ module Models
         self.errors += "Image is heavier than 400kB" unless image.size <= 400*1024
         begin
           dim = Dimensions.dimensions(image)
-          self.errors += "Image is no square" unless dim[0] == dim[1]
-          unless image.size <= 400*1024 && dim[0] == dim[1]
+          #self.errors += "Image is no square" unless dim[0] == dim[1]
+          #unless image.size <= 400*1024 && dim[0] == dim[1]
+          unless image.size <= 400*1024
             FileUtils.rm(image, :force => true)
           end
         rescue Errno::ENOENT
