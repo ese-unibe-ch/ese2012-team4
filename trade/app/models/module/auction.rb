@@ -1,6 +1,10 @@
 module Models
   class Auction
+    require 'require_relative'
+    require_relative('item')
     attr_accessor :item, :owner, :increment, :min_price, :end_time, :bids, :current_winner, :current_selling_price
+    # [String]: Stores all error messages
+    attr_accessor :errors
 
     @@auctions = Array.new
 
@@ -27,6 +31,17 @@ module Models
       @bids = Hash.new(0)
       @@auctions << self
       puts "added an auction"
+    end
+
+    # Controls the auctions's data and adds errors if necessary.
+    # - @return: true if there is no invalid data or false there is.
+    def is_valid?
+      self.errors = ""
+      self.errors += "Select a valid End-Date for your auction.\n" unless Time.now > self.end_time
+      self.errors += "Select a valid increment. \n" unless Item.valid_integer?(self.increment)
+
+
+
     end
 
     def place_bid(bidder, bid)
