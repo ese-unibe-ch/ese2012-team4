@@ -79,11 +79,11 @@ module Models
     def copy( hash = {})
       item = Models::Item.created(hash[:name] || self.name, hash[:price] || self.price,
                                   hash[:owner] || self.owner, hash[:quantity] ||self.quantity,
-                                  hash[:description] || self.description)
+                                  hash[:description] || self.description, hash[:image] || self.image)
     end
 
     # Controls the item's data and adds errors if necessary.
-    # - @return: true if there is no invalid data or false there is.
+    # - @return: true if there is no invalid data or false if there is.
     def is_valid
       self.errors = ""
       self.errors += "Price is not a valid number\n" unless Item.valid_integer?(self.price)

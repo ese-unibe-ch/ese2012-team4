@@ -29,19 +29,24 @@ module Models
       self.current_selling_price = 0
       @editable = true
       @bids = Hash.new(0)
+    end
+
+    # Saves the auction to the Auction-List
+    def save
+      raise "Duplicated item" if Auction.auction_by_item(item)
       @@auctions << self
       puts "added an auction"
     end
 
     # Controls the auctions's data and adds errors if necessary.
-    # - @return: true if there is no invalid data or false there is.
+    # - @return: true if there is no invalid data or false if there is.
     def is_valid?
       self.errors = ""
-      self.errors += "Select a valid End-Date for your auction.\n" unless Time.now > self.end_time
-      self.errors += "Select a valid increment. \n" unless Item.valid_integer?(self.increment)
-
-
-
+      self.errors += "Select a valid End-Date for your auction.\n" unless Time.now < self.end_time
+      self.errors += "Select a valid increment.\n" unless Item.valid_integer?(self.increment)
+      self.errors += "Select a valid minimal price.\n" unless Item.valid_integer?(self.min_price)
+      #self.errors += "An auction for this item already exists. \n" unless Auction.auction_by_item(item)
+      self.errors != "" ? false : true
     end
 
     def place_bid(bidder, bid)
