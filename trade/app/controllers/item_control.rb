@@ -49,10 +49,9 @@ module Controllers
         page_count=1
       end
       redirect 'search/result/1' unless 0<params[:page].to_i and params[:page].to_i<page_count+1
-      #@all_items = []
+
       @items = []
       for i in ((page-1)*items_per_page)..(page*items_per_page)-1
-        #@all_items<<items[i] unless items[i].nil?
         @items<<items[i] unless items[i].nil?
       end
       haml :items, :locals=> {:title => 'Search Result', :page => page, :page_count =>page_count}
@@ -122,10 +121,8 @@ module Controllers
       items = Item.get_all(@session_user.name)
       (items.size%items_per_page)==0? page_count = (items.size/items_per_page).to_i : page_count = (items.size/items_per_page).to_i+1
       redirect 'items/1' unless 0<params[:page].to_i and params[:page].to_i<page_count+1
-      #@all_items = []
       @items = []
       for i in ((page-1)*items_per_page)..(page*items_per_page)-1
-        #@all_items<<items[i] unless items[i].nil?
         @items<<items[i] unless items[i].nil?
       end
       haml :items, :locals => {:title => 'All Items', :page => page, :page_count => page_count}
