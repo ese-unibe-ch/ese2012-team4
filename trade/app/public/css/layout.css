@@ -279,10 +279,12 @@ textarea.textbox.value{
 
 img.bigpicturebox{
     width: 150px;
+    height: 150px;
 }
 
 img.mediumpicturebox{
     width: 100px;
+    height: 100px;
 }
 
 img.smallpicturebox{
