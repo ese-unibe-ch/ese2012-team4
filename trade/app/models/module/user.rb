@@ -261,6 +261,13 @@ class User
       not @@users_by_name.has_key? name.downcase
     end
 
+    def self.clear_all
+      @@users.each{|user|
+        FileUtils::rm(user.image, :force => true)
+        @@users.delete(user.id)
+        @@users_by_name.delete(user.name.downcase)}
+    end
+
     # - @return [Array]: all the pending items to buy of this user
     def pending_inbox
       Models::Holding.get_all.select {|s| s.buyer == self}
