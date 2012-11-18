@@ -9,7 +9,7 @@ module Models
     @@auctions = Array.new
 
     def self.create(owner, item, increment, min_price, end_time)
-      Auction.new(owner, item, increment, min_price, end_time)
+      Auction.new(owner, item, increment.to_i, min_price.to_i, end_time)
     end
 
     def self.auctions_by_user(user)
@@ -106,10 +106,13 @@ module Models
     end
 
     def end_auction
-      unless @current_winner == nil
-        @item.owner = @current_winner
-        @owner.credits += @current_selling_price
-        @current_winner.credits += @bids[@current_winner] - @current_selling_price
+      if @current_winner == nil
+        self.owner.item_list.push(self.item)    # TODO: Not just pushing the item to the list, but merge it with eventually existing items. (like with buying items)
+      else
+        self.item.price = @current_selling_price
+        puts("huhu")
+        @current_winner.credits += @bids[@current_winner]
+        @current_winner.buy_new_item(item,1)
         Mailer.bid_over(@current_winner, self)
       end
       @@auctions.delete(self)

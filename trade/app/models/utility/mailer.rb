@@ -8,7 +8,7 @@ module Models
     # Sends an e-mail
     # - @param [String] to: e-mail address of the receiver of this mail
     # - @param [String] contents: Content in the mail, without signature and greetings, which is added automatically.
-    def self.send_mail_to(to, contents)
+    def self.item_sold(to, contents)
       require 'rubygems'
       require 'tlsmail'
       require 'time'

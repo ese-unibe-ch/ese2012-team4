@@ -193,7 +193,7 @@ class User
 
       Holding.shipItem(item_to_buy, item_to_buy.owner, self, quantity)
 
-      Mailer.send_mail_to(preowner.e_mail, "Hi #{preowner.name}, \n #{self.name} bought your Item #{item_to_buy.name}.
+      Mailer.item_sold(preowner.e_mail, "Hi #{preowner.name}, \n #{self.name} bought your Item #{item_to_buy.name}.
         Please Contact him for completing the trade. His E-Mail is: #{self.e_mail}")
       return true
     end

@@ -221,7 +221,7 @@ class App < Sinatra::Base
 
     scheduler = Rufus::Scheduler.start_new
 
-    scheduler.every '1m' do
+    scheduler.every '5s' do
       for auction in Auction.all_auctions
         if auction.over?
           auction.end_auction
