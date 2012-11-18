@@ -179,14 +179,27 @@ module Models
 
     # - @param [User] viewer: Name of the user whose items should not be listed.
     # - @return [Array]: Array of all stored Items except those who belong to the given viewer.
-    def self.get_all(viewer)
+    def self.get_all(viewer, options = {})
+      o = {
+        :order_by => 'name',
+        :order_direction => 'asc'
+      }.merge(options)
+
+      if viewer.is_a?(User)
+        viewer = viewer.name
+      end
+
       new_array = @@item_list.to_a
       ret_array = Array.new
       for e in new_array
         ret_array.push(e[1])
       end
       ret = ret_array.select {|s| s.owner.name !=  viewer}
-      return ret.select {|s| s.is_active?}
+      if o[:order_direction] == 'asc'
+        return ret.select{|s| s.is_active? }.sort{ |a,b| a.send(o[:order_by]) <=> b.send(o[:order_by]) }
+      else
+        return ret.select{|s| s.is_active?}.sort{ |a,b| b.send(o[:order_by]) <=> a.send(o[:order_by]) }
+      end
     end
 
     def delete
@@ -209,7 +222,12 @@ module Models
     # - @param [String] search_string: Keywords for whom should be searched. Keywords must be separated by spaces.
     # - @param [User] user: The user requesting the item list.
     # - @return [Array]: Items whose names or descriptions contain a the keywords and are visible to the given user.
-    def self.search (search_string, user)
+    def self.search (search_string, user, options = {})
+      o = {
+          :order_by => 'name',
+          :order_direction => 'asc'
+      }.merge(options)
+
       s_array = search_string.downcase.split
       ret_array = []
       i_array = @@item_list.to_a
@@ -223,7 +241,15 @@ module Models
           ret_array.push(i)
         end
       end
-      ret_array
+      if o[:order_direction] == 'asc'
+        return ret_array.sort{ |a,b| a.send(o[:order_by]) <=> b.send(o[:order_by]) }
+      else
+        return ret_array.sort{ |a,b| b.send(o[:order_by]) <=> a.send(o[:order_by]) }
+      end
+    end
+
+    def self.clear_all
+      @@item_list = {}
     end
 
     def add_user_to_wishlist(user)
@@ -232,6 +258,18 @@ module Models
 
     def remove_user_from_wishlist(user)
       wishlist_users.delete(user)
+    end
+
+    def activate
+      self.active = true
+    end
+
+    def deactivate
+      self.active = false
+    end
+
+    def seller_rating
+      self.owner.rating
     end
   end
 end

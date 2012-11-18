@@ -181,10 +181,14 @@ class UserTest < Test::Unit::TestCase
   end
 
   def test_delete
+    item1 = @owner.create_item("testobject", 10, 1)
+    item1.activate
     @owner.save
     assert (!User.available? "testuser")
+    assert Item.get_all("").include?(item1)
     @owner.delete
     assert (User.available? "testuser")
+    assert !Item.get_all("").include?(item1)
   end
 
   def test_validation

@@ -20,6 +20,8 @@ class ItemTest < Test::Unit::TestCase
   # Runs after every test
   def teardown
     @owner.delete
+    Item.clear_all
+    Auction.clear_all
   end
 
   # Test static method get item
@@ -215,6 +217,13 @@ class ItemTest < Test::Unit::TestCase
     assert(Item.search("des", @owner).include?(item1), "Searching for parts of the description should return the item-id.")
     item2 = @owner.create_item('bla', 20, 1)
     assert(Item.search("bla", @owner).include?(item2))
+    item3 = @owner.create_item('blabla', 10, 1)
+    result = Item.search("bla", @owner, {:order_by => 'price', :order_direction => 'asc'})
+    assert result[0] == item3
+    assert result[1] == item2
+    result = Item.search("bla", @owner, {:order_by => 'name', :order_direction => 'asc'})
+    assert result[0] == item2
+    assert result[1] == item3
   end
 
   def test_wishlist_other_buy_remove_from_list
@@ -246,4 +255,102 @@ class ItemTest < Test::Unit::TestCase
     assert (@wisher.wishlist.include? item1)
   end
 
+  # As a user, I can sort the items lists by name, name of seller, price/current bid, or median rating of the seller
+  def test_sort_items_by_name
+    item1 = @owner.create_item("a_test_object1", 50, 1)
+    item1.activate
+    item2 = @owner.create_item("b_test_object2", 30, 1)
+    item2.activate
+
+    items = Item.get_all("", {:order_by => 'name', :order_direction => 'asc'})
+    assert items[0] == item1
+    assert items[1] == item2
+    items = Item.get_all("", {:order_by => 'name', :order_direction => 'desc'})
+    assert items[0] == item2
+    assert items[1] == item1
+
+    auct1 = Auction.create(@owner, item1, 5, 20, Time.now + 3600)
+    auct2 = Auction.create(@owner, item2, 5, 30, Time.now + 3600)
+    auctions = Auction.all_auctions({:order_by => 'name', :order_direction => 'asc'})
+    assert auctions[0] == auct1
+    assert auctions[1] == auct2
+    auctions = Auction.all_auctions({:order_by => 'name', :order_direction => 'desc'})
+    assert auctions[0] == auct2
+    assert auctions[1] == auct1
+  end
+
+  def test_sort_items_by_seller
+    item1 = @owner.create_item("a_test_object1", 50, 1)
+    item1.activate
+    user = Models::User.created( "zest_user2", "password", "test@mail.com" )
+    item2 = user.create_item("b_test_object2", 30, 1)
+    item2.activate
+
+    items = Item.get_all("", {:order_by => 'owner', :order_direction => 'asc'})
+    assert items[0] == item1
+    assert items[1] == item2
+    items = Item.get_all("", {:order_by => 'owner', :order_direction => 'desc'})
+    assert items[0] == item2
+    assert items[1] == item1
+
+    auct1 = Auction.create(@owner, item1, 5, 20, Time.now + 3600)
+    auct2 = Auction.create(user, item2, 5, 30, Time.now + 3600)
+    auctions = Auction.all_auctions({:order_by => 'owner', :order_direction => 'asc'})
+    assert auctions[0] == auct1
+    assert auctions[1] == auct2
+    auctions = Auction.all_auctions({:order_by => 'owner', :order_direction => 'desc'})
+    assert auctions[0] == auct2
+    assert auctions[1] == auct1
+  end
+
+  def test_sort_items_by_price_fixed
+    item1 = @owner.create_item("a_test_object1", 50, 1)
+    item1.activate
+    item2 = @owner.create_item("b_test_object2", 30, 1)
+    item2.activate
+    items = Item.get_all("", {:order_by => 'price', :order_direction => 'asc'})
+    assert items[0] == item2
+    assert items[1] == item1
+    items = Item.get_all("", {:order_by => 'price', :order_direction => 'desc'})
+    assert items[0] == item1
+    assert items[1] == item2
+  end
+
+  def test_sort_items_by_price_auction
+    item1 = @owner.create_item("a_test_object1", 50, 1)
+    item1.activate
+    item2 = @owner.create_item("b_test_object2", 30, 1)
+    item2.activate
+    auct1 = Auction.create(@owner, item1, 5, 20, Time.now + 3600)
+    auct2 = Auction.create(@owner, item2, 5, 30, Time.now + 3600)
+
+    user = Models::User.created( "zest_user2", "password", "test@mail.com" )
+    auct1.place_bid(user, 40)
+    auct2.place_bid(user, 40)
+
+    auctions = Auction.all_auctions({:order_by => 'price', :order_direction => 'asc'})
+    assert auctions[0] == auct1
+    assert auctions[1] == auct2
+
+  end
+
+  def test_sort_items_by_seller_rating
+    item1 = @owner.create_item("a_test_object1", 50, 1)
+    item1.activate
+    @owner.add_rating(2)
+    @owner.add_rating(3)
+    @owner.add_rating(4)
+    user = Models::User.created( "zest_user2", "password", "test@mail.com" )
+    item2 = user.create_item("b_test_object2", 30, 1)
+    item2.activate
+    user.add_rating(1)
+    user.add_rating(1)
+    user.add_rating(1)
+    items = Item.get_all("", {:order_by => 'seller_rating', :order_direction => 'asc'})
+    assert items[0] == item2
+    assert items[1] == item1
+    items = Item.get_all("", {:order_by => 'seller_rating', :order_direction => 'desc'})
+    assert items[0] == item1
+    assert items[1] == item2
+  end
 end

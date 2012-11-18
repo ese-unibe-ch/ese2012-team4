@@ -5,6 +5,7 @@ require 'fileutils'
 require_relative('../utility/mailer')
 require_relative('../utility/password_check')
 require_relative('item')
+require_relative('auction')
 require_relative('../utility/holding')
 
 
@@ -25,6 +26,8 @@ class User
     attr_accessor :credits
     # [Array]: All the items the user possesses
     attr_accessor :item_list
+    # [Array]: All the auctions the user possesses
+    attr_accessor :auctions_list
     # Save storage of the users password
     attr_accessor :password_hash
     # Save storage of the users password
@@ -56,9 +59,10 @@ class User
       user.id = @@count +1
       user.description = description
       user.image = image
-      user.wishlist = Array.new
+      user.wishlist = []
       user.credits = 100
-      user.item_list = Array.new
+      user.item_list = []
+      user.auctions_list = []
       pw_salt = BCrypt::Engine.generate_salt
       pw_hash = BCrypt::Engine.hash_secret(password, pw_salt)
       user.password_salt = pw_salt
@@ -275,6 +279,11 @@ class User
       FileUtils::rm(self.image, :force => true)
       @@users.delete(self.id)
       @@users_by_name.delete(self.name.downcase)
+      Item.get_item_list.delete_if {|k,v| v.owner == self }
+      Auction.auctions_by_user(self).each{|auction|
+        Auction.all_auctions.delete(auction)
+        self.auctions_list.delete(auction)
+      }
     end
 
     def add_to_wishlist(item)
@@ -327,10 +336,19 @@ class User
       value/counter
     end
 
-  # AS intermezzo sets an item as auction
-  def set_to_auction(item)
-    self.item_list.delete(item) #AS Not sure if it works that simple, because they have concepts like quantity. But let's face the problems as they appear.
-    self.auctions_list.push(item)
-  end
+    # AS intermezzo sets an item as auction
+    def set_to_auction(item)
+      self.item_list.delete(item) #AS Not sure if it works that simple, because they have concepts like quantity. But let's face the problems as they appear.
+      self.auctions_list.push(item)
+    end
+
+    def <=>(o)
+      # Compare user name
+      user_name_cmp = self.name <=> o.name
+      return user_name_cmp unless user_name_cmp == 0
+
+      # Otherwise, compare IDs
+      return self.id <=> o.id
+    end
   end
 end

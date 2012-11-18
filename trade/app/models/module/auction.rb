@@ -38,8 +38,20 @@ module Models
       return :success
     end
 
-    def self.all_auctions
-      @@auctions
+    def self.all_auctions(options = {})
+      o = {
+          :order_by => 'name',
+          :order_direction => 'asc'
+      }.merge(options)
+      if o[:order_direction] == 'asc'
+        return @@auctions.sort{ |a,b| a.send(o[:order_by]) <=> b.send(o[:order_by]) }
+      else
+        return @@auctions.sort{ |a,b| b.send(o[:order_by]) <=> a.send(o[:order_by]) }
+      end
+    end
+
+    def self.clear_all
+      @@auctions = []
     end
 
     def valid_bid?(bidder, bid)
@@ -48,6 +60,18 @@ module Models
       else
         return @bids[bidder] < bid && bid >= @current_selling_price
       end
+    end
+
+    def name
+      self.item.name
+    end
+
+    def price
+      @current_selling_price
+    end
+
+    def seller_rating
+      self.owner.rating
     end
 
     def editable?
