@@ -6,6 +6,7 @@ require 'rubygems'
 require 'require_relative'
 require_relative('../app/models/module/user')
 require_relative('../app/models/module/item')
+require_relative('../app/models/module/auction')
 
 include Models
 
