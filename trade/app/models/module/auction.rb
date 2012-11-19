@@ -106,16 +106,18 @@ module Models
     end
 
     def end_auction
-      if @current_winner == nil
-        self.owner.item_list.push(self.item)    # TODO: Not just pushing the item to the list, but merge it with eventually existing items. (like with buying items)
+      @@auctions.delete(self)
+      # RB: Adding the item back to the list first, makes it possible to buy it with normal process.
+      self.owner.item_list.push(self.item)    # TODO: Not just pushing the item to the list, but merge it with eventually existing items. (like with buying items)
       else
         self.item.price = @current_selling_price
-        puts("huhu")
         @current_winner.credits += @bids[@current_winner]
+        self.owner.item_list.push(self.item)
         @current_winner.buy_new_item(item,1)
-        Mailer.bid_over(@current_winner, self)
+
+        Mailer.bid_over(@current_winner.e_mail, self)
       end
-      @@auctions.delete(self)
+
     end
   end
 end

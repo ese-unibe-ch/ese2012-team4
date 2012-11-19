@@ -22,6 +22,4 @@ class OrganizationTest < Test::Unit::TestCase
     assert(@org.admin_list.include?(@admin))
     assert(Trader.get_all("").include?(@org))
   end
-
-
 end
