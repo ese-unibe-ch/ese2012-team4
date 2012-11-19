@@ -1,3 +1,9 @@
+require 'require_relative'
+require_relative('../utility/mailer')
+require_relative('item')
+require_relative('../utility/holding')
+
+
 module Models
 
   # Abstract class for trading items in the System.

@@ -2,10 +2,7 @@ require 'rubygems'
 require 'bcrypt'
 require 'require_relative'
 require 'fileutils'
-require_relative('../utility/mailer')
 require_relative('../utility/password_check')
-require_relative('item')
-require_relative('../utility/holding')
 require_relative('trader')
 
 # ToDo: move some of these requires to trader
@@ -103,11 +100,13 @@ module Models
     end
 
     # - @return [User]: the user with the given user_id
+    # ToDo: maybe we need to adapt this, if we want to list organizations and users differently...
     def self.get_user(user_id)
       return @@traders[user_id.to_i]
     end
 
     # - @return [User]: the user with the given username
+    # ToDo: maybe we need to adapt this, if we want to list organizations and users differently...
     def self.by_name(name)
       return @@traders_by_name[name]
     end
