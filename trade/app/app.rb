@@ -14,6 +14,7 @@ require_relative('controllers/auction_control')
 
 require_relative('../../trade/app/models/module/item')
 require_relative('../../trade/app/models/module/user')
+require_relative('../../trade/app/models/module/organization')
 
 include Models
 include Controllers
@@ -218,6 +219,9 @@ class App < Sinatra::Base
     for i in 0..10
       userG.add_rating(rand(4))
     end
+
+    orgA = Organization.created("OrgA", userG)
+    orgA.save
 
     scheduler = Rufus::Scheduler.start_new
 

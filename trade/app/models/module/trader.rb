@@ -34,6 +34,8 @@ module Models
     attr_accessor :wishlist
     # [Array]: Ratings of other users
     attr_accessor :ratings
+    # [Boolean]: check if trader is an organization, used primarily for views
+    attr_accessor :organization
 
     @@traders_by_name = {}
     @@traders = {}

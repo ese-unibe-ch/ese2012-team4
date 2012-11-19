@@ -18,6 +18,7 @@ module Models
       org.member_list = []
       org.member_list.push(admin)
       org.e_mail = admin.e_mail
+      org.organization = true
       org
     end
 

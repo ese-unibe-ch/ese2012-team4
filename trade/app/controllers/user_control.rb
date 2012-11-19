@@ -184,5 +184,26 @@ module Controllers
       redirect "/wishlist"
     end
 
+    get '/create_organization' do
+      redirect '/index' unless session[:id]
+      haml :create_organization, :locals => {:action => "create_organization", :button => "create"}
+    end
+
+    post "/create_organization" do
+      redirect '/index' unless session[:id]
+      name = params[:name]
+      description = params[:description]
+      img_filename = save_image(params[:image_file])
+      @session_user.create_organization(name, description, img_filename)
+      flash[:notice] = "Organization #{params[:name]} has been created"
+      redirect "/home"
+    end
+
+    get '/organizations' do
+      redirect '/index' unless session[:id]
+      @all_organizations = Organization.get_all("").select {|s| s.organization==true}
+      haml :organizations
+    end
+
   end
 end

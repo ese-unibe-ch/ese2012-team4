@@ -1,0 +1,13 @@
+%h2 All Organizations
+%br
+%table.usertable
+  - for org in @all_organizations
+    %tr
+      %td
+        %a(href="/users/#{org.id}" )
+          :escaped
+            #{org.name}
+
+%br
+  %a(href="/create_organization")
+    create new organization

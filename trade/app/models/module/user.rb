@@ -32,6 +32,7 @@ module Models
       user.password_salt = pw_salt
       user.password_hash = pw_hash
       user.organization_list = []
+      user.organization = false
       user
     end
 
@@ -109,6 +110,12 @@ module Models
     # ToDo: maybe we need to adapt this, if we want to list organizations and users differently...
     def self.by_name(name)
       return @@traders_by_name[name]
+    end
+
+    def create_organization(name, description = "", image = "")
+      new_organization = Organization.created(name, self, description, image)
+      new_organization.save
+      self.organization_list.push(new_organization)
     end
 
   end
