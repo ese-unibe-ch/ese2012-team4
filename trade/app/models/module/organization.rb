@@ -36,7 +36,7 @@ module Models
     def add_member(new_member)
       unless self.member_list.include?(new_member)
         self.member_list.push(new_member)
-        new_member.organization_list.push(self)
+        new_member.join_organization(self)
       end
     end
 

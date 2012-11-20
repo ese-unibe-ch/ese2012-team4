@@ -44,8 +44,10 @@
             %br
 -else
   %hr.separator
-  %table.usertable
-    - for member in @user.member_list
+  .textbox.name
+    Members
+  %table.organization-member-table.value
+    - for member in @user.admin_list
       %tr
         %td
           %a(href="/user/#{member.id}/image" rel="lightbox" title="#{member.name}")
@@ -56,6 +58,31 @@
               #{member.name}
         %td
           has #{member.list_items.size} Items to sell
+        %td
+          Admin
+    - for member in @user.member_list
+      -unless @user.admin_list.include?(member)
+        %tr
+          %td
+            %a(href="/user/#{member.id}/image" rel="lightbox" title="#{member.name}")
+              %img(src="/user/#{member.id}/image" class = "smallpicturebox")
+          %td
+            %a(href="/users/#{member.id}" )
+              :escaped
+                #{member.name}
+          %td
+            has #{member.list_items.size} Items to sell
+          %td
+            Member
+  -if(@user.admin_list.include?(User.get_user(session[:id])))
+    %hr.separator
+    .textbox.name
+      Add users
+    .textbox.value
+      %form.nomargin(action="/selectusers/#{@user.id}" method="Get")
+        %input.rightalign.square(type="submit" value="Select users")
+
+
 
 %br
 %hr.separator

@@ -1,0 +1,21 @@
+%h2 Add users
+%br
+%table.usertable
+  - for user in @all_users
+    -unless user.organization
+      %tr
+        %td
+          %a(href="/user/#{user.id}/image" rel="lightbox" title="#{user.name}")
+            %img(src="/user/#{user.id}/image" class = "smallpicturebox")
+        %td
+          %a(href="/users/#{user.id}" )
+            :escaped
+              #{user.name}
+        %td
+          %form{:action=>"/setuser/#{@org.id}/#{user.id}",:method=>"post"}
+            -if @org.member_list.include?(user)
+              %input.square.rightalign(type="submit" value="remove")
+            -else
+              %input.square.rightalign(type="submit" value="add")
+
+

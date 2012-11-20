@@ -1,11 +1,18 @@
-.itemtable, .usertable{
-    width: 100%;
+.itemtable, .usertable, .organization-member-table{
+
     padding: 0px;
     border-collapse: collapse;
     text-align:left;
     max-height: 20px;
     border-spacing:0px;
     border-bottom: 3px solid #8FC9FF;
+}
+
+.itemtable, .usertable {
+    width: 100%;
+}
+.organization-member-table{
+    width:66.3%;
 }
 
 .itemtable tbody tr:hover td{
@@ -16,7 +23,7 @@
     vertical-align: middle;
 }
 
-.itemtable, .usertable td{
+.itemtable, .usertable, .organization-member-table td{
     background-color: #E5FFF2;
     max-height: 20px;
     overflow: hidden;

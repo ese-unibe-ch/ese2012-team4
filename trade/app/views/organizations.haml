@@ -4,6 +4,9 @@
   - for org in @my_organizations
     %tr
       %td
+        %a(href="/user/#{org.id}/image" rel="lightbox" title="#{org.name}")
+          %img(src="/user/#{org.id}/image" class = "smallpicturebox")
+      %td
         %a(href="/users/#{org.id}" )
           :escaped
             #{org.name}
