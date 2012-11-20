@@ -62,10 +62,10 @@ module Controllers
       @item = Item.get_item(params[:item_id])
       @auction = Auction.auction_by_item(@item)
 
-      if (@session_user == @auction.owner)
+      if (@session_user.working_for == @auction.owner)
         flash[:error] = "Can't bid on yur own item!'"
       else
-        success = @auction.place_bid(@session_user, params[:bid].to_i)
+        success = @auction.place_bid(@session_user.working_for, params[:bid].to_i)
         if success == :not_enough_credits
           flash[:error] = "you don't have enough credits!'"
         end
@@ -95,7 +95,7 @@ module Controllers
       @item = Item.get_item(params[:item_id])
       @auction = Auction.auction_by_item(@item)
       unless @auction.nil?
-        if @auction.owner == @session_user
+        if @auction.owner == @session_user.working_for
           if @auction.editable?
 
             end_date = TimeHandler.parseTime(params[:exp_date], params[:exp_time])

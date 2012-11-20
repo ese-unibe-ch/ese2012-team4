@@ -151,6 +151,9 @@ class App < Sinatra::Base
     Auction.create(ese, gtg, 5, 20, TimeHandler.parseTime("2012-11-29", ""))
     gtg.image = FileUtils::pwd+"/public/images/item_pix/git.jpg"
 
+    org = Organization.created( "Coding Inc.", ese)
+    org.save
+
 
     for i in 0..10
       ese.add_rating(4)

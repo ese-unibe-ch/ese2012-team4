@@ -22,6 +22,10 @@ module Models
     attr_accessor :e_mail
     # List of organization this user is part of
     attr_accessor :organization_list
+    # List of organization this user is admin of
+    attr_accessor :admin_of_org_list
+
+    attr_accessor :working_for
 
     # factory method (constructor) on the class
     def self.created( name, password, e_mail, description = "", image = "")
@@ -32,7 +36,8 @@ module Models
       user.password_salt = pw_salt
       user.password_hash = pw_hash
       user.organization_list = []
-      user.organization = false
+      user.admin_of_org_list = []
+      user.working_for = user
       user
     end
 
@@ -43,6 +48,7 @@ module Models
                            hash[:e_mail] || self.e_mail,
                            hash[:description] || self.description)
     end
+
 
     # Checks whether a combination of an username, a password and a confirmation is valid or not.
     # - @param [String] pw: a password.
@@ -89,6 +95,12 @@ module Models
       self.password_hash == BCrypt::Engine.hash_secret(password, self.password_salt)
     end
 
+    # Adds an organization to the user's organization list
+    def join_organization(organization)
+      self.organization_list.push(organization)
+    end
+
+
     #get string representation
     def to_s
       "#{self.name} has currently #{self.credits} credits, #{list_items.size} active and #{list_items_inactive.size} inactive items"
@@ -106,11 +118,7 @@ module Models
       return @@traders[user_id.to_i]
     end
 
-    # - @return [User]: the user with the given username
-    # ToDo: maybe we need to adapt this, if we want to list organizations and users differently...
-    def self.by_name(name)
-      return @@traders_by_name[name]
-    end
+
 
     def create_organization(name, description = "", image = "")
       new_organization = Organization.created(name, self, description, image)
