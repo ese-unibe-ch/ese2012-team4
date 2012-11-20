@@ -1,6 +1,11 @@
 %script(type="text/javascript" src="/js/rating.js")
+
+
 %h2
-  Userpage:
+  -if(@user.organization)
+    Organization:
+  -else
+    Userpage:
   :escaped
     #{@user.name}
 .lineContainer
@@ -8,7 +13,7 @@
     %a(href="/user/#{@user.id}/image" rel="lightbox" title="#{@user.name}")
       %img(src="/user/#{@user.id}/image" class = "bigpicturebox")
   .ratingtable
-    %p Other users' happiness with #{@user.name}:
+    %p Other traders' happiness with #{@user.name}:
     %br
     :javascript
       var data = #{@user.ratings_json};
@@ -17,25 +22,41 @@
       });
     %div(id="placeholder" style="width:250px; height:100px;")
 %br
-.lineContainer
-  .textbox.name
-    %p E-Mail:
-  .textbox.value
-    %p
-      :escaped
-         #{@user.e_mail}
-.lineContainer
-  .textbox.name
-    %p
-      :escaped
-        #{@user.name}'s interests:
-  .textbox.value
-    %p
-      -if !@user.description.empty?
-        -@user.description.each do |line|
-          :escaped
-            #{line}
-          %br
+-unless(@user.organization)
+  .lineContainer
+    .textbox.name
+      %p E-Mail:
+    .textbox.value
+      %p
+        :escaped
+          #{@user.e_mail}
+  .lineContainer
+    .textbox.name
+      %p
+        :escaped
+          #{@user.name}'s interests:
+    .textbox.value
+      %p
+        -if !@user.description.empty?
+          -@user.description.each do |line|
+            :escaped
+              #{line}
+            %br
+-else
+  %hr.separator
+  %table.usertable
+    - for member in @user.member_list
+      %tr
+        %td
+          %a(href="/user/#{member.id}/image" rel="lightbox" title="#{member.name}")
+            %img(src="/user/#{member.id}/image" class = "smallpicturebox")
+        %td
+          %a(href="/users/#{member.id}" )
+            :escaped
+              #{member.name}
+        %td
+          has #{member.list_items.size} Items to sell
+
 %br
 %hr.separator
 .textbox.name

@@ -40,6 +40,7 @@ module Models
     # [Boolean]: check if trader is an organization, used primarily for views
     attr_accessor :organization
 
+
     @@traders_by_name = {}
     @@traders = {}
     @@count = 0
@@ -54,6 +55,7 @@ module Models
       self.item_list = Array.new
       self.auctions_list = Array.new
       self.ratings = []
+      self.organization = false
     end
 
     # - @return [User]: the user with the given username
