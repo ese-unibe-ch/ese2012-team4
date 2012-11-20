@@ -9,6 +9,13 @@
         #{@session_user.name}
 .lineContainer
   .textbox.name
+    %p Working for:
+  .textbox.value
+    %p
+      :escaped
+        #{@session_user.working_for.name}
+.lineContainer
+  .textbox.name
     %p Your Credits:
   .textbox.value
     %p #{@session_user.credits}

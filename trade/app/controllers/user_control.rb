@@ -129,6 +129,15 @@ module Controllers
       flash[:notice] = "Password has been updated"
       redirect "/"
     end
+
+    post "/switch_account_context" do
+      redirect '/index' unless session[:id]
+      viewer = User.get_user(session[:id])
+      context = Trader.by_name(params[:context])
+      puts context
+      viewer.working_for = context
+      redirect "#{back}"
+    end
     
     get '/profile/pending' do
       @inbox = @session_user.pending_inbox

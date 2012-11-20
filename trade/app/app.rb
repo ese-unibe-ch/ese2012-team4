@@ -14,6 +14,7 @@ require_relative('controllers/auction_control')
 
 require_relative('../../trade/app/models/module/item')
 require_relative('../../trade/app/models/module/user')
+require_relative('../../trade/app/models/module/organization')
 
 include Models
 include Controllers
@@ -149,6 +150,9 @@ class App < Sinatra::Base
     gtg = ese.create_item("A guide to git", 20, 200, "Everything you should know but somehow didn't learn in P2")
     Auction.create(ese, gtg, 5, 20, TimeHandler.parseTime("2012-11-29", ""))
     gtg.image = FileUtils::pwd+"/public/images/item_pix/git.jpg"
+
+    org = Organization.created( "Coding Inc.", ese)
+    org.save
 
 
     for i in 0..10

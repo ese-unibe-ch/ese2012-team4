@@ -19,11 +19,23 @@
         #statusbar
           #status
             -if not session[:id].nil?
-              %a.status(href="/users/#{session[:id]}")
-                :escaped
-                  #{@session_user.name}
-              | Credits: #{@session_user.credits}
-              |
+              %form.nomargin{:action => "/switch_account_context", :method => "POST"}
+                %select{:onchange => "this.form.submit();", :name => "context"}
+                  %option
+                    :escaped
+                      #{@session_user.name}
+                  -for organization in @session_user.organization_list
+                    -if(@session_user.working_for == Trader.by_name(organization.name))
+                      %option{:selected => "selected"}
+                        :escaped
+                          #{organization.name}
+                    -else
+                      %option
+                        :escaped
+                          #{organization.name}
+              #statustext
+                | Credits: #{@session_user.credits}
+                |
               %a.status(href="/logout")Logout
             -else
               %a.status(href='/login')Login

@@ -50,6 +50,13 @@ module Models
       self.ratings = []
     end
 
+    # - @return [User]: the user with the given username
+    # ToDo: maybe we need to adapt this, if we want to list organizations and users differently...
+    def self.by_name(name)
+      return @@traders_by_name[name.downcase]
+    end
+
+
     def save
       raise "Duplicated user" if @@traders.has_key? self.id and @@traders[self.id] != self
       @@traders[self.id] = self

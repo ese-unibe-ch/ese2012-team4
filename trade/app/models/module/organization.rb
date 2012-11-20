@@ -15,11 +15,14 @@ module Models
       org = self.new(name, description, image)
       org.admin_list = []
       org.admin_list.push(admin)
+      admin.join_organization(org)
       org.member_list = []
       org.member_list.push(admin)
       org.e_mail = admin.e_mail
       org
     end
+
+
 
 
     def add_admin(new_admin)
