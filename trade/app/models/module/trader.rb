@@ -260,7 +260,8 @@ module Models
         value = value + v
         counter = counter + 1
       end
-      value/counter
+      return value/counter unless counter == 0
+      return 0
     end
 
     # AS intermezzo sets an item as auction
