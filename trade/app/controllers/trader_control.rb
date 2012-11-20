@@ -47,12 +47,36 @@ module Controllers
       haml :selectusers
     end
 
+    get '/selectadmins/:id' do
+      redirect '/index' unless session[:id]
+      @org = User.get_user(params[:id])
+      @all_users = @org.member_list
+      haml :selectadmins
+    end
+
     post '/setuser/:org_id/:user_id' do
       redirect '/index' unless session[:id]
       org = User.get_user(params[:org_id])
       user = User.get_user(params[:user_id])
       redirect "#{back}" unless (!user.organization and org.organization)
-      org.add_member(user)
+      if org.member_list.include?(user)
+        org.delete_member(user)
+      else
+        org.add_member(user)
+      end
+      redirect "#{back}"
+    end
+
+    post '/setadmin/:org_id/:user_id' do
+      redirect '/index' unless session[:id]
+      org = User.get_user(params[:org_id])
+      user = User.get_user(params[:user_id])
+      redirect "#{back}" unless (!user.organization and org.organization)
+      if org.admin_list.include?(user)
+        org.delete_admin(user)
+      else
+        org.add_admin(user)
+      end
       redirect "#{back}"
     end
 

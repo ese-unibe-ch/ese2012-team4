@@ -81,6 +81,9 @@
     .textbox.value
       %form.nomargin(action="/selectusers/#{@user.id}" method="Get")
         %input.rightalign.square(type="submit" value="Select users")
+      -if(@user.admin_list.include?(@session_user))
+        %form.nomargin(action="/selectadmins/#{@user.id}" method="Get")
+          %input.rightalign.square(type="submit" value="Select Administrators")
 
 
 

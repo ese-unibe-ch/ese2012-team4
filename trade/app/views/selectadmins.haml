@@ -1,4 +1,4 @@
-%h2 Manage Users
+%h2 Manage Admins
 %br
 %table.usertable
   - for user in @all_users
@@ -12,8 +12,8 @@
             :escaped
               #{user.name}
         %td
-          %form{:action=>"/setuser/#{@org.id}/#{user.id}",:method=>"post"}
-            -if @org.member_list.include?(user)
+          %form{:action=>"/setadmin/#{@org.id}/#{user.id}",:method=>"post"}
+            -if @org.admin_list.include?(user)
               %input.square.rightalign(type="submit" value="remove")
             -else
               %input.square.rightalign(type="submit" value="add")
