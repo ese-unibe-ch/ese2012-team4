@@ -22,6 +22,8 @@ module Models
     attr_accessor :e_mail
     # List of organization this user is part of
     attr_accessor :organization_list
+    # List of organization this user is admin of
+    attr_accessor :admin_of_org_list
 
     # factory method (constructor) on the class
     def self.created( name, password, e_mail, description = "", image = "")
@@ -32,6 +34,7 @@ module Models
       user.password_salt = pw_salt
       user.password_hash = pw_hash
       user.organization_list = []
+      user.admin_of_org_list = []
       user
     end
 
