@@ -210,7 +210,7 @@ module Controllers
 
     get '/organizations' do
       redirect '/index' unless session[:id]
-      @all_organizations = Organization.get_all("").select {|s| s.organization==true}
+      @my_organizations = @session_user.organization_list
       haml :organizations
     end
 
