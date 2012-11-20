@@ -43,7 +43,15 @@ module Controllers
       redirect '/search' if @@item_map[session[:id]].nil?
       items_per_page = 10
       page = params[:page].to_i
-      items = @@item_map[session[:id]]
+
+      order_by = params["order_by"] || 'name'
+      order_direction = params["order_direction"] || 'asc'
+
+      if order_direction == 'asc'
+        items = @@item_map[session[:id]].sort{ |a,b| a.send(order_by) <=> b.send(order_by) }
+      else
+        items = @@item_map[session[:id]].sort{ |a,b| b.send(order_by) <=> a.send(order_by) }
+      end
       (items.size%items_per_page)==0? page_count = (items.size/items_per_page).to_i : page_count = (items.size/items_per_page).to_i+1
       if page_count ==0
         page_count=1
