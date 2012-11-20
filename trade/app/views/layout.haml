@@ -12,6 +12,31 @@
     %script(src="/js/slimbox2.js")
     %script(src="/js/jquery.flot.js")
     %script(src="/js/jquery-ui-timepicker-addon.js")
+    :javascript
+      function updateURLParameter(url, param, paramVal){
+          var newAdditionalURL = "";
+          var tempArray = url.split("?");
+          var baseURL = tempArray[0];
+          var additionalURL = tempArray[1];
+          var temp = "";
+          if (additionalURL) {
+              tempArray = additionalURL.split("&");
+              for (i=0; i<tempArray.length; i++){
+                  if(tempArray[i].split('=')[0] != param){
+                      newAdditionalURL += temp + tempArray[i];
+                      temp = "&";
+                  }
+              }
+          }
+
+          var rows_txt = temp + "" + param + "=" + paramVal;
+          return baseURL + "?" + newAdditionalURL + rows_txt;
+      }
+
+      function setSorting(order_by, order_direction){
+        var temp = updateURLParameter(window.location.href, "order_by", order_by);
+        window.location.href = updateURLParameter(temp, "order_direction", order_direction);
+      }
   %body
     #wrapper
       #headcombi
