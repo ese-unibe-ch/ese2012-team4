@@ -228,9 +228,9 @@ module Controllers
       end
       quantity = Integer(params[:quantity])
       item = Item.get_item(id)
-      old_user = item.owner
-      user = session[:id]
-      new_user = User.get_user(user)
+      old_owner = item.owner
+      viewer = session[:id]
+      new_owner = User.get_user(viewer).working_for
       if (Integer(params[:timestamp])-item.timestamp)!=0
         flash[:error] = "#{item.name} has been edited while you were buying it"
         redirect "#{back}"
@@ -239,12 +239,12 @@ module Controllers
         flash[:error] = "#{item.name} is no longer active."
         redirect "#{back}"
       end
-      unless new_user.buy_new_item(item, quantity)
+      unless new_owner.buy_new_item(item, quantity)
         flash[:error] = "You don't have enough credits to buy #{quantity} piece/s of #{item.name}"
         redirect "#{back}"
       end
       flash[:notice] = "You have bought #{quantity} piece/s of #{item.name}"
-      redirect "/home"
+      redirect "/profile/pending"
     end
 
     post '/items/:id/delivered' do

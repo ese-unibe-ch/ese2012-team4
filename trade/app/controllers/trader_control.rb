@@ -14,7 +14,7 @@ require_relative('helper')
 include Models
 
 module Controllers
-  class UserControl < Sinatra::Base
+  class TraderControl < Sinatra::Base
     set :views, relative('../../app/views')
     set :public_folder, relative('../public')
     helpers Sinatra::ContentFor
@@ -139,6 +139,7 @@ module Controllers
     end
     
     get '/profile/pending' do
+      redirect '/index' unless session[:id]
       @inbox = @session_user.working_for.pending_inbox
       @outbox = @session_user.working_for.pending_outbox
       haml :pending_items

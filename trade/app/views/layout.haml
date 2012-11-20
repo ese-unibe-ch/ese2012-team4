@@ -19,8 +19,10 @@
         #statusbar
           #status
             -if not session[:id].nil?
+              .statustext
+                Operating as:
               %form.nomargin{:action => "/switch_account_context", :method => "POST"}
-                %select{:onchange => "this.form.submit();", :name => "context"}
+                %select.contextpicker{:onchange => "this.form.submit();", :name => "context"}
                   %option
                     :escaped
                       #{@session_user.name}
@@ -33,8 +35,8 @@
                       %option
                         :escaped
                           #{organization.name}
-              #statustext
-                | Credits: #{@session_user.credits}
+              .statustext
+                | Credits: #{@session_user.working_for.credits}
                 |
               %a.status(href="/logout")Logout
             -else
