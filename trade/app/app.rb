@@ -8,12 +8,13 @@ require 'haml'
 require 'rufus-scheduler'
 require_relative('controllers/not_authenticated')
 require_relative('controllers/item_control')
-require_relative('controllers/user_control')
+require_relative('controllers/trader_control')
 require_relative('controllers/comment_control')
 require_relative('controllers/auction_control')
 
 require_relative('../../trade/app/models/module/item')
 require_relative('../../trade/app/models/module/user')
+require_relative('../../trade/app/models/module/organization')
 
 include Models
 include Controllers
@@ -23,7 +24,7 @@ class App < Sinatra::Base
   use Not_authenticated
   use ItemControl
   use CommentControl
-  use UserControl
+  use TraderControl
   use AuctionControl
 
   enable :sessions
@@ -150,6 +151,9 @@ class App < Sinatra::Base
     Auction.create(ese, gtg, 5, 20, TimeHandler.parseTime("2012-11-29", ""))
     gtg.image = FileUtils::pwd+"/public/images/item_pix/git.jpg"
 
+    org = Organization.created( "Coding Inc.", ese)
+    org.save
+
 
     for i in 0..10
       ese.add_rating(4)
@@ -219,9 +223,12 @@ class App < Sinatra::Base
       userG.add_rating(rand(4))
     end
 
+    orgA = Organization.created("OrgA", userG)
+    orgA.save
+
     scheduler = Rufus::Scheduler.start_new
 
-    scheduler.every '1m' do
+    scheduler.every '500' do
       for auction in Auction.all_auctions
         if auction.over?
           auction.end_auction

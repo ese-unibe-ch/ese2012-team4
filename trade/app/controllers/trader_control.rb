@@ -14,7 +14,7 @@ require_relative('helper')
 include Models
 
 module Controllers
-  class UserControl < Sinatra::Base
+  class TraderControl < Sinatra::Base
     set :views, relative('../../app/views')
     set :public_folder, relative('../public')
     helpers Sinatra::ContentFor
@@ -129,10 +129,19 @@ module Controllers
       flash[:notice] = "Password has been updated"
       redirect "/"
     end
+
+    post "/switch_account_context" do
+      redirect '/index' unless session[:id]
+      viewer = User.get_user(session[:id])
+      context = Trader.by_name(params[:context])
+      viewer.working_for = context
+      redirect "#{back}"
+    end
     
     get '/profile/pending' do
-      @inbox = @session_user.pending_inbox
-      @outbox = @session_user.pending_outbox
+      redirect '/index' unless session[:id]
+      @inbox = @session_user.working_for.pending_inbox
+      @outbox = @session_user.working_for.pending_outbox
       haml :pending_items
     end
 
@@ -160,14 +169,14 @@ module Controllers
     post "/remove_from_wishlist/:itemid" do
       redirect '/index' unless session[:id]
       @item = Item.get_item(params[:itemid])
-      @session_user.remove_from_wishlist(@item)
+      @session_user.working_for.remove_from_wishlist(@item)
       redirect "#{back}"
     end
 
     post "/add_to_wishlist/:itemid" do
       redirect '/index' unless session[:id]
       @item = Item.get_item(params[:itemid])
-      @session_user.add_to_wishlist(@item)
+      @session_user.working_for.add_to_wishlist(@item)
       redirect "#{back}"
     end
 
@@ -179,9 +188,30 @@ module Controllers
         flash[:error] = "Item has been deactivated"
         redirect "/items"
       end
-      @session_user.add_to_wishlist(@item)
+      @session_user.working_for.add_to_wishlist(@item)
       flash[:notice] = "Item has been added to your wishlist"
       redirect "/wishlist"
+    end
+
+    get '/create_organization' do
+      redirect '/index' unless session[:id]
+      haml :create_organization, :locals => {:action => "create_organization", :button => "create"}
+    end
+
+    post "/create_organization" do
+      redirect '/index' unless session[:id]
+      name = params[:name]
+      description = params[:description]
+      img_filename = save_image(params[:image_file])
+      @session_user.create_organization(name, description, img_filename)
+      flash[:notice] = "Organization #{params[:name]} has been created"
+      redirect "/home"
+    end
+
+    get '/organizations' do
+      redirect '/index' unless session[:id]
+      @all_organizations = Organization.get_all("").select {|s| s.organization==true}
+      haml :organizations
     end
 
   end

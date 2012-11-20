@@ -9,6 +9,13 @@
         #{@session_user.name}
 .lineContainer
   .textbox.name
+    %p Working for:
+  .textbox.value
+    %p
+      :escaped
+        #{@session_user.working_for.name}
+.lineContainer
+  .textbox.name
     %p Your Credits:
   .textbox.value
     %p #{@session_user.credits}
@@ -22,4 +29,15 @@
     %p Inactive items
   .textbox.value
     %p #{@session_user.list_items_inactive.size}
+%hr.separator
+%h2
+  Getting started
+%a(href = "/items/1")
+  %img.gridicon(src="/images/getting_started/store.png")
+%a(href = "/home/new")
+  %img.gridicon(src="/images/getting_started/additem.png")
+%a(href = "/users/#{@session_user.id}/1")
+  %img.gridicon(src="/images/getting_started/profile.png")
+%a(href = "/home/items/1/1")
+  %img.gridicon(src="/images/getting_started/youritems.png")
 

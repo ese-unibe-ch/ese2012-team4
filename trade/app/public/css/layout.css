@@ -74,12 +74,25 @@ body{
     border-left : 3px solid #8FC9FF;
 }
 
+.statustext
+{
+    display:inline;
+}
+
+.contextpicker{
+    background-color: #8FC9FF;
+    border: none;
+    height:18px;
+
+}
 #status{
+    display:inline;
     color:black;
     float:right;
     background-color: #8FC9FF;
     margin-right:10px;
     padding: 3px 6px;
+    height:16px;
 }
 
 #statusbar{
@@ -171,6 +184,9 @@ td.header{
 
 .nomargin{
     margin:0;
+    display:inline;
+
+
 }
 
 .textbox{
@@ -297,5 +313,10 @@ img.smallpicturebox{
     float: right;
     padding-top: 10px;
     padding-left: 5px;
+}
+.gridicon{
+    width:   163px;
+    height:  74px;
+    border: 3px solid #8FC9FF;
 }
 

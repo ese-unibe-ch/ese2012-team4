@@ -1,11 +1,15 @@
 module Models
   class Auction
+    require 'require_relative'
+    require_relative('item')
     attr_accessor :item, :owner, :increment, :min_price, :end_time, :bids, :current_winner, :current_selling_price
+    # [String]: Stores all error messages
+    attr_accessor :errors
 
     @@auctions = Array.new
 
     def self.create(owner, item, increment, min_price, end_time)
-      Auction.new(owner, item, increment, min_price, end_time)
+      Auction.new(owner, item, increment.to_i, min_price.to_i, end_time)
     end
 
     def self.auctions_by_user(user)
@@ -25,8 +29,24 @@ module Models
       self.current_selling_price = 0
       @editable = true
       @bids = Hash.new(0)
+    end
+
+    # Saves the auction to the Auction-List
+    def save
+      raise "Duplicated item" if Auction.auction_by_item(item)
       @@auctions << self
       puts "added an auction"
+    end
+
+    # Controls the auctions's data and adds errors if necessary.
+    # - @return: true if there is no invalid data or false if there is.
+    def is_valid?
+      self.errors = ""
+      self.errors += "Select a valid End-Date for your auction.\n" unless Time.now < self.end_time
+      self.errors += "Select a valid increment.\n" unless Item.valid_integer?(self.increment)
+      self.errors += "Select a valid minimal price.\n" unless Item.valid_integer?(self.min_price)
+      #self.errors += "An auction for this item already exists. \n" unless Auction.auction_by_item(item)
+      self.errors != "" ? false : true
     end
 
     def place_bid(bidder, bid)
@@ -110,13 +130,20 @@ module Models
     end
 
     def end_auction
-      unless @current_winner == nil
-        @item.owner = @current_winner
-        @owner.credits += @current_selling_price
-        @current_winner.credits += @bids[@current_winner] - @current_selling_price
-        Mailer.bid_over(@current_winner, self)
+
+      if @current_winner == nil
+        @@auctions.delete(self)
+        # RB: Adding the item back to the list first, makes it possible to buy it with normal process.
+        self.owner.item_list.push(self.item)    # TODO: Not just pushing the item to the list, but merge it with eventually existing items. (like with buying items)
+      else
+        self.item.price = @current_selling_price
+        @current_winner.credits += @bids[@current_winner]
+        self.owner.item_list.push(self.item)
+        @current_winner.buy_new_item(item,1)
+
+        Mailer.bid_over(@current_winner.e_mail, self)
       end
-      @@auctions.delete(self)
+
     end
   end
 end

@@ -1,6 +1,6 @@
 %h2 Your wishlist
--unless @session_user.wishlist.empty?
-  -stored = @session_user.wishlist
+-unless @session_user.working_for.wishlist.empty?
+  -stored = @session_user.working_for.wishlist
   %table.itemtable
     %thead
       %tr

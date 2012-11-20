@@ -1,0 +1,16 @@
+%h2 New Organization
+%br
+%form.nomargin(action="/#{action}" method="POST" enctype="multipart/form-data")
+  %label.textbox.name
+    %p Name of Organization:
+  %input.textbox.value(type="text" name="name")
+  %hr.separator.invisible
+  %label.textbox.name
+    %p Description (optional):
+  %textarea.textbox.value(type="text" name = "description")
+  %hr.separator.invisible
+  %label.textbox.name
+    %p Display image
+  %input.textbox.value(type='file' name='image_file' accept="image/*")
+  %hr.separator
+  %input.rightalign.square(type="submit" value="#{button}")

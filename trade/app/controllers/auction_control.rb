@@ -39,31 +39,21 @@ module Controllers
       redirect '/index' unless session[:id]
       id = params[:id]
       owner = Item.get_item(id).owner
-      item = Item.get_item(id)
-      #TODO deny item with more than one element...
-      if(TimeHandler.validTime?(params[:exp_date], params[:exp_time]))
-        if ((params[:exp_date].eql?("") and params[:exp_time].eql?("")))
-          flash[:error] = "You must enter an end date"
-        else
-          if params[:increment].to_i > 0
-            if params[:min_price].to_i > 0
-              if Auction.auction_by_item(item)
-                flash[:error] = "Auction with this item already exists."
-              else
-                end_date = TimeHandler.parseTime(params[:exp_date], params[:exp_time])
-                Auction.create(owner, item, params[:increment].to_i, params[:min_price].to_i, end_date)
-                flash[:notice] = "Auction for item #{item.name} has been created!"
-              end
-            else
-              flash[:error] = "Please specify a valid minimal price (greater than 0)"
-            end
-          else
-            flash[:error] = "Please specify a valid increment (greater than 0)"
-          end
-
-        end
+      item_old = Item.get_item(id)
+      if item_old.quantity != 1
+        item_old.quantity -= 1
+        item_new = item_old.copy(:quantity => 1)
+        item_new.save
       else
-        flash[:error] = "You did not put in a valid Time"
+        item_new = item_old
+      end
+      end_date = TimeHandler.parseTime(params[:exp_date], params[:exp_time])
+      new_auction = Auction.create(owner, item_new, params[:increment], params[:min_price], end_date)
+      if new_auction.is_valid?
+        new_auction.save
+      else
+        flash[:error] = new_auction.errors
+        item_old.quantity += 1
       end
       redirect "/home/items"
     end
@@ -72,10 +62,10 @@ module Controllers
       @item = Item.get_item(params[:item_id])
       @auction = Auction.auction_by_item(@item)
 
-      if (@session_user == @auction.owner)
+      if (@session_user.working_for == @auction.owner)
         flash[:error] = "Can't bid on yur own item!'"
       else
-        success = @auction.place_bid(@session_user, params[:bid].to_i)
+        success = @auction.place_bid(@session_user.working_for, params[:bid].to_i)
         if success == :not_enough_credits
           flash[:error] = "you don't have enough credits!'"
         end
@@ -105,31 +95,22 @@ module Controllers
       @item = Item.get_item(params[:item_id])
       @auction = Auction.auction_by_item(@item)
       unless @auction.nil?
-        if @auction.editable?
-          if(TimeHandler.validTime?(params[:exp_date], params[:exp_time]))
-            if ((params[:exp_date].eql?("") and params[:exp_time].eql?("")))
-              flash[:error] = "You must enter an end date"
-            else
-              if params[:increment].to_i > 0
-                if params[:min_price].to_i > 0
-                  end_date = TimeHandler.parseTime(params[:exp_date], params[:exp_time])
-                  @auction.min_price = params[:min_price].to_i
-                  @auction.end_time = end_date
-                  @auction.increment = params[:increment].to_i
-                  flash[:notice] = "Auction for item #{@item.name} has been edited!"
-                else
-                  flash[:error] = "Please specify a valid minimal price (greater than 0)"
-                end
-              else
-                flash[:error] = "Please specify a valid increment (greater than 0)"
-              end
+        if @auction.owner == @session_user.working_for
+          if @auction.editable?
 
+            end_date = TimeHandler.parseTime(params[:exp_date], params[:exp_time])
+            test_auction = Auction.create(@auction.owner, @item, params[:increment], params[:min_price], end_date)
+            if test_auction.is_valid?
+              @auction.min_price = params[:min_price].to_i
+              @auction.end_time = end_date
+              @auction.increment = params[:increment].to_i
+              flash[:notice] = "Auction for item #{@item.name} has been edited!"
+            else
+              flash[:error] = test_auction.errors
             end
           else
-            flash[:error] = "You did not put in a valid Time"
+            flash[:error] = "Item cannot be edited."
           end
-        else
-          flash[:error] = "Item cannot be edited."
         end
       else
         flash[:error] = "Auction does not exist."
