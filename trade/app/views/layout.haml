@@ -47,7 +47,7 @@
             %h2.menu_header Menu
             %a.menu(href='/home')
               %img(src="/images/legend/Home.png" class = "iamlegend")
-            %a.menu(href="/users/#{session[:id]}")
+            %a.menu(href="/users/#{@session_user.working_for.id}")
               %img(src="/images/legend/My Profile.png" class = "iamlegend")
             %a.menu(href="/home/items")
               %img(src="/images/legend/My_Items.png" class = "iamlegend")
