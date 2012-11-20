@@ -24,16 +24,18 @@ module Models
 
     def add_admin(new_admin)
       self.admin_list.push(new_admin)
+      new_admin.admin_of_org_list.push(self)
     end
 
     def add_member(new_member)
-       self.member_list.push(new_member)
+      self.member_list.push(new_member)
+      new_member.organization_list.push(self)
     end
 
     #maybe need to move the check for error-handling
     def delete_admin(admin)
-      if can_delete_admin
-        self.admin.list.delete(admin)
+      if can_delete_admin?
+        self.admin_list.delete(admin)
         admin.admin_of_org_list.delete(self)
       end
     end
@@ -43,7 +45,7 @@ module Models
     end
 
     def delete_member(member)
-      self.admin_list.delete(member)
+      self.member_list.delete(member)
       member.organization_list.delete(self)
     end
 
