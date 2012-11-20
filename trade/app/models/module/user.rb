@@ -97,7 +97,7 @@ module Models
 
     # Adds an organization to the user's organization list
     def join_organization(organization)
-      self.organization_list.push(organization)
+      self.organization_list.push(organization) unless self.organization_list.include?(organization)
     end
 
 
@@ -123,7 +123,7 @@ module Models
     def create_organization(name, description = "", image = "")
       new_organization = Organization.created(name, self, description, image)
       new_organization.save
-      self.organization_list.push(new_organization)
+      #self.organization_list.push(new_organization)
     end
 
   end

@@ -27,13 +27,17 @@ module Models
 
 
     def add_admin(new_admin)
-      self.admin_list.push(new_admin)
-      new_admin.admin_of_org_list.push(self)
+      unless self.admin_list.include?(new_admin)
+        self.admin_list.push(new_admin)
+        new_admin.admin_of_org_list.push(self)
+      end
     end
 
     def add_member(new_member)
-      self.member_list.push(new_member)
-      new_member.organization_list.push(self)
+      unless self.member_list.include?(new_member)
+        self.member_list.push(new_member)
+        new_member.organization_list.push(self)
+      end
     end
 
     #maybe need to move the check for error-handling
