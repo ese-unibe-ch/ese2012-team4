@@ -78,7 +78,7 @@ module Models
       if @current_selling_price == 0
         return bid >= self.min_price
       else
-        return @bids[bidder] < bid && bid >= @current_selling_price
+        return @bids[bidder] < bid && bid >= @current_selling_price + self.increment #RB: changed from without increment
       end
     end
 
@@ -120,8 +120,13 @@ module Models
           else
             @current_selling_price = self.min_price
           end
-
+        else
+          #if the bid is below the maximal bid
+          if bid < @bids[current_winner]
+            current_selling_price = bid+ self.increment
+          end
         end
+
       end
     end
 

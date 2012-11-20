@@ -70,7 +70,7 @@
         #{@item.owner.name}
 
 %hr.separator.invisible
--if @item.owner.name == @session_user.name
+-if @item.owner.name == @session_user.working_for.name
   -if @auction.editable?
     %p
       %form.nomargin(action="/auction/#{@item.id}/edit" method="GET")
