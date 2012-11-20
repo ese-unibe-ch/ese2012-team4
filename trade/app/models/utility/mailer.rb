@@ -46,7 +46,7 @@ To: #{to}
 subject: Higher bid
 Date: #{Time.now.rfc2822}
 
-Your bid on auction #{auction} has been outbid.
+Your bid on auction for #{auction.item.name} has been outbid.
 
 Regards,
 The Trading System
@@ -71,7 +71,7 @@ To: #{to}
 subject: Auction won
 Date: #{Time.now.rfc2822}
 
-Congratulation, you won the auction #{auction}!
+Congratulation, you won the auction for #{auction.item.name}!
 
 
 Regards,

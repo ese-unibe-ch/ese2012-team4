@@ -111,7 +111,7 @@ module Models
           @current_winner = new_bidder
           unless old_winner.nil?
             old_winner.credits += @bids[old_winner] #SH Gives the money of the previous winner back
-            Mailer.new_winner(old_winner, self)
+            Mailer.new_winner(old_winner.e_mail, self)
           end
           @bids[new_bidder] = bid
           @current_winner.credits -= @bids[@current_winner] #SH Deduct the money from the current winner
@@ -130,9 +130,9 @@ module Models
     end
 
     def end_auction
-
+      # RB: needs to be done first, even if something fails, because the scheduler has to stop finding it
+      @@auctions.delete(self)
       if @current_winner == nil
-        @@auctions.delete(self)
         # RB: Adding the item back to the list first, makes it possible to buy it with normal process.
         self.owner.item_list.push(self.item)    # TODO: Not just pushing the item to the list, but merge it with eventually existing items. (like with buying items)
       else
@@ -140,7 +140,6 @@ module Models
         @current_winner.credits += @bids[@current_winner]
         self.owner.item_list.push(self.item)
         @current_winner.buy_new_item(item,1)
-
         Mailer.bid_over(@current_winner.e_mail, self)
       end
 
