@@ -41,7 +41,7 @@ module Controllers
     get '/search/result/:page' do
       redirect '/index' unless session[:id]
       redirect '/search' if @@item_map[session[:id]].nil?
-      items_per_page = 10
+      items_per_page = 1000    #TODO fix pagination for search
       page = params[:page].to_i
 
       order_by = params["order_by"] || 'name'
@@ -123,7 +123,6 @@ module Controllers
 
     get '/items/:page' do
       redirect '/index' unless session[:id]
-
       order_by = params["order_by"] || 'name'
       order_direction = params["order_direction"] || 'asc'
       items_per_page = 10

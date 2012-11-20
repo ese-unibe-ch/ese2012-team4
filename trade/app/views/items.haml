@@ -1,4 +1,6 @@
 %h2 All Items
+-add = request.fullpath.split("?").last
+
 %form(action="/search/query" method="POST")
   %label.name
     %p Search the store
@@ -10,15 +12,15 @@
   #{title}
 -unless @items.empty?
   -unless page ==1
-    %a(href = "/items/#{page-1}") previous
+    %a(href = "#{""+(page-1).to_s+"?"+add}") previous
   -unless page_count==1
     -for i in 1..page_count
       -if page!=i
-        %a(href = "/items/#{i}") #{i}
+        %a(href = "/items/#{""+i.to_s+"?"+add}") #{i}
       -else
         #{i}
   -unless page == page_count
-    %a(href = "/items/#{page+1}") next
+    %a(href = "/items/#{""+(page+1).to_s+"?"+add}") next
   -stored = @items
   %table.itemtable
     %thead
