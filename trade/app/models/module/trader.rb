@@ -1,6 +1,7 @@
 require 'require_relative'
 require_relative('../utility/mailer')
 require_relative('item')
+require_relative('auction')
 require_relative('../utility/holding')
 
 
@@ -22,6 +23,8 @@ module Models
     attr_accessor :credits
     # [Array]: All the items the trader possesses
     attr_accessor :item_list
+    # [Array]: All the auctions the user possesses
+    attr_accessor :auctions_list
     # [String]: List interests or other things about this owner
     attr_accessor :description
     # [Integer]
@@ -49,6 +52,7 @@ module Models
       self.wishlist = Array.new
       self.credits = 100
       self.item_list = Array.new
+      self.auctions_list = Array.new
       self.ratings = []
     end
 
@@ -200,6 +204,11 @@ module Models
       FileUtils::rm(self.image, :force => true)
       @@traders.delete(self.id)
       @@traders_by_name.delete(self.name.downcase)
+      Item.get_item_list.delete_if {|k,v| v.owner == self }
+      Auction.auctions_by_user(self).each{|auction|
+        Auction.all_auctions.delete(auction)
+        self.auctions_list.delete(auction)
+      }
     end
 
     def add_to_wishlist(item)
@@ -256,6 +265,15 @@ module Models
     def set_to_auction(item)
       self.item_list.delete(item) #AS Not sure if it works that simple, because they have concepts like quantity. But let's face the problems as they appear.
       self.auctions_list.push(item)
+    end
+
+    def <=>(o)
+      # Compare user name
+      user_name_cmp = self.name <=> o.name
+      return user_name_cmp unless user_name_cmp == 0
+
+      # Otherwise, compare IDs
+      return self.id <=> o.id
     end
   end
 end

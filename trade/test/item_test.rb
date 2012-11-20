@@ -270,8 +270,11 @@ class ItemTest < Test::Unit::TestCase
     assert items[1] == item1
 
     auct1 = Auction.create(@owner, item1, 5, 20, Time.now + 3600)
+    auct1.save
     auct2 = Auction.create(@owner, item2, 5, 30, Time.now + 3600)
+    auct2.save
     auctions = Auction.all_auctions({:order_by => 'name', :order_direction => 'asc'})
+
     assert auctions[0] == auct1
     assert auctions[1] == auct2
     auctions = Auction.all_auctions({:order_by => 'name', :order_direction => 'desc'})
@@ -294,7 +297,9 @@ class ItemTest < Test::Unit::TestCase
     assert items[1] == item1
 
     auct1 = Auction.create(@owner, item1, 5, 20, Time.now + 3600)
+    auct1.save
     auct2 = Auction.create(user, item2, 5, 30, Time.now + 3600)
+    auct2.save
     auctions = Auction.all_auctions({:order_by => 'owner', :order_direction => 'asc'})
     assert auctions[0] == auct1
     assert auctions[1] == auct2
@@ -322,7 +327,9 @@ class ItemTest < Test::Unit::TestCase
     item2 = @owner.create_item("b_test_object2", 30, 1)
     item2.activate
     auct1 = Auction.create(@owner, item1, 5, 20, Time.now + 3600)
+    auct1.save
     auct2 = Auction.create(@owner, item2, 5, 30, Time.now + 3600)
+    auct2.save
 
     user = Models::User.created( "zest_user2", "password", "test@mail.com" )
     auct1.place_bid(user, 40)
