@@ -43,7 +43,15 @@ module Controllers
       redirect '/search' if @@item_map[session[:id]].nil?
       items_per_page = 10
       page = params[:page].to_i
-      items = @@item_map[session[:id]]
+
+      order_by = params["order_by"] || 'name'
+      order_direction = params["order_direction"] || 'asc'
+
+      if order_direction == 'asc'
+        items = @@item_map[session[:id]].sort{ |a,b| a.send(order_by) <=> b.send(order_by) }
+      else
+        items = @@item_map[session[:id]].sort{ |a,b| b.send(order_by) <=> a.send(order_by) }
+      end
       (items.size%items_per_page)==0? page_count = (items.size/items_per_page).to_i : page_count = (items.size/items_per_page).to_i+1
       if page_count ==0
         page_count=1
@@ -116,9 +124,11 @@ module Controllers
     get '/items/:page' do
       redirect '/index' unless session[:id]
 
+      order_by = params["order_by"] || 'name'
+      order_direction = params["order_direction"] || 'asc'
       items_per_page = 10
       page = params[:page].to_i
-      items = Item.get_all(@session_user.working_for.name)
+      items = Item.get_all(@session_user.working_for.name, {:order_by => order_by, :order_direction => order_direction})
       (items.size%items_per_page)==0? page_count = (items.size/items_per_page).to_i : page_count = (items.size/items_per_page).to_i+1
       redirect 'items/1' unless 0<params[:page].to_i and params[:page].to_i<page_count+1
       @items = []

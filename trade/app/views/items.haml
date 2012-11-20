@@ -24,15 +24,29 @@
     %thead
       %tr
         %td
-          %p.table_header Name
+          %p.table_header
+            Name
+            %a(href = "javascript:setSorting('name', 'asc');") &uarr;
+            %a(href = "javascript:setSorting('name', 'desc');") &darr;
         %td
           %p.table_header Picture
         %td
-          %p.table_header Price
+          %p.table_header
+            Price
+            %a(href = "javascript:setSorting('price', 'asc');") &uarr;
+            %a(href = "javascript:setSorting('price', 'desc');") &darr;
         %td
           %p.table_header Qty
         %td
-          %p.table_header Seller
+          %p.table_header
+            Seller
+            %a(href = "javascript:setSorting('owner', 'asc');") &uarr;
+            %a(href = "javascript:setSorting('owner', 'desc');") &darr;
+        %td
+          %p.table_header
+            Seller rating
+            %a(href = "javascript:setSorting('seller_rating', 'asc');") &uarr;
+            %a(href = "javascript:setSorting('seller_rating', 'desc');") &darr;
         %td
           %p.table_header Buy
         %td
@@ -54,6 +68,8 @@
           %a(href="/users/#{item.owner.id}" )
             :escaped
               #{item.owner.name}
+        %td
+          %p #{item.owner.rating}
         %td.buyform
           -unless item.owner.id == session[:id]
             %form.nomargin(action="/buy/#{item.id}/#{(stored.select {|tobuy| tobuy.id==item.id})[0].timestamp}" method="POST")
