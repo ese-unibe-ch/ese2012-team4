@@ -254,14 +254,17 @@ module Models
 
     # - @return [Integer]: the average rating of the user
     def rating
-      counter = 0
-      value = 0
-      self.ratings.each do |v|
-        value = value + v
-        counter = counter + 1
+      if self.ratings.size != 0
+        counter = 0
+        value = 0
+        self.ratings.each do |v|
+          value = value + v
+          counter = counter + 1
+        end
+        return value/counter
+      else
+        return 0
       end
-      return value/counter unless counter == 0
-      return 0
     end
 
     # AS intermezzo sets an item as auction

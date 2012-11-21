@@ -123,7 +123,7 @@ module Models
         else
           #if the bid is below the maximal bid
           if bid < @bids[current_winner]
-            current_selling_price = bid+ self.increment
+            current_selling_price = bid
           end
         end
 
