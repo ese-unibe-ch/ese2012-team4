@@ -133,14 +133,18 @@ module Controllers
       redirect "/"
     end
 
-    get '/profile' do
-      redirect '/index' unless session[:id]
+    get '/profile/:id' do
+      @user =  User.get_user(params[:id])
+      redirect '/index' unless (session[:id] or @user.id==session[:id])
+      if User.get_user(params[:id]).organization
+        redirect '/index' unless @user.admin_list.include?(User.get_user(session[:id]))
+      end
       haml :profile
     end
 
-    post "/change_profile" do
+    post "/change_profile/:id" do
       redirect '/index' unless session[:id]
-      viewer = User.get_user(session[:id])
+      viewer = User.get_user(params[:id])
       filename = save_image(params[:image_file])
       test_user = User.created(viewer.name, "FdZ.(gJa)s'dFjKdaDGS+J1", params[:e_mail].strip, params[:description].split("\n"), filename)
       unless test_user.is_valid(nil, nil, false)
@@ -154,7 +158,7 @@ module Controllers
         end
         viewer.e_mail = params[:e_mail].strip
         flash[:notice] = "Profile has been updated"
-        redirect "/profile"
+        redirect "/profile/#{params[:id]}"
       end
     end
     

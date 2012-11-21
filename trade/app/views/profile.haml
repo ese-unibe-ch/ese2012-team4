@@ -4,42 +4,42 @@
 .textbox.value
   %p 
     :escaped
-      #{@session_user.name}
+      #{@user.name}
 %hr.separator.invisible
 .textbox.name
   %p Credits:
 .textbox.value
-  %p #{@session_user.credits}
+  %p #{@user.credits}
 %hr.separator.invisible
 .textbox.name
   %p E-Mail:
 .textbox.value
   %p
     :escaped
-       #{@session_user.e_mail}
+       #{@user.e_mail}
 %hr.separator.invisible
 .textbox.name
   %p Interests:
 .textbox.value
   %p
-    -if !@session_user.description.empty?
-      -@session_user.description.each do |line|
+    -if !@user.description.empty?
+      -@user.description.each do |line|
         :escaped
           #{line}
         %br
 %br
 %hr.separator
 %br
-%form.nomargin(action="/change_profile" method="POST" enctype="multipart/form-data")
+%form.nomargin(action="/change_profile/#{@user.id}" method="POST" enctype="multipart/form-data")
   %label.textbox.name
     %p Edit my E-Mail address:
-  %input.textbox.value(type="text" name="e_mail" value="#{@session_user.e_mail}")
+  %input.textbox.value(type="text" name="e_mail" value="#{@user.e_mail}")
   %hr.separator.invisible
   %label.textbox.name
     %p Edit my list of interests:
   %textarea.textbox.value(type="text" name = "description")
-    -if !@session_user.description.empty?
-      -@session_user.description.each do |line|
+    -if !@user.description.empty?
+      -@user.description.each do |line|
         :escaped
           #{line}
   %hr.separator.invisible
@@ -50,27 +50,29 @@
   %input.rightalign.square(type="submit" value="save")
 %hr.separator
 %br
-.textbox.name
-  %p Change my password
-  %br
-  %p Please choose a safe password; a safe password includes letters and numbers and is more than 4 digits long.
-.textbox.value
-  %form.nomargin(action="/change_password" method="POST")
-    %label.leftalign.topmargin Enter old password:
-    %input.rightalign(type="password" name="password_old" value="")
-    %hr.separator
-    %label.leftalign.topmargin Enter new password:
-    %input.rightalign(type="password" name="password_new" value="")
-    %hr.separator.invisible
-    %label.leftalign.topmargin Repeat new password:
-    %input.rightalign(type="password" name="password_check" value="")
-    %hr.separator
-    %input.square.rightalign(type="submit" value="Change password")
-%hr.separator
-.textbox.name
-  %p
-    :escaped
-      Delete my Account "#{@session_user.name}"
-.textbox.value
-  %form.nomargin(action="/delete_link" method="GET")
-    %input.square.rightalign(type="submit" value="Delete account")
+-unless @user.organization
+  .textbox.name
+    %p Change my password
+    %br
+    %p Please choose a safe password; a safe password includes letters and numbers and is more than 4 digits long.
+  .textbox.value
+    %form.nomargin(action="/change_password" method="POST")
+      %label.leftalign.topmargin Enter old password:
+      %input.rightalign(type="password" name="password_old" value="")
+      %hr.separator
+      %label.leftalign.topmargin Enter new password:
+      %input.rightalign(type="password" name="password_new" value="")
+      %hr.separator.invisible
+      %label.leftalign.topmargin Repeat new password:
+      %input.rightalign(type="password" name="password_check" value="")
+      %hr.separator
+      %input.square.rightalign(type="submit" value="Change password")
+  %hr.separator
+
+  .textbox.name
+    %p
+      :escaped
+        Delete my Account "#{@user.name}"
+  .textbox.value
+    %form.nomargin(action="/delete_link" method="GET")
+      %input.square.rightalign(type="submit" value="Delete account")

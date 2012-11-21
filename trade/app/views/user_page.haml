@@ -176,7 +176,7 @@
   .textbox.value
     %p No Auctions
 
--unless @user.name != @session_user.name
+-if @user.name == @session_user.name or (@user.organization and @user.admin_list.include?(@session_user))
   %hr.separator.invisible
-    %form.nomargin(action="/profile" method="GET")
+    %form.nomargin(action="/profile/#{@user.id}" method="GET")
       %input.square.rightalign(type="submit" value="Edit my profile")
