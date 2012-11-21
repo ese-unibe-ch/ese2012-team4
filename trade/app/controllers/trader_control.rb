@@ -182,7 +182,7 @@ module Controllers
       redirect "#{back}"
     end
     
-    get '/profile/pending' do
+    get '/pending' do
       redirect '/index' unless session[:id]
       @inbox = @session_user.working_for.pending_inbox
       @outbox = @session_user.working_for.pending_outbox

@@ -253,7 +253,7 @@ module Controllers
         redirect "#{back}"
       end
       flash[:notice] = "You have bought #{quantity} piece/s of #{item.name}"
-      redirect "/profile/pending"
+      redirect "/pending"
     end
 
     post '/items/:id/delivered' do
