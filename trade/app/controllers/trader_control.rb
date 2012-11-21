@@ -145,6 +145,11 @@ module Controllers
     post "/change_profile/:id" do
       redirect '/index' unless session[:id]
       viewer = User.get_user(params[:id])
+      if viewer.organization
+        redirect '/index' unless viewer.admin_list.include?(User.get_user(session[:id]))
+      else
+        redirect '/index' unless viewer==User.get_user(session[:id])
+      end
       filename = save_image(params[:image_file])
       test_user = User.created(viewer.name, "FdZ.(gJa)s'dFjKdaDGS+J1", params[:e_mail].strip, params[:description].split("\n"), filename)
       unless test_user.is_valid(nil, nil, false)
