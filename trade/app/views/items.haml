@@ -1,5 +1,4 @@
 %h2 All Items
--add = request.fullpath.split("?").last
 
 %form(action="/search/query" method="POST")
   %label.name
@@ -12,15 +11,15 @@
   #{title}
 -unless @items.empty?
   -unless page ==1
-    %a(href = "#{""+(page-1).to_s+"?"+add}") previous
+    %a(href = "#{"javascript:changePage("+(page-1).to_s+")"}") previous
   -unless page_count==1
     -for i in 1..page_count
       -if page!=i
-        %a(href = "/items/#{""+i.to_s+"?"+add}") #{i}
+        %a(href = "#{"javascript:changePage("+i.to_s+")"}") #{i}
       -else
         #{i}
   -unless page == page_count
-    %a(href = "/items/#{""+(page+1).to_s+"?"+add}") next
+    %a(href = "#{"javascript:changePage("+(page+1).to_s+")"}") next
   -stored = @items
   %table.itemtable
     %thead

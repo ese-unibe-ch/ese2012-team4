@@ -37,6 +37,13 @@
         var temp = updateURLParameter(window.location.href, "order_by", order_by);
         window.location.href = updateURLParameter(temp, "order_direction", order_direction);
       }
+
+      function changePage(index){
+        var page = window.location.href;
+        var location = page.split("?")[0];
+        var params = page.split("?")[1];
+        window.location.href = location.replace(/\/[0-9]+/gi, "/"+index)+"?"+params;
+      }
   %body
     #wrapper
       #headcombi
