@@ -18,6 +18,8 @@ class OrganizationTest < Test::Unit::TestCase
   end
 
   def test_init
+    # LD take care! This test is run last. They are run in alphabetical
+    #    order, so don't rely on a specific order.
     @org.save
     assert(@org.admin_list.include?(@admin))
     assert(Trader.get_all("").include?(@org))
@@ -49,7 +51,6 @@ class OrganizationTest < Test::Unit::TestCase
     @org.delete_member(@member)
     assert(!@org.member_list.include?(@member))
     assert(!@member.organization_list.include?(@org))
-
   end
 
 

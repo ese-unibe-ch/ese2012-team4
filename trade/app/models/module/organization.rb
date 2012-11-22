@@ -10,6 +10,7 @@ module Models
     attr_accessor :admin_list
     attr_accessor :member_list
     attr_accessor :e_mail
+    attr_accessor :activities
 
     def self.created( name, admin, description = "", image = "")
       org = self.new(name, description, image)
@@ -20,6 +21,7 @@ module Models
       org.member_list.push(admin)
       org.e_mail = admin.e_mail
       org.organization = true
+      org.activities = []
       org
     end
 

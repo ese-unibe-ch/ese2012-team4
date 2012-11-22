@@ -186,7 +186,7 @@ module Controllers
         redirect "/home/edit_item/#{params[:itemid]}"
       else
         item = Item.get_item(params[:itemid])
-        item.edit(params[:name],Integer(params[:price]),Integer(params[:quantity]),params[:description], filename)
+        @session_user.edit_item(item, params[:name],Integer(params[:price]),Integer(params[:quantity]),params[:description], filename)
         flash[:notice] = "#{params[:name]} has been changed"
         redirect "/home/items"
       end

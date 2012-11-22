@@ -153,6 +153,14 @@ module Models
       item.active=true
     end
 
+    def edit_item(item, name, price, quantity, description = "", image = "")
+      item.edit(name, price, quantity,  description, image)
+    end
+
+    def comment_item(item, text)
+      item.comment(self, text)
+    end
+
     # Deactivates an item, removes it from everybody's wishlist and sets expiration_date to nil
     # - @param [Integer] id: The Item's id
     def deactivate_item(id)
