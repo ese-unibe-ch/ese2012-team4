@@ -24,7 +24,7 @@ class Activity
 
   def to_s
     text = case self.topic
-        when "add_item" then "#{self.author.name} added '#{self.subject.name}' for a price of #{self.subject.price} credits"
+             when "add_item" then "#{self.author.name} added '#{self.subject.name}' for a price of #{self.subject.price} credits"
              when "edit_item" then "#{self.author.name} edited '#{self.subject.name}'"
              when "activate_item" then "#{self.author.name} activated '#{self.subject.name}'"
              when "deactivate_item" then "#{self.author.name} deactivated '#{self.subject.name}'"
@@ -35,5 +35,24 @@ class Activity
              when "item_bought_failure" then "#{self.author.name} was unable to buy '#{self.subject.name}' for #{self.subject.price} credits"
 
     end
+  end
+
+  def to_html
+    user_link = "<a href='/user/#{self.author.id}'>#{self.author.name}</a>"
+    item_link = "<a href='/item/#{self.subject.id}'>#{self.subject.name}</a>"
+    comment_link = "<a href='/comments/#{self.subject.id}'>#{self.subject.name}</a>"
+    item_price = self.subject.price
+    text = case self.topic
+             when "add_item" then "#{user_link} added '#{item_link}' for a price of #{item_price} credits"
+             when "edit_item" then "#{user_link} edited '#{item_link}'"
+             when "activate_item" then "#{user_link} activated '#{item_link}'"
+             when "deactivate_item" then "#{user_link} deactivated '#{item_link}'"
+             when "comment_item" then "#{user_link} commented on '#{item_link}'"
+             when "item_sold_success" then "'#{item_link}' was bought by #{user_link} for #{item_price} credits"
+             when "item_sold_failure" then "'#{item_link}' could not be bought by #{user_link} for #{item_price} credits"
+             when "item_bought_success" then "#{user_link} has bought '#{item_link}' for #{item_price} credits"
+             when "item_bought_failure" then "#{user_link} was unable to buy '#{item_link}' for #{item_price} credits"
+
+           end
   end
 end

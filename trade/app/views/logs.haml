@@ -1,5 +1,16 @@
 %h2 #{@session_user.working_for.name}'s logs
 
 %br
-  -@session_user.working_for.activities.each do |activity|
-    %p #{activity.to_s}
+  %table
+    %thead
+      %tr
+        %td
+          %p.table_header Time
+        %td
+          %p.table_header Activity
+    - @session_user.working_for.activities.each do |activity|
+      %tr
+        %td
+          %p #{activity.time.strftime("%d.%m.%Y<br />%H:%M")}
+        %td
+          %p #{activity.to_html}
