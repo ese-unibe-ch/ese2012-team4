@@ -235,6 +235,11 @@ class App < Sinatra::Base
           puts "ended auction for #{auction.item.name}"
         end
       end
+      for item in Item.get_all("")
+        if item.expired?
+          item.owner.deactivate_item(item.id)
+        end
+      end
     end
 
   end

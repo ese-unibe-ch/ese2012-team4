@@ -134,9 +134,6 @@ module Models
     # Get the activation state.
     # Use this method instead of .active if you want to update the state if the item is expired.
     def is_active?
-      if(self.expired?)
-        owner.deactivate_item("#{self.id}")
-      end
       self.active
     end
 
@@ -181,6 +178,7 @@ module Models
     end
 
     # - @param [User] viewer: Name of the user whose items should not be listed.
+    # - @param [Hash] options: Options for sorting the list, usage: {:order_by => "name", :order_direction => "asc"}
     # - @return [Array]: Array of all stored Items except those who belong to the given viewer.
     def self.get_all(viewer, options = {})
       o = {
