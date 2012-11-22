@@ -45,7 +45,9 @@ class Holding
       if !(identical = buyer.list_items_inactive.detect{|i| i.name== item.name and i.price == item.price and i.description==item.description}).nil?
         identical.quantity+=quantity
       else
-        buyer.create_item(item.name,item.price, quantity, item.description).active = false
+        #buyer.create_item(item.name,item.price, quantity, item.description).active = false
+        item.active = false
+        buyer.item_list.push(item)
       end
     end
 

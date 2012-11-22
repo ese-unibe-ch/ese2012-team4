@@ -263,5 +263,10 @@ module Controllers
       haml :organizations
     end
 
+    get '/logs' do
+      redirect '/index' unless session[:id]
+      redirect '/index' unless @session_user.working_for.is_a?(Organization)
+      haml :logs
+    end
   end
 end

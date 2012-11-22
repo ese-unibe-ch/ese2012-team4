@@ -1,0 +1,5 @@
+%h2 #{@session_user.working_for.name}'s logs
+
+%br
+  -@session_user.working_for.activities.each do |activity|
+    %p #{activity.to_s}

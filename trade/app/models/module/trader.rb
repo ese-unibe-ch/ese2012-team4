@@ -275,7 +275,7 @@ module Models
         counter = 0
         value = 0
         self.ratings.each do |v|
-          value = value + v
+          value = value + v.to_i
           counter = counter + 1
         end
         return value/counter
