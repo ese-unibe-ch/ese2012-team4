@@ -231,7 +231,7 @@ class App < Sinatra::Base
     scheduler.every '500' do
       for auction in Auction.all_auctions
         if auction.over?
-          auction.end_auction
+          auction.end
           puts "ended auction for #{auction.item.name}"
         end
       end

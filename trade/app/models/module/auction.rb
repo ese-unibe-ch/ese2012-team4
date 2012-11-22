@@ -78,7 +78,7 @@ module Models
       if @current_selling_price == 0
         return bid >= self.min_price
       else
-        return @bids[bidder] < bid && bid >= @current_selling_price + self.increment #RB: changed from without increment
+        return @bids[bidder] < bid && bid >= @current_selling_price+self.increment #RB: changed from without increment
       end
     end
 
@@ -98,6 +98,13 @@ module Models
       @editable
     end
 
+
+
+    # different Cases, how we update the price and winner:
+    # 1. The bid is from the winner --> reserves credits and adds your bid, no changes on the price
+    # 2. bid > old highest, curent price+ increment and  --> the winner changes, price is
+    # 3.
+    # 3.
     def update_current_winner(new_bidder, bid)
 
       # if you are overbidding yourself...
@@ -116,14 +123,21 @@ module Models
           @bids[new_bidder] = bid
           @current_winner.credits -= @bids[@current_winner] #SH Deduct the money from the current winner
           if (@current_selling_price > 0)
-            @current_selling_price = @bids[old_winner] + self.increment
+            if @bids[old_winner]+increment <= bid
+              @current_selling_price = @bids[old_winner] + self.increment
+            else
+              @current_selling_price = @bids[current_winner]
+            end
           else
             @current_selling_price = self.min_price
           end
         else
-          #if the bid is below the maximal bid
+          #if the bid is below the maximal bid + increment
           if bid < @bids[current_winner]
-            current_selling_price = bid
+
+            @current_selling_price = bid
+          else
+
           end
         end
 
@@ -134,20 +148,23 @@ module Models
       Time.now > self.end_time
     end
 
-    def end_auction
-      # RB: needs to be done first, even if something fails, because the scheduler has to stop finding it
+    def deactivate
+      # TODO: Not just pushing the item to the list, but merge it with eventually existing items. (like with buying items)
+      self.owner.item_list.push(self.item)
       @@auctions.delete(self)
-      if @current_winner == nil
-        # RB: Adding the item back to the list first, makes it possible to buy it with normal process.
-        self.owner.item_list.push(self.item)    # TODO: Not just pushing the item to the list, but merge it with eventually existing items. (like with buying items)
-      else
-        self.item.price = @current_selling_price
-        @current_winner.credits += @bids[@current_winner]
-        self.owner.item_list.push(self.item)
-        @current_winner.buy_new_item(item,1)
-        Mailer.bid_over(@current_winner.e_mail, self)
-      end
+    end
 
+    def end
+      # RB: needs to be done first, because the scheduler has to stop finding it
+      self.deactivate
+      unless @current_selling_price == 0
+        @current_winner.credits += bids[@current_winner]
+        unless @current_winner == nil
+          self.item.price = @current_selling_price
+          @current_winner.buy_new_item(item,1)
+          Mailer.bid_over(@current_winner.e_mail, self)
+        end
+      end
     end
   end
 end

@@ -101,7 +101,6 @@ module Controllers
       unless @auction.nil?
         if @auction.owner == @session_user.working_for
           if @auction.editable?
-
             end_date = TimeHandler.parseTime(params[:exp_date], params[:exp_time])
             test_auction = Auction.create(@auction.owner, @item, params[:increment], params[:min_price], end_date)
             if test_auction.is_valid?
@@ -118,6 +117,16 @@ module Controllers
         end
       else
         flash[:error] = "Auction does not exist."
+      end
+      redirect "/home/items"
+    end
+
+    post "/auction/:item_id/deactivate" do
+      redirect '/index' unless session[:id]
+      @item = Item.get_item(params[:item_id])
+      @auction = Auction.auction_by_item(@item)
+      if (@session_user.working_for == @auction.owner)
+        @auction.deactivate
       end
       redirect "/home/items"
     end

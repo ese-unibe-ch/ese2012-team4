@@ -25,7 +25,16 @@
     %label.textbox.name
       %p Price:
     %input.textbox.value(type="text" name="min_price" value="#{@item.price}")
+    %hr.separator.invisible
     %label.textbox.name
       %p Increment:
     %input.textbox.value(type="text" name="increment" value="5")
+    %hr.separator.invisible
     %input.square.rightalign(type="submit" value="Edit Auction")
+%br
+%hr.separator
+.textbox.name
+  %p Deactivate Auction
+.textbox.value
+  %form.nomargin(action="/auction/#{@item.id}/deactivate" method="POST")
+    %input.square.rightalign(type="submit" value= "Deactivate Auction")
