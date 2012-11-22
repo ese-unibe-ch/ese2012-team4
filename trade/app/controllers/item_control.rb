@@ -162,7 +162,7 @@ module Controllers
         flash[:error] = item.errors
         redirect "/home/new"
       end
-      @session_user.working_for.create_item(params[:name], Integer(price), Integer(quantity), params[:description], filename)
+      @session_user.create_item(params[:name], Integer(price), Integer(quantity), params[:description], filename)
       flash[:notice] = "Item #{params[:name]} has been created"
       redirect "/home/items"
     end
@@ -205,13 +205,12 @@ module Controllers
     post '/changestate/:id/setactive' do
       redirect '/index' unless session[:id]
       id = params[:id]
-      owner = Item.get_item(id).owner
       item = Item.get_item(id)
       if(TimeHandler.validTime?(params[:exp_date], params[:exp_time]))
         unless((params[:exp_date].eql?("") and params[:exp_time].eql?("")))
           item.expiration_date= TimeHandler.parseTime(params[:exp_date], params[:exp_time])
         end
-        owner.activate_item(id)
+        @session_user.activate_item(id)
         flash[:notice] = "#{item.name} has been activated"
       else
         flash[:error] = "You did not put in a valid Time"
@@ -222,8 +221,7 @@ module Controllers
     post '/changestate/:id/setinactive' do
       redirect '/index' unless session[:id]
       id = params[:id]
-      owner = Item.get_item(id).owner
-      owner.deactivate_item(id)
+      @session_user.deactivate_item(id)
       flash[:notice] = "#{Item.get_item(id).name} has been deactivated"
       redirect "/home/items"
     end
@@ -239,7 +237,6 @@ module Controllers
       item = Item.get_item(id)
       old_owner = item.owner
       viewer = session[:id]
-      new_owner = User.get_user(viewer).working_for
       if (Integer(params[:timestamp])-item.timestamp)!=0
         flash[:error] = "#{item.name} has been edited while you were buying it"
         redirect "#{back}"
@@ -248,7 +245,7 @@ module Controllers
         flash[:error] = "#{item.name} is no longer active."
         redirect "#{back}"
       end
-      unless new_owner.buy_new_item(item, quantity)
+      unless @session_user.buy_new_item(item, quantity)
         flash[:error] = "You don't have enough credits to buy #{quantity} piece/s of #{item.name}"
         redirect "#{back}"
       end

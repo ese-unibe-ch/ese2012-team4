@@ -82,11 +82,11 @@ module Models
     # - @param image
     # - @return [Item]: the created item
     def create_item(name, price, quantity, description="No description available", image="")
-      new_item = Item.created( name, price, self, quantity, description, image)
-      if !(identical = self.list_items_inactive.detect{|i| i.name== new_item.name and i.price == new_item.price and i.description==new_item.description}).nil?
+      new_item = Item.created( name, price, self.working_for, quantity, description, image)
+      if !(identical = self.working_for.list_items_inactive.detect{|i| i.name== new_item.name and i.price == new_item.price and i.description==new_item.description}).nil?
         identical.quantity += new_item.quantity
       else
-        self.item_list.push(new_item)
+        self.working_for.item_list.push(new_item)
         new_item.save
       end
       Activity.log(self, "add_item", new_item, self.working_for)
@@ -126,7 +126,7 @@ module Models
     def buy_new_item(item_to_buy, quantity)
       preowner = item_to_buy.owner
 
-      if Integer(item_to_buy.price*quantity) > self.credits or Integer(item_to_buy.quantity)<quantity
+      if Integer(item_to_buy.price*quantity) > self.working_for.credits or Integer(item_to_buy.quantity)<quantity
         return false
       end
 
@@ -134,12 +134,12 @@ module Models
         item_to_buy.wishlist_users.each {|trader| trader.remove_from_wishlist(item_to_buy); item_to_buy.wishlist_users.delete(trader)}
       end
 
-      Holding.shipItem(item_to_buy, item_to_buy.owner, self, quantity)
+      Holding.shipItem(item_to_buy, item_to_buy.owner, self.working_for, quantity)
 
-      Mailer.item_sold(preowner.e_mail, "Hi #{preowner.name}, \n #{self.name} bought your Item #{item_to_buy.name}.
+      Mailer.item_sold(preowner.e_mail, "Hi #{preowner.name}, \n #{self.working_for.name} bought your Item #{item_to_buy.name}.
         Please Contact him for completing the trade. His E-Mail is: #{self.e_mail}")
       Activity.log(self, "item_bought_success", item_to_buy, self.working_for)
-      Activity.log(self, "item_sold_success", item_to_buy, preowner.working_for)
+      Activity.log(self, "item_sold_success", item_to_buy, preowner)
       return true
     end
 
@@ -150,7 +150,7 @@ module Models
 
     def activate_item(id)
       item = Item.get_item(id)
-      return false unless item.owner==self
+      return false unless item.owner==self || item.owner == self.working_for
       if !(identical = self.list_items.detect{|i| i.name== item.name and i.price == item.price and i.description==item.description}).nil?
         identical.quantity+=item.quantity
         item.delete
@@ -173,7 +173,7 @@ module Models
     # - @param [Integer] id: The Item's id
     def deactivate_item(id)
       item = Item.get_item(id)
-      return false unless item.owner==self
+      return false unless item.owner==self || item.owner == self.working_for
       if !(identical = self.list_items_inactive.detect{|i| i.name== item.name and i.price == item.price and i.description==item.description}).nil?
         identical.quantity+=item.quantity
         item.delete
