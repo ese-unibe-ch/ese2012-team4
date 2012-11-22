@@ -44,14 +44,14 @@ module Controllers
     post '/answer/:comment_id' do
       redirect '/index' unless session[:id]
       comment = Comment.by_id(params[:comment_id])
-      comment.answer(@session_user.working_for, params[:reply])
+      @session_user.working_for.answer_comment(comment, params[:reply])
       redirect "/comments/#{comment.correspondent_item.id}"
     end
 
     post '/create_comment/:item_id' do
       redirect '/index' unless session[:id]
       item = Item.get_item(params[:item_id])
-      item.comment(@session_user.working_for, params[:com])
+      @session_user.working_for.comment_item(item, params[:com])
       redirect "/comments/#{params[:item_id]}"
     end
   end

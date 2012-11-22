@@ -30,7 +30,7 @@ class Activity
              when "deactivate_item" then "#{self.author.name} deactivated '#{self.subject.name}'"
              when "comment_item" then "#{self.author.name} commented on '#{self.subject.name}'"
              when "item_sold_success" then "'#{self.subject.name}' was bought by #{self.author.name} for #{self.subject.price} credits"
-             when "item_sold_failure" then "'#{self.subject.name}' was could not be bought by #{self.author.name} for #{self.subject.price} credits"
+             when "item_sold_failure" then "'#{self.subject.name}' could not be bought by #{self.author.name} for #{self.subject.price} credits"
              when "item_bought_success" then "#{self.author.name} has bought '#{self.subject.name}' for #{self.subject.price} credits"
              when "item_bought_failure" then "#{self.author.name} was unable to buy '#{self.subject.name}' for #{self.subject.price} credits"
 

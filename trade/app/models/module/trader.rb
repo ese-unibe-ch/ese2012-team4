@@ -127,6 +127,8 @@ module Models
       preowner = item_to_buy.owner
 
       if Integer(item_to_buy.price*quantity) > self.working_for.credits or Integer(item_to_buy.quantity)<quantity
+        Activity.log(self, "item_bought_failure", item_to_buy, self.working_for)
+        Activity.log(self, "item_sold_failure", item_to_buy, preowner)
         return false
       end
 
@@ -166,6 +168,12 @@ module Models
 
     def comment_item(item, text)
       item.comment(self, text)
+      Activity.log(self, "comment_item", item, item.owner)
+    end
+
+    def answer_comment(comment, text)
+      comment.answer(self, text)
+      item = comment.correspondent_item
       Activity.log(self, "comment_item", item, item.owner)
     end
 

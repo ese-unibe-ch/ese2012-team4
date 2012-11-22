@@ -69,8 +69,6 @@ class ActivityTest < Test::Unit::TestCase
     @userC.activate_item(item.id)
     assert @org.activities.size == 2
     @userD.comment_item(item, "Awesome shit!")
-    # this fails because item belongs to @userC, although it was created
-    # in the context of @org
     assert @org.activities.size == 3
     assert @org.activities[2].to_s == "Penner commented on 'item'"
   end
@@ -86,7 +84,15 @@ class ActivityTest < Test::Unit::TestCase
   end
 
   def test_item_not_sold
-    fail
+    item = @userC.create_item('Mona Lisa painting', 9999, 2, "descr")
+    assert @org.activities.size == 1
+    @userC.activate_item(item.id)
+    assert @org.activities.size == 2
+    @userD.buy_new_item(item, 1)
+    assert @org.activities.size == 3
+    assert @org.activities[2].to_s == "'Mona Lisa painting' could not be bought by Penner for 9999 credits"
+    assert @userD.activities.size == 1
+    assert @userD.activities[0].to_s == "Penner was unable to buy 'Mona Lisa painting' for 9999 credits"
   end
 
   def test_item_bought
@@ -98,6 +104,10 @@ class ActivityTest < Test::Unit::TestCase
   end
 
   def test_item_not_bought
-    fail
+    item = @userD.create_item('Cardboard house', 2000, 1, "Warm and sweet")
+    @userD.activate_item(item.id)
+    @userA.buy_new_item(item, 1)
+    assert @org.activities.size == 1
+    assert @org.activities[0].to_s == "Hans was unable to buy 'Cardboard house' for 2000 credits"
   end
 end
