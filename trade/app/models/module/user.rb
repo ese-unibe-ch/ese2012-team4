@@ -125,6 +125,5 @@ module Models
       new_organization.save
       #self.organization_list.push(new_organization)
     end
-
   end
 end

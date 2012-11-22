@@ -174,6 +174,9 @@ module Models
     # - @param [Integer] itemid: The id of the Item to be selected.
     # - @return [Item]: The selected Item.
     def self.get_item(itemid)
+      if itemid.is_a?(Numeric)
+        itemid = itemid.to_s
+      end
       return @@item_list[itemid]
     end
 

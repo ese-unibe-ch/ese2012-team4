@@ -2,6 +2,7 @@ require 'require_relative'
 require_relative('../utility/mailer')
 require_relative('item')
 require_relative('auction')
+require_relative('activity')
 require_relative('../utility/holding')
 
 
@@ -39,7 +40,7 @@ module Models
     attr_accessor :ratings
     # [Boolean]: check if trader is an organization, used primarily for views
     attr_accessor :organization
-
+    attr_accessor :activities
 
     @@traders_by_name = {}
     @@traders = {}
@@ -56,6 +57,7 @@ module Models
       self.auctions_list = Array.new
       self.ratings = []
       self.organization = false
+      self.activities = []
     end
 
     # - @return [User]: the user with the given username
@@ -87,6 +89,7 @@ module Models
         self.item_list.push(new_item)
         new_item.save
       end
+      Activity.log(self, "add_item", new_item, self.working_for)
       return new_item
     end
 
@@ -135,6 +138,8 @@ module Models
 
       Mailer.item_sold(preowner.e_mail, "Hi #{preowner.name}, \n #{self.name} bought your Item #{item_to_buy.name}.
         Please Contact him for completing the trade. His E-Mail is: #{self.e_mail}")
+      Activity.log(self, "item_bought_success", item_to_buy, self.working_for)
+      Activity.log(self, "item_sold_success", item_to_buy, preowner.working_for)
       return true
     end
 
@@ -151,14 +156,17 @@ module Models
         item.delete
       end
       item.active=true
+      Activity.log(self, "activate_item", item, self.working_for)
     end
 
     def edit_item(item, name, price, quantity, description = "", image = "")
       item.edit(name, price, quantity,  description, image)
+      Activity.log(self, "edit_item", item, self.working_for)
     end
 
     def comment_item(item, text)
       item.comment(self, text)
+      Activity.log(self, "comment_item", item, item.owner)
     end
 
     # Deactivates an item, removes it from everybody's wishlist and sets expiration_date to nil
@@ -176,6 +184,7 @@ module Models
       if !item.wishlist_users.empty?
         item.wishlist_users.each {|user| user.remove_from_wishlist(item); item.wishlist_users.delete(user)}
       end
+      Activity.log(self, "deactivate_item", item, self.working_for)
     end
 
     # - @return [Array]: all users except the given viewer

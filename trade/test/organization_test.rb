@@ -32,11 +32,13 @@ class OrganizationTest < Test::Unit::TestCase
 
     @org.add_admin(@admin2)
     assert(@org.admin_list.include?(@admin2))
+    assert(@org.member_list.include?(@admin2))
     assert(@admin2.admin_of_org_list.include?(@org))
 
     assert(@org.can_delete_admin?)
     @org.delete_admin(@admin2)
     assert(!@org.admin_list.include?(@admin2))
+    assert(@org.member_list.include?(@admin2))
     assert(!@admin2.admin_of_org_list.include?(@org))
     assert(!@org.can_delete_admin?)
   end
