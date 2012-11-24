@@ -24,8 +24,8 @@ module Controllers
 
     get "/comments/:item_id" do
       redirect "/index" unless session[:id]
-      item_name = Item.get_item(params[:item_id]).name
-      @item = Item.get_item(params[:item_id])
+      item_name = Item.get_offer(params[:item_id]).name
+      @item = Item.get_offer(params[:item_id])
       haml :comments
     end
 
@@ -37,7 +37,7 @@ module Controllers
 
     get '/comment/:item_id' do
       redirect "/index" unless session[:id]
-      @item = Item.get_item(params[:item_id])
+      @item = Item.get_offer(params[:item_id])
       haml :create_comment
     end
 
@@ -50,7 +50,7 @@ module Controllers
 
     post '/create_comment/:item_id' do
       redirect '/index' unless session[:id]
-      item = Item.get_item(params[:item_id])
+      item = Item.get_offer(params[:item_id])
       @session_user.working_for.comment_item(item, params[:com])
       redirect "/comments/#{params[:item_id]}"
     end

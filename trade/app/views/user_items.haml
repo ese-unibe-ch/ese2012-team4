@@ -112,14 +112,14 @@
         %td
           %p.table_header Edit
     - for auction in @auctions
-      %tr(title = "#{auction.item.description}")
+      %tr(title = "#{auction.description}")
         %td.nopadding
-          %a.wholly_clickable(href="/auction/#{auction.item.id}" )
+          %a.wholly_clickable(href="/auction/#{auction.id}" )
             :escaped
-              #{auction.item.name}
+              #{auction.name}
         %td
-          %a(href="/item/#{auction.item.id}/image" rel="lightbox" title="#{auction.item.name}")
-            %img(src="/item/#{auction.item.id}/image" class = "smallpicturebox")
+          %a(href="/item/#{auction.id}/image" rel="lightbox" title="#{auction.name}")
+            %img(src="/item/#{auction.id}/image" class = "smallpicturebox")
         %td
           %p #{auction.min_price}
         %td

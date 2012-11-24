@@ -25,31 +25,33 @@ module Controllers
 
     get "/auction/:item_id/create" do
       redirect "/index" unless session[:id]
-      @item = Item.get_item(params[:item_id])
+      @item = Item.get_offer(params[:item_id])
       haml :create_auction
     end
 
     get '/auction/:item_id' do
-      @item = Item.get_item(params[:item_id])
-      @auction = Auction.auction_by_item(@item)
+      @offer = Item.get_offer(params[:item_id])
       haml :auction_page
     end
 
-    post '/auction/:id/create' do
+    post '/auction/:id/create' do   #TODO: finish refactor here
       redirect '/index' unless session[:id]
       id = params[:id]
-      owner = Item.get_item(id).owner
-      item_old = Item.get_item(id)
-      if item_old.quantity != 1
-        item_old.quantity -= 1
-        item_new = item_old.copy(:quantity => 1)
-        item_new.save
-      else
+      owner = Item.get_offer(id).owner
+      item_old = Item.get_offer(id)
+      #if item_old.quantity != 1
+      #  item_old.quantity -= 1
+      #  item_new = item_old.copy(:quantity => 1)
+      #  item_new.save
+      #else
         item_new = item_old
-      end
+      #end
       end_date = TimeHandler.parseTime(params[:exp_date], params[:exp_time])
-      new_auction = Auction.create(owner, item_new, params[:increment], params[:min_price], end_date)
+      new_auction = Auction.create(item_new, params[:increment], params[:min_price], end_date)
       if new_auction.is_valid?
+        Offer.remove_from_list(item_old)
+        new_auction.owner.remove_offer(item_old)
+        new_auction.owner.add_offer(new_auction)
         new_auction.save
       else
         flash[:error] = new_auction.errors
@@ -59,7 +61,7 @@ module Controllers
     end
 
     post '/auction/:item_id/bid' do
-      @item = Item.get_item(params[:item_id])
+      @item = Item.get_offer(params[:item_id])
       @auction = Auction.auction_by_item(@item)
       unless @auction.nil?
 
@@ -89,20 +91,20 @@ module Controllers
 
     get "/auction/:item_id/edit" do
       redirect '/index' unless session[:id]
-      @item = Item.get_item(params[:item_id])
+      @item = Item.get_offer(params[:item_id])
       @auction = Auction.auction_by_item(@item)
       haml :auction_edit
     end
 
     post "/auction/:item_id/edit" do
       redirect '/index' unless session[:id]
-      @item = Item.get_item(params[:item_id])
+      @item = Item.get_offer(params[:item_id])
       @auction = Auction.auction_by_item(@item)
       unless @auction.nil?
         if @auction.owner == @session_user.working_for
           if @auction.editable?
             end_date = TimeHandler.parseTime(params[:exp_date], params[:exp_time])
-            test_auction = Auction.create(@auction.owner, @item, params[:increment], params[:min_price], end_date)
+            test_auction = Auction.create(@item, params[:increment], params[:min_price], end_date)
             if test_auction.is_valid?
               @auction.min_price = params[:min_price].to_i
               @auction.end_time = end_date
@@ -123,7 +125,7 @@ module Controllers
 
     post "/auction/:item_id/deactivate" do
       redirect '/index' unless session[:id]
-      @item = Item.get_item(params[:item_id])
+      @item = Item.get_offer(params[:item_id])
       @auction = Auction.auction_by_item(@item)
       if (@session_user.working_for == @auction.owner)
         @auction.deactivate

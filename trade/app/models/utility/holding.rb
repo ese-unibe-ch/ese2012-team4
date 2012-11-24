@@ -32,12 +32,12 @@ class Holding
     if(item.quantity.to_i == quantity)
       # buy all items from seller
       item.owner = buyer
-      item.owner.remove_item(item)
+      item.owner.remove_offer(item)
       if !(identical = buyer.list_items_inactive.detect{|i| i.name== item.name and i.price == item.price and i.description==item.description}).nil?
         identical.quantity+=quantity
       else
         item.quantity = quantity
-        buyer.item_list.push(item)
+        buyer.offers.push(item)
         item.active = false
       end
     else
@@ -47,7 +47,7 @@ class Holding
       else
         #buyer.create_item(item.name,item.price, quantity, item.description).active = false
         item.active = false
-        buyer.item_list.push(item)
+        buyer.offers.push(item)
       end
     end
 
@@ -65,7 +65,7 @@ class Holding
 
     buyer.credits -= Integer(item.price)*quantity
 
-    index = seller.item_list.index(item)
+    index = seller.offers.index(item)
     #seller: remove number of items (or item)
     if (seller.item_list[index].quantity == quantity)
       seller.item_list.delete(item)

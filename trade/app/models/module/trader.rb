@@ -22,10 +22,8 @@ module Models
     attr_accessor :name
     # [Integer]: The owned money in credits
     attr_accessor :credits
-    # [Array]: All the items the trader possesses
-    attr_accessor :item_list
-    # [Array]: All the auctions the user possesses
-    attr_accessor :auctions_list
+    # [Array]: All the offers the trader possesses
+    attr_accessor :offers
     # [String]: List interests or other things about this owner
     attr_accessor :description
     # [Integer]
@@ -53,8 +51,7 @@ module Models
       self.image = image
       self.wishlist = Array.new
       self.credits = 100
-      self.item_list = Array.new
-      self.auctions_list = Array.new
+      self.offers = Array.new
       self.ratings = []
       self.organization = false
       self.activities = []
@@ -86,7 +83,7 @@ module Models
       if !(identical = self.working_for.list_items_inactive.detect{|i| i.name== new_item.name and i.price == new_item.price and i.description==new_item.description}).nil?
         identical.quantity += new_item.quantity
       else
-        self.working_for.item_list.push(new_item)
+        self.working_for.offers.push(new_item)
         new_item.save
       end
       Activity.log(self, "add_item", new_item, self.working_for)
@@ -97,9 +94,11 @@ module Models
     # - @return [Array]: The traders active items
     def list_items
       return_list = Array.new
-      for s in self.item_list
-        if s.is_active?
-          return_list.push(s)
+      for s in self.offers
+        unless s.auction
+          if s.is_active?
+            return_list.push(s)
+          end
         end
       end
       return return_list
@@ -109,9 +108,11 @@ module Models
     # - @return [Array] The trader's inactive items
     def list_items_inactive
       return_list = Array.new
-      for s in self.item_list
-        if !s.active && !Auction.auction_by_item(s)
-          return_list.push(s)
+      for s in self.offers
+        unless s.auction
+          if !s.active && !s.auction
+            return_list.push(s)
+          end
         end
       end
       return return_list
@@ -145,13 +146,8 @@ module Models
       return true
     end
 
-    # Removing item from trader's item list
-    def remove_item(item_to_remove)
-      self.item_list.delete(item_to_remove)
-    end
-
     def activate_item(id)
-      item = Item.get_item(id)
+      item = Item.get_offer(id)
       return false unless item.owner==self || item.owner == self.working_for
       if !(identical = self.list_items.detect{|i| i.name== item.name and i.price == item.price and i.description==item.description}).nil?
         identical.quantity+=item.quantity
@@ -180,7 +176,7 @@ module Models
     # Deactivates an item, removes it from everybody's wishlist and sets expiration_date to nil
     # - @param [Integer] id: The Item's id
     def deactivate_item(id)
-      item = Item.get_item(id)
+      item = Item.get_offer(id)
       return false unless item.owner==self || item.owner == self.working_for
       if !(identical = self.list_items_inactive.detect{|i| i.name== item.name and i.price == item.price and i.description==item.description}).nil?
         identical.quantity+=item.quantity
@@ -233,7 +229,7 @@ module Models
       @@traders_by_name.delete(self.name.downcase)
       Item.get_item_list.delete_if {|k,v| v.owner == self }
       Auction.auctions_by_user(self).each{|auction|
-        Auction.all_auctions.delete(auction)
+        Auction.all_offers.delete(auction)
         self.auctions_list.delete(auction)
       }
     end
@@ -292,10 +288,13 @@ module Models
       end
     end
 
-    # AS intermezzo sets an item as auction
-    def set_to_auction(item)
-      self.item_list.delete(item) #AS Not sure if it works that simple, because they have concepts like quantity. But let's face the problems as they appear.
-      self.auctions_list.push(item)
+    # removes an item from the owner's list
+    def remove_offer(offer)
+      self.offers.delete(offer) #AS Not sure if it works that simple, because they have concepts like quantity. But let's face the problems as they appear.
+    end
+
+    def add_offer(offer)
+      self.offers.push(offer)
     end
 
     def <=>(o)

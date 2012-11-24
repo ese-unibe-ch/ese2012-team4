@@ -91,7 +91,7 @@ class UserTest < Test::Unit::TestCase
     assert( old_owner.list_items[0].is_active?, "item should be active, is not")
 
     if new_owner.buy_new_item(sock, 1)
-      old_owner.remove_item(sock)
+      old_owner.remove_offer(sock)
     end
 
     assert old_owner.list_items.size == 0
@@ -129,7 +129,7 @@ class UserTest < Test::Unit::TestCase
     assert( sock.is_active?, "item should be active, is not")
 
     if new_owner.buy_new_item(sock, 1)
-      old_owner.remove_item(sock)
+      old_owner.remove_offer(sock)
     end
 
     assert(old_owner.list_items_inactive.size==0)

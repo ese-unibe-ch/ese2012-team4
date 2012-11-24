@@ -217,14 +217,14 @@ module Controllers
 
     post "/remove_from_wishlist/:itemid" do
       redirect '/index' unless session[:id]
-      @item = Item.get_item(params[:itemid])
+      @item = Item.get_offer(params[:itemid])
       @session_user.working_for.remove_from_wishlist(@item)
       redirect "#{back}"
     end
 
     post "/add_to_wishlist/:itemid" do
       redirect '/index' unless session[:id]
-      @item = Item.get_item(params[:itemid])
+      @item = Item.get_offer(params[:itemid])
       @session_user.working_for.add_to_wishlist(@item)
       redirect "#{back}"
     end
@@ -232,7 +232,7 @@ module Controllers
     post "/add_to_wishlist/:itemid" do
       redirect '/index' unless session[:id]
       id = params[:itemid]
-      @item = Item.get_item(id)
+      @item = Item.get_offer(id)
       unless @item.active == true
         flash[:error] = "Item has been deactivated"
         redirect "/items"
