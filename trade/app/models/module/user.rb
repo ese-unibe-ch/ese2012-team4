@@ -100,7 +100,7 @@ module Models
       map = [('a'..'z'),('A'..'Z'),(1..9)].map{|i| i.to_a}.flatten
       new_password  =  (0...50).map{ map[rand(map.length)] }.join
       self.change_password(new_password)
-      Mailer.item_sold(self.e_mail, "Hi #{self.name}, you forgot your password, here is your new password: \n #{new_password} \n
+      Mailer.reset_pw(self.e_mail, "Hi #{self.name}, \n You forgot your password, here is your new password: \n #{new_password} \n
         make sure to change the password on the user-page as soon as you are logged in")
       #make this a clickable login-link
     end
