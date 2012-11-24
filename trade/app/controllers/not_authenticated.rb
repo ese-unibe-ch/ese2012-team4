@@ -34,6 +34,25 @@ module Controllers
       haml :login
     end
 
+    get '/pwforgotten' do
+      redirect '/home' unless session[:id].nil?
+      haml :pwforgotten
+    end
+
+    post "/getnewpw" do
+      user = User.by_name params[:username].strip.downcase
+
+      if user.nil?
+        flash[:error] = "No such login"
+        redirect "/pwforgotten"
+      else
+        user.forgot_password
+        flash[:notice] = "Check your E-Mail for new login-information"
+        redirect "/login"
+      end
+    end
+
+
     post "/authenticate" do
       user = User.by_name params[:username].strip.downcase
 

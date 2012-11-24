@@ -95,6 +95,16 @@ module Models
       self.password_hash == BCrypt::Engine.hash_secret(password, self.password_salt)
     end
 
+    def forgot_password()
+      #generate new random password out of letters
+      map = [('a'..'z'),('A'..'Z'),(1..9)].map{|i| i.to_a}.flatten
+      new_password  =  (0...50).map{ map[rand(map.length)] }.join
+      self.change_password(new_password)
+      Mailer.item_sold(self.e_mail, "Hi #{self.name}, you forgot your password, here is your new password: \n #{new_password} \n
+        make sure to change the password on the user-page as soon as you are logged in")
+      #make this a clickable login-link
+    end
+
     # Adds an organization to the user's organization list
     def join_organization(organization)
       self.organization_list.push(organization) unless self.organization_list.include?(organization)
