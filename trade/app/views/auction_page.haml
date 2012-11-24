@@ -1,9 +1,9 @@
 %h2
   Auction for Item:
   :escaped
-    #{@item.name}
-%a(href="/item/#{@item.id}/image" rel="lightbox" title="#{@item.name}")
-  %img(src="/item/#{@item.id}/image" class = "bigpicturebox")
+    #{@offer.name}
+%a(href="/item/#{@offer.id}/image" rel="lightbox" title="#{@offer.name}")
+  %img(src="/item/#{@offer.id}/image" class = "bigpicturebox")
 %br
 
 %br
@@ -12,8 +12,8 @@
     Description:
   .textbox.value
     %p
-      -if !@item.description.empty?
-        -@item.description.each do |line|
+      -if !@offer.description.empty?
+        -@offer.description.each do |line|
           :escaped
             #{line}
           %br
@@ -23,42 +23,42 @@
     Min price:
   .textbox.value
     %p
-      #{@auction.min_price}
+      #{@offer.min_price}
 %br
 .lineContainer
   .textbox.name
     Current selling price:
   .textbox.value
-    #{@auction.current_selling_price}
+    #{@offer.current_selling_price}
 %br
 .lineContainer
   .textbox.name
     Increment:
   .textbox.value
-    #{@auction.increment}
+    #{@offer.increment}
 %br
-- unless @auction.current_winner.nil?
+- unless @offer.current_winner.nil?
   .lineContainer
     .textbox.name
       Current Winner:
     .textbox.value
-      #{@auction.current_winner.name}
+      #{@offer.current_winner.name}
 
-- unless @auction.bids[@session_user] == 0
+- unless @offer.bids[@session_user] == 0
   .lineContainer
     .textbox.name
       Placed Bid:
     .textbox.value
-      - if @auction.current_winner == @session_user
-        placed winning bid: #{@auction.bids[@session_user]}
+      - if @offer.current_winner == @session_user
+        placed winning bid: #{@offer.bids[@session_user]}
       - else
-        placed unsuccessful bid: #{@auction.bids[@session_user]}
+        placed unsuccessful bid: #{@offer.bids[@session_user]}
 %br
 .lineContainer
   .textbox.name
     Expires on:
   .textbox.value
-    #{@auction.end_time.asctime}
+    #{@offer.end_time.asctime}
 
 %br
 .lineContainer
@@ -67,17 +67,17 @@
   .textbox.value
     %a(href="/users/#{@item.owner.id}" )
       :escaped
-        #{@item.owner.name}
+        #{@offer.owner.name}
 
 %hr.separator.invisible
--if @item.owner.name == @session_user.working_for.name
-  -if @auction.editable?
+-if @offer.owner.name == @session_user.working_for.name
+  -if @offer.editable?
     %p
-      %form.nomargin(action="/auction/#{@item.id}/edit" method="GET")
+      %form.nomargin(action="/auction/#{@offer.id}/edit" method="GET")
         %input.square.rightalign(type="submit" value="Edit")
 -else
   %td.buyform
-    %form.nomargin(action="/auction/#{@item.id}/bid" method="POST")
-      %input.rightalign(type = "text" name ="bid" value = "#{@auction.current_selling_price + @auction.increment}")
+    %form.nomargin(action="/auction/#{@offer.id}/bid" method="POST")
+      %input.rightalign(type = "text" name ="bid" value = "#{@offer.current_selling_price + @offer.increment}")
       %input.square.rightalign(type="submit" value="Bid")
 

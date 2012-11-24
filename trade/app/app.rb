@@ -14,6 +14,7 @@ require_relative('controllers/auction_control')
 
 require_relative('../../trade/app/models/module/item')
 require_relative('../../trade/app/models/module/user')
+require_relative('../../trade/app/models/module/offer')
 require_relative('../../trade/app/models/module/organization')
 
 include Models
@@ -148,7 +149,7 @@ class App < Sinatra::Base
     ese.save
     ese.image = FileUtils::pwd+"/public/images/user_pix/ese.jpeg"
     gtg = ese.create_item("A guide to git", 20, 200, "Everything you should know but somehow didn't learn in P2")
-    Auction.create(ese, gtg, 5, 20, TimeHandler.parseTime("2012-11-29", ""))
+    Auction.create(gtg, 5, 20, TimeHandler.parseTime("2012-11-29", ""))
     gtg.image = FileUtils::pwd+"/public/images/item_pix/git.jpg"
 
     org = Organization.created( "Coding Inc.", ese)
@@ -229,8 +230,8 @@ class App < Sinatra::Base
     scheduler = Rufus::Scheduler.start_new
 
     scheduler.every '500' do
-      for auction in Auction.all_auctions
-        if auction.over?
+      for auction in Offer.get_all
+        if auction.expired?
           auction.end
           puts "ended auction for #{auction.item.name}"
         end

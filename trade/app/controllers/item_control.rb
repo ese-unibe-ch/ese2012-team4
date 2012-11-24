@@ -96,7 +96,7 @@ module Controllers
       for i in ((inactive-1)*items_per_page)..(inactive*items_per_page)-1
         @inactive_items<<inactive_items[i] unless inactive_items[i].nil?
       end
-      @auctions = Auction.auctions_by_user(@session_user.working_for)
+      @auctions = @session_user.working_for.offers.select{|s| s.auction}
       haml :user_items, :locals => {:active_page =>active, :active_page_count =>active_page_count, :inactive_page =>inactive, :inactive_page_count => inactive_page_count}
     end
 
@@ -113,8 +113,8 @@ module Controllers
 
     get '/home/edit_item/:itemid' do
       redirect '/index' unless session[:id]
-      if Item.get_item(params[:itemid]).is_owner?(@session_user.working_for.id)
-        @item = Item.get_item(params[:itemid])
+      if Item.get_offer(params[:itemid]).is_owner?(@session_user.working_for.id)
+        @item = Item.get_offer(params[:itemid])
         haml :item_edit, :locals => {:action => "change/#{params[:itemid]}", :button => "Save changes"}
       else
         redirect "/"
@@ -145,7 +145,7 @@ module Controllers
     get '/item/:itemid' do
       redirect '/index' unless session[:id]
       id = params[:itemid]
-      @item = Item.get_item(id)
+      @item = Item.get_offer(id)
       haml :item_page
     end
 
@@ -169,7 +169,7 @@ module Controllers
 
     get "/item/:id/image" do
       redirect '/index' unless session[:id]
-      path = Item.get_item(params[:id]).image
+      path = Item.get_offer(params[:id]).image
       if path == ""
         send_file(File.join(FileUtils::pwd, "public/images/item_pix/placeholder_item.jpg"))
       else
@@ -185,7 +185,7 @@ module Controllers
         flash[:error] = test_item.errors
         redirect "/home/edit_item/#{params[:itemid]}"
       else
-        item = Item.get_item(params[:itemid])
+        item = Item.get_offer(params[:itemid])
         @session_user.edit_item(item, params[:name],Integer(params[:price]),Integer(params[:quantity]),params[:description], filename)
         flash[:notice] = "#{params[:name]} has been changed"
         redirect "/home/items"
@@ -194,8 +194,8 @@ module Controllers
 
     get '/changestate/:itemid/activation' do
       redirect '/index' unless session[:id]
-      if Item.get_item(params[:itemid]).is_owner?(@session_user.working_for.id)
-        @item = Item.get_item(params[:itemid])
+      if Item.get_offer(params[:itemid]).is_owner?(@session_user.working_for.id)
+        @item = Item.get_offer(params[:itemid])
         haml :activation_confirm
       else
         redirect '/'
@@ -205,7 +205,7 @@ module Controllers
     post '/changestate/:id/setactive' do
       redirect '/index' unless session[:id]
       id = params[:id]
-      item = Item.get_item(id)
+      item = Item.get_offer(id)
       if(TimeHandler.validTime?(params[:exp_date], params[:exp_time]))
         unless((params[:exp_date].eql?("") and params[:exp_time].eql?("")))
           item.expiration_date= TimeHandler.parseTime(params[:exp_date], params[:exp_time])
@@ -222,7 +222,7 @@ module Controllers
       redirect '/index' unless session[:id]
       id = params[:id]
       @session_user.deactivate_item(id)
-      flash[:notice] = "#{Item.get_item(id).name} has been deactivated"
+      flash[:notice] = "#{Item.get_offer(id).name} has been deactivated"
       redirect "/home/items"
     end
 
@@ -234,7 +234,7 @@ module Controllers
         redirect "#{back}"
       end
       quantity = Integer(params[:quantity])
-      item = Item.get_item(id)
+      item = Item.get_offer(id)
       old_owner = item.owner
       viewer = session[:id]
       if (Integer(params[:timestamp])-item.timestamp)!=0

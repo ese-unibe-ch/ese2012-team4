@@ -30,9 +30,9 @@ class ItemTest < Test::Unit::TestCase
     item2 = Item.created("testobject2", 50, @owner, 1, "bla")
     item2.save
     item3 = @owner.create_item("testobject3", 50, 1)
-    assert(Item.get_item("#{item1.id}") == item1, "get_item should return the item")
-    assert(Item.get_item("#{item2.id}") == item2, "get_item should return the item")
-    assert(Item.get_item("#{item1.id+2}") == item3, "get_item should return the item")
+    assert(Item.get_offer("#{item1.id}") == item1, "get_item should return the item")
+    assert(Item.get_offer("#{item2.id}") == item2, "get_item should return the item")
+    assert(Item.get_offer("#{item1.id+2}") == item3, "get_item should return the item")
   end
 
   # Test static method get_all
@@ -104,7 +104,7 @@ class ItemTest < Test::Unit::TestCase
     assert(item.owner.name == "Old", "Owner not set correctly")
     old_owner.list_items_inactive[0].active = true
     if new_owner.buy_new_item(item,1)
-      old_owner.remove_item(item)
+      old_owner.remove_offer(item)
     end
     # LD Removed this. This is already tested in user_test.rb, because
     # it's a method of the User class. Maybe remove whole class?
@@ -273,11 +273,11 @@ class ItemTest < Test::Unit::TestCase
     auct1.save
     auct2 = Auction.create(@owner, item2, 5, 30, Time.now + 3600)
     auct2.save
-    auctions = Auction.all_auctions({:order_by => 'name', :order_direction => 'asc'})
+    auctions = Auction.all_offers({:order_by => 'name', :order_direction => 'asc'})
 
     assert auctions[0] == auct1
     assert auctions[1] == auct2
-    auctions = Auction.all_auctions({:order_by => 'name', :order_direction => 'desc'})
+    auctions = Auction.all_offers({:order_by => 'name', :order_direction => 'desc'})
     assert auctions[0] == auct2
     assert auctions[1] == auct1
   end
@@ -300,10 +300,10 @@ class ItemTest < Test::Unit::TestCase
     auct1.save
     auct2 = Auction.create(user, item2, 5, 30, Time.now + 3600)
     auct2.save
-    auctions = Auction.all_auctions({:order_by => 'owner', :order_direction => 'asc'})
+    auctions = Auction.all_offers({:order_by => 'owner', :order_direction => 'asc'})
     assert auctions[0] == auct1
     assert auctions[1] == auct2
-    auctions = Auction.all_auctions({:order_by => 'owner', :order_direction => 'desc'})
+    auctions = Auction.all_offers({:order_by => 'owner', :order_direction => 'desc'})
     assert auctions[0] == auct2
     assert auctions[1] == auct1
   end
@@ -335,7 +335,7 @@ class ItemTest < Test::Unit::TestCase
     auct1.place_bid(user, 40)
     auct2.place_bid(user, 40)
 
-    auctions = Auction.all_auctions({:order_by => 'price', :order_direction => 'asc'})
+    auctions = Auction.all_offers({:order_by => 'price', :order_direction => 'asc'})
     assert auctions[0] == auct1
     assert auctions[1] == auct2
 

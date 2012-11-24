@@ -1,45 +1,27 @@
 module Models
 
+  require 'dimensions'
+  require 'require_relative'
+  require_relative('comment')
+  require_relative('offer')
+
+
   # Represents an item in the shop, stores its data and different states.
   # The class stores all created items in a list.
-  class Item
-    require 'dimensions'
-    require 'require_relative'
-    require_relative('comment')
+  class Item < Offer
 
-    # [String]: The item's name
-    attr_accessor :name
+
     # [Integer]: The price in credits
     attr_accessor :price
     # [Boolean]: True, if the item can be bought
     attr_accessor :active
-    # [User]: The item's owner
-    attr_accessor :owner
-    # [Integer]: Identifier
-    attr_accessor :id
-    # [String]: Detailed description
-    attr_accessor :description
-    # [Time]: Time the Item last changed
-    attr_accessor :timestamp
-    # [Integer]
-    attr_accessor :quantity
-    # [String]: Stores all error messages
-    attr_accessor :errors
-    # [String]: The path of an image
-    attr_accessor :image
-    # [Comment]: Comments on this Item
-    attr_accessor :head_comments
-    # [Time]: Stores when the item deactivates automatically
-    attr_accessor :expiration_date
-    # [Array]: Stores on whose wishlists the item is
-    attr_accessor :wishlist_users
 
-    @@item_list = {}
-    @@count = 0
+
+
     @comment_count = 0
 
     def self.get_item_list
-      @@item_list
+      @@offers
     end
 
     # Factory method (constructor) on the class.
@@ -52,10 +34,11 @@ module Models
     # - @return [Item] The created Item.
     def self.created( name, price, owner, quantity, description = "", image = "")
       item = self.new
-      item.id = @@count + 1
-      item.name = name
       item.price = price
       item.active = false
+
+      item.id = @@count + 1
+      item.name = name
       item.owner = owner
       item.quantity = quantity
       item.description = description
@@ -63,6 +46,7 @@ module Models
       item.wishlist_users = Array.new
       item.timestamp = Time.now.to_i
       item.head_comments = []
+      item.auction = false
       item
     end
 
@@ -105,12 +89,7 @@ module Models
       self.errors != "" ? false : true
     end
 
-    # Saves the item to the Item-List
-    def save
-      raise "Duplicated item" if @@item_list.has_key? self.id and @@item_list[self.id] != self
-      @@item_list["#{self.id}"] = self
-      @@count += 1
-    end
+
 
     # Replaces the data of this Item with the given params.
     # - @param [String] name
@@ -137,26 +116,13 @@ module Models
       self.active
     end
 
-    # Checks if the chosen expiration date is exceeded
-    def expired?
-      if(!self.expiration_date.nil?)
-        return Time.now.getlocal > self.expiration_date
-      else
-        return false
-      end
-    end
-
     # Checks if a string is a valid price.
     # - @param [String] price_string: The String that should be tested.
     def self.valid_integer?(price_string)
       (!!(price_string =~ /^[-+]?[1-9]([0-9]*)?$/) && Integer(price_string) >= 0 || (price_string.is_a? Integer))
     end
 
-    # Compares a users name to the owners name.
-    # - @param [String] username: The name of the user to be compared.
-    def is_owner?(username)
-      User.get_user(username).eql?(self.owner)
-    end
+
 
     # Overrides to String method of Object.
     def to_s
@@ -167,15 +133,7 @@ module Models
       !self.active
     end
 
-    # Returns an item by its id.
-    # - @param [Integer] itemid: The id of the Item to be selected.
-    # - @return [Item]: The selected Item.
-    def self.get_item(itemid)
-      if itemid.is_a?(Numeric)
-        itemid = itemid.to_s
-      end
-      return @@item_list[itemid]
-    end
+
 
     # - @param [User] viewer: Name of the user whose items should not be listed.
     # - @param [Hash] options: Options for sorting the list, usage: {:order_by => "name", :order_direction => "asc"}
@@ -190,7 +148,7 @@ module Models
         viewer = viewer.name
       end
 
-      new_array = @@item_list.to_a
+      new_array = @@offers.to_a
       ret_array = Array.new
       for e in new_array
         ret_array.push(e[1])
@@ -204,8 +162,8 @@ module Models
     end
 
     def delete
-      self.owner.remove_item(self)
-      @@item_list.delete(self)
+      self.owner.remove_offer(self)
+      @@offers.delete(self)
     end
 
     # Adds a new Comment on this Item.
@@ -231,7 +189,7 @@ module Models
 
       s_array = search_string.downcase.split
       ret_array = []
-      i_array = @@item_list.to_a
+      i_array = @@offers.to_a
 
       provisional = i_array.select do |item|
         s_array.all?{|keyword| (item[1].name.downcase+" "+item[1].description.downcase).include? keyword.downcase}
@@ -250,7 +208,7 @@ module Models
     end
 
     def self.clear_all
-      @@item_list = {}
+      @@offers = {}
     end
 
     def add_user_to_wishlist(user)
