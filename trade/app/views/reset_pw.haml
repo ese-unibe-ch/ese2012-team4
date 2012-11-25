@@ -1,0 +1,17 @@
+.textbox.name
+%p Change my password
+%br
+%p Please choose a safe password; a safe password includes letters and numbers and is more than 4 digits long.
+.textbox.value
+%form.nomargin(action="/change_password" method="POST")
+  %label.leftalign.topmargin Enter old password:
+  %input.rightalign(type="password" name="password_old" value="")
+  %hr.separator
+  %label.leftalign.topmargin Enter new password:
+  %input.rightalign(type="password" name="password_new" value="")
+  %hr.separator.invisible
+  %label.leftalign.topmargin Repeat new password:
+  %input.rightalign(type="password" name="password_check" value="")
+  %hr.separator
+  %input.square.rightalign(type="submit" value="Change password")
+%hr.separator

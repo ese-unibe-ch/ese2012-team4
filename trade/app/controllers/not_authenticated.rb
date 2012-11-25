@@ -39,6 +39,18 @@ module Controllers
       haml :pwforgotten
     end
 
+    get '/reset_pw/:id' do
+      user = User.get_user(params[:id])
+      user.reset_password
+      flash[:notice] = "Please change your password"
+      haml :reset_pw
+    end
+
+    post 'reset_pw/:id' do
+      # ToDo
+
+    end
+
     post "/getnewpw" do
       user = User.by_name params[:username].strip.downcase
 
@@ -47,6 +59,8 @@ module Controllers
         redirect "/pwforgotten"
       else
         user.forgot_password
+        host = "#{request.host}:#{request.port}"
+        Mailer.reset_pw(host, user)
         flash[:notice] = "Check your E-Mail for new login-information"
         redirect "/login"
       end
