@@ -46,11 +46,16 @@ module Controllers
         redirect "/home"
       else
         username = PasswordReset.getKey(params[:id])
-        #flash[:error] = "#{username} asdf #{params[:id]}"
-        #redirect "/home"
         user = User.by_name username
-        haml :pwreset, :locals => {:reset_id => :id, :user => user}
+        haml :pwreset, :locals => {:reset_id => :id, :username => username, :user => user}
       end
+    end
+
+    post "/pwreset" do
+      flash[:error] = "not working yet"
+      redirect "home"
+      #should do: check if password valid, else: redirect to /pwreset/:id
+      #if valid: change user-password, delete reset-link, redirect to login-screen
     end
 
     post "/getnewpw" do

@@ -1,15 +1,17 @@
+%p Change password for #{username}
 %br
-.textbox.name
-  %p Change my password
-  %br
-  %p Please choose a safe password; a safe password includes letters and numbers and is more than 4 digits long.
-.textbox.value
-  %form.nomargin(action="/pwreset" method="POST")
-    %label.leftalign.topmargin Enter new password:
-    %input.rightalign(type="password" name="password_new" value="")
-    %hr.separator.invisible
-    %label.leftalign.topmargin Repeat new password:
-    %input.rightalign(type="password" name="password_check" value="")
-    %hr.separator
-    %input.square.rightalign(type="submit" value="Change password")
+%form.nomargin(action="/pwreset" method="POST")
+  %label.textbox.name
+    %p
+      Enter new password:
+  %input.textbox.value(type="password" name="password_new" value="")
+  %hr.separator.invisible
+  %label.textbox.name
+    %p
+      Repeat new password:
+  %input.textbox.value(type="password" name="password_check" value="")
+  %hr.separator
+  %input.rightalign.square(type="submit" value="set new password")
+
 %hr.separator
+%p Please choose a safe password; a safe password includes letters and numbers and is more than 4 digits long.

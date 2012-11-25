@@ -31,7 +31,6 @@ module Models
 
     def self.request_exists_for_id?(reset_pw)
       @@reset_requests.invert.has_key? reset_pw
-
     end
 
     def self.getValue(username)
