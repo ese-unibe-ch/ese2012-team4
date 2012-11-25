@@ -101,11 +101,8 @@ module Models
       #generate random password-link out of letters
       new_password = PasswordReset.generate_random_pw
       new_request = PasswordReset.created(new_password, self.name)
-
+      new_password
       #self.change_password(new_password)
-      Mailer.reset_pw(self.e_mail, "Hi #{self.name}, \n
-        You forgot your password, you can reset your password with the following link: \n
-        http://localhost:4567/pwreset/#{new_password} \n")
     end
 
     # Adds an organization to the user's organization list
