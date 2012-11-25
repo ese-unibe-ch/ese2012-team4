@@ -2,10 +2,11 @@ require 'test/unit'
 require 'rubygems'
 require 'require_relative'
 require_relative('../app/models/utility/password_check')
+require_relative('../app/models/utility/password_reset')
 
 include Models
 
-class PasswordCheckTest <Test::Unit::TestCase
+class PasswordTest <Test::Unit::TestCase
   def test_password_length_check
     assert(PasswordCheck.safe?("pas22"),"Passwords longer than 4 digits should be safe.")
     assert(!PasswordCheck.safe?("pa22"),"Strings shorter than 5 digits should be unsafe")
@@ -28,4 +29,15 @@ class PasswordCheckTest <Test::Unit::TestCase
     assert(PasswordCheck.safe?("123*F"), "Passwords containing a capital letter and numbers should be safe")
     assert(PasswordCheck.safe?("123*Z"), "Passwords containing a capital letter and numbers should be safe")
   end
+
+  def test_reset_request
+    request1 = PasswordReset.created("pw1", "username")
+    assert(PasswordReset.request_exists_for_user?("username"))
+    assert(PasswordReset.request_exists_for_id?("pw1"))
+    assert(PasswordReset.getValue("username") == "pw1")
+
+    request2 = PasswordReset.created("pw2", "username")
+    assert(PasswordReset.getValue("username") == "pw2")
+  end
+
 end

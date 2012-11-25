@@ -44,6 +44,10 @@ module Models
       self.errors != "" ? false : true
     end
 
+    def is_active?
+      true
+    end
+
     def place_bid(bidder, bid)
       return :not_enough_credits if bidder.credits < bid - @bids[bidder]
       return :invalid_bid unless self.valid_bid?(bidder, bid)

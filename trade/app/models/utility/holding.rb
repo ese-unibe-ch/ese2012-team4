@@ -67,10 +67,10 @@ class Holding
 
     index = seller.offers.index(item)
     #seller: remove number of items (or item)
-    if (seller.item_list[index].quantity == quantity)
-      seller.item_list.delete(item)
+    if (seller.offers[index].quantity == quantity)
+      seller.offers.delete(item)
     else
-      seller.item_list[index].quantity -= quantity
+      seller.offers[index].quantity -= quantity
     end
 
     holding = self.created(item,seller,buyer,quantity)

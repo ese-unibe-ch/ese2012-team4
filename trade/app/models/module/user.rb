@@ -3,7 +3,9 @@ require 'bcrypt'
 require 'require_relative'
 require 'fileutils'
 require_relative('../utility/password_check')
+require_relative('../utility/password_reset')
 require_relative('trader')
+
 
 # ToDo: move some of these requires to trader
 
@@ -95,11 +97,12 @@ module Models
       self.password_hash == BCrypt::Engine.hash_secret(password, self.password_salt)
     end
 
-    def reset_password()
-      map = [('a'..'z'),('A'..'Z'),(1..9)].map{|i| i.to_a}.flatten
-      new_password  =  (0...50).map{ map[rand(map.length)] }.join
-      self.change_password(new_password)
-      User.login(self.id,new_password)
+    def forgot_password()
+      #generate random password-link out of letters
+      new_password = PasswordReset.generate_random_pw
+      new_request = PasswordReset.created(new_password, self.name)
+      new_password
+      #self.change_password(new_password)
     end
 
     # Adds an organization to the user's organization list

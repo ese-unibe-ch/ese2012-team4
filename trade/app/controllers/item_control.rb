@@ -34,7 +34,7 @@ module Controllers
     post '/search/query' do
       redirect '/index' unless session[:id]
       input = params[:search]
-      @@item_map[session[:id]]= Item.search(input,User.get_user(session[:id]))
+      @@item_map[session[:id]]= Item.search(input,User.get_user(session[:id]).working_for)
       redirect '/search/result/1'
     end
 

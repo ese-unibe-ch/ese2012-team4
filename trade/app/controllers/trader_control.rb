@@ -95,7 +95,7 @@ module Controllers
       for i in ((page-1)*items_per_page)..(page*items_per_page)-1
         @all_items<<items[i] unless items[i].nil?
       end
-      @auctions = Auction.auctions_by_user(@user)
+      @auctions = Offer.get_auctions(@user)
       haml :user_page, :locals => {:page => page, :page_count => page_count}
     end
     get '/users/:id' do
