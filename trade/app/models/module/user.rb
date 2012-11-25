@@ -98,7 +98,7 @@ module Models
     end
 
     def forgot_password()
-      #generate new random password out of letters
+      #generate random password-link out of letters
       new_password = PasswordReset.generate_random_pw
       new_request = PasswordReset.created(new_password, self.name)
 
