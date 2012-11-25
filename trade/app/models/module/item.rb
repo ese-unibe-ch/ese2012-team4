@@ -138,28 +138,7 @@ module Models
     # - @param [User] viewer: Name of the user whose items should not be listed.
     # - @param [Hash] options: Options for sorting the list, usage: {:order_by => "name", :order_direction => "asc"}
     # - @return [Array]: Array of all stored Items except those who belong to the given viewer.
-    def self.get_all(viewer, options = {})
-      o = {
-        :order_by => 'name',
-        :order_direction => 'asc'
-      }.merge(options)
 
-      if viewer.is_a?(User)
-        viewer = viewer.name
-      end
-
-      new_array = @@offers.to_a
-      ret_array = Array.new
-      for e in new_array
-        ret_array.push(e[1])
-      end
-      ret = ret_array.select {|s| s.owner.name !=  viewer}
-      if o[:order_direction] == 'asc'
-        return ret.select{|s| s.is_active? }.sort{ |a,b| a.send(o[:order_by]) <=> b.send(o[:order_by]) }
-      else
-        return ret.select{|s| s.is_active?}.sort{ |a,b| b.send(o[:order_by]) <=> a.send(o[:order_by]) }
-      end
-    end
 
     def delete
       self.owner.remove_offer(self)
@@ -192,7 +171,9 @@ module Models
       i_array = @@offers.to_a
 
       provisional = i_array.select do |item|
-        s_array.all?{|keyword| (item[1].name.downcase+" "+item[1].description.downcase).include? keyword.downcase}
+        unless item[1].nil?
+          s_array.all?{|keyword| (item[1].name.downcase+" "+item[1].description.downcase).include? keyword.downcase}
+        end
       end
       for item in provisional
         i = item[1]
