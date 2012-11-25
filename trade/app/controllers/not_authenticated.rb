@@ -9,6 +9,7 @@ require 'sinatra/content_for'
 require 'rack-flash'
 require_relative('../models/module/user')
 require_relative('../models/utility/password_check')
+require_relative('../models/utility/password_reset')
 require_relative('helper')
 
 include Models
@@ -37,6 +38,19 @@ module Controllers
     get '/pwforgotten' do
       redirect '/home' unless session[:id].nil?
       haml :pwforgotten
+    end
+
+    get '/pwreset/:id' do
+      if !(PasswordReset.request_exists_for_id? params[:id])
+        flash[:error] = "invalid link"
+        redirect "/home"
+      else
+        username = PasswordReset.getKey(params[:id])
+        #flash[:error] = "#{username} asdf #{params[:id]}"
+        #redirect "/home"
+        user = User.by_name username
+        haml :pwreset, :locals => {:reset_id => :id, :user => user}
+      end
     end
 
     post "/getnewpw" do

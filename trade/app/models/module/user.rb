@@ -3,7 +3,9 @@ require 'bcrypt'
 require 'require_relative'
 require 'fileutils'
 require_relative('../utility/password_check')
+require_relative('../utility/password_reset')
 require_relative('trader')
+
 
 # ToDo: move some of these requires to trader
 
@@ -97,12 +99,13 @@ module Models
 
     def forgot_password()
       #generate new random password out of letters
-      map = [('a'..'z'),('A'..'Z'),(1..9)].map{|i| i.to_a}.flatten
-      new_password  =  (0...50).map{ map[rand(map.length)] }.join
-      self.change_password(new_password)
-      Mailer.reset_pw(self.e_mail, "Hi #{self.name}, \n You forgot your password, here is your new password: \n #{new_password} \n
-        make sure to change the password on the user-page as soon as you are logged in")
-      #make this a clickable login-link
+      new_password = PasswordReset.generate_random_pw
+      new_request = PasswordReset.created(new_password, self.name)
+
+      #self.change_password(new_password)
+      Mailer.reset_pw(self.e_mail, "Hi #{self.name}, \n
+        You forgot your password, you can reset your password with the following link: \n
+        http://localhost:4567/pwreset/#{new_password} \n")
     end
 
     # Adds an organization to the user's organization list
