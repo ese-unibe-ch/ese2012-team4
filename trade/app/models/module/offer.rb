@@ -63,6 +63,10 @@ module Models
       end
     end
 
+    def self.get_auctions(user)
+      user.offers.select{|s| s.auction}
+    end
+
     # Saves the offer to the Offer-List
     def save
       unless self.auction

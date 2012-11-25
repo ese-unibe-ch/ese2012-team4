@@ -163,7 +163,7 @@
         %td
           %p.table_header Current price
     - for auction in @auctions
-      %tr(title = "#{auction.item.description}")
+      %tr(title = "#{auction.description}")
         %td.nopadding
           %a.wholly_clickable(href="/auction/#{auction.item.id}" )
             :escaped
