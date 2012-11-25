@@ -58,7 +58,7 @@ module Controllers
         flash[:error] = "No such login"
         redirect "/pwforgotten"
       else
-        user.forgot_password
+        user.reset_password
         host = "#{request.host}:#{request.port}"
         Mailer.reset_pw(host, user)
         flash[:notice] = "Check your E-Mail for new login-information"
