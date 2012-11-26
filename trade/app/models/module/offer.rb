@@ -63,6 +63,10 @@ module Models
       end
     end
 
+    def self.get_item_list
+      @@offers
+    end
+
     def self.get_auctions(user)
       user.offers.select{|s| s.auction}
     end

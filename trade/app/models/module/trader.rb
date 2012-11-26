@@ -147,7 +147,7 @@ module Models
     end
 
     def activate_item(id)
-      item = Item.get_offer(id)
+      item = Offer.get_offer(id)
       return false unless item.owner==self || item.owner == self.working_for
       if !(identical = self.list_items.detect{|i| i.name== item.name and i.price == item.price and i.description==item.description}).nil?
         identical.quantity+=item.quantity
@@ -176,7 +176,7 @@ module Models
     # Deactivates an item, removes it from everybody's wishlist and sets expiration_date to nil
     # - @param [Integer] id: The Item's id
     def deactivate_item(id)
-      item = Item.get_offer(id)
+      item = Offer.get_offer(id)
       return false unless item.owner==self || item.owner == self.working_for
       if !(identical = self.list_items_inactive.detect{|i| i.name== item.name and i.price == item.price and i.description==item.description}).nil?
         identical.quantity+=item.quantity
@@ -227,7 +227,7 @@ module Models
       FileUtils::rm(self.image, :force => true)
       @@traders.delete(self.id)
       @@traders_by_name.delete(self.name.downcase)
-      Item.get_item_list.delete_if {|k,v| v.owner == self }
+      Offer.get_item_list.delete_if {|k,v| v.owner == self }
       Auction.auctions_by_user(self).each{|auction|
         Auction.all_offers.delete(auction)
         self.auctions_list.delete(auction)

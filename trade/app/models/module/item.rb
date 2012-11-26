@@ -20,9 +20,7 @@ module Models
 
     @comment_count = 0
 
-    def self.get_item_list
-      @@offers
-    end
+
 
     # Factory method (constructor) on the class.
     # - @param [String] name
