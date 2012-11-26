@@ -145,7 +145,7 @@ module Controllers
     get '/item/:itemid' do
       redirect '/index' unless session[:id]
       id = params[:itemid]
-      @item = Item.get_offer(id)
+      @item = Offer.get_offer(id)
       haml :item_page
     end
 

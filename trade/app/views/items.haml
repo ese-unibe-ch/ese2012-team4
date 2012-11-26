@@ -81,7 +81,7 @@
             %form.nomargin(action="/remove_from_wishlist/#{item.id}" method="POST")
               %input.square.rightalign(type="submit" value = "Remove from Wishlist")
         -else
-          - if !item.owner.eql?(@session_user)
+          - if !item.owner.eql?(@session_user.working_for)
             %td
               %form.nomargin(action="/add_to_wishlist/#{item.id}" method="POST")
                 %input.square.rightalign(type = "submit" value ="Add to wishlist")

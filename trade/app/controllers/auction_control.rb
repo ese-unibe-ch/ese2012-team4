@@ -30,8 +30,7 @@ module Controllers
     end
 
     get '/auction/:item_id' do
-      @offer = Item.get_offer(params[:item_id])
-      haml :auction_page
+      redirect "/item/#{params[:item_id]}"
     end
 
     post '/auction/:id/create' do   #TODO: finish refactor here
@@ -61,8 +60,8 @@ module Controllers
     end
 
     post '/auction/:item_id/bid' do
-      @item = Item.get_offer(params[:item_id])
-      @auction = Auction.auction_by_item(@item)
+      @auction = Offer.get_offer(params[:item_id])
+      redirect '/index' unless @auction.auction
       unless @auction.nil?
 
         if (@session_user.working_for == @auction.owner)
@@ -80,7 +79,7 @@ module Controllers
           end
 
           if success == :success
-            flash[:notice] = "Bid of #{params[:bid]} placed for item #{@item.name}!"
+            flash[:notice] = "Bid of #{params[:bid]} placed for item #{@auction.name}!"
           end
         end
         redirect "/auction/#{params[:item_id]}"
@@ -90,9 +89,8 @@ module Controllers
     end
 
     get "/auction/:item_id/edit" do
-      redirect '/index' unless session[:id]
-      @item = Item.get_offer(params[:item_id])
-      @auction = Auction.auction_by_item(@item)
+      redirect "/" unless session[:id]
+      @item = Offer.get_offer(params[:item_id])
       haml :auction_edit
     end
 
@@ -125,8 +123,7 @@ module Controllers
 
     post "/auction/:item_id/deactivate" do
       redirect '/index' unless session[:id]
-      @item = Item.get_offer(params[:item_id])
-      @auction = Auction.auction_by_item(@item)
+      @auction = Offer.get_offer(params[:item_id])
       if (@session_user.working_for == @auction.owner)
         @auction.deactivate
       end

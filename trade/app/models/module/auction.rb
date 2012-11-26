@@ -135,18 +135,25 @@ module Models
 
     def deactivate
       # TODO: Not just pushing the item to the list, but merge it with eventually existing items. (like with buying items)
-      self.owner.offers.push(self.item)
+      self.owner.remove_offer(self)
+      self.owner.add_offer(self.item)
       @@offers.delete(self)
+      @@offers["#{self.id}"]=self.item
+
     end
+
 
     def end
       # RB: needs to be done first, because the scheduler has to stop finding it
-      self.deactivate
+      self.owner.remove_offer(self)
+      @@offers.delete(self)
+      @@offers["#{self.id}"]=self.item
+
       unless @current_selling_price == 0
         @current_winner.credits += bids[@current_winner]
         unless @current_winner == nil
           self.item.price = @current_selling_price
-          @current_winner.buy_new_item(item,1)
+          @current_winner.buy_new_item(self.item,1)
           Mailer.bid_over(@current_winner.e_mail, self)
         end
       end

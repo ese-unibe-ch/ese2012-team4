@@ -146,6 +146,7 @@ module Models
       return true
     end
 
+
     def activate_item(id)
       item = Offer.get_offer(id)
       return false unless item.owner==self || item.owner == self.working_for

@@ -1,72 +1,156 @@
-%h2
-  Itempage:
-  :escaped
-    #{@item.name}
-%a(href="/item/#{@item.id}/image" rel="lightbox" title="#{@item.name}")
-  %img(src="/item/#{@item.id}/image" class = "bigpicturebox")
-%br
-.lineContainer
-  .textbox.name
-    Description:
-  .textbox.value
-    %p
-      -if !@item.description.empty?
-        -@item.description.each do |line|
-          :escaped
-            #{line}
-          %br
-%br
-.lineContainer
-  .textbox.name
-    Price:
-  .textbox.value
-    #{@item.price}
-%br
-.lineContainer
-  .textbox.name
-    Available Quantity:
-  .textbox.value
-    #{@item.quantity}
-%br
-.lineContainer
-  .textbox.name
-    Expires on:
-  .textbox.value
-    - if !@item.expiration_date.nil?
-      #{@item.expiration_date.asctime}
-    - else
-      No Expiration Date selected
-%br
-.lineContainer
-  .textbox.name
-    Owner:
-  .textbox.value
-    %a(href="/users/#{@item.owner.id}" )
-      :escaped
-        #{@item.owner.name}
-.lineContainer
-  .textbox.name
-    Comments:
-  .textbox.value
-    %a(href="/comments/#{@item.id}") see comments
-%hr.separator.invisible
--if @item.owner.name == @session_user.name
-  -if @item.editable?
-    %p
-      %form.nomargin(action="/home/edit_item/#{@item.id}" method="GET")
-        %input.square.rightalign(type="submit" value="Edit")
--else
-  -if @item.active
-    %td.buyform
-      %form.nomargin(action="/buy/#{@item.id}/#{@item.timestamp}" method="POST")
-        %input.tiny.rightalign(type = "text" name = "quantity" value = "1")
-        %input.square.rightalign(type="submit" value="Buy")
-  - if @session_user.wishlist.include?(@item)
-    %td
-      %form.nomargin(action="/remove_from_wishlist/#{@item.id}" method="POST")
-        %input.square.rightalign(type="submit" value = "Remove from Wishlist")
+-if !@item.auction
+  %h2
+    Itempage:
+    :escaped
+      #{@item.name}
+  %a(href="/item/#{@item.id}/image" rel="lightbox" title="#{@item.name}")
+    %img(src="/item/#{@item.id}/image" class = "bigpicturebox")
+  %br
+  .lineContainer
+    .textbox.name
+      Description:
+    .textbox.value
+      %p
+        -if !@item.description.empty?
+          -@item.description.each do |line|
+            :escaped
+              #{line}
+            %br
+  %br
+  .lineContainer
+    .textbox.name
+      Price:
+    .textbox.value
+      #{@item.price}
+  %br
+  .lineContainer
+    .textbox.name
+      Available Quantity:
+    .textbox.value
+      #{@item.quantity}
+  %br
+  .lineContainer
+    .textbox.name
+      Expires on:
+    .textbox.value
+      - if !@item.expiration_date.nil?
+        #{@item.expiration_date.asctime}
+      - else
+        No Expiration Date selected
+  %br
+  .lineContainer
+    .textbox.name
+      Owner:
+    .textbox.value
+      %a(href="/users/#{@item.owner.id}" )
+        :escaped
+          #{@item.owner.name}
+  .lineContainer
+    .textbox.name
+      Comments:
+    .textbox.value
+      %a(href="/comments/#{@item.id}") see comments
+  %hr.separator.invisible
+  -if @item.owner.name == @session_user.name
+    -if @item.editable?
+      %p
+        %form.nomargin(action="/home/edit_item/#{@item.id}" method="GET")
+          %input.square.rightalign(type="submit" value="Edit")
   -else
-    - if !@item.owner.eql?(@session_user)
+    -if @item.active
+      %td.buyform
+        %form.nomargin(action="/buy/#{@item.id}/#{@item.timestamp}" method="POST")
+          %input.tiny.rightalign(type = "text" name = "quantity" value = "1")
+          %input.square.rightalign(type="submit" value="Buy")
+    - if @session_user.wishlist.include?(@item)
       %td
-        %form.nomargin(action="/add_to_wishlist/#{@item.id}" method="POST")
-          %input.square.rightalign(type = "submit" value ="Add to wishlist")
+        %form.nomargin(action="/remove_from_wishlist/#{@item.id}" method="POST")
+          %input.square.rightalign(type="submit" value = "Remove from Wishlist")
+    -else
+      - if !@item.owner.eql?(@session_user)
+        %td
+          %form.nomargin(action="/add_to_wishlist/#{@item.id}" method="POST")
+            %input.square.rightalign(type = "submit" value ="Add to wishlist")
+-else
+  %h2
+    Auction for Item:
+    :escaped
+      #{@item.name}
+  %a(href="/item/#{@item.id}/image" rel="lightbox" title="#{@item.name}")
+    %img(src="/item/#{@item.id}/image" class = "bigpicturebox")
+  %br
+
+  %br
+  .lineContainer
+    .textbox.name
+      Description:
+    .textbox.value
+      %p
+        -if !@item.description.empty?
+          -@item.description.each do |line|
+            :escaped
+              #{line}
+            %br
+
+  .lineContainer
+    .textbox.name
+      Min price:
+    .textbox.value
+      %p
+        #{@item.min_price}
+  %br
+  .lineContainer
+    .textbox.name
+      Current selling price:
+    .textbox.value
+      #{@item.current_selling_price}
+  %br
+  .lineContainer
+    .textbox.name
+      Increment:
+    .textbox.value
+      #{@item.increment}
+  %br
+  - unless @item.current_winner.nil?
+    .lineContainer
+      .textbox.name
+        Current Winner:
+      .textbox.value
+        #{@item.current_winner.name}
+
+  - unless @item.bids[@session_user] == 0
+    .lineContainer
+      .textbox.name
+        Placed Bid:
+      .textbox.value
+        - if @item.current_winner == @session_user
+          placed winning bid: #{@item.bids[@session_user]}
+        - else
+          placed unsuccessful bid: #{@item.bids[@session_user]}
+  %br
+  .lineContainer
+    .textbox.name
+      Expires on:
+    .textbox.value
+      #{@item.expiration_date.asctime}
+
+  %br
+  .lineContainer
+    .textbox.name
+      Owner:
+    .textbox.value
+      %a(href="/users/#{@item.owner.id}" )
+        :escaped
+          #{@item.owner.name}
+
+  %hr.separator.invisible
+  -if @item.owner.name == @session_user.working_for.name
+    -if @item.editable?
+      %p
+        %form.nomargin(action="/auction/#{@item.id}/edit" method="GET")
+          %input.square.rightalign(type="submit" value="Edit")
+  -else
+    %td.buyform
+      %form.nomargin(action="/auction/#{@item.id}/bid" method="POST")
+        %input.rightalign(type = "text" name ="bid" value = "#{@item.current_selling_price + @item.increment}")
+        %input.square.rightalign(type="submit" value="Bid")
