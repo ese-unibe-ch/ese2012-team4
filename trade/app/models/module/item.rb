@@ -9,17 +9,11 @@ module Models
   # Represents an item in the shop, stores its data and different states.
   # The class stores all created items in a list.
   class Item < Offer
-
-
     # [Integer]: The price in credits
     attr_accessor :price
     # [Boolean]: True, if the item can be bought
     attr_accessor :active
-
-
-
     @comment_count = 0
-
 
 
     # Factory method (constructor) on the class.
@@ -88,7 +82,6 @@ module Models
     end
 
 
-
     # Replaces the data of this Item with the given params.
     # - @param [String] name
     # - @param [Integer] price
@@ -120,8 +113,6 @@ module Models
       (!!(price_string =~ /^[-+]?[1-9]([0-9]*)?$/) && Integer(price_string) >= 0 || (price_string.is_a? Integer))
     end
 
-
-
     # Overrides to String method of Object.
     def to_s
       "#{self.name}, #{self.price}"
@@ -130,13 +121,6 @@ module Models
     def editable?
       !self.active
     end
-
-
-
-    # - @param [User] viewer: Name of the user whose items should not be listed.
-    # - @param [Hash] options: Options for sorting the list, usage: {:order_by => "name", :order_direction => "asc"}
-    # - @return [Array]: Array of all stored Items except those who belong to the given viewer.
-
 
     def delete
       self.owner.remove_offer(self)

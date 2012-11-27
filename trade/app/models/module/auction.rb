@@ -82,13 +82,6 @@ module Models
       @editable
     end
 
-
-
-    # different Cases, how we update the price and winner:
-    # 1. The bid is from the winner --> reserves credits and adds your bid, no changes on the price
-    # 2. bid > old highest, curent price+ increment and  --> the winner changes, price is
-    # 3.
-    # 3.
     def update_current_winner(new_bidder, bid)
 
       # if you are overbidding yourself...
@@ -127,17 +120,13 @@ module Models
       end
     end
 
-
-
     def deactivate
       # TODO: Not just pushing the item to the list, but merge it with eventually existing items. (like with buying items)
       self.owner.remove_offer(self)
       self.owner.add_offer(self.item)
       @@offers.delete(self)
       @@offers["#{self.id}"]=self.item
-
     end
-
 
     def end
       # RB: needs to be done first, because the scheduler has to stop finding it

@@ -8,15 +8,15 @@ require_relative('../utility/holding')
 
 module Models
 
-  # Abstract class for trading items in the System.
+  # Abstract class for trading offers in the System.
   # Do not try to create a trader directly, known subclasses are: User, Organisation
   # Traders have a name.
   # Traders have an amount of credits.
   # A new trader has originally 100 credit.
   # A trader can add a new item to the system with a name and a price; the item is originally inactive.
   # A trader provides a method that lists his/her active items to sell.
-  # Trader possesses certain items
-  # A trader can buy active items of another trader.
+  # Trader possesses certain offers
+  # A trader can buy active offers of another trader.
   class Trader
     # [String]
     attr_accessor :name
@@ -32,7 +32,7 @@ module Models
     attr_accessor :errors
     # [String]: The path of an image
     attr_accessor :image
-    # [Array]: All the items, this user is interested in
+    # [Array]: All the offers, this user is interested in
     attr_accessor :wishlist
     # [Array]: Ratings of other users
     attr_accessor :ratings
@@ -58,7 +58,6 @@ module Models
     end
 
     # - @return [User]: the user with the given username
-    # ToDo: maybe we need to adapt this, if we want to list organizations and users differently...
     def self.by_name(name)
       return @@traders_by_name[name.downcase]
     end
@@ -104,6 +103,11 @@ module Models
       return return_list
     end
 
+    # - @return [Array]: All the trader's auctions
+    def list_auctions
+      self.offers.select{|s| s.auction}
+    end
+
     # Return a list of the trader's inactive items
     # - @return [Array] The trader's inactive items
     def list_items_inactive
@@ -140,17 +144,16 @@ module Models
       end
 
       Holding.shipItem(item_to_buy, item_to_buy.owner, self, quantity)
-
-      Mailer.item_sold(preowner.e_mail, "Hi #{preowner.name}, \n #{self.name} bought your Item #{item_to_buy.name}.
-        Please Contact him for completing the trade. His E-Mail is: #{self.e_mail}")
       Activity.log(self, "item_bought_success", item_to_buy, self)
       Activity.log(self, "item_sold_success", item_to_buy, preowner)
+      Mailer.item_sold(preowner.e_mail, "Hi #{preowner.name}, \n #{self.name} bought your Item #{item_to_buy.name}.
+        Please Contact him for completing the trade. His E-Mail is: #{self.e_mail}")
+
       return true
     end
 
 
-
-
+    # - @param [Integer] id: The offers ID
     def activate_item(id)
       item = Offer.get_offer(id)
       return false unless item.owner==self || item.owner == self.working_for
@@ -293,7 +296,7 @@ module Models
       end
     end
 
-    # removes an item from the owner's list
+    # Removes an item from the owner's list
     def remove_offer(offer)
       self.offers.delete(offer) #AS Not sure if it works that simple, because they have concepts like quantity. But let's face the problems as they appear.
     end

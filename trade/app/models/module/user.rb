@@ -123,7 +123,6 @@ module Models
     end
 
     # - @return [User]: the user with the given user_id
-    # ToDo: maybe we need to adapt this, if we want to list organizations and users differently...
     def self.get_user(user_id)
       return @@traders[user_id.to_i]
     end
