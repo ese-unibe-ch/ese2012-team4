@@ -38,7 +38,7 @@ class Activity
   end
 
   def to_html
-    user_link = "<a href='/user/#{self.author.id}'>#{self.author.name}</a>"
+    user_link = "<a href='/users/#{self.author.id}'>#{self.author.name}</a>"
     item_link = "<a href='/item/#{self.subject.id}'>#{self.subject.name}</a>"
     comment_link = "<a href='/comments/#{self.subject.id}'>#{self.subject.name}</a>"
     item_price = self.subject.price
