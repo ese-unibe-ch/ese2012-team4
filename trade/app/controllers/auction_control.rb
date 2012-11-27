@@ -72,7 +72,7 @@ module Controllers
             flash[:error] = "you don't have enough credits!'"
           end
           if  success == :invalid_bid
-            flash[:error] = "this bid is too low!'"
+            flash[:error] = "this bid is invalid!"
           end
           if success == :bid_already_made
             flash[:error] = "this bid already exists'"
@@ -96,8 +96,8 @@ module Controllers
 
     post "/auction/:item_id/edit" do
       redirect '/index' unless session[:id]
-      @item = Item.get_offer(params[:item_id])
-      @auction = Auction.auction_by_item(@item)
+      @auction = Offer.get_offer(params[:item_id])
+      @item = @auction.item
       unless @auction.nil?
         if @auction.owner == @session_user.working_for
           if @auction.editable?
@@ -105,7 +105,7 @@ module Controllers
             test_auction = Auction.create(@item, params[:increment], params[:min_price], end_date)
             if test_auction.is_valid?
               @auction.min_price = params[:min_price].to_i
-              @auction.end_time = end_date
+              @auction.expiration_date = end_date
               @auction.increment = params[:increment].to_i
               flash[:notice] = "Auction for item #{@item.name} has been edited!"
             else

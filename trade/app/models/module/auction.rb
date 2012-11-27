@@ -63,11 +63,7 @@ module Models
     end
 
     def valid_bid?(bidder, bid)
-      if @current_selling_price == 0
-        return bid >= self.min_price
-      else
-        return @bids[bidder] < bid && bid >= @current_selling_price+self.increment #RB: changed from without increment
-      end
+      return @bids[bidder] < bid && bid >= @current_selling_price+self.increment
     end
 
     def name
@@ -101,7 +97,7 @@ module Models
         @bids[new_bidder] = bid
         # no need to change the current selling price
       else
-        if bid > @bids[@current_winner]
+        if bid > @bids[@current_winner] and bid > @current_selling_price
           old_winner = @current_winner
           @current_winner = new_bidder
           unless old_winner.nil?
@@ -110,22 +106,21 @@ module Models
           end
           @bids[new_bidder] = bid
           @current_winner.credits -= @bids[@current_winner] #SH Deduct the money from the current winner
-          if (@current_selling_price > 0)
+          if (!old_winner.nil?)
             if @bids[old_winner]+increment <= bid
               @current_selling_price = @bids[old_winner] + self.increment
             else
               @current_selling_price = @bids[current_winner]
             end
           else
-            @current_selling_price = self.min_price
+            @current_selling_price = bid
           end
         else
           #if the bid is below the maximal bid + increment
-          if bid < @bids[current_winner]
-
-            @current_selling_price = bid
-          else
-
+          if bid < @bids[current_winner]-increment
+            @current_selling_price = bid + increment
+          elsif bid < @bids[@current_winner] and bid > @bids[@current_winner] - increment
+            @current_selling_price = bid  # GM : TODO: How to handle the case where winning bid = 100 , bid = 99 and increment = 5?
           end
         end
 
@@ -150,11 +145,9 @@ module Models
       @@offers.delete(self)
       @@offers["#{self.id}"]=self.item
 
-      puts "end"
-
       if bids.length!=0
         @current_winner.credits += bids[@current_winner]
-        puts @current_winner.name
+
           self.item.price = @current_selling_price
         @current_winner.buy_new_item(self.item,1)
         Mailer.bid_over(@current_winner.e_mail, self)
