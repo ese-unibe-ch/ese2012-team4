@@ -60,17 +60,17 @@ class Holding
 
   # Moves the item from seller to holding
   def self.shipItem(item, seller, buyer, quantity)
-    item_list = Models::Item.get_item_list
+    item_list = Models::Offer.get_item_list
     item_list.delete(item)
 
     buyer.credits -= Integer(item.price)*quantity
 
-    index = seller.offers.index(item)
+
     #seller: remove number of items (or item)
-    if (seller.offers[index].quantity == quantity)
+    if (item.quantity == quantity)
       seller.offers.delete(item)
     else
-      seller.offers[index].quantity -= quantity
+      item.quantity -= quantity
     end
 
     holding = self.created(item,seller,buyer,quantity)

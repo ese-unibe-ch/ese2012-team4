@@ -125,26 +125,30 @@ module Models
     # - @param quantity: how many pieces of this item should be bought
     # - @return true if user can buy item, false if his credit amount is too small
     def buy_new_item(item_to_buy, quantity)
+      return false if item_to_buy.auction
       preowner = item_to_buy.owner
 
-      if Integer(item_to_buy.price*quantity) > self.working_for.credits or Integer(item_to_buy.quantity)<quantity
-        Activity.log(self, "item_bought_failure", item_to_buy, self.working_for)
+      if Integer(item_to_buy.price*quantity) > self.credits or Integer(item_to_buy.quantity)<quantity
+        Activity.log(self, "item_bought_failure", item_to_buy, self)
         Activity.log(self, "item_sold_failure", item_to_buy, preowner)
         return false
       end
+
 
       if !item_to_buy.wishlist_users.empty? and item_to_buy.quantity == quantity
         item_to_buy.wishlist_users.each {|trader| trader.remove_from_wishlist(item_to_buy); item_to_buy.wishlist_users.delete(trader)}
       end
 
-      Holding.shipItem(item_to_buy, item_to_buy.owner, self.working_for, quantity)
+      Holding.shipItem(item_to_buy, item_to_buy.owner, self, quantity)
 
-      Mailer.item_sold(preowner.e_mail, "Hi #{preowner.name}, \n #{self.working_for.name} bought your Item #{item_to_buy.name}.
+      Mailer.item_sold(preowner.e_mail, "Hi #{preowner.name}, \n #{self.name} bought your Item #{item_to_buy.name}.
         Please Contact him for completing the trade. His E-Mail is: #{self.e_mail}")
-      Activity.log(self, "item_bought_success", item_to_buy, self.working_for)
+      Activity.log(self, "item_bought_success", item_to_buy, self)
       Activity.log(self, "item_sold_success", item_to_buy, preowner)
       return true
     end
+
+
 
 
     def activate_item(id)

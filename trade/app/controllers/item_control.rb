@@ -236,7 +236,6 @@ module Controllers
       quantity = Integer(params[:quantity])
       item = Item.get_offer(id)
       old_owner = item.owner
-      viewer = session[:id]
       if (Integer(params[:timestamp])-item.timestamp)!=0
         flash[:error] = "#{item.name} has been edited while you were buying it"
         redirect "#{back}"
@@ -245,7 +244,7 @@ module Controllers
         flash[:error] = "#{item.name} is no longer active."
         redirect "#{back}"
       end
-      unless @session_user.buy_new_item(item, quantity)
+      unless @session_user.working_for.buy_new_item(item, quantity)
         flash[:error] = "You don't have enough credits to buy #{quantity} piece/s of #{item.name}"
         redirect "#{back}"
       end

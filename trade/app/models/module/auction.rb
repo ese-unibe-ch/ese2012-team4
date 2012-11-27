@@ -17,7 +17,7 @@ module Models
       self.min_price= min_price
       @bids = Hash.new(0)
       @editable = true
-      self.current_selling_price = 0
+      self.current_selling_price = min_price
       self.name = item.name
       self.owner= item.owner
       self.id = item.id
@@ -28,6 +28,7 @@ module Models
       self.head_comments = item.head_comments
       self.wishlist_users = item.wishlist_users
       self.image = item.image
+      item.quantity = 1
       self.quantity = item.quantity
       self.auction = true
     end
@@ -149,14 +150,19 @@ module Models
       @@offers.delete(self)
       @@offers["#{self.id}"]=self.item
 
-      unless @current_selling_price == 0
+      puts "end"
+
+      if bids.length!=0
         @current_winner.credits += bids[@current_winner]
-        unless @current_winner == nil
+        puts @current_winner.name
           self.item.price = @current_selling_price
-          @current_winner.buy_new_item(self.item,1)
-          Mailer.bid_over(@current_winner.e_mail, self)
-        end
+        @current_winner.buy_new_item(self.item,1)
+        Mailer.bid_over(@current_winner.e_mail, self)
+      else
+        self.item.deactivate
+        self.owner.add_offer(self.item)
       end
     end
   end
 end
+

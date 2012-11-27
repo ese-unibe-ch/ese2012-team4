@@ -72,10 +72,13 @@
         %td
           %p #{item.owner.rating}
         %td.buyform
-          -unless item.owner.id == session[:id]
-            %form.nomargin(action="/buy/#{item.id}/#{(stored.select {|tobuy| tobuy.id==item.id})[0].timestamp}" method="POST")
-              %input.tiny(type = "text" name = "quantity" value = "1")
-              %input.square.rightalign(type="submit" value="Buy")
+          -unless item.owner.id == User.get_user(session[:id]).working_for.id
+            -if !item.auction
+              %form.nomargin(action="/buy/#{item.id}/#{(stored.select {|tobuy| tobuy.id==item.id})[0].timestamp}" method="POST")
+                %input.tiny(type = "text" name = "quantity" value = "1")
+                %input.square.rightalign(type="submit" value="Buy")
+            -else
+              %a.wholly_clickable(href="/item/#{item.id}") See auction
         - if @session_user.wishlist.include?(item)
           %td
             %form.nomargin(action="/remove_from_wishlist/#{item.id}" method="POST")
