@@ -69,6 +69,9 @@ module Models
 
     # Saves the offer to the Offer-List
     def save
+      if @@offers.empty?
+        @@offers = Hash.new
+      end
       unless self.auction
         raise "Duplicated item" if @@offers.has_key? self.id and @@offers[self.id] != self
       else

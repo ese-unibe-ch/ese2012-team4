@@ -10,6 +10,7 @@ require_relative('../app/models/module/offer')
 require_relative('../app/models/module/comment')
 require_relative('../app/models/module/auction')
 require_relative('../app/models/module/trader')
+require_relative('../app/models/module/activity')
 
 include Models
 
@@ -105,7 +106,7 @@ class ItemTest < Test::Unit::TestCase
     assert(item.owner == old_owner, "Owner not set correctly")
     assert(item.owner.name == "Old", "Owner not set correctly")
     old_owner.list_items_inactive[0].active = true
-    if new_owner.buy_new_item(item,1)
+    if new_owner.buy_new_item(item,1, new_owner)
       old_owner.remove_offer(item)
     end
     # LD Removed this. This is already tested in user_test.rb, because
@@ -264,22 +265,23 @@ class ItemTest < Test::Unit::TestCase
     item2 = @owner.create_item("b_test_object2", 30, 1)
     item2.activate
 
-    items = Item.get_all("", {:order_by => 'name', :order_direction => 'asc'})
+    items = Offer.get_all("", {:order_by => 'name', :order_direction => 'asc'})
     assert items[0] == item1
     assert items[1] == item2
-    items = Item.get_all("", {:order_by => 'name', :order_direction => 'desc'})
+    items = Offer.get_all("", {:order_by => 'name', :order_direction => 'desc'})
     assert items[0] == item2
     assert items[1] == item1
-
-    auct1 = Auction.create(@owner, item1, 5, 20, Time.now + 3600)
+    #TODO: Correctly create auctions (see controller)
+    auct1 = Auction.create(item1, 5, 20, Time.now + 3600)
     auct1.save
-    auct2 = Auction.create(@owner, item2, 5, 30, Time.now + 3600)
+    auct2 = Auction.create(item2, 5, 30, Time.now + 3600)
     auct2.save
-    auctions = Auction.all_offers({:order_by => 'name', :order_direction => 'asc'})
+    auctions = Offer.get_all({:order_by => 'name', :order_direction => 'asc'})
 
     assert auctions[0] == auct1
     assert auctions[1] == auct2
-    auctions = Auction.all_offers({:order_by => 'name', :order_direction => 'desc'})
+    auctions = Offer.get_all({:order_by => 'name', :order_direction => 'desc'})
+    puts auctions[0].name
     assert auctions[0] == auct2
     assert auctions[1] == auct1
   end
@@ -298,9 +300,9 @@ class ItemTest < Test::Unit::TestCase
     assert items[0] == item2
     assert items[1] == item1
 
-    auct1 = Auction.create(@owner, item1, 5, 20, Time.now + 3600)
+    auct1 = Auction.create(item1, 5, 20, Time.now + 3600)
     auct1.save
-    auct2 = Auction.create(user, item2, 5, 30, Time.now + 3600)
+    auct2 = Auction.create(item2, 5, 30, Time.now + 3600)
     auct2.save
     auctions = Auction.all_offers({:order_by => 'owner', :order_direction => 'asc'})
     assert auctions[0] == auct1
@@ -328,9 +330,9 @@ class ItemTest < Test::Unit::TestCase
     item1.activate
     item2 = @owner.create_item("b_test_object2", 30, 1)
     item2.activate
-    auct1 = Auction.create(@owner, item1, 5, 20, Time.now + 3600)
+    auct1 = Auction.create(item1, 5, 20, Time.now + 3600)
     auct1.save
-    auct2 = Auction.create(@owner, item2, 5, 30, Time.now + 3600)
+    auct2 = Auction.create(item2, 5, 30, Time.now + 3600)
     auct2.save
 
     user = Models::User.created( "zest_user2", "password", "test@mail.com" )

@@ -1,4 +1,5 @@
 require 'rubygems'
+require 'date'
 
 class Activity
   attr_accessor :author, :topic, :subject, :time, :target
