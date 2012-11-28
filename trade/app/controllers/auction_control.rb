@@ -10,6 +10,7 @@ require 'rack-flash'
 require_relative('../models/module/user')
 require_relative('../models/module/item')
 require_relative('../models/module/auction')
+require_relative('../models/module/activity')
 
 include Models
 
@@ -80,6 +81,7 @@ module Controllers
 
           if success == :success
             flash[:notice] = "Bid of #{params[:bid]} placed for item #{@auction.name}!"
+            Activity.log(@session_user, "bid", @auction, @session_user.working_for)
           end
         end
         redirect "/auction/#{params[:item_id]}"

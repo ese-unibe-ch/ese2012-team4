@@ -25,6 +25,7 @@ class Activity
   def to_s
     text = case self.topic
              when "add_item" then "#{self.author.name} added '#{self.subject.name}' for a price of #{self.subject.price} credits"
+             when "bid" then "#{self.author.name} placed a bid for #{self.subject.name}"
              when "edit_item" then "#{self.author.name} edited '#{self.subject.name}'"
              when "activate_item" then "#{self.author.name} activated '#{self.subject.name}'"
              when "deactivate_item" then "#{self.author.name} deactivated '#{self.subject.name}'"
@@ -44,6 +45,7 @@ class Activity
     item_price = self.subject.price
     text = case self.topic
              when "add_item" then "#{user_link} added '#{item_link}' for a price of #{item_price} credits"
+             when "bid" then "#{user_link} placed a bid for #{item_link}"
              when "edit_item" then "#{user_link} edited '#{item_link}'"
              when "activate_item" then "#{user_link} activated '#{item_link}'"
              when "deactivate_item" then "#{user_link} deactivated '#{item_link}'"

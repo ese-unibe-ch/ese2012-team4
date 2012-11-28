@@ -63,6 +63,7 @@ module Models
     end
 
     def valid_bid?(bidder, bid)
+      return true if @current_winner==nil and bid>=min_price
       return @bids[bidder] < bid && bid >= @current_selling_price+self.increment
     end
 
@@ -138,7 +139,7 @@ module Models
         @current_winner.credits += bids[@current_winner]
 
           self.item.price = @current_selling_price
-        @current_winner.buy_new_item(self.item,1)
+        @current_winner.buy_new_item(self.item,1, @current_winner)
         Mailer.bid_over(@current_winner.e_mail, self)
       else
         self.item.deactivate
