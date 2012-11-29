@@ -267,6 +267,7 @@ module Controllers
 
       if quantity>item.quantity
         flash[:error] = "There are not enough copies of #{item.name} available"
+        @session_user.working_for.buy_new_item(item, quantity, @session_user) #for logging
         redirect "#{back}"
       end
 

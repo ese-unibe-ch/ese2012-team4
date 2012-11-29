@@ -139,7 +139,7 @@ module Models
       end
 
 
-      if !item_to_buy.wishlist_users.empty? and item_to_buy.quantity == quantity
+      if !item_to_buy.wishlist_users.empty? and item_to_buy.quantity == quantity and !item_to_buy.permanent
         item_to_buy.wishlist_users.each {|trader| trader.remove_from_wishlist(item_to_buy); item_to_buy.wishlist_users.delete(trader)}
       end
 
