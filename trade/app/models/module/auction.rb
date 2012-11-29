@@ -34,6 +34,15 @@ module Models
     end
 
 
+    # @Override
+    # - @return [Array]: the auctions in the system, not belonging to the viewer and sorted as indicated in options
+    def self.get_all(viewer = nil, options = {})
+      all_array = Offer.get_all(viewer, options)
+      ret =  all_array.select{|s| s.auction}
+      ret
+    end
+
+
     # Controls the auctions's data and adds errors if necessary.
     # - @return: true if there is no invalid data or false if there is.
     def is_valid?
