@@ -120,6 +120,11 @@ module Models
           end
         else
           #if the bid is below the maximal bid + increment
+          @bids[new_bidder] = bid
+          if @current_winner.nil? and bid >= min_price
+            @current_winner = new_bidder
+            @current_selling_price = bid
+          end
           if bid < @bids[current_winner]-increment
             @current_selling_price = bid + increment
           elsif bid < @bids[@current_winner] and bid > @bids[@current_winner] - increment
