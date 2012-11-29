@@ -150,7 +150,8 @@
         %form.nomargin(action="/auction/#{@item.id}/edit" method="GET")
           %input.square.rightalign(type="submit" value="Edit")
   -else
+    -price = @item.current_winner.nil? ? @item.min_price : @item.current_selling_price + @item.increment
     %td.buyform
       %form.nomargin(action="/auction/#{@item.id}/bid" method="POST")
-        %input.rightalign(type = "text" name ="bid" value = "#{@item.current_selling_price + @item.increment}")
+        %input.rightalign(type = "text" name ="bid" value = "#{price}")
         %input.square.rightalign(type="submit" value="Bid")
