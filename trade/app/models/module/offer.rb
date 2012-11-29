@@ -109,5 +109,23 @@ module Models
       return @@offers[offerid]
     end
 
+    # Returns the object
+    # This method is needed to make an offer a component of category
+    def list
+      self
+    end
+
+    # Does nothing, when trying to add a component to this component
+    # This method is needed to make an offer a component of category
+    def add(component)
+
+    end
+
+    # Does nothing, when trying to remove a component to this component
+    # This method is needed to make an offer a component of category
+    def remove(component)
+
+    end
+
   end
 end
