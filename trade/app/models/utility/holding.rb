@@ -32,7 +32,11 @@ class Holding
     if(item.quantity.to_i == quantity)
       # buy all items from seller
       item.owner = buyer
-      item.owner.remove_offer(item)
+      if(!item.permanent)
+        item.owner.remove_offer(item)
+      else
+        item.switch_permanent
+      end
       if !(identical = buyer.list_items_inactive.detect{|i| i.name== item.name and i.price == item.price and i.description==item.description}).nil?
         identical.quantity+=quantity
       else
@@ -67,13 +71,22 @@ class Holding
 
 
     #seller: remove number of items (or item)
-    if (item.quantity == quantity)
-      seller.offers.delete(item)
-    else
+    if (item.permanent)
+      copy = item.copy
+      copy.quantity = quantity
       item.quantity -= quantity
-    end
+      copy.save
+      holding = self.created(copy, seller, buyer, quantity)
+    else
 
-    holding = self.created(item,seller,buyer,quantity)
+      if (item.quantity == quantity)
+        seller.offers.delete(item)
+      else
+        item.quantity -= quantity
+      end
+
+      holding = self.created(item,seller,buyer,quantity)
+    end
   end
 
 end

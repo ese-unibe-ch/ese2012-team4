@@ -41,6 +41,12 @@
     min-width: 80px;
 
 }
+
+.itemtable td.restock {
+    min-width: 100px;
+
+}
+
 .itemtable td.nopadding{
     padding: 0;
 }

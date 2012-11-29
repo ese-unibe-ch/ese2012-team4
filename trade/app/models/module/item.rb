@@ -13,6 +13,8 @@ module Models
     attr_accessor :price
     # [Boolean]: True, if the item can be bought
     attr_accessor :active
+
+    attr_accessor :permanent
     @comment_count = 0
 
 
@@ -39,6 +41,7 @@ module Models
       item.timestamp = Time.now.to_i
       item.head_comments = []
       item.auction = false
+      item.permanent = false
       item
     end
 
@@ -56,6 +59,7 @@ module Models
       item = Models::Item.created(hash[:name] || self.name, hash[:price] || self.price,
                                   hash[:owner] || self.owner, hash[:quantity] ||self.quantity,
                                   hash[:description] || self.description, hash[:image] || self.image)
+      item
     end
 
     # Controls the item's data and adds errors if necessary.
@@ -120,6 +124,17 @@ module Models
 
     def editable?
       !self.active
+    end
+
+    # changes whether the item is permanent or not
+    def switch_permanent
+      self.permanent = self.permanent ? false : true
+    end
+
+    # adds quantity to an item with permanent stock
+    def restock (amount)
+      return false unless self.permanent
+      self.quantity += amount.to_i
     end
 
     def delete

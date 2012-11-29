@@ -74,9 +74,12 @@
         %td.buyform
           -unless item.owner.id == User.get_user(session[:id]).working_for.id
             -if !item.auction
-              %form.nomargin(action="/buy/#{item.id}/#{(stored.select {|tobuy| tobuy.id==item.id})[0].timestamp}" method="POST")
-                %input.tiny(type = "text" name = "quantity" value = "1")
-                %input.square.rightalign(type="submit" value="Buy")
+              -if item.quantity == 0
+                %p Sold out! come back later
+              -else
+                %form.nomargin(action="/buy/#{item.id}/#{(stored.select {|tobuy| tobuy.id==item.id})[0].timestamp}" method="POST")
+                  %input.tiny(type = "text" name = "quantity" value = "1")
+                  %input.square.rightalign(type="submit" value="Buy")
             -else
               %a.wholly_clickable(href="/item/#{item.id}") See auction
         - if @session_user.wishlist.include?(item)
