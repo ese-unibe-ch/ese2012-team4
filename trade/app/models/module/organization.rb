@@ -23,7 +23,9 @@ module Models
       org
     end
 
-
+    def working_for
+      self
+    end
 
 
     def add_admin(new_admin)
