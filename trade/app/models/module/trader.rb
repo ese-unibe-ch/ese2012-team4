@@ -38,6 +38,7 @@ module Models
     attr_accessor :ratings
     # [Boolean]: check if trader is an organization, used primarily for views
     attr_accessor :organization
+    # [Array]: all activites of this user or users of this organization
     attr_accessor :activities
 
     @@traders_by_name = {}

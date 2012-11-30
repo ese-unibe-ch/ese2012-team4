@@ -11,6 +11,7 @@ require_relative('controllers/item_control')
 require_relative('controllers/trader_control')
 require_relative('controllers/comment_control')
 require_relative('controllers/auction_control')
+require_relative('controllers/message_control')
 
 require_relative('../../trade/app/models/module/item')
 require_relative('../../trade/app/models/module/user')
@@ -27,6 +28,7 @@ class App < Sinatra::Base
   use CommentControl
   use TraderControl
   use AuctionControl
+  use MessageControl
 
   enable :sessions
   enable :method_override

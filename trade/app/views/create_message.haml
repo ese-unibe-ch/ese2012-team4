@@ -1,0 +1,15 @@
+%h2 Compose a message
+%br
+%form(action="/message/send" method="POST")
+	.textbox.name
+		%p Subject
+	.textbox.value
+		%input(type="text" name="subject")
+	%br
+	.textbox.name
+		%p Content
+	.textbox.value
+		%textarea(name="content" cols="50" rows="10")
+		%input(type="hidden" name="recipient_id" value="#{@recipient.id}")
+		%br
+		%input.square(type="submit" value="Send Message")
