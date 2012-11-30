@@ -34,6 +34,15 @@ module Models
     end
 
 
+    # @Override
+    # - @return [Array]: the auctions in the system, not belonging to the viewer and sorted as indicated in options
+    def self.get_all(viewer = nil, options = {})
+      all_array = Offer.get_all(viewer, options)
+      ret =  all_array.select{|s| s.auction}
+      ret
+    end
+
+
     # Controls the auctions's data and adds errors if necessary.
     # - @return: true if there is no invalid data or false if there is.
     def is_valid?
@@ -111,6 +120,11 @@ module Models
           end
         else
           #if the bid is below the maximal bid + increment
+          @bids[new_bidder] = bid
+          if @current_winner.nil? and bid >= min_price
+            @current_winner = new_bidder
+            @current_selling_price = bid
+          end
           if bid < @bids[current_winner]-increment
             @current_selling_price = bid + increment
           elsif bid < @bids[@current_winner] and bid > @bids[@current_winner] - increment

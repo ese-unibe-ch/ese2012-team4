@@ -10,6 +10,7 @@ require_relative('../app/models/module/offer')
 require_relative('../app/models/module/comment')
 require_relative('../app/models/module/auction')
 require_relative('../app/models/module/trader')
+require_relative('../app/models/module/activity')
 
 include Models
 
@@ -105,7 +106,7 @@ class ItemTest < Test::Unit::TestCase
     assert(item.owner == old_owner, "Owner not set correctly")
     assert(item.owner.name == "Old", "Owner not set correctly")
     old_owner.list_items_inactive[0].active = true
-    if new_owner.buy_new_item(item,1)
+    if new_owner.buy_new_item(item,1, new_owner)
       old_owner.remove_offer(item)
     end
     # LD Removed this. This is already tested in user_test.rb, because
@@ -234,7 +235,7 @@ class ItemTest < Test::Unit::TestCase
     item1 = @owner.create_item('item', 20,1,"descr")
     @wisher.add_to_wishlist(item1)
     assert(@wisher.wishlist.include? item1)
-    @fastbuyer.buy_new_item(item1, 1)
+    @fastbuyer.buy_new_item(item1, 1, @fastbuyer)
     assert !(@wisher.wishlist.include? item1)
   end
 
@@ -244,7 +245,7 @@ class ItemTest < Test::Unit::TestCase
     item1 = @owner.create_item('item', 20,2,"descr")
     @wisher.add_to_wishlist(item1)
     assert(@wisher.wishlist.include? item1)
-    @fastbuyer.buy_new_item(item1, 1)
+    @fastbuyer.buy_new_item(item1, 1, @fastbuyer)
     assert (@wisher.wishlist.include? item1)
   end
 
@@ -253,7 +254,7 @@ class ItemTest < Test::Unit::TestCase
     item1 = @owner.create_item('item', 20,2,"descr")
     @wisher.add_to_wishlist(item1)
     assert(@wisher.wishlist.include? item1)
-    @wisher.buy_new_item(item1, 1)
+    @wisher.buy_new_item(item1, 1, @wisher)
     assert (@wisher.wishlist.include? item1)
   end
 
@@ -264,22 +265,23 @@ class ItemTest < Test::Unit::TestCase
     item2 = @owner.create_item("b_test_object2", 30, 1)
     item2.activate
 
-    items = Item.get_all("", {:order_by => 'name', :order_direction => 'asc'})
+    items = Offer.get_all("", {:order_by => 'name', :order_direction => 'asc'})
     assert items[0] == item1
     assert items[1] == item2
-    items = Item.get_all("", {:order_by => 'name', :order_direction => 'desc'})
+    items = Offer.get_all("", {:order_by => 'name', :order_direction => 'desc'})
     assert items[0] == item2
     assert items[1] == item1
-
-    auct1 = Auction.create(@owner, item1, 5, 20, Time.now + 3600)
+    #TODO: Correctly create auctions (see controller)
+    auct1 = Auction.create(item1, 5, 20, Time.now + 3600)
     auct1.save
-    auct2 = Auction.create(@owner, item2, 5, 30, Time.now + 3600)
+    auct2 = Auction.create(item2, 5, 30, Time.now + 3600)
     auct2.save
-    auctions = Auction.all_offers({:order_by => 'name', :order_direction => 'asc'})
+    auctions = Auction.get_all({:order_by => 'name', :order_direction => 'asc'})
 
     assert auctions[0] == auct1
     assert auctions[1] == auct2
-    auctions = Auction.all_offers({:order_by => 'name', :order_direction => 'desc'})
+    auctions = Auction.get_all({:order_by => 'name', :order_direction => 'desc'})
+    puts auctions[0].name
     assert auctions[0] == auct2
     assert auctions[1] == auct1
   end
@@ -291,23 +293,25 @@ class ItemTest < Test::Unit::TestCase
     item2 = user.create_item("b_test_object2", 30, 1)
     item2.activate
 
-    items = Item.get_all("", {:order_by => 'owner', :order_direction => 'asc'})
+    items = Offer.get_all("", {:order_by => 'owner', :order_direction => 'asc'})
     assert items[0] == item1
     assert items[1] == item2
-    items = Item.get_all("", {:order_by => 'owner', :order_direction => 'desc'})
+    items = Offer.get_all("", {:order_by => 'owner', :order_direction => 'desc'})
     assert items[0] == item2
     assert items[1] == item1
 
-    auct1 = Auction.create(@owner, item1, 5, 20, Time.now + 3600)
+    auct1 = Auction.create(item1, 5, 20, Time.now + 3600)
     auct1.save
-    auct2 = Auction.create(user, item2, 5, 30, Time.now + 3600)
+    auct2 = Auction.create(item2, 5, 30, Time.now + 3600)
     auct2.save
-    auctions = Auction.all_offers({:order_by => 'owner', :order_direction => 'asc'})
+    auctions = Auction.get_all({:order_by => 'owner', :order_direction => 'asc'})
+    puts("#{auctions[0].owner}, #{auctions[1].owner}")
     assert auctions[0] == auct1
     assert auctions[1] == auct2
-    auctions = Auction.all_offers({:order_by => 'owner', :order_direction => 'desc'})
-    assert auctions[0] == auct2
-    assert auctions[1] == auct1
+    auctionsd = Auction.get_all({:order_by => 'owner', :order_direction => 'desc'})
+    puts("#{auctionsd[0].owner}, #{auctionsd[1].owner}")
+    assert auctionsd[0] == auct2
+    assert auctionsd[1] == auct1
   end
 
   def test_sort_items_by_price_fixed
@@ -328,16 +332,16 @@ class ItemTest < Test::Unit::TestCase
     item1.activate
     item2 = @owner.create_item("b_test_object2", 30, 1)
     item2.activate
-    auct1 = Auction.create(@owner, item1, 5, 20, Time.now + 3600)
+    auct1 = Auction.create(item1, 5, 20, Time.now + 3600)
     auct1.save
-    auct2 = Auction.create(@owner, item2, 5, 30, Time.now + 3600)
+    auct2 = Auction.create(item2, 5, 30, Time.now + 3600)
     auct2.save
 
     user = Models::User.created( "zest_user2", "password", "test@mail.com" )
     auct1.place_bid(user, 40)
     auct2.place_bid(user, 40)
 
-    auctions = Auction.all_offers({:order_by => 'price', :order_direction => 'asc'})
+    auctions = Offer.get_all({:order_by => 'price', :order_direction => 'asc'})
     assert auctions[0] == auct1
     assert auctions[1] == auct2
 

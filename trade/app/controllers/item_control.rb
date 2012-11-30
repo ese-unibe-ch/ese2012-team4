@@ -192,6 +192,26 @@ module Controllers
       end
     end
 
+    post '/permanent/:itemid' do
+      redirect '/index' unless session[:id]
+      item = Offer.get_offer(params[:itemid])
+      if item.auction
+        flash[:error] = "invalid action"
+        redirect "#{back}"
+      end
+      item.switch_permanent
+      flash[:notice] = "successfully changed status"
+      redirect "#{back}"
+    end
+
+    post '/restock/:itemid' do
+      redirect '/index' unless session[:id]
+      item = Offer.get_offer(params[:itemid])
+      redirect "#{back}" unless item.permanent
+      item.restock(params[:quantity])
+      redirect "#{back}"
+    end
+
     get '/changestate/:itemid/activation' do
       redirect '/index' unless session[:id]
       if Item.get_offer(params[:itemid]).is_owner?(@session_user.working_for.id)
@@ -244,6 +264,13 @@ module Controllers
         flash[:error] = "#{item.name} is no longer active."
         redirect "#{back}"
       end
+
+      if quantity>item.quantity
+        flash[:error] = "There are not enough copies of #{item.name} available"
+        @session_user.working_for.buy_new_item(item, quantity, @session_user) #for logging
+        redirect "#{back}"
+      end
+
       unless @session_user.working_for.buy_new_item(item, quantity, @session_user)
         flash[:error] = "You don't have enough credits to buy #{quantity} piece/s of #{item.name}"
         redirect "#{back}"

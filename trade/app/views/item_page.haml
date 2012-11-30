@@ -51,23 +51,23 @@
     .textbox.value
       %a(href="/comments/#{@item.id}") see comments
   %hr.separator.invisible
-  -if @item.owner.name == @session_user.name
+  -if @item.owner.name == @session_user.working_for.name
     -if @item.editable?
       %p
         %form.nomargin(action="/home/edit_item/#{@item.id}" method="GET")
           %input.square.rightalign(type="submit" value="Edit")
   -else
-    -if @item.active
+    -if @item.active and @item.quantity!=0
       %td.buyform
         %form.nomargin(action="/buy/#{@item.id}/#{@item.timestamp}" method="POST")
           %input.tiny.rightalign(type = "text" name = "quantity" value = "1")
           %input.square.rightalign(type="submit" value="Buy")
-    - if @session_user.wishlist.include?(@item)
+    - if @session_user.working_for.wishlist.include?(@item)
       %td
         %form.nomargin(action="/remove_from_wishlist/#{@item.id}" method="POST")
           %input.square.rightalign(type="submit" value = "Remove from Wishlist")
     -else
-      - if !@item.owner.eql?(@session_user)
+      - if !@item.owner.eql?(@session_user.working_for)
         %td
           %form.nomargin(action="/add_to_wishlist/#{@item.id}" method="POST")
             %input.square.rightalign(type = "submit" value ="Add to wishlist")
@@ -118,15 +118,15 @@
       .textbox.value
         #{@item.current_winner.name}
 
-  - unless @item.bids[@session_user] == 0
+  - unless @item.bids[@session_user.working_for] == 0
     .lineContainer
       .textbox.name
         Placed Bid:
       .textbox.value
-        - if @item.current_winner == @session_user
-          placed winning bid: #{@item.bids[@session_user]}
+        - if @item.current_winner == @session_user.working_for
+          placed winning bid: #{@item.bids[@session_user.working_for]}
         - else
-          placed unsuccessful bid: #{@item.bids[@session_user]}
+          placed unsuccessful bid: #{@item.bids[@session_user.working_for]}
   %br
   .lineContainer
     .textbox.name
@@ -150,7 +150,8 @@
         %form.nomargin(action="/auction/#{@item.id}/edit" method="GET")
           %input.square.rightalign(type="submit" value="Edit")
   -else
+    -price = @item.current_winner.nil? ? @item.min_price : @item.current_selling_price + @item.increment
     %td.buyform
       %form.nomargin(action="/auction/#{@item.id}/bid" method="POST")
-        %input.rightalign(type = "text" name ="bid" value = "#{@item.current_selling_price + @item.increment}")
+        %input.rightalign(type = "text" name ="bid" value = "#{price}")
         %input.square.rightalign(type="submit" value="Bid")

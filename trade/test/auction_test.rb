@@ -30,7 +30,7 @@ class AuctionTest < Test::Unit::TestCase
     increment = 2
     item_name = "TestItem"             #(name, price, owner, increment, endTime, description = "")
     item = @userA.create_item(item_name, initialPrice, 1)
-    auction = Auction.create(@userA, item, increment, initialPrice, 0)
+    auction = Auction.create(item, increment, initialPrice, 0)
     assert(!auction.valid_bid?(@userD,1)) # bid not high enough
     assert(!auction.valid_bid?(@userD,2)) # not enough money
 
@@ -43,7 +43,7 @@ class AuctionTest < Test::Unit::TestCase
     increment = 2
     item_name = "TestItem"             #(name, price, owner, increment, endTime, description = "")
     item = @userA.create_item(item_name, initialPrice, 1)
-    auction = Auction.create(@userA, item, increment, initialPrice, 0)
+    auction = Auction.create(item, increment, initialPrice, 0)
 
     assert(auction.owner == @userA)
     assert(auction.current_selling_price == 0)
@@ -80,7 +80,7 @@ class AuctionTest < Test::Unit::TestCase
     increment = 2
     item_name = "TestItem"             #(name, price, owner, increment, endTime, description = "")
     item = @userA.create_item(item_name, initialPrice, 1)
-    auction = Auction.create(@userA, item, increment, initialPrice, 0)
+    auction = Auction.create(item, increment, initialPrice, 0)
 
     assert auction.current_winner == nil
     auction.place_bid(@userB, 10)
@@ -94,7 +94,7 @@ class AuctionTest < Test::Unit::TestCase
     increment = 2
     item_name = "TestItem"             #(name, price, owner, increment, endTime, description = "")
     item = @userA.create_item(item_name, initialPrice, 1)
-    auction = Auction.create(@userA, item, increment, initialPrice, 0)
+    auction = Auction.create(item, increment, initialPrice, 0)
 
     auction.place_bid(@userB,20)
     assert auction.current_selling_price == 5
@@ -118,7 +118,7 @@ class AuctionTest < Test::Unit::TestCase
     increment = 2
     item_name = "TestItem"             #(name, price, owner, increment, endTime, description = "")
     item = @userA.create_item(item_name, initialPrice, 1)
-    auction = Auction.create(@userA, item, increment, initialPrice, 0)
+    auction = Auction.create(item, increment, initialPrice, 0)
 
     assert auction.editable?
     auction.place_bid(@userB, 20)
@@ -130,7 +130,7 @@ class AuctionTest < Test::Unit::TestCase
     increment = 2
     item_name = "TestItem"             #(name, price, owner, increment, endTime, description = "")
     item = @userA.create_item(item_name, initialPrice, 1)
-    auction = Auction.create(@userA, item, increment, initialPrice, 0)
+    auction = Auction.create(item, increment, initialPrice, 0)
 
     auction.place_bid(@userB,20)
     auction.place_bid(@userC,15)
@@ -152,7 +152,7 @@ class AuctionTest < Test::Unit::TestCase
     increment = 2
     item_name = "TestItem"             #(name, price, owner, increment, endTime, description = "")
     item = @userA.create_item(item_name, initialPrice, 1)
-    auction = Auction.create(@userA, item, increment, initialPrice, 0)
+    auction = Auction.create(item, increment, initialPrice, 0)
 
     auction.end
     assert @userA.credits == 1000
