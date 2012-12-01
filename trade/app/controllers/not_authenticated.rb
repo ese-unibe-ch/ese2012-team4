@@ -30,9 +30,15 @@ module Controllers
       haml :index
     end
 
-    get '/login' do
-      redirect '/home' unless session[:id].nil?
-      haml :login
+   get '/login' do
+    redirect '/home' unless session[:id].nil?
+      haml :login, :locals => {:user_id => "0"}
+    end
+
+    get '/login/:id' do
+      id = params[:id]
+      redirect "/users/#{id}/1" unless session[:id].nil?
+      haml :login, :locals => {:user_id => params[:id]}
     end
 
     get '/pwforgotten' do
@@ -85,16 +91,21 @@ module Controllers
 
 
 
-    post "/authenticate" do
+    post "/authenticate/:id" do
       user = User.by_name params[:username].strip.downcase
-
+      id = params[:id].to_i
       if !User.login user.id, params[:password] or user.nil?
         flash[:error] = "No such login"
         redirect "/login"
       else
-        session[:id] = user.id
-        flash[:notice] = "Welcome, #{user.name}. You are now logged in"
-        redirect "/home"
+        if id == 0
+          session[:id] = user.id
+          flash[:notice] = "Welcome, #{user.name}. You are now logged in"
+          redirect "/home"
+        else
+          session[:id] = user.id
+          redirect "/users/#{id}/1"
+        end
       end
     end
 

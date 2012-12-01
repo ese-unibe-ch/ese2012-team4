@@ -48,7 +48,7 @@ subject: [TradingSystem] #{subject}
 Date: #{Time.now.rfc2822}
 Content-Type: text/html
       
-You have a new message from <a href="#{site_url}/users/#{@session_user.id}">#{@session_user.name}</a>:
+You have a new message from <a href="#{site_url}/login/#{@session_user.id}">#{@session_user.name}</a>:
 <hr />
 #{escape_html(content)}
 <hr />
