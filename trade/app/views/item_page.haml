@@ -52,6 +52,11 @@
       %a(href="/comments/#{@item.id}") see comments
   %hr.separator.invisible
   -if @item.owner.name == @session_user.working_for.name
+    %form.nomargin(action="/permanent/#{@item.id}" method="POST")
+      -if(@item.permanent)
+        %input.rightalign.square(type="submit" value="Set non-permanent")
+      -else
+        %input.rightalign.square(type="submit" value="Set permanent")
     -if @item.editable?
       %p
         %form.nomargin(action="/home/edit_item/#{@item.id}" method="GET")

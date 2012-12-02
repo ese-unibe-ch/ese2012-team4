@@ -23,7 +23,7 @@
     %div(id="placeholder" style="width:250px; height:100px;")
 %br
 %form(method="GET" action="/message/compose/#{@user.id}")
-  %input(type="submit" value="send message")
+  %input.square(type="submit" value="send message")
 -unless(@user.organization)
   .lineContainer
     .textbox.name
