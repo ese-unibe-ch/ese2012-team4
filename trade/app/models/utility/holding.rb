@@ -81,6 +81,7 @@ class Holding
 
       if (item.quantity == quantity)
         seller.offers.delete(item)
+        item.deactivate
       else
         item.quantity -= quantity
       end
