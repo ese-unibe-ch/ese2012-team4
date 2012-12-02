@@ -68,10 +68,15 @@ module Controllers
         flash[:error] = "invalid link"
         redirect "/home"
       else
-        session["pwrecovery"] = params[:id]
-        username = PasswordReset.getKey(params[:id])
-        user = User.by_name username
-        haml :pwreset, :locals => {:user => user}
+        if session[:id]
+          flash[:error] = "only one session allowed, please log out of all accounts"
+          redirect "/home"
+        else
+          session["pwrecovery"] = params[:id]
+          username = PasswordReset.getKey(params[:id])
+          user = User.by_name username
+          haml :pwreset, :locals => {:user => user}
+        end
       end
     end
 
