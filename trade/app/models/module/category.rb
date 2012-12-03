@@ -6,17 +6,22 @@ module Models
   class Category
 
     attr_accessor :name
-    @components = []
-    @@supercategory = self.new("all")
+    @components
 
     def initialize(name)
       self.name = name
+      @components = Array.new
     end
+
     def list
       ret_array = Array.new
       for e in @components
         ret_array.push(e.list)
       end
+    end
+
+    def to_s
+      self.name
     end
 
     def add(component)
@@ -30,5 +35,6 @@ module Models
     def self.get_supercategory
       @@supercategory
     end
+    @@supercategory = self.new("all")
   end
 end

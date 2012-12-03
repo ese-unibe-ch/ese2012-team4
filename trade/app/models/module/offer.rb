@@ -31,6 +31,7 @@ module Models
     attr_accessor :wishlist_users
     # [Bool]: Stores whether the Offer is an Auction or not
     attr_accessor :auction
+    # [Category]: The category the offer belongs to
 
     @@count = 0
     @@offers = {}
@@ -107,24 +108,6 @@ module Models
         offerid = offerid.to_s
       end
       return @@offers[offerid]
-    end
-
-    # Returns the object
-    # This method is needed to make an offer a component of category
-    def list
-      self
-    end
-
-    # Does nothing, when trying to add a component to this component
-    # This method is needed to make an offer a component of category
-    def add(component)
-
-    end
-
-    # Does nothing, when trying to remove a component to this component
-    # This method is needed to make an offer a component of category
-    def remove(component)
-
     end
 
   end
