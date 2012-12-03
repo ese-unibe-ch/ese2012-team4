@@ -115,6 +115,7 @@ module Controllers
       redirect '/index' unless session[:id]
       if Item.get_offer(params[:itemid]).is_owner?(@session_user.working_for.id)
         @item = Item.get_offer(params[:itemid])
+        @supercategory = Category.get_supercategory
         haml :item_edit, :locals => {:action => "change/#{params[:itemid]}", :button => "Save changes"}
       else
         redirect "/"

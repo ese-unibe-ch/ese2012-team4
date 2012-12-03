@@ -29,7 +29,17 @@ module Models
     end
 
     def remove(component)
-      #ToDo: removing components
+      @components
+    end
+
+    def get_offers
+      ret_array = Array.new
+      for offer in Offer.get_all(viewer= nil, options = {})
+        if offer.category == self
+          ret_array.push(offer)
+        end
+      end
+      ret_array
     end
 
     def self.get_supercategory
