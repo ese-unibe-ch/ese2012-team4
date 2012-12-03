@@ -159,13 +159,14 @@ module Controllers
       description = params[:quantity]
       filename = save_image(params[:image_file])
       item = Item.created(name, price, owner, quantity, description, filename)
-      unless item.is_valid
-        flash[:error] = item.errors
+
+      if self.has_errors(item)
         redirect "/home/new"
+      else
+        @session_user.create_item(params[:name], Integer(price), Integer(quantity), params[:description], filename)
+        flash[:notice] = "Item #{params[:name]} has been created"
+        redirect "/home/items"
       end
-      @session_user.create_item(params[:name], Integer(price), Integer(quantity), params[:description], filename)
-      flash[:notice] = "Item #{params[:name]} has been created"
-      redirect "/home/items"
     end
 
     get "/item/:id/image" do
@@ -182,8 +183,7 @@ module Controllers
       redirect '/index' unless session[:id]
       filename = save_image(params[:image_file])
       test_item = Item.created(params[:name], params[:price], @session_user.working_for, params[:quantity], params[:description], filename)
-      unless test_item.is_valid
-        flash[:error] = test_item.errors
+      if self.has_errors(test_item)
         redirect "/home/edit_item/#{params[:itemid]}"
       else
         item = Item.get_offer(params[:itemid])
@@ -288,6 +288,29 @@ module Controllers
       item.itemReceived
       flash[:notice] = "Transfer completed. Would You like to rate #{item.seller.name}?"
       redirect "/rate/#{item.seller.id}"
+    end
+
+    def has_errors(item)
+      validation = catch(:invalid){item.is_valid}
+      case validation
+        when :invalid_name then
+          flash[:error] = "Item must have a name\n"
+          true
+        when :invalid_price then
+          flash[:error] = "Price is not a valid number\n"
+          true
+        when :invalid_quantity then
+          flash[:error] = "Quantity is not a valid number\n"
+          true
+        when :big_image then
+          flash[:error] = "Image is heavier than 400kB\n"
+          true
+        when :no_valid_image_file then
+          flash[:error] = "No valid image file selected\n"
+          true
+        else
+          false
+      end
     end
   end
 end
