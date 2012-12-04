@@ -1,0 +1,21 @@
+%h2 Create a new Category
+%br
+%form.nomargin(action="/create/category" method="POST" enctype="multipart/form-data")
+  %label.textbox.name
+    %p Name of the new category
+  %input.textbox.value(type="text" name="name")
+  %hr.separator.invisible
+  %label.textbox.name
+    %p Select supercategory:
+  %select.textbox.value.selection(name = "category")
+    %option(value = "#{@supercategory.name}" selected = "selected")
+      %p #{@supercategory.name}
+    -for category in @supercategory.get_subcategories
+      %option(value = "#{category.name}")
+        %p
+          :escaped
+            #{category.name}
+  %hr.separator.invisible
+  %input.rightalign.square(type="submit" value="Submit")
+
+

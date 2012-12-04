@@ -162,7 +162,7 @@ module Controllers
       filename = save_image(params[:image_file])
       item = Item.created(name, price, owner, quantity, description, filename)
       item.currency = params[:currency]
-	  item.category = Category.by_name(params[:category])
+	    item.category = Category.by_name(params[:category])
 
       if self.has_errors(item)
         redirect "/home/new"

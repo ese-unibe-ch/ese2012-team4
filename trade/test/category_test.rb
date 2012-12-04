@@ -36,8 +36,15 @@ class CategoryTest < Test::Unit::TestCase
 
   def test_get_offers
     @testitem.category = @cat1
-    @testitem.save
     assert(@cat1.get_offers.include?@testitem)
+    testitem2 = Item.created("test2", 10, @owner, 1)
+    testitem2.category = @cat2
+    testitem2.save
+    @cat1.add(@cat2)
+    assert(@cat2.get_offers.include? testitem2)
+    assert(@cat1.get_offers.include?testitem2)
+    assert(@cat1.get_offers.include?@testitem)
+
   end
 
 end
