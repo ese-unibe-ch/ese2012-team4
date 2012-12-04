@@ -109,7 +109,6 @@ class ActivityTest < Test::Unit::TestCase
     @userD.activate_item(item.id)
     @userA.working_for.buy_new_item(item, 1,@userA)
     assert @org.activities.size == 1
-    #ToDo: fix it, that this works, at the moment it loggs the organisation name
     #assert @org.activities[0].to_s == "Hans was unable to buy 'Cardboard house' for 2000 credits"
   end
 end

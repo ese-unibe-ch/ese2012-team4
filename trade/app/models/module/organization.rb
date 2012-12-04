@@ -59,7 +59,5 @@ module Models
       self.member_list.delete(member)
       member.organization_list.delete(self)
     end
-
-    # ToDo: organizations with admin, list of users, e_mail? (or store admin-e_mail)
   end
 end

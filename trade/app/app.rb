@@ -146,6 +146,9 @@ class App < Sinatra::Base
     ea = userE.create_item("The Lord of The Rings, The Return of the King DVD", 5, 1)
     ea.description = "2 DVD Pack, no scratches!"
     ea.image = FileUtils::pwd+"/public/images/item_pix/LOTR.jpg"
+    ab = userE.create_item("Big Yacht", 200, 1)
+    ab.active = true
+    ab.description = "This ship is just attracting attention, everywhere you sail."
 
     for i in 0..10
       userE.add_rating(rand(4)+1)
@@ -236,12 +239,14 @@ class App < Sinatra::Base
 
     #some initial categories
     sup = Category.get_supercategory
-    cars = Category.new("Car")
+    cars = Category.new("Cars")
     sup.add(cars)
     ships = Category.new("Ships")
     sup.add(ships)
     pirate_ships = Category.new("Pirateships")
     ships.add(pirate_ships)
+    cc.category = pirate_ships
+    ab.category = ships
 
     scheduler = Rufus::Scheduler.start_new
 

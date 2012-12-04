@@ -60,6 +60,8 @@ module Controllers
       redirect 'search/result/1' unless 0<params[:page].to_i and params[:page].to_i<page_count+1
 
       @items = []
+      @selected = Category.get_supercategory
+      @supercategory = Category.get_supercategory
       for i in ((page-1)*items_per_page)..(page*items_per_page)-1
         @items<<items[i] unless items[i].nil?
       end
@@ -137,6 +139,8 @@ module Controllers
       for i in ((page-1)*items_per_page)..(page*items_per_page)-1
         @items<<items[i] unless items[i].nil?
       end
+      @supercategory = Category.get_supercategory
+      @selected = Category.get_supercategory
       haml :items, :locals => {:title => 'All Items', :page => page, :page_count => page_count}
     end
 

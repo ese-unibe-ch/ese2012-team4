@@ -51,9 +51,7 @@
   %select.textbox.value.selection(name = "category")
     -if @item.category.name == @supercategory.name
       %option(value = "#{@supercategory.name}" selected = "selected")
-        %p
-          :escaped
-            #{@supercategory.name}
+        %p #{@supercategory.name}
       -for category in @supercategory.get_subcategories
         %option(value = "#{category.name}")
           %p
@@ -67,9 +65,7 @@
                   #{subcategory.name}
     -else
       %option(value = "#{@supercategory.name}")
-        %p
-          :escaped
-            #{@supercategory.name}
+        %p #{@supercategory.name}
       -if @supercategory.get_subcategories.include? @item.category
         -for category in @supercategory.get_subcategories
           -if category.name == @item.category.name

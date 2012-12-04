@@ -33,6 +33,7 @@ module Controllers
     end
 
     post '/create/category' do
+      #ToDo: nice error handling
       redirect '/index' unless session[:id]
       supercat = Category.by_name(params[:category])
       unless supercat.nil?
@@ -45,6 +46,29 @@ module Controllers
         end
       end
       redirect '/home/items'
+    end
+
+    post '/switch_category' do
+      redirect "/category/#{params[:category]}/1"
+    end
+
+    get '/category/:category/:page' do
+      redirect '/index' unless session[:id]
+      order_by = params["order_by"] || 'name'
+      order_direction = params["order_direction"] || 'asc'
+      items_per_page = 10
+      page = params[:page].to_i
+      cat = Category.by_name(params[:category])
+      items= cat.get_offers(@session_user.working_for.name, {:order_by => order_by, :order_direction => order_direction})
+      (items.size%items_per_page)==0? page_count = (items.size/items_per_page).to_i : page_count = (items.size/items_per_page).to_i+1
+      #redirect 'items/1' unless 0<params[:page].to_i and params[:page].to_i<page_count+1
+      @items = []
+      for i in ((page-1)*items_per_page)..(page*items_per_page)-1
+        @items<<items[i] unless items[i].nil?
+      end
+      @supercategory = Category.get_supercategory
+      @selected = cat
+      haml :items, :locals => {:title => 'All Items', :page => page, :page_count => page_count}
     end
   end
 end

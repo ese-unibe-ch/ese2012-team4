@@ -34,9 +34,9 @@ module Models
     # - @return [Array]: The offers belonging to this category, or to one of its subcategories.
     def get_offers(viewer = nil, options ={})
       ret_array = Array.new
-      for offer in Offer.get_item_list
-        if offer[1].category.name == self.name
-          ret_array.push(offer[1])
+      for offer in Offer.get_all(viewer, options)
+        if offer.category.name == self.name
+          ret_array.push(offer)
         end
       end
       for cat in @components
