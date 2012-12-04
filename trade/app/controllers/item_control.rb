@@ -189,6 +189,12 @@ module Controllers
       else
         item = Item.get_offer(params[:itemid])
         @session_user.edit_item(item, params[:name],Integer(params[:price]),Integer(params[:quantity]),params[:description], filename)
+        if params[:permanent]=="no"
+          item.permanent = false
+        end
+        if params[:permanent]=="yes"
+          item.permanent = true
+        end
         flash[:notice] = "#{params[:name]} has been changed"
         redirect "/home/items"
       end

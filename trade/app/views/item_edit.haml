@@ -20,16 +20,16 @@
   %hr.separator.invisible
   %label.textbox.name
     %p Always in Stock?
-  %select.textbox.value(name = "parmanent")
+  %select.textbox.value(name = "permanent")
     -if @item.permanent
-      %option
+      %option(value = "no")
         %p No
-      %option(selected = "selected")
+      %option(value = "yes" selected = "selected")
         %p Yes
     -else
-      %option(selected = "selected")
+      %option(value = "no" selected = "selected")
         %p No
-      %option
+      %option(value = "yes")
         %p Yes
   %label.textbox.name
     %p Quantity
