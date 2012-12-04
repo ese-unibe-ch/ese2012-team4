@@ -49,7 +49,7 @@
   %label.textbox.name
     %p Category
   %select.textbox.value.selection(name = "Category")
-    -for category in @supercategory.list
+    -for category in @supercategory.get_subclasses
       %option(value = "#{category.name}")
         %p
           :escaped

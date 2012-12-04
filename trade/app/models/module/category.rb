@@ -1,5 +1,8 @@
 module Models
 
+  require 'require_relative'
+  require_relative('offer')
+
   # Represents a category of different offers
   # A category contains several components, a component is either a new category or an object providing a list method.
   # A known class providing this is Offer
@@ -13,12 +16,8 @@ module Models
       @components = Array.new
     end
 
-    def list
-      ret_array = Array.new
-      ret_array.push(self)
-      for e in @components
-        ret_array.push(e.list)
-      end
+    def get_subclasses
+      @components
     end
 
     def to_s
@@ -33,10 +32,10 @@ module Models
       @components
     end
 
-    def get_offers
+    def get_offers(viewer = nil, options ={})
       ret_array = Array.new
-      for offer in Offer.get_all(viewer= nil, options = {})
-        if offer.category == self
+      for offer in Offer.get_all(viewer, options)
+        if offer.category.name == self.name
           ret_array.push(offer)
         end
       end
