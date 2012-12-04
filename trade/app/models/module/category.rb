@@ -16,7 +16,7 @@ module Models
       @components = Array.new
     end
 
-    def get_subclasses
+    def get_subcategories
       @components
     end
 
@@ -29,7 +29,7 @@ module Models
     end
 
     def remove(component)
-      @components
+      @components.delete(component)
     end
 
     def get_offers(viewer = nil, options ={})
@@ -42,9 +42,29 @@ module Models
       ret_array
     end
 
+    # Searches for a category with the given name in all subcategories of the supercategory.
+    # Doesn't search deeper than two levels (in subcategories of subcategories of the supercategory)
+    # - @return [Category]: The category with the given name
+    def self.by_name(name)
+      ret_category = nil
+      for cat in @@supercategory.get_subcategories
+        if cat.name == name
+          ret_category = cat
+        else
+          #check subcategories
+          for subcat in cat.get_subcategories
+            if subcat.name == name
+              ret_category = subcat
+            end
+          end
+        end
+      end
+      ret_category
+    end
+
     def self.get_supercategory
       @@supercategory
     end
-    @@supercategory = self.new("none")
+    @@supercategory = self.new("No Category")
   end
 end

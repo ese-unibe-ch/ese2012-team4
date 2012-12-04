@@ -161,12 +161,13 @@ module Controllers
       description = params[:quantity]
       filename = save_image(params[:image_file])
       item = Item.created(name, price, owner, quantity, description, filename)
-
+      item.category = Category.by_name(params[:category])
       if self.has_errors(item)
         redirect "/home/new"
       else
         item = @session_user.create_item(params[:name], Integer(price), Integer(quantity), params[:description], filename)
         @session_user.edit_item(item, params[:name],Integer(params[:price]),Integer(params[:quantity]),params[:currency],params[:description], filename)
+        item.category = Category.by_name(params[:category])
         if params[:permanent]=="no"
           item.permanent = false
         end
@@ -192,11 +193,13 @@ module Controllers
       redirect '/index' unless session[:id]
       filename = save_image(params[:image_file])
       test_item = Item.created(params[:name], params[:price], @session_user.working_for, params[:quantity], params[:description], filename)
+      test_item.category = Category.by_name(params[:category])
       if self.has_errors(test_item)
         redirect "/home/edit_item/#{params[:itemid]}"
       else
         item = Item.get_offer(params[:itemid])
         @session_user.edit_item(item, params[:name],Integer(params[:price]),Integer(params[:quantity]),params[:currency],params[:description], filename)
+        item.category = Category.by_name(params[:category])
         if params[:permanent]=="no"
           item.permanent = false
         end

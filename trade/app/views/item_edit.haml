@@ -48,12 +48,19 @@
   %hr.separator.invisible
   %label.textbox.name
     %p Category
-  %select.textbox.value.selection(name = "Category")
-    -for category in @supercategory.get_subclasses
+  %select.textbox.value.selection(name = "category")
+    -for category in @supercategory.get_subcategories
       %option(value = "#{category.name}")
         %p
           :escaped
             #{category.name}
+      -unless category.get_subcategories.nil?
+        %optgroup
+          -for subcategory in category.get_subcategories
+            %option(value = "#{subcategory.name}")
+              %p
+                :escaped
+                  #{subcategory.name}
   %hr.separator.invisible
   %label.textbox.name
     %p Quantity
