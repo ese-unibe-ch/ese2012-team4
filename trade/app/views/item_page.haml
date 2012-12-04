@@ -52,11 +52,12 @@
       %a(href="/comments/#{@item.id}") see comments
   %hr.separator.invisible
   -if @item.owner.name == @session_user.working_for.name
-    %form.nomargin(action="/permanent/#{@item.id}" method="POST")
-      -if(@item.permanent)
-        %input.rightalign.square(type="submit" value="Set non-permanent")
-      -else
-        %input.rightalign.square(type="submit" value="Set permanent")
+    -if (@item.is_active?)
+      %form.nomargin(action="/changestate/#{@item.id}/setinactive" method="POST")
+        %input.rightalign.square(type="submit" value="Set inactive")
+    -else
+      %form.nomargin(action="/changestate/#{@item.id}/activation" method="GET")
+        %input.rightalign.square(type="submit" value="Set active")
     -if @item.editable?
       %p
         %form.nomargin(action="/home/edit_item/#{@item.id}" method="GET")
