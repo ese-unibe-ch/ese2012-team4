@@ -168,39 +168,41 @@ class ItemTest < Test::Unit::TestCase
   def test_validation
     item = @owner.create_item("testobject",50, 10)
     assert(item.is_valid)
-    assert(item.errors="")
+
     item.price="string"
-    assert(!item.is_valid)
-    assert(item.errors == "Price is not a valid number\n")
-    item.quantity="skdlf"
-    assert(!item.is_valid)
-    assert(item.errors == "Price is not a valid number\nQuantity is not a valid number\n")
-    item.price= 1
-    assert(!item.is_valid)
-    assert(item.errors == "Quantity is not a valid number\n")
-    item.quantity= "1"
+    valid = catch(:invalid){item.is_valid}
+    assert(valid.eql?(:invalid_price))
+    item.price = 50
     assert(item.is_valid)
-    item.quantity= 1
+
+    item.quantity="skdlf"
+    valid = catch(:invalid){item.is_valid}
+    assert(valid.eql?(:invalid_quantity))
+    item.quantity = "3"
     assert(item.is_valid)
 
     item.image=FileUtils::pwd+"/public/images/user_pix/"
-    assert(!item.is_valid)
-    assert(item.errors=="No valid image file selected\n")
+    valid = catch(:invalid){item.is_valid}
+    assert(valid.eql?(:no_valid_image_file))
+
     item.image="..fasl"
-    assert(!item.is_valid)
-    assert(item.errors=="No valid image file selected\n")
+    valid = catch(:invalid){item.is_valid}
+    assert(valid.eql?(:no_valid_image_file))
+
     item.image=FileUtils::pwd+"../../app/public/images/item_pix/placeholder_item.jpg"
     assert(item.is_valid)
-    assert(item.errors=="")
+
     item.image=""
     assert(item.is_valid)
 
     item.name="     "
-    assert(!item.is_valid)
-    assert(item.errors=="Item must have a name\n")
+    valid = catch(:invalid){item.is_valid}
+    assert(valid.eql?(:invalid_name))
+
     item.name=""
-    assert(!item.is_valid)
-    assert(item.errors=="Item must have a name\n")
+    valid = catch(:invalid){item.is_valid}
+    assert(valid.eql?(:invalid_name))
+
     item.name="name"
     assert(item.is_valid)
   end
