@@ -89,7 +89,7 @@ module Controllers
           user = nil
         end
 
-        if PasswordReset.getValue(username) == new_crypt #check for match between username and password-Link
+        if PasswordReset.getValue(username.strip.downcase) == new_crypt #check for match between username and password-Link
           user.change_password(params[:password_new])
           flash[:notice] = "Your password is changed, please log in"
           redirect "/login"

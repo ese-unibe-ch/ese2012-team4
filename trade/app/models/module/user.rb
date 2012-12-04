@@ -97,7 +97,7 @@ module Models
     def forgot_password()
       new_password = PasswordReset.generate_random_pw
       new_password_crypt = BCrypt::Engine.hash_secret(new_password, password_salt)
-      new_request = PasswordReset.created(new_password_crypt, self.name)
+      new_request = PasswordReset.created(new_password_crypt, self.name.strip.downcase)
       new_password
     end
 
