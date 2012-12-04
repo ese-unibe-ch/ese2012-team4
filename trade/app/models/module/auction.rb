@@ -44,14 +44,14 @@ module Models
 
 
     # Controls the auctions's data and adds errors if necessary.
-    # - @return: true if there is no invalid data or false if there is.
+    # - @return: true if there is no invalid data and throws a suitable symbol otherwise.
     def is_valid?
       self.errors = ""
-      self.errors += "Select a valid End-Date for your auction.\n" unless Time.now < self.expiration_date
-      self.errors += "Select a valid increment.\n" unless Item.valid_integer?(self.increment)
-      self.errors += "Select a valid minimal price.\n" unless Item.valid_integer?(self.min_price)
+      throw :invalid, :invalid_date unless Time.now < self.expiration_date
+      throw :invalid, :invalid_increment unless Item.valid_integer?("#{self.increment}")
+      throw :invalid, :invalid_min_price unless Item.valid_integer?("#{self.min_price}")
       #self.errors += "An auction for this item already exists. \n" unless Auction.auction_by_item(item)
-      self.errors != "" ? false : true
+      true
     end
 
     def is_active?

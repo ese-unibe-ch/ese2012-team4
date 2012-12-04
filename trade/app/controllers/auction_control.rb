@@ -48,16 +48,16 @@ module Controllers
       #end
       end_date = TimeHandler.parseTime(params[:exp_date], params[:exp_time])
       new_auction = Auction.create(item_new, params[:increment], params[:min_price], end_date)
-      if new_auction.is_valid?
+      if self.has_errors(new_auction)
+        item_old.quantity += 1
+        redirect back
+      else
         Offer.remove_from_list(item_old)
         new_auction.owner.remove_offer(item_old)
         new_auction.owner.add_offer(new_auction)
         new_auction.save
-      else
-        flash[:error] = new_auction.errors
-        item_old.quantity += 1
+        redirect "/home/items"
       end
-      redirect "/home/items"
     end
 
     post '/auction/:item_id/bid' do
@@ -105,13 +105,11 @@ module Controllers
           if @auction.editable?
             end_date = TimeHandler.parseTime(params[:exp_date], params[:exp_time])
             test_auction = Auction.create(@item, params[:increment], params[:min_price], end_date)
-            if test_auction.is_valid?
+            if !self.has_errors(test_auction)
               @auction.min_price = params[:min_price].to_i
               @auction.expiration_date = end_date
               @auction.increment = params[:increment].to_i
               flash[:notice] = "Auction for item #{@item.name} has been edited!"
-            else
-              flash[:error] = test_auction.errors
             end
           else
             flash[:error] = "Item cannot be edited."
@@ -132,5 +130,21 @@ module Controllers
       redirect "/home/items"
     end
 
+    def has_errors(auction)
+      validation = catch(:invalid){auction.is_valid?}
+      case validation
+        when :invalid_date then
+          flash[:error] = "Select a valid End-Date for your auction.\n"
+          true
+        when :invalid_increment then
+          flash[:error] = "Select a valid increment.\n"
+          true
+        when :invalid_min_price then
+          flash[:error] = "Select a valid minimal price.\n"
+          true
+        else
+          false
+      end
+    end
   end
 end
