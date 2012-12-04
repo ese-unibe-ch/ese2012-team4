@@ -86,7 +86,11 @@ module Controllers
       else
         username = params[:username]
         #check if the user exists
-        user = User.by_name username.strip.downcase
+        if !Trader.available? (username.strip.downcase)
+          user = User.by_name username.strip.downcase
+        else
+          user = nil
+        end
 
         if PasswordReset.getValue(username) == session["pwrecovery"] #check for match between username and password-Link
           user.change_password(params[:password_new])
