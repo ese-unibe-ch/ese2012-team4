@@ -11,6 +11,17 @@
   %label.textbox.name
     %p Price:
   %input.textbox.value(type="text" name="price" value="#{@item.price}")
+  %select.textbox.value.selection(name = "currency")
+    -if @item.currency=="credits"
+      %option(value = "bitcoins")
+        %p Bitcoins
+      %option(value = "credits" selected = "selected")
+        %p Credits
+    -else
+      %option(value = "bitcoins" selected = "selected")
+        %p Bitcoins
+      %option(value = "credits")
+        %p Credits
   %hr.separator.invisible
   %label.textbox.name
     %p Description (optional)
@@ -20,7 +31,7 @@
   %hr.separator.invisible
   %label.textbox.name
     %p Always in Stock?
-  %select.textbox.value(name = "permanent")
+  %select.textbox.value.selection(name = "permanent")
     -if @item.permanent
       %option(value = "no")
         %p No

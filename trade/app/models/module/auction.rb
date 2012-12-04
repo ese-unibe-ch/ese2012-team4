@@ -30,6 +30,7 @@ module Models
       self.image = item.image
       item.quantity = 1
       self.quantity = item.quantity
+      self.currency = item.currency
       self.auction = true
     end
 

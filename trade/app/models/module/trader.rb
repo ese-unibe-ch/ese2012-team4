@@ -166,8 +166,8 @@ module Models
       Activity.log(self, "activate_item", item, self.working_for)
     end
 
-    def edit_item(item, name, price, quantity, description = "", image = "")
-      item.edit(name, price, quantity,  description, image)
+    def edit_item(item, name, price, quantity, currency, description = "", image = "")
+      item.edit(name, price, quantity, currency, description, image)
       Activity.log(self, "edit_item", item, self.working_for)
     end
 

@@ -42,6 +42,7 @@ module Models
       item.head_comments = []
       item.auction = false
       item.permanent = false
+      item.currency = "credits"
       item
     end
 
@@ -90,11 +91,14 @@ module Models
     # - @param [Integer] quantity
     # - @param [String] description
     # - @param [String] image
-    def edit(name, price, quantity,  description = "", image = "")
+    def edit(name, price, quantity, currency, description = "", image = "")
       return false if self.active
       self.name = name
       self.price = price
       self.description = description
+      if currency == "bitcoins" or currency == "credits"
+        self.currency=currency
+      end
       if image != ""
         FileUtils.rm(self.image, :force => true)
         self.image = image

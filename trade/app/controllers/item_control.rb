@@ -188,7 +188,7 @@ module Controllers
         redirect "/home/edit_item/#{params[:itemid]}"
       else
         item = Item.get_offer(params[:itemid])
-        @session_user.edit_item(item, params[:name],Integer(params[:price]),Integer(params[:quantity]),params[:description], filename)
+        @session_user.edit_item(item, params[:name],Integer(params[:price]),Integer(params[:quantity]),params[:currency],params[:description], filename)
         if params[:permanent]=="no"
           item.permanent = false
         end

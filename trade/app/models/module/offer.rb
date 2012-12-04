@@ -33,6 +33,9 @@ module Models
     attr_accessor :auction
     # [Category]: The category the offer belongs to
 
+    # [String]: Bitcoins or credits
+    attr_accessor :currency
+
     @@count = 0
     @@offers = {}
 
