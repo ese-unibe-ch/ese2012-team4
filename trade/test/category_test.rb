@@ -11,7 +11,7 @@ class CategoryTest < Test::Unit::TestCase
   end
 
   def test_supercategory
-    assert(@supercategory.name == "all")
+    assert(@supercategory.name == "none")
     testcat = Category.new("test1")
     testcat2 = Category.new("test2")
     @supercategory.add(testcat)

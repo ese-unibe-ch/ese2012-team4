@@ -3,6 +3,7 @@ module Models
   require 'dimensions'
   require 'require_relative'
   require_relative('comment')
+  require_relative('category')
   require_relative('offer')
 
 
@@ -43,6 +44,7 @@ module Models
       item.auction = false
       item.permanent = false
       item.currency = "credits"
+      item.category = Category.get_supercategory
       item
     end
 

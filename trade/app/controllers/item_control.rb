@@ -109,6 +109,7 @@ module Controllers
     get '/home/new' do
       redirect '/index' unless session[:id]
       @item = Item.created("", "", "", "", "");
+      @supercategory = Category.get_supercategory
       haml :item_edit, :locals =>{:action => "create", :button => "Create"}
     end
 

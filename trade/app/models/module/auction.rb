@@ -32,6 +32,7 @@ module Models
       self.quantity = item.quantity
       self.currency = item.currency
       self.auction = true
+      self.category = item.category
     end
 
 

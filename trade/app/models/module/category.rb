@@ -15,6 +15,7 @@ module Models
 
     def list
       ret_array = Array.new
+      ret_array.push(self)
       for e in @components
         ret_array.push(e.list)
       end
@@ -45,6 +46,6 @@ module Models
     def self.get_supercategory
       @@supercategory
     end
-    @@supercategory = self.new("all")
+    @@supercategory = self.new("none")
   end
 end
