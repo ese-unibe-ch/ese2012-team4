@@ -52,6 +52,7 @@ module Models
       throw :invalid, :invalid_date unless Time.now < self.expiration_date
       throw :invalid, :invalid_increment unless Item.valid_integer?("#{self.increment}")
       throw :invalid, :invalid_min_price unless Item.valid_integer?("#{self.min_price}")
+      throw :invalid, :invalid_currency if self.currency == "bitcoins" and (self.owner.wallet.nil? or self.owner.wallet =="")
       #self.errors += "An auction for this item already exists. \n" unless Auction.auction_by_item(item)
       true
     end
@@ -98,7 +99,7 @@ module Models
 
       # if you are overbidding yourself...
       if @current_winner == new_bidder
-        new_bidder.credits -= bid - @bids[new_bidder]
+        new_bidder.credits -= bid - @bids[new_bidder] unless self.currency=="bitcoins"
         @bids[new_bidder] = bid
         # no need to change the current selling price
       else
@@ -106,11 +107,11 @@ module Models
           old_winner = @current_winner
           @current_winner = new_bidder
           unless old_winner.nil?
-            old_winner.credits += @bids[old_winner] #SH Gives the money of the previous winner back
+            old_winner.credits += @bids[old_winner] unless self.currency=="bitcoins" #SH Gives the money of the previous winner back
             Mailer.new_winner(old_winner.e_mail, self)
           end
           @bids[new_bidder] = bid
-          @current_winner.credits -= @bids[@current_winner] #SH Deduct the money from the current winner
+          @current_winner.credits -= @bids[@current_winner] unless self.currency=="bitcoins" #SH Deduct the money from the current winner
           if (!old_winner.nil?)
             if @bids[old_winner]+increment <= bid
               @current_selling_price = @bids[old_winner] + self.increment
@@ -154,7 +155,8 @@ module Models
       if bids.length!=0
         @current_winner.credits += bids[@current_winner]
 
-          self.item.price = @current_selling_price
+        self.item.price = @current_selling_price
+        self.item.currency = self.currency
         @current_winner.buy_new_item(self.item,1, @current_winner)
         Mailer.bid_over(@current_winner.e_mail, self)
       else

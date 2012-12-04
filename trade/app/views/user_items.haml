@@ -35,7 +35,7 @@
           %a(href="/item/#{item.id}/image" rel="lightbox" title="#{item.name}")
             %img(src="/item/#{item.id}/image" class = "smallpicturebox")
         %td
-          %p #{item.price}
+          %p #{item.price.to_s+" "+item.currency}
         %td.restock
           -unless item.permanent
             %p #{item.quantity}
@@ -88,7 +88,7 @@
           %a(href="/item/#{item.id}/image" rel="lightbox" title="#{item.name}")
             %img(src="/item/#{item.id}/image" class = "smallpicturebox")
         %td
-          %p #{item.price}
+          %p #{item.price.to_s+" "+item.currency}
         %td
           %p #{item.quantity}
         %td
@@ -127,7 +127,7 @@
           %a(href="/item/#{auction.id}/image" rel="lightbox" title="#{auction.name}")
             %img(src="/item/#{auction.id}/image" class = "smallpicturebox")
         %td
-          %p #{auction.min_price}
+          %p #{auction.min_price.to_s+" "+auction.currency}
         %td
           %p #{auction.increment}
         - if auction.editable?

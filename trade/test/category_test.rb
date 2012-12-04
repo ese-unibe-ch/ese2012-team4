@@ -20,18 +20,18 @@ class CategoryTest < Test::Unit::TestCase
   end
 
   def test_supercategory
-    assert(@supercategory.name == "none")
+    assert(@supercategory.name == "No Category")
     @supercategory.add(@cat1)
     @supercategory.add(@cat2)
-    assert(@supercategory.get_subclasses.size == 2)
-    assert(@supercategory.get_subclasses.include? @cat1)
+    assert(@supercategory.get_subcategories.size == 2)
+    assert(@supercategory.get_subcategories.include? @cat1)
     assert(@supercategory.get_offers.include?(@testitem))
   end
 
   def test_initialization
     assert(@cat1.name == "test1")
     assert(@cat1.to_s == "test1")
-    assert(@cat1.get_subclasses.empty?)
+    assert(@cat1.get_subcategories.empty?)
   end
 
   def test_get_offers

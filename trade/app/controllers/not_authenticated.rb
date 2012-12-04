@@ -82,7 +82,7 @@ module Controllers
         new_crypt = "barf"
         username = params[:username]
         #check if the user exists
-        if !Trader.available? (username.strip.downcase)
+        if !Trader.available?(username.strip.downcase)
           user = User.by_name username.strip.downcase
           new_crypt = BCrypt::Engine.hash_secret(session["pwrecovery"], user.password_salt)
         else

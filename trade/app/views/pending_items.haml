@@ -23,7 +23,7 @@
             :escaped
               #{holding.seller.name}
         %td
-          %p #{holding.item.price}
+          %p #{holding.item.price.to_s+ " " +holding.item.currency}
         %td
           %p #{holding.quantity}
         %td
@@ -56,7 +56,7 @@
             :escaped
               #{holding.buyer.name}
         %td
-          %p #{holding.item.price}
+          %p #{holding.item.price.to_s+ " " +holding.item.currency}
         %td
           %p #{holding.quantity}
         %td

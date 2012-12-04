@@ -71,6 +71,7 @@ module Models
       throw :invalid, :invalid_name unless self.name.strip.delete(' ')!=""
       throw :invalid, :invalid_price unless Item.valid_integer?(self.price)
       throw :invalid, :invalid_quantity unless Item.valid_integer?(self.quantity)
+      throw :invalid, :invalid_currency if self.currency == "bitcoins" and (self.owner.wallet.nil? or self.owner.wallet =="")
 
       if image != ""
         begin

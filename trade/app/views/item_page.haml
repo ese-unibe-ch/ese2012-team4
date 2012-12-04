@@ -21,7 +21,13 @@
     .textbox.name
       Price:
     .textbox.value
-      #{@item.price}
+      #{@item.price.to_s + " " + @item.currency}
+  %br
+  .lineContainer
+    .textbox.name
+      Category:
+    .textbox.value
+      #{@item.category.name}
   %br
   .lineContainer
     .textbox.name
@@ -103,19 +109,19 @@
       Min price:
     .textbox.value
       %p
-        #{@item.min_price}
+        #{@item.min_price.to_s + " " + @item.currency}
   %br
   .lineContainer
     .textbox.name
       Current selling price:
     .textbox.value
-      #{@item.current_selling_price}
+      #{@item.current_selling_price.to_s + " " + @item.currency}
   %br
   .lineContainer
     .textbox.name
       Increment:
     .textbox.value
-      #{@item.increment}
+      #{@item.increment.to_s + " " + @item.currency}
   %br
   - unless @item.current_winner.nil?
     .lineContainer
@@ -130,9 +136,9 @@
         Placed Bid:
       .textbox.value
         - if @item.current_winner == @session_user.working_for
-          placed winning bid: #{@item.bids[@session_user.working_for]}
+          placed winning bid: #{@item.bids[@session_user.working_for].to_s + " " + @item.currency}
         - else
-          placed unsuccessful bid: #{@item.bids[@session_user.working_for]}
+          placed unsuccessful bid: #{@item.bids[@session_user.working_for].to_s + " " + @item.currency }
   %br
   .lineContainer
     .textbox.name

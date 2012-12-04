@@ -16,7 +16,9 @@ require_relative('controllers/message_control')
 require_relative('../../trade/app/models/module/item')
 require_relative('../../trade/app/models/module/user')
 require_relative('../../trade/app/models/module/offer')
+require_relative('../../trade/app/models/module/category')
 require_relative('../../trade/app/models/module/organization')
+
 
 include Models
 include Controllers
@@ -228,6 +230,16 @@ class App < Sinatra::Base
 
     orgA = Organization.created("OrgA", userG)
     orgA.save
+
+
+    #some initial categories
+    sup = Category.get_supercategory
+    cars = Category.new("Car")
+    sup.add(cars)
+    ships = Category.new("Ships")
+    sup.add(ships)
+    pirate_ships = Category.new("Pirateships")
+    ships.add(pirate_ships)
 
     scheduler = Rufus::Scheduler.start_new
 
