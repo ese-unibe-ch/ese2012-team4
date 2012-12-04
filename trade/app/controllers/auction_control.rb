@@ -48,6 +48,9 @@ module Controllers
       #end
       end_date = TimeHandler.parseTime(params[:exp_date], params[:exp_time])
       new_auction = Auction.create(item_new, params[:increment], params[:min_price], end_date)
+      if params[:currency]=="credits" or params[:currency]=="bitcoins"
+        new_auction.currency = params[:currency]
+      end
       if self.has_errors(new_auction)
         item_old.quantity += 1
         redirect back
@@ -141,6 +144,9 @@ module Controllers
           true
         when :invalid_min_price then
           flash[:error] = "Select a valid minimal price.\n"
+          true
+        when :invalid_currency then
+          flash[:error] = "You need to set a Bitcoin wallet in your Profile to accept Bitcoins as payment"
           true
         else
           false
