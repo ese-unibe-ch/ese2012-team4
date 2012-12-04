@@ -73,9 +73,7 @@ module Controllers
           redirect "/home"
         else
           session["pwrecovery"] = params[:id]
-          username = PasswordReset.getKey(params[:id])
-          user = User.by_name username
-          haml :pwreset, :locals => {:user => user}
+          haml :pwreset
         end
       end
     end
@@ -86,7 +84,7 @@ module Controllers
         flash[:error] = testuser.errors
         redirect "/pwreset/#{session["pwrecovery"]}"
       else
-        username = PasswordReset.getKey(session["pwrecovery"])
+        username = params[:username]
         user = User.by_name username.strip.downcase
         user.change_password(params[:password_new])
         flash[:notice] = "Your password is changed, please log in"
