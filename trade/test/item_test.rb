@@ -157,7 +157,7 @@ class ItemTest < Test::Unit::TestCase
     assert(item.description.eql?("No description available"), "No description was entered")
     assert(item.quantity.eql?(10), "Quantity should be set correctly")
 
-    item.edit("new_name",23,1,"new description")
+    item.edit("new_name",23,1,"credits","new description")
 
     assert(item.name.eql?("new_name"), "Item's name should have changed")
     assert(item.price.eql?(23), "Item's price should have changed")
