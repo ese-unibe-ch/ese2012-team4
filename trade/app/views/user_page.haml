@@ -144,7 +144,7 @@
         %td
           %p
           :escaped
-            #{item.price}
+            #{item.price.to_s+" "+item.currency}
         %td
           %p #{item.quantity}
         -unless @user.id == session[:id]
