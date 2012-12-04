@@ -66,7 +66,7 @@ module Models
     end
 
     # Controls the item's data and adds errors if necessary.
-    # - @return: true if there is no invalid data or false if there is.
+    # - @return: true if there is no invalid data and throws a suitable symbol otherwise.
     def is_valid
       throw :invalid, :invalid_name unless self.name.strip.delete(' ')!=""
       throw :invalid, :invalid_price unless Item.valid_integer?(self.price)
