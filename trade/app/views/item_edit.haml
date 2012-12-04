@@ -49,18 +49,70 @@
   %label.textbox.name
     %p Category
   %select.textbox.value.selection(name = "category")
-    -for category in @supercategory.get_subcategories
-      %option(value = "#{category.name}")
+    -if @item.category.name == @supercategory.name
+      %option(value = "#{@supercategory.name}" selected = "selected")
         %p
           :escaped
-            #{category.name}
-      -unless category.get_subcategories.nil?
+            #{@supercategory.name}
+      -for category in @supercategory.get_subcategories
+        %option(value = "#{category.name}")
+          %p
+            :escaped
+              #{category.name}
         %optgroup
           -for subcategory in category.get_subcategories
             %option(value = "#{subcategory.name}")
               %p
                 :escaped
                   #{subcategory.name}
+    -else
+      %option(value = "#{@supercategory.name}")
+        %p
+          :escaped
+            #{@supercategory.name}
+      -if @supercategory.get_subcategories.include? @item.category
+        -for category in @supercategory.get_subcategories
+          -if category.name == @item.category.name
+            %option(value = "#{category.name}" selected = "selected")
+              %p
+                :escaped
+                  #{category.name}
+            %optgroup
+              -for subcategory in category.get_subcategories
+                %option(value = "#{subcategory.name}")
+                  %p
+                    :escaped
+                      #{subcategory.name}
+          -else
+            %option(value = "#{category.name}")
+              %p
+                :escaped
+                  #{category.name}
+              %optgroup
+                -for subcategory in category.get_subcategories
+                  %option(value = "#{subcategory.name}")
+                    %p
+                      :escaped
+                        #{subcategory.name}
+      -else
+        -for category in @supercategory.get_subcategories
+          %option(value = "#{category.name}")
+            %p
+              :escaped
+                #{category.name}
+          %optgroup
+            -for subcategory in category.get_subcategories
+              -if subcategory.name == @item.category.name
+                %option(value = "#{subcategory.name}" selected = "selected")
+                  %p
+                    :escaped
+                      #{subcategory.name}
+              -else
+                %option(value = "#{subcategory.name}")
+                  %p
+                    :escaped
+                      #{subcategory.name}
+
   %hr.separator.invisible
   %label.textbox.name
     %p Quantity

@@ -47,14 +47,18 @@ module Models
     # - @return [Category]: The category with the given name
     def self.by_name(name)
       ret_category = nil
-      for cat in @@supercategory.get_subcategories
-        if cat.name == name
-          ret_category = cat
-        else
-          #check subcategories
-          for subcat in cat.get_subcategories
-            if subcat.name == name
-              ret_category = subcat
+      if name == @@supercategory.name
+        ret_category = @@supercategory
+      else
+        for cat in @@supercategory.get_subcategories
+          if cat.name == name
+            ret_category = cat
+          else
+            #check subcategories
+            for subcat in cat.get_subcategories
+              if subcat.name == name
+                ret_category = subcat
+              end
             end
           end
         end
