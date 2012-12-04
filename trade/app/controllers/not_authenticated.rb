@@ -73,9 +73,7 @@ module Controllers
           redirect "/home"
         else
           session["pwrecovery"] = params[:id]
-          username = PasswordReset.getKey(params[:id])
-          user = User.by_name username
-          haml :pwreset, :locals => {:user => user}
+          haml :pwreset
         end
       end
     end
@@ -86,11 +84,22 @@ module Controllers
         flash[:error] = testuser.errors
         redirect "/pwreset/#{session["pwrecovery"]}"
       else
-        username = PasswordReset.getKey(session["pwrecovery"])
-        user = User.by_name username.strip.downcase
-        user.change_password(params[:password_new])
-        flash[:notice] = "Your password is changed, please log in"
-        redirect "/login"
+        username = params[:username]
+        #check if the user exists
+        if !Trader.available? (username.strip.downcase)
+          user = User.by_name username.strip.downcase
+        else
+          user = nil
+        end
+
+        if PasswordReset.getValue(username) == session["pwrecovery"] #check for match between username and password-Link
+          user.change_password(params[:password_new])
+          flash[:notice] = "Your password is changed, please log in"
+          redirect "/login"
+        else
+          flash[:error] = "wrong reset/user-combination"
+          redirect "/home"
+        end
       end
     end
 
