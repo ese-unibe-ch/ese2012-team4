@@ -198,27 +198,46 @@ class UserTest < Test::Unit::TestCase
   def test_validation_duplicate_username
     @owner.save
     user1 = User.created( "testuser", "password", "test@mail.com" )
-    assert !user1.is_valid
+    valid = catch(:invalid){user1.is_valid}
+    assert(valid.eql?(:already_exists))
   end
 
   def test_validation_missing_name_e_mail
     user1 = User.created( "", "password", "test@mail.com" )
-    assert !user1.is_valid
+    valid = catch(:invalid){user1.is_valid}
+    assert(valid.eql?(:invalid_name))
+
     user2 = User.created( "testuser", "password", "" )
-    assert !user2.is_valid
+    valid = catch(:invalid){user2.is_valid}
+    assert(valid.eql?(:invalid_email))
+
     user3 = User.created( "testuser", "password", "testmail.com" )
-    assert !user3.is_valid
+    valid = catch(:invalid){user3.is_valid}
+    assert(valid.eql?(:invalid_email))
+
     user4 = User.created( "testuser", "password", "test@mailcom" )
-    assert !user4.is_valid
+    valid = catch(:invalid){user4.is_valid}
+    assert(valid.eql?(:invalid_email))
   end
 
   def test_validation_password
     assert @owner.is_valid("asdfasdf1", "asdfasdf1")
-    assert !@owner.is_valid("asdfasdf1", "asdfasdf")
-    assert !@owner.is_valid("asdfasdf", "asdfasdf")
-    assert !@owner.is_valid("asdfasdf1", "")
-    assert !@owner.is_valid("", "asdfasdf1")
-    assert !@owner.is_valid("asdf", "asdf")
+
+    valid = catch(:invalid){@owner.is_valid("asdfasdf1", "asdfasdf")}
+    assert(valid.eql?(:pw_dont_match))
+
+    valid = catch(:invalid){@owner.is_valid("asdfasdf", "asdfasdf")}
+    assert(valid.eql?(:pw_not_safe))
+
+    valid = catch(:invalid){@owner.is_valid("asdfasdf1", "")}
+    assert(valid.eql?(:no_pw_confirmation))
+
+    valid = catch(:invalid){@owner.is_valid("", "asdfasdf1")}
+    assert(valid.eql?(:pw_dont_match))
+
+    valid = catch(:invalid){@owner.is_valid("asdf", "asdf")}
+    assert(valid.eql?(:pw_not_safe))
+
     assert @owner.is_valid("aSdfasdf1", "aSdfasdf1")
   end
 
