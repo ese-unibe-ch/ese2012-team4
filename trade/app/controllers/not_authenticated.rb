@@ -85,10 +85,17 @@ module Controllers
         redirect "/pwreset/#{session["pwrecovery"]}"
       else
         username = params[:username]
+        #check if the user exists
         user = User.by_name username.strip.downcase
-        user.change_password(params[:password_new])
-        flash[:notice] = "Your password is changed, please log in"
-        redirect "/login"
+
+        if PasswordReset.getValue(username) == session["pwrecovery"] #check for match between username and password-Link
+          user.change_password(params[:password_new])
+          flash[:notice] = "Your password is changed, please log in"
+          redirect "/login"
+        else
+          flash[:error] = "wrong reset/user-combination"
+          redirect "/home"
+        end
       end
     end
 
