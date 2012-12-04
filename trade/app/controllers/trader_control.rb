@@ -156,6 +156,7 @@ module Controllers
         flash[:error] = test_user.errors
         redirect "/profile"
       else
+        viewer.wallet = params[:wallet]
         viewer.description = params[:description].split("\n")
         if filename != ""
           FileUtils.rm(viewer.image, :force => true)

@@ -20,8 +20,6 @@ module Models
     attr_accessor :password_hash
     # Save storage of the users password
     attr_accessor :password_salt
-    # [String]
-    attr_accessor :e_mail
     # List of organization this user is part of
     attr_accessor :organization_list
     # List of organization this user is admin of

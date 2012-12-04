@@ -36,6 +36,10 @@
   %input.textbox.value(type="text" name="e_mail" value="#{@user.e_mail}")
   %hr.separator.invisible
   %label.textbox.name
+    %p Bitcoin Wallet: (empty for no wallet)
+  %input.textbox.value(type="text" name ="wallet" value = "#{@user.wallet}")
+  %hr.separator.invisible
+  %label.textbox.name
     %p Edit my list of interests:
   %textarea.textbox.value(type="text" name = "description")
     -if !@user.description.empty?

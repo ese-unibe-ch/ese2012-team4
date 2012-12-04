@@ -4,10 +4,11 @@ module Models
 class Holding
   require 'require_relative'
   require_relative '../module/item'
+  require_relative '../utility/mailer'
 
   @@holder = []
 
-  attr_accessor :item, :seller, :buyer, :quantity, :name
+  attr_accessor :item, :seller, :buyer, :quantity, :name, :locked
 
   def self.get_all
     @@holder
@@ -20,14 +21,18 @@ class Holding
     holding.seller = seller
     holding.buyer = buyer
     holding.quantity = quantity
+    holding.locked = true
     #holding.name = "HOOOOOOOLDING"
 
     @@holder.push(holding)
+    holding
   end
 
   # Moves money after receiving & moves the item to buyers stack
   def itemReceived
-    seller.credits+=Integer(item.price)*quantity
+    if(item.currency == "credits")
+      seller.credits+=Integer(item.price)*quantity
+    end
 
     if(item.quantity.to_i == quantity)
       # buy all items from seller
@@ -67,9 +72,6 @@ class Holding
     item_list = Models::Offer.get_item_list
     item_list.delete(item)
 
-    buyer.credits -= Integer(item.price)*quantity
-
-
     #seller: remove number of items (or item)
     if (item.permanent)
       copy = item.copy
@@ -88,6 +90,15 @@ class Holding
 
       holding = self.created(item,seller,buyer,quantity)
     end
+
+    if item.currency == "credits"
+      buyer.credits -= Integer(item.price)*quantity
+      holding.locked = false
+    end
+    if item.currency == "bitcoins"
+      Mailer.item_bought(buyer.e_mail, item, seller)
+    end
+
   end
 
 end

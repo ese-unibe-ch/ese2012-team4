@@ -27,8 +27,11 @@
         %td
           %p #{holding.quantity}
         %td
-          %form.nomargin(action="/items/#{holding.item.id}/delivered" method="POST")
-            %input.square(type="submit" value="Arrived")
+          -if !holding.locked
+            %form.nomargin(action="/items/#{holding.item.id}/delivered" method="POST")
+              %input.square(type="submit" value="Arrived")
+          -else
+            %p pending confirmation
 -unless @outbox.empty?
   %h4 Outgoing
   %table.itemtable
@@ -42,6 +45,8 @@
           %p.table_header Price
         %td
           %p.table_header Qty
+        %td
+          %p.table_header Status
     - for holding in @outbox
       %tr(title = "#{holding.item.description}")
         %td
@@ -54,3 +59,9 @@
           %p #{holding.item.price}
         %td
           %p #{holding.quantity}
+        %td
+          -if holding.locked
+            %form.nomargin(action="/items/#{holding.item.id}/unlock" method="POST")
+              %input.square(type="submit" value="Ship")
+          -else
+            %p shipped

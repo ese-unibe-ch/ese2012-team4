@@ -11,6 +11,9 @@
   %label.textbox.name
     %p Price:
   %input.textbox.value(type="text" name="price" value="#{@item.price}")
+  %hr.separator.invisible
+  %label.textbox.name
+    %p Currency:
   %select.textbox.value.selection(name = "currency")
     -if @item.currency=="credits"
       %option(value = "bitcoins")
@@ -42,6 +45,7 @@
         %p No
       %option(value = "yes")
         %p Yes
+  %hr.separator.invisible
   %label.textbox.name
     %p Quantity
   %input.textbox.value(type = "text" name = "quantity" value = "#{@item.quantity}")

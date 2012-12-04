@@ -9,7 +9,7 @@ module Models
   class Organization < Trader
     attr_accessor :admin_list
     attr_accessor :member_list
-    attr_accessor :e_mail
+
 
     def self.created( name, admin, description = "", image = "")
       org = self.new(name, description, image)

@@ -32,9 +32,10 @@ module Models
     # [Bool]: Stores whether the Offer is an Auction or not
     attr_accessor :auction
     # [Category]: The category the offer belongs to
-
+    attr_accessor :category
     # [String]: Bitcoins or credits
     attr_accessor :currency
+    attr_accessor :wallet
 
     @@count = 0
     @@offers = {}

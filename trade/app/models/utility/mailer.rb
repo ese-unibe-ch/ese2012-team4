@@ -33,6 +33,32 @@ EOF
       end
     end
 
+    def self.item_bought(to, item , user)
+      require 'rubygems'
+      require 'tlsmail'
+      require 'time'
+      from = 'tradingsystem.mail@gmail.com'
+      pw = 'trade1234'
+
+      content = <<EOF
+From: #{from}
+To: #{to}
+subject: Payment information #{item.name}
+Date: #{Time.now.rfc2822}
+
+You have bought the item #{item.name} from the trader #{user.name}.
+To complete the transaction, you need to transfer #{item.price} Bitcoins to #{user.name}'s wallet (#{user.wallet}).
+
+Regards,
+The Trading System
+EOF
+
+      Net::SMTP.enable_tls(OpenSSL::SSL::VERIFY_NONE)
+      Net::SMTP.start('smtp.gmail.com', 587, 'gmail.com', from, pw, :login) do |smtp|
+        smtp.send_message(content, from, to)
+      end
+    end
+
     def self.reset_pw(to, contents)
       require 'rubygems'
       require 'tlsmail'

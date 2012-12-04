@@ -164,7 +164,14 @@ module Controllers
       if self.has_errors(item)
         redirect "/home/new"
       else
-        @session_user.create_item(params[:name], Integer(price), Integer(quantity), params[:description], filename)
+        item = @session_user.create_item(params[:name], Integer(price), Integer(quantity), params[:description], filename)
+        @session_user.edit_item(item, params[:name],Integer(params[:price]),Integer(params[:quantity]),params[:currency],params[:description], filename)
+        if params[:permanent]=="no"
+          item.permanent = false
+        end
+        if params[:permanent]=="yes"
+          item.permanent = true
+        end
         flash[:notice] = "Item #{params[:name]} has been created"
         redirect "/home/items"
       end
@@ -292,9 +299,22 @@ module Controllers
       items = Models::Holding.get_all.select {|s|
         s.item.id.to_s.eql?(params[:id].to_s) }
       item = items.first
+
+      redirect '/index' unless User.get_user(session[:id]).working_for == item.buyer and !item.locked
+
       item.itemReceived
       flash[:notice] = "Transfer completed. Would You like to rate #{item.seller.name}?"
       redirect "/rate/#{item.seller.id}"
+    end
+
+    post '/items/:id/unlock' do
+      redirect '/index' unless session[:id]
+      items = Models::Holding.get_all.select {|s|
+        s.item.id.to_s.eql?(params[:id].to_s) }
+      item = items.first
+      redirect '/index' unless User.get_user(session[:id]).working_for == item.seller
+      item.locked = false
+      redirect "/pending"
     end
 
     def has_errors(item)

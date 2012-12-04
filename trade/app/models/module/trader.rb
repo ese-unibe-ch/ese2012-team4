@@ -41,6 +41,9 @@ module Models
     # [Array]: all activites of this user or users of this organization
     attr_accessor :activities
 
+    attr_accessor :e_mail
+    attr_accessor :wallet
+
     @@traders_by_name = {}
     @@traders = {}
     @@count = 0
@@ -133,7 +136,7 @@ module Models
       return false if item_to_buy.auction
       preowner = item_to_buy.owner
 
-      if Integer(item_to_buy.price*quantity) > self.credits or Integer(item_to_buy.quantity)<quantity
+      if (Integer(item_to_buy.price*quantity) > self.credits and item_to_buy.currency == "credits") or Integer(item_to_buy.quantity)<quantity
         Activity.log(account, "item_bought_failure", item_to_buy, self)
         Activity.log(account, "item_sold_failure", item_to_buy, preowner)
         return false
