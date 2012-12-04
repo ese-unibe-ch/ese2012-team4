@@ -25,8 +25,6 @@
           %p.table_header Qty
         %td
           %p.table_header Deactivate
-        %td
-          %p.table_header Permanent
     - for item in @active_items
       %tr(title = "#{item.description}")
         %td.nopadding
@@ -49,12 +47,6 @@
         %td
           %form.nomargin(action="/changestate/#{item.id}/setinactive" method="POST")
             %input.square(type="submit" value="Set inactive")
-        %td
-          %form.nomargin(action="/permanent/#{item.id}" method="POST")
-            -if(item.permanent)
-              %input.square(type="submit" value="Set non-permanent")
-            -else
-              %input.square(type="submit" value="Set permanent")
 -else
   %h3 No items
 %h2 My Inactive Items
