@@ -21,11 +21,21 @@
   %form.nomargin(action="/auction/#{@item.id}/create" method="POST")
     %input(type="date" name="exp_date")
     %input(type="time" name="exp_time")
-    %hr.separator
-    %label.textbox.name
-      %p Price:
-    %input.textbox.value(type="text" name="min_price" value="#{@item.price}")
-    %label.textbox.name
-      %p Increment:
-    %input.textbox.value(type="text" name="increment" value="5")
-    %input.square.rightalign(type="submit" value="Create Auction")
+    .lineContainer
+      %label.textbox.name
+        %p Price:
+      %input.textbox.value(type="text" name="min_price" value="#{@item.price}")
+    .lineContainer
+      %label.textbox.name
+        %p Currency:
+      %select.textbox.value(name = "currency")
+        %option(value = "bitcoins")
+          %p Bitcoins
+        %option(value = "credits" selected = "selected")
+          %p Credits
+    .lineContainer
+      %label.textbox.name
+        %p Increment:
+      %input.textbox.value(type="text" name="increment" value="5")
+    .lineContainer
+      %input.square.rightalign(type="submit" value="Create Auction")
