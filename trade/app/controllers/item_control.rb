@@ -9,6 +9,7 @@ require 'sinatra/content_for'
 require 'rack-flash'
 require_relative('../models/module/user')
 require_relative('../models/module/item')
+require_relative('../models/module/category')
 require_relative('../models/utility/holding')
 require_relative('../models/utility/time_handler')
 require_relative('helper')
