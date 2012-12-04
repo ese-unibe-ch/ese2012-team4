@@ -64,10 +64,6 @@ module Controllers
     end
 
     get '/pwreset/:id' do
-      if !(PasswordReset.request_exists_for_id? params[:id])
-        flash[:error] = "invalid link"
-        redirect "/home"
-      else
         if session[:id]
           flash[:error] = "only one session allowed, please log out of all accounts"
           redirect "/home"
@@ -75,7 +71,7 @@ module Controllers
           session["pwrecovery"] = params[:id]
           haml :pwreset
         end
-      end
+      #end
     end
 
     post "/pwreset" do
@@ -84,15 +80,17 @@ module Controllers
         flash[:error] = testuser.errors
         redirect "/pwreset/#{session["pwrecovery"]}"
       else
+        new_crypt = "barf"
         username = params[:username]
         #check if the user exists
         if !Trader.available? (username.strip.downcase)
           user = User.by_name username.strip.downcase
+          new_crypt = BCrypt::Engine.hash_secret(session["pwrecovery"], user.password_salt)
         else
           user = nil
         end
 
-        if PasswordReset.getValue(username) == session["pwrecovery"] #check for match between username and password-Link
+        if PasswordReset.getValue(username) == new_crypt #check for match between username and password-Link
           user.change_password(params[:password_new])
           flash[:notice] = "Your password is changed, please log in"
           redirect "/login"

@@ -1,4 +1,5 @@
 require 'rubygems'
+require 'bcrypt'
 require 'require_relative'
 
 module Models
@@ -29,8 +30,9 @@ module Models
       @@reset_requests.has_key? username
     end
 
-    def self.request_exists_for_id?(reset_pw)
-      @@reset_requests.invert.has_key? reset_pw
+    def self.request_exists_for_id?(reset_pw, salt)
+      reset_pw_check = BCrypt::Engine.hash_secret(reset_pw, salt)
+      @@reset_requests.invert.has_key? reset_pw_check
     end
 
     def self.getValue(username)

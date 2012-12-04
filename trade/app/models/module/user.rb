@@ -95,12 +95,12 @@ module Models
       self.password_hash == BCrypt::Engine.hash_secret(password, self.password_salt)
     end
 
+    # Generates a password-reset-link
     def forgot_password()
-      #generate random password-link out of letters
       new_password = PasswordReset.generate_random_pw
-      new_request = PasswordReset.created(new_password, self.name)
+      new_password_crypt = BCrypt::Engine.hash_secret(new_password, password_salt)
+      new_request = PasswordReset.created(new_password_crypt, self.name)
       new_password
-      #self.change_password(new_password)
     end
 
     # Adds an organization to the user's organization list
