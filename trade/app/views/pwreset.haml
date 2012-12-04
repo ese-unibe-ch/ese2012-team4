@@ -1,17 +1,25 @@
-%p Change password
+%h2
+  Change password
 %br
 %form.nomargin(action="/pwreset" method="POST")
-  %label.textbox.name
-    %p
-      Enter new password:
-  %input.textbox.value(type="password" name="password_new" value="")
-  %hr.separator.invisible
-  %label.textbox.name
-    %p
-      Repeat new password:
-  %input.textbox.value(type="password" name="password_check" value="")
-  %hr.separator
-  %input.rightalign.square(type="submit" value="set new password")
+  .lineContainer
+    %label.textbox.name
+      %p
+        Enter Username:
+    %input.textbox.value(type="text" name="username" value="")
+    %hr.separator.invisible
+    %label.textbox.name
+      %p
+        Enter new password:
+    %input.textbox.value(type="password" name="password_new" value="")
+    %hr.separator.invisible
+    %label.textbox.name
+      %p
+        Repeat new password:
+    %input.textbox.value(type="password" name="password_check" value="")
+    %hr.separator.invisible
+    %input.rightalign.square(type="submit" value="set new password")
 
 %hr.separator
-%p Please choose a safe password; a safe password includes letters and numbers and is more than 4 digits long.
+.lineContainer
+  %p Please choose a safe password; a safe password includes letters and numbers and is more than 4 digits long.
