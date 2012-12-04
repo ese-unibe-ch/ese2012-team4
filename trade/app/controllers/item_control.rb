@@ -158,9 +158,10 @@ module Controllers
       price = params[:price]
       owner = @session_user.working_for
       quantity = params[:quantity]
-      description = params[:quantity]
+      description = params[:description]
       filename = save_image(params[:image_file])
       item = Item.created(name, price, owner, quantity, description, filename)
+      item.currency = params[:currency]
 
       if self.has_errors(item)
         redirect "/home/new"
@@ -192,6 +193,7 @@ module Controllers
       redirect '/index' unless session[:id]
       filename = save_image(params[:image_file])
       test_item = Item.created(params[:name], params[:price], @session_user.working_for, params[:quantity], params[:description], filename)
+      test_item.currency = params[:currency]
       if self.has_errors(test_item)
         redirect "/home/edit_item/#{params[:itemid]}"
       else
@@ -335,6 +337,9 @@ module Controllers
           true
         when :no_valid_image_file then
           flash[:error] = "No valid image file selected\n"
+          true
+        when :invalid_currency then
+          flash[:error] = "You need to set a Bitcoin wallet in your Profile to accept Bitcoins as payment"
           true
         else
           false
