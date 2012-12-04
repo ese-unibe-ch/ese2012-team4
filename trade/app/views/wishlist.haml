@@ -28,7 +28,7 @@
           %a(href="/item/#{item.id}/image" rel="lightbox" title="#{item.name}")
             %img(src="/item/#{item.id}/image" class = "smallpicturebox")
         %td
-          %p #{item.price}
+          %p #{item.price.to_s+" "+item.currency}
         %td
           %p #{item.quantity}
         %td
