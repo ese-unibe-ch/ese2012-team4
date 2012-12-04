@@ -152,9 +152,8 @@ module Controllers
       end
       filename = save_image(params[:image_file])
       test_user = User.created(viewer.name, "FdZ.(gJa)s'dFjKdaDGS+J1", params[:e_mail].strip, params[:description].split("\n"), filename)
-      unless test_user.is_valid(nil, nil, false)
-        flash[:error] = test_user.errors
-        redirect "/profile"
+      if self.has_errors(test_user,nil, nil, false)
+        redirect back
       else
         viewer.wallet = params[:wallet]
         viewer.description = params[:description].split("\n")
@@ -171,9 +170,8 @@ module Controllers
     post "/change_password" do
       redirect '/index' unless session[:id]
       viewer = User.get_user(session[:id])
-      unless viewer.is_valid(params[:password_new], params[:password_check], false)
-        flash[:error] = viewer.errors
-        redirect "/profile"
+      if self.has_errors(viewer,params[:password_new], params[:password_check], false)
+        redirect back
       end
       viewer.change_password(params[:password_new])
       flash[:notice] = "Password has been updated"
@@ -268,6 +266,38 @@ module Controllers
       redirect '/index' unless session[:id]
       redirect '/index' unless @session_user.working_for.is_a?(Organization)
       haml :logs
+    end
+
+    def has_errors(user,pw,pw1,check_username_exists)
+      validation = catch(:invalid){user.is_valid(pw,pw1,check_username_exists)}
+      case validation
+        when :invalid_name then
+          flash[:error] = "User must have a name\n"
+          true
+        when :invalid_email then
+          flash[:error] = "Invalid e-mail\n"
+          true
+        when :already_exists then
+          flash[:error] = "Username already chosen\n"
+          true
+        when :no_pw_confirmation then
+          flash[:error] = "Password confirmation is required\n"
+          true
+        when :pw_dont_match then
+          flash[:error] = "Passwords do not match\n"
+          true
+        when :pw_not_safe then
+          flash[:error] = "Password is not safe\n"
+          true
+        when :no_pw then
+          flash[:error] = "Password is required"
+          true
+        when :big_image then
+          flash[:error] = "Image is heavier than 400kB"
+          true
+        else
+          false
+      end
     end
   end
 end

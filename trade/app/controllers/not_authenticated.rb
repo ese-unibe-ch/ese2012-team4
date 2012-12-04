@@ -76,8 +76,7 @@ module Controllers
 
     post "/pwreset" do
       testuser = User.created("a", params[:password_new], "a@b.ch", "", "")
-      unless testuser.is_valid(params[:password_new], params[:password_check])
-        flash[:error] = testuser.errors
+      if self.has_errors(testuser,params[:password_new], params[:password_check])
         redirect "/pwreset/#{session["pwrecovery"]}"
       else
         new_crypt = "barf"
@@ -132,13 +131,31 @@ module Controllers
       filename = save_image(params[:image_file])
 
       user = User.created(username, pw, e_mail, description, filename)
-      unless user.is_valid(pw, pw2)
-        flash[:error] = user.errors
+      if self.has_errors(user,pw,pw2)
         redirect "/signup"
       else
         user.save
         flash[:notice] = "You are now registered. Please log in"
         redirect "/login"
+      end
+    end
+    def has_errors(user,pw,pw1)
+      validation = catch(:invalid){user.is_valid(pw,pw1)}
+      case validation
+        when :no_pw_confirmation then
+          flash[:error] = "Password confirmation is required\n"
+          true
+        when :pw_dont_match then
+          flash[:error] = "Passwords do not match\n"
+          true
+        when :pw_not_safe then
+          flash[:error] = "Password is not safe\n"
+          true
+        when :no_pw then
+          flash[:error] = "Password is required"
+          true
+        else
+          false
       end
     end
   end

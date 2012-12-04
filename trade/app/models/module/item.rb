@@ -73,11 +73,11 @@ module Models
       throw :invalid, :invalid_quantity unless Item.valid_integer?(self.quantity)
 
       if image != ""
-        throw :invalid, :big_image unless image.size <= 400*1024
         begin
           dim = Dimensions.dimensions(image)
           unless image.size <= 400*1024
             FileUtils.rm(image, :force => true)
+            throw :invalid, :big_image
           end
         rescue Errno::ENOENT
           throw :invalid, :no_valid_image_file

@@ -55,32 +55,30 @@ module Models
     # - @param [String] pw2: the confirmation of the password.
     # - @param [boolean] check_username_exists: whether the username is already taken or not
     def is_valid(pw = nil, pw2 = nil, check_username_exists = true)
-      self.errors = ""
-      self.errors += "User must have a name\n" unless self.name.strip.delete(' ')!=""
-      self.errors += "Invalid e-mail\n" if self.e_mail=='' || self.e_mail.count("@")!=1 || self.e_mail.count(".")==0
-      self.errors += "Username already chosen\n" unless (User.available? self.name) || !check_username_exists
+      throw :invalid, :invalid_name unless self.name.strip.delete(' ')!=""
+      throw :invalid, :invalid_email if self.e_mail=='' || self.e_mail.count("@")!=1 || self.e_mail.count(".")==0
+      throw :invalid, :already_exists unless (User.available? self.name) || !check_username_exists
+
       if pw != nil || pw2 != nil
         if pw != nil || pw != ""
           if pw2 == nil || pw2 == ""
-            self.errors += "Password confirmation is required\n"
+            throw :invalid, :no_pw_confirmation
           else
-            self.errors += "Passwords do not match\n" unless pw == pw2
-            self.errors += "Password is not safe\n" unless PasswordCheck.safe?(pw)
+            throw :invalid, :pw_dont_match unless pw == pw2
+            throw :invalid, :pw_not_safe unless PasswordCheck.safe?(pw)
           end
         else
-          self.errors += "Password is required"
+          throw :invalid, :no_pw
         end
       end
       if image != ""
-        self.errors += "Image is heavier than 400kB" unless image.size <= 400*1024
         dim = Dimensions.dimensions(image)
-  #      self.errors += "Image is no square" unless dim[0] == dim[1]
-  #      unless image.size <= 400*1024 && dim[0] == dim[1]
         unless image.size <= 400*1024
           FileUtils.rm(image, :force => true)
+          throw :invalid, :big_image
         end
       end
-      self.errors != "" ? false : true
+      true
     end
 
     def change_password(password)
