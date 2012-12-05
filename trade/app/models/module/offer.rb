@@ -68,6 +68,11 @@ module Models
       end
     end
 
+    def delete
+      self.owner.remove_offer(self)
+      @@offers.delete(self)
+    end
+
     def self.get_item_list
       @@offers
     end

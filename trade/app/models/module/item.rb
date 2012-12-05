@@ -142,11 +142,6 @@ module Models
       self.quantity += amount.to_i
     end
 
-    def delete
-      self.owner.remove_offer(self)
-      @@offers.delete(self)
-    end
-
     # Adds a new Comment on this Item.
     # -@param [User] author: The User who wrote the Comment.
     # -@param [String] text: The text of the Comment.

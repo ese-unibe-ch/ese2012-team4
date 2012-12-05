@@ -256,7 +256,7 @@ module Controllers
         unless((params[:exp_date].eql?("") and params[:exp_time].eql?("")))
           item.expiration_date= TimeHandler.parseTime(params[:exp_date], params[:exp_time])
         end
-        @session_user.activate_item(id)
+        @session_user.working_for.activate_item(id)
         flash[:notice] = "#{item.name} has been activated"
       else
         flash[:error] = "You did not put in a valid Time"
@@ -267,7 +267,7 @@ module Controllers
     post '/changestate/:id/setinactive' do
       redirect '/index' unless session[:id]
       id = params[:id]
-      @session_user.deactivate_item(id)
+      @session_user.working_for.deactivate_item(id)
       flash[:notice] = "#{Item.get_offer(id).name} has been deactivated"
       redirect "/home/items"
     end

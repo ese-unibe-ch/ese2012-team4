@@ -160,12 +160,13 @@ module Models
     # - @param [Integer] id: The offers ID
     def activate_item(id)
       item = Offer.get_offer(id)
-      return false unless item.owner==self || item.owner == self.working_for
-      if !(identical = self.list_items.detect{|i| i.name== item.name and i.price == item.price and i.description==item.description}).nil?
+      return false unless item.owner == self.working_for
+      if !(identical = self.working_for.list_items.detect{|i| i.name== item.name and i.price == item.price and i.description==item.description}).nil?
         identical.quantity+=item.quantity
         item.delete
-      end
+      else
       item.active=true
+      end
       Activity.log(self, "activate_item", item, self.working_for)
     end
 
@@ -189,13 +190,14 @@ module Models
     # - @param [Integer] id: The Item's id
     def deactivate_item(id)
       item = Offer.get_offer(id)
-      return false unless item.owner==self || item.owner == self.working_for
+      return false unless item.owner == self.working_for
       if !(identical = self.list_items_inactive.detect{|i| i.name== item.name and i.price == item.price and i.description==item.description}).nil?
         identical.quantity+=item.quantity
         item.delete
-      end
+      else
       item.active = false
       item.expiration_date=nil
+      end
 
       if !item.wishlist_users.empty?
         item.wishlist_users.each {|user| user.remove_from_wishlist(item); item.wishlist_users.delete(user)}
