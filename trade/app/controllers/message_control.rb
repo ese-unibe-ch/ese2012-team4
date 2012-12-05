@@ -36,9 +36,9 @@ module Controllers
       subject = params[:subject]
       content = params[:content]
       
-      from = 'lukas.diener@hispeed.ch'
+      from = 'trading.mail@web.de'
       to = recipient.e_mail
-      pw = 'pl'+'okij'+(8+4).to_s
+      pw = 'trade1234'
       site_url = request.host+":"+request.port.to_s
       
       # LD: sorry for this ugly hack. The Gmail SMTP adds a space after the dashes. Hispeed doesn't.
@@ -60,7 +60,7 @@ The Trading System
 EOF
 
       Net::SMTP.enable_tls(OpenSSL::SSL::VERIFY_NONE)
-      Net::SMTP.start('smtp.hispeed.ch', 587, 'hispeed.ch', from, pw, :login) do |smtp|
+      Net::SMTP.start('smtp.web.de', 587, 'web.de', from, pw, :login) do |smtp|
         smtp.send_message(content, from, to)
       end
 			flash[:notice] = "Your message to #{recipient.name} has been sent"
