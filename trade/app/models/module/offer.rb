@@ -70,7 +70,8 @@ module Models
 
     def delete
       self.owner.remove_offer(self)
-      @@offers.delete(self)
+      @@offers["#{self.id}"]=nil
+
     end
 
     def self.get_item_list
