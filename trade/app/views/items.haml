@@ -143,7 +143,7 @@
                   %input.square.rightalign(type="submit" value="Buy")
             -else
               %a.wholly_clickable(href="/item/#{item.id}") See auction
-        - if @session_user.wishlist.include?(item)
+        - if @session_user.working_for.wishlist.include?(item)
           %td
             %form.nomargin(action="/remove_from_wishlist/#{item.id}" method="POST")
               %input.square.rightalign(type="submit" value = "Remove from Wishlist")
