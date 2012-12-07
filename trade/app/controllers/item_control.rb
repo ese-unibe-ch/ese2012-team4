@@ -44,7 +44,6 @@ module Controllers
       # limit to the first four results
       result = Item.search(params[:query], User.get_user(session[:id]).working_for).slice(0,4)
       result.map!{ |item| item.to_json }
-      puts result
       json_string = '{"results": ['
       json_string += result.join(", ")
       json_string += ']}'

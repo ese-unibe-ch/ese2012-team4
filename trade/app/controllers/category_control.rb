@@ -59,7 +59,12 @@ module Controllers
       items_per_page = 10
       page = params[:page].to_i
       cat = Category.by_name(params[:category])
-      items= cat.get_offers(@session_user.working_for.name, {:order_by => order_by, :order_direction => order_direction})
+      items_of_cat = cat.get_offers(@session_user.working_for.name, {:order_by => order_by, :order_direction => order_direction})
+      if order_direction == 'asc'      
+        items = items_of_cat.sort{ |a,b| a.send(order_by) <=> b.send(order_by) }
+      else
+        items = items_of_cat.sort{ |a,b| b.send(order_by) <=> a.send(order_by) }
+      end
       (items.size%items_per_page)==0? page_count = (items.size/items_per_page).to_i : page_count = (items.size/items_per_page).to_i+1
       #redirect 'items/1' unless 0<params[:page].to_i and params[:page].to_i<page_count+1
       @items = []
