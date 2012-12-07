@@ -40,6 +40,8 @@ module Models
     attr_accessor :organization
     # [Array]: all activites of this user or users of this organization
     attr_accessor :activities
+    # [Array]: list of traders that are being followed
+    attr_accessor :watching
 
     attr_accessor :e_mail
     attr_accessor :wallet
@@ -59,6 +61,7 @@ module Models
       self.ratings = []
       self.organization = false
       self.activities = []
+      self.watching = []
     end
 
     # - @return [User]: the user with the given username
@@ -320,6 +323,24 @@ module Models
 
       # Otherwise, compare IDs
       return self.id <=> o.id
+    end
+
+    def watch(trader)
+      watching.push(trader)
+    end
+
+    def unwatch(trader)
+      watching.remove(trader)
+    end
+
+    def get_watching_logs
+      watching_logs = Array.new
+      watching.each do |trader|
+        trader.activities.each do |activity|
+          watching_logs.push(activity)
+        end
+      end
+      watching_logs.sort{|a,b| b.time <=> a.time}
     end
   end
 end

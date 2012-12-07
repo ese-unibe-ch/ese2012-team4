@@ -268,6 +268,18 @@ module Controllers
       haml :logs
     end
 
+    get '/watching' do
+      redirect '/index' unless session[:id]
+      haml :watching
+    end
+
+    post '/add_user_to_watching_list/:id' do
+      redirect '/index' unless session[:id]
+      id = params[:id]
+      @session_user.working_for.watch(User.get_user(id))
+      redirect "/watching"
+    end
+
     def has_errors(user,pw,pw1,check_username_exists)
       validation = catch(:invalid){user.is_valid(pw,pw1,check_username_exists)}
       case validation
