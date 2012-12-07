@@ -40,4 +40,20 @@
   %img.gridicon(src="/images/getting_started/profile.png")
 %a(href = "/home/items/1/1")
   %img.gridicon(src="/images/getting_started/youritems.png")
+%hr.separator
+%h2 News of other traders
+%br
+  %table.usertable
+    %thead
+      %tr
+        %td
+          %p.table_header Time
+        %td
+          %p.table_header Activity
+    -@session_user.working_for.get_watching_logs.each do |activity|
+      %tr
+        %td
+          %p #{activity.time.strftime("%d.%m.%Y<br />%H:%M")}
+        %td
+          %p #{activity.to_html}
 

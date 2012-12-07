@@ -330,7 +330,7 @@ module Models
     end
 
     def unwatch(trader)
-      watching.remove(trader)
+      watching.delete(trader)
     end
 
     def get_watching_logs

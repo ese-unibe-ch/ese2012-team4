@@ -273,11 +273,18 @@ module Controllers
       haml :watching
     end
 
-    post '/add_user_to_watching_list/:id' do
+    post "/add_user_to_watching_list/:id" do
       redirect '/index' unless session[:id]
       id = params[:id]
       @session_user.working_for.watch(User.get_user(id))
-      redirect "/watching"
+      redirect "/home"
+    end
+
+    post "/remove_user_from_watching_list/:id" do
+      redirect '/index' unless session[:id]
+      id = params[:id]
+      @session_user.working_for.unwatch(User.get_user(id))
+      redirect "/users/#{id}/1"
     end
 
     def has_errors(user,pw,pw1,check_username_exists)
