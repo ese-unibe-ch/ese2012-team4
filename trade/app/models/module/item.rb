@@ -189,7 +189,9 @@ module Models
       @@offers = {}
     end
 
-
+    def to_json
+      return "{\"id\": \"#{self.id}\", \"name\": \"#{self.name}\", \"price\": \"#{self.price}\", \"owner\": \"#{self.owner.id}\", \"quantity\": \"#{self.quantity}\", \"description\": \"#{self.description}\" }".to_s
+    end
 
     def activate
       self.active = true

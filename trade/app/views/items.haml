@@ -1,4 +1,24 @@
 %h2 All Items
+:javascript
+  $(document).ready(function() {
+    console.log('ready');
+    $("#searchbox").keyup(function(e) {
+      getSuggestions($("#searchbox").val());
+    });
+  });
+
+  function getSuggestions(query){
+    $.getJSON('/search/webservice/'+query, function(data) {
+      var items = [];
+    
+      $.each(data.results, function(k,v){
+        items.push("<tr><td class='nopadding'><a class='wholly_clickable' href='/item/"+v.id+"'>"+v.name+"</a></td>"+
+          "<td><p>"+v.price+" credits</p></td></tr>");
+      });
+
+      $("#suggestions").html(items.join(" "));
+    });
+  }
 %form.nomargin{:action => "/switch_category", :method =>"POST"}
   %select.contextpicker{:onchange => "this.form.submit();", :name => "category"}
     -if @selected == @supercategory
@@ -64,9 +84,12 @@
 %form(action="/search/query" method="POST")
   %label.name
     %p Search the store
-  %input.value(type="text" name="search" placeholder="Separate words with space")
+  %input.value(type="text" name="search" placeholder="Separate words with space" id="searchbox")
   %hr.separator
     %input.rightalign.square(type="submit" value="Search")
+%br
+%br
+#suggestions
 %br
 - content_for :name do
   #{title}
