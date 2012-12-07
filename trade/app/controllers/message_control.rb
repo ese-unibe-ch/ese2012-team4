@@ -35,34 +35,11 @@ module Controllers
       recipient = User.get_user(params[:recipient_id].to_i)
       subject = params[:subject]
       content = params[:content]
-      
-      from = 'trading.mail@web.de'
-      to = recipient.e_mail
-      pw = 'trade1234'
       site_url = request.host+":"+request.port.to_s
       
-      # LD: sorry for this ugly hack. The Gmail SMTP adds a space after the dashes. Hispeed doesn't.
+      Mailer.send_personal_message(sender, recipient, subject, content, site_url)
 
-      content = <<EOF
-From: #{sender.e_mail}
-To: #{recipient.e_mail}
-subject: [TradingSystem] #{subject}
-Date: #{Time.now.rfc2822}
-Content-Type: text/html
       
-You have a new message from <a href="http://#{site_url}/users/#{@session_user.id}">#{@session_user.name}</a>:
-<hr />
-#{escape_html(content)}
-<hr />
-<br />
-Regards,
-The Trading System
-EOF
-
-      Net::SMTP.enable_tls(OpenSSL::SSL::VERIFY_NONE)
-      Net::SMTP.start('smtp.web.de', 587, 'web.de', from, pw, :login) do |smtp|
-        smtp.send_message(content, from, to)
-      end
 			flash[:notice] = "Your message to #{recipient.name} has been sent"
       redirect '/users/'+recipient.id.to_s
     end
