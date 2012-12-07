@@ -336,8 +336,10 @@ module Models
     def get_watching_logs
       watching_logs = Array.new
       watching.each do |trader|
-        trader.activities.each do |activity|
-          watching_logs.push(activity)
+        trader.activities.each do |a|
+          if(a.topic=="add_item" || a.topic=="edit_item" || a.topic=="activate_item" || a.topic=="deactivate_item")
+            watching_logs.push(a)
+          end
         end
       end
       watching_logs.sort{|a,b| b.time <=> a.time}
