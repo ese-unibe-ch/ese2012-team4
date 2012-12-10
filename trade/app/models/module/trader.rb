@@ -150,7 +150,7 @@ module Models
         item_to_buy.wishlist_users.each {|trader| trader.remove_from_wishlist(item_to_buy); item_to_buy.wishlist_users.delete(trader)}
       end
 
-      Holding.shipItem(item_to_buy, item_to_buy.owner, self, quantity)
+      Holding.ship_item(item_to_buy, item_to_buy.owner, self, quantity)
       Activity.log(account, "item_bought_success", item_to_buy, self)
       Activity.log(account, "item_sold_success", item_to_buy, preowner)
       Mailer.item_sold(preowner.e_mail, "Hi #{preowner.name}, \n #{self.name} bought your Item #{item_to_buy.name}.

@@ -104,7 +104,7 @@ class UserTest < Test::Unit::TestCase
     assert pending.seller == old_owner
     assert pending.buyer == new_owner
 
-    pending.itemReceived
+    pending.item_received
 
     assert old_owner.list_items.size == 0
     assert old_owner.list_items_inactive.size == 0

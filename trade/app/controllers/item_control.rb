@@ -324,7 +324,7 @@ module Controllers
 
       redirect '/index' unless User.get_user(session[:id]).working_for == item.buyer and !item.locked
 
-      item.itemReceived
+      item.item_received
       flash[:notice] = "Transfer completed. Would You like to rate #{item.seller.name}?"
       redirect "/rate/#{item.seller.id}"
     end

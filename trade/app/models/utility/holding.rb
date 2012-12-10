@@ -29,7 +29,7 @@ class Holding
   end
 
   # Moves money after receiving & moves the item to buyers stack
-  def itemReceived
+  def item_received
     if(item.currency == "credits")
       seller.credits+=Integer(item.price)*quantity
     end
@@ -68,7 +68,7 @@ class Holding
   end
 
   # Moves the item from seller to holding
-  def self.shipItem(item, seller, buyer, quantity)
+  def self.ship_item(item, seller, buyer, quantity)
     item_list = Models::Offer.get_item_list
     item_list.delete(item)
 
