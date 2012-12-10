@@ -7,7 +7,7 @@ module Models
     require_relative('item')
     require_relative('auction')
 
-    # [String]: The item's name
+    # [String]: The offers's name
     attr_accessor :name
     # [Integer]: The price in credits
     attr_accessor :owner
@@ -15,7 +15,7 @@ module Models
     attr_accessor :id
     # [String]: Detailed description
     attr_accessor :description
-    # [Time]: Time the Item last changed
+    # [Time]: Time the Offer last changed
     attr_accessor :timestamp
     # [Integer]
     attr_accessor :quantity
@@ -23,13 +23,13 @@ module Models
     attr_accessor :errors
     # [String]: The path of an image
     attr_accessor :image
-    # [Comment]: Comments on this Item
+    # [Comment]: Comments on the Item
     attr_accessor :head_comments
-    # [Time]: Stores when the item deactivates automatically
+    # [Time]: Stores when the offer deactivates automatically
     attr_accessor :expiration_date
-    # [Array]: Stores on whose wishlists the item is
+    # [Array]: Stores on whose wishlists the offer is
     attr_accessor :wishlist_users
-    # [Bool]: Stores whether the Offer is an Auction or not
+    # [Bool]: Stores whether the offer is an auction or not
     attr_accessor :auction
     # [Category]: The category the offer belongs to
     attr_accessor :category

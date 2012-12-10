@@ -4,31 +4,38 @@ module Models
   require_relative('offer')
 
   # Represents a category of different offers in the system.
-  # A category contains several subcategories. A category can return offers belonging to this category.
+  # A category contains several subcategories. A category can return offers belonging to this category
+  # This class is not constructed to go deeper than three levels, that means:
+  # - First level: The constructed supercategory, that you can receive by invoking the get_supercategory method
+  # - Second level: Subcategories of the supercategory
+  # - Third level: Subcategories of the above mentioned subcategories of the supercategory
   class Category
-
+    # [String]: The name of this category. Is used to identify a category as well, do not create two categories with the same name
     attr_accessor :name
-    @components
+    @subcategories
 
     def initialize(name)
       self.name = name
-      @components = Array.new
+      @subcategories = Array.new
     end
 
     def get_subcategories
-      @components
+      @subcategories
     end
 
     def to_s
       self.name
     end
 
-    def add(component)
-      @components.push(component)
+    # Adds a new category to the subcategories, if it is not yet belonging to them.
+    def add(category)
+      if !@subcategories.include?(category) and !self.get_names.include?(category.name)
+        @subcategories.push(category)
+      end
     end
 
-    def remove(component)
-      @components.delete(component)
+    def remove(category)
+      @subcategories.delete(category)
     end
 
     # - @return [Array]: The offers belonging to this category, or to one of its subcategories.
@@ -39,15 +46,16 @@ module Models
           ret_array.push(offer)
         end
       end
-      for cat in @components
+      for cat in @subcategories
         ret_array.concat(cat.get_offers)
       end
       ret_array
     end
 
+    # - @return [Array]: The names of the subcategories of this category
     def get_names
       ret_array = Array.new
-      for subcat in @components
+      for subcat in @subcategories
         ret_array.push(subcat.name)
       end
       ret_array

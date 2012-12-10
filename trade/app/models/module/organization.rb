@@ -7,7 +7,9 @@ require_relative('trader')
 module Models
 
   class Organization < Trader
+    # [Array]: Members with special rights
     attr_accessor :admin_list
+    # [Array]: Users belonging to this organization
     attr_accessor :member_list
 
 
@@ -27,7 +29,7 @@ module Models
       self
     end
 
-
+    # Adds an new admin to the admin_list, containing the members with special rights.
     def add_admin(new_admin)
       unless self.admin_list.include?(new_admin)
         self.admin_list.push(new_admin)
@@ -43,8 +45,8 @@ module Models
       end
     end
 
-    #maybe need to move the check for error-handling
     def delete_admin(admin)
+      # ToDo: maybe need to move the check for error-handling
       if can_delete_admin?
         self.admin_list.delete(admin)
         admin.admin_of_org_list.delete(self)

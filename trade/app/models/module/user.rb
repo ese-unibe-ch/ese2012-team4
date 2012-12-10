@@ -94,7 +94,7 @@ module Models
     end
 
     # Generates a password-reset-link
-    def forgot_password()
+    def forgot_password
       new_password = PasswordReset.generate_random_pw
       new_password_crypt = BCrypt::Engine.hash_secret(new_password, password_salt)
       new_request = PasswordReset.created(new_password_crypt, self.name.strip.downcase)
@@ -105,7 +105,6 @@ module Models
     def join_organization(organization)
       self.organization_list.push(organization) unless self.organization_list.include?(organization)
     end
-
 
     #get string representation
     def to_s
@@ -123,12 +122,9 @@ module Models
       return @@traders[user_id.to_i]
     end
 
-
-
     def create_organization(name, description = "", image = "")
       new_organization = Organization.created(name, self, description, image)
       new_organization.save
-      #self.organization_list.push(new_organization)
     end
   end
 end

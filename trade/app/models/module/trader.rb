@@ -69,7 +69,7 @@ module Models
       return @@traders_by_name[name.downcase]
     end
 
-
+    # Saves the trader to the trader list. Access the list with the get_all method.
     def save
       raise "Duplicated user" if @@traders.has_key? self.id and @@traders[self.id] != self
       @@traders[self.id] = self
@@ -134,7 +134,7 @@ module Models
     # The transaction fails if the buyer has not enough credits.
     # - @param item_to_buy
     # - @param quantity: how many pieces of this item should be bought
-    # - @return true if user can buy item, false if his credit amount is too small
+    # - @return true if user can buy the offer, false if his credit amount is too small
     def buy_new_item(item_to_buy, quantity, account)
       return false if item_to_buy.auction
       preowner = item_to_buy.owner
@@ -173,16 +173,19 @@ module Models
       Activity.log(self, "activate_item", item, self.working_for)
     end
 
+    # Invokes the edit method of an item and logs this activity to the traders log.
     def edit_item(item, name, price, quantity, currency, description = "", image = "")
       item.edit(name, price, quantity, currency, description, image)
       Activity.log(self, "edit_item", item, self.working_for)
     end
 
+    # Invokes the comment method of an item and logs this activity to the traders log.
     def comment_item(item, text)
       item.comment(self, text)
       Activity.log(self, "comment_item", item, item.owner)
     end
 
+    # Invokes the answer method of a comment and logs this activity to the traders log.
     def answer_comment(comment, text)
       comment.answer(self, text)
       item = comment.correspondent_item
@@ -240,6 +243,7 @@ module Models
       Models::Holding.get_all.select {|s| s.seller == self}
     end
 
+    # Deletes the trader from the system and removes all his offers.
     def delete
       FileUtils::rm(self.image, :force => true)
       @@traders.delete(self.id)
@@ -251,16 +255,16 @@ module Models
       }
     end
 
-    def add_to_wishlist(item)
-      unless wishlist.include?(item)
-        self.wishlist.push(item)
-        item.add_user_to_wishlist(self)
+    def add_to_wishlist(offer)
+      unless wishlist.include?(offer)
+        self.wishlist.push(offer)
+        offer.add_user_to_wishlist(self)
       end
     end
 
-    def remove_from_wishlist(item)
-      item.remove_user_from_wishlist(self)
-      self.wishlist.delete(item)
+    def remove_from_wishlist(offer)
+      offer.remove_user_from_wishlist(self)
+      self.wishlist.delete(offer)
     end
 
     def add_rating(rating)
