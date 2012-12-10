@@ -85,6 +85,10 @@ module Models
       ret_category
     end
 
+    def self.delete_all
+      @@supercategory = self.new("No Category")
+    end
+
     def self.get_supercategory
       @@supercategory
     end

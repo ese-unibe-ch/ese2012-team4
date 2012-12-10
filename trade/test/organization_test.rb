@@ -17,9 +17,12 @@ class OrganizationTest < Test::Unit::TestCase
     @org = Organization.created( "testorganization", @admin)
   end
 
+  def teardown
+    @admin = nil
+    @org = nil
+  end
+
   def test_init
-    # LD take care! This test is run last. They are run in alphabetical
-    #    order, so don't rely on a specific order.
     @org.save
     assert(@org.admin_list.include?(@admin))
     assert(Trader.get_all("").include?(@org))
