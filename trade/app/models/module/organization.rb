@@ -33,7 +33,9 @@ module Models
     def add_admin(new_admin)
       unless self.admin_list.include?(new_admin)
         self.admin_list.push(new_admin)
-        self.member_list.push(new_admin)
+        unless self.member_list.include?(new_admin)
+          self.member_list.push(new_admin)
+        end
         new_admin.admin_of_org_list.push(self)
       end
     end
