@@ -24,12 +24,13 @@
 %br
 %form(method="GET" action="/message/compose/#{@user.id}")
   %input.square(type="submit" value="send message")
--if(!@session_user.working_for.watching.include?(@user))
-  %form(method="POST" action="/add_user_to_watching_list/#{@user.id}")
-    %input.square(type="submit" value="watch this user")
--else
-  %form(method="POST" action="/remove_user_from_watching_list/#{@user.id}")
-    %input.square(type="submit" value="remove from watching list")
+-if(!@session_user.eql?(@user))
+  -if(!@session_user.working_for.watching.include?(@user))
+    %form(method="POST" action="/add_user_to_watching_list/#{@user.id}")
+      %input.square(type="submit" value="watch this user")
+  -else
+    %form(method="POST" action="/remove_user_from_watching_list/#{@user.id}")
+      %input.square(type="submit" value="remove from watching list")
 
 .lineContainer
   .textbox.name
