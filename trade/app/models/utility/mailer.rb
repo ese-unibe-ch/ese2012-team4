@@ -1,7 +1,7 @@
 module Models
 
   # Sends Mails
-  # Uses the g-mail Address tradingsystem.mail@gmail.com to do this.
+  # Uses the web.de-Address tradingsystem.mail@gmail.com to do this.
   # Do not send private mails to this address, since its password is visible here and therefore visible online as well.
   class Mailer
 
