@@ -103,11 +103,14 @@ class AuctionTest < Test::Unit::TestCase
     assert @userA.credits == 1000
     assert @userB.credits == 980
     assert @userC.credits == 1000
+
+    #next bid is lower than max_price (=20), therefore no cash changes hand
+    #but the current selling price is increased to 15+increment
     auction.place_bid(@userC,15)
     assert auction.current_selling_price == 17
     assert @userA.credits == 1000
-    assert @userB.credits == 1000
-    assert @userC.credits == 995
+    assert @userB.credits == 980
+    assert @userC.credits == 1000
     auction.place_bid(@userC,25)
     assert auction.current_selling_price == 22
     assert @userA.credits == 1000
