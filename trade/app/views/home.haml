@@ -43,17 +43,25 @@
 %hr.separator
 %h2 News of other traders
 %br
-  %table.usertable
-    %thead
-      %tr
-        %td
-          %p.table_header Time
-        %td
-          %p.table_header Activity
-    -@session_user.working_for.get_watching_logs.each do |activity|
-      %tr
-        %td
-          %p #{activity.time.strftime("%d.%m.%Y<br />%H:%M")}
-        %td
-          %p #{activity.to_html}
+%p Filter activities
+%form.nomargin(action="/home/filter" method="POST" )
+  %input(type = "checkbox" name = "add" value = "add_item" checked) Adding Items
+  %input(type = "checkbox" name = "edit" value = "edit_item" checked) Editing Items
+  %input(type = "checkbox" name = "activate" value = "activate_item" checked) Activating Items
+  %input(type = "checkbox" name = "deactivate" value = "deactivate_item" checked) Deactivating Items
+  %input.square(type="submit" value="Filter")
+%br
+%table.usertable
+  %thead
+    %tr
+      %td
+        %p.table_header Time
+      %td
+        %p.table_header Activity
+  -@activities.each do |activity|
+    %tr
+      %td
+        %p #{activity.time.strftime("%d.%m.%Y<br />%H:%M")}
+      %td
+        %p #{activity.to_html}
 
