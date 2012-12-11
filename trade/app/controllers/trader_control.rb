@@ -56,26 +56,34 @@ module Controllers
 
     post '/setuser/:org_id/:user_id' do
       redirect '/index' unless session[:id]
+      viewer = User.get_user(session[:id])
       org = User.get_user(params[:org_id])
       user = User.get_user(params[:user_id])
+      redirect '/index' if org.nil? or user.nil? or viewer.nil?
       redirect "#{back}" unless (!user.organization and org.organization)
-      if org.member_list.include?(user)
-        org.delete_member(user)
-      else
-        org.add_member(user)
+      if org.admin_list.include?(viewer)
+        if org.member_list.include?(user)
+          org.delete_member(user)
+        else
+          org.add_member(user)
+        end
       end
       redirect "#{back}"
     end
 
     post '/setadmin/:org_id/:user_id' do
       redirect '/index' unless session[:id]
+      viewer = User.get_user(session[:id])
       org = User.get_user(params[:org_id])
       user = User.get_user(params[:user_id])
+      redirect '/index' if org.nil? or user.nil? or viewer.nil?
       redirect "#{back}" unless (!user.organization and org.organization)
-      if org.admin_list.include?(user)
-        org.delete_admin(user)
-      else
-        org.add_admin(user)
+      if org.admin_list.include?(viewer)
+        if org.admin_list.include?(user)
+          org.delete_admin(user)
+        else
+          org.add_admin(user)
+        end
       end
       redirect "#{back}"
     end
@@ -121,6 +129,7 @@ module Controllers
     post "/rate/:id" do
       redirect '/index' unless session[:id]
       user = User.get_user(params[:id])
+      redirect '/index' if user.nil?
       user.add_rating(params[:rating]) unless params[:rating] == nil
       redirect "/home"
     end
@@ -128,7 +137,6 @@ module Controllers
     post "/unauthenticate" do
       redirect '/index' unless session[:id]
       session[:id] = nil
-      #session['auth'] = false
       flash[:notice] = "You are now logged out"
       redirect "/"
     end
@@ -202,6 +210,7 @@ module Controllers
     delete '/delete_account' do
       #delete user
       user = session[:id]
+      redirect '/index' if user.nil?
       User.get_user(user).delete
       #close session
       session[:id] = nil

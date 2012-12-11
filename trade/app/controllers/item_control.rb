@@ -216,6 +216,9 @@ module Controllers
         redirect "/home/edit_item/#{params[:itemid]}"
       else
         item = Item.get_offer(params[:itemid])
+        owner = item.owner
+        viewer = User.get_user(session[:id])
+        redirect '/index' unless owner == viewer.working_for
         @session_user.edit_item(item, params[:name],Integer(params[:price]),Integer(params[:quantity]),params[:currency],params[:description], filename)
         item.category = Category.by_name(params[:category])
         if params[:permanent]=="no"
@@ -232,21 +235,31 @@ module Controllers
     post '/permanent/:itemid' do
       redirect '/index' unless session[:id]
       item = Offer.get_offer(params[:itemid])
-      if item.auction
-        flash[:error] = "invalid action"
-        redirect "#{back}"
+      unless item.nil?
+        owner = item.owner
+        viewer = User.get_user(session[:id])
+        redirect '/index' unless owner == viewer.working_for
+        if item.auction
+          flash[:error] = "invalid action"
+          redirect "#{back}"
+        end
+        item.switch_permanent
+        flash[:notice] = "successfully changed status"
       end
-      item.switch_permanent
-      flash[:notice] = "successfully changed status"
       redirect "#{back}"
     end
 
     post '/restock/:itemid' do
       redirect '/index' unless session[:id]
       item = Offer.get_offer(params[:itemid])
-      redirect "#{back}" unless item.permanent
-      item.restock(params[:quantity])
-      redirect "#{back}"
+      unless item.nil?
+        owner = item.owner
+        viewer = User.get_user(session[:id])
+        redirect '/index' unless owner == viewer.working_for
+        redirect "#{back}" unless item.permanent
+        item.restock(params[:quantity])
+        redirect "#{back}"
+      end
     end
 
     get '/changestate/:itemid/activation' do
@@ -263,14 +276,19 @@ module Controllers
       redirect '/index' unless session[:id]
       id = params[:id]
       item = Item.get_offer(id)
-      if(TimeHandler.validTime?(params[:exp_date], params[:exp_time]))
-        unless((params[:exp_date].eql?("") and params[:exp_time].eql?("")))
-          item.expiration_date= TimeHandler.parseTime(params[:exp_date], params[:exp_time])
+      unless item.nil?
+        owner = item.owner
+        viewer = User.get_user(session[:id])
+        redirect '/index' unless owner == viewer.working_for
+        if(TimeHandler.validTime?(params[:exp_date], params[:exp_time]))
+          unless((params[:exp_date].eql?("") and params[:exp_time].eql?("")))
+            item.expiration_date= TimeHandler.parseTime(params[:exp_date], params[:exp_time])
+          end
+          @session_user.working_for.activate_item(id)
+          flash[:notice] = "#{item.name} has been activated"
+        else
+          flash[:error] = "You did not put in a valid Time"
         end
-        @session_user.working_for.activate_item(id)
-        flash[:notice] = "#{item.name} has been activated"
-      else
-        flash[:error] = "You did not put in a valid Time"
       end
       redirect "/home/items"
     end
@@ -278,8 +296,14 @@ module Controllers
     post '/changestate/:id/setinactive' do
       redirect '/index' unless session[:id]
       id = params[:id]
-      @session_user.working_for.deactivate_item(id)
-      flash[:notice] = "#{Item.get_offer(id).name} has been deactivated"
+      item = Item.get_offer(id)
+      unless item.nil?
+        owner = item.owner
+        viewer = User.get_user(session[:id])
+        redirect '/index' unless owner == viewer.working_for
+        @session_user.working_for.deactivate_item(id)
+        flash[:notice] = "#{Item.get_offer(id).name} has been deactivated"
+      end
       redirect "/home/items"
     end
 

@@ -38,6 +38,8 @@ module Controllers
       redirect '/index' unless session[:id]
       id = params[:id]
       owner = Item.get_offer(id).owner
+      viewer = User.get_user(session[:id])
+      redirect '/index' unless owner == viewer.working_for
       item_old = Item.get_offer(id)
       #if item_old.quantity != 1
       #  item_old.quantity -= 1
@@ -104,7 +106,10 @@ module Controllers
       @auction = Offer.get_offer(params[:item_id])
       @item = @auction.item
       unless @auction.nil?
-        if @auction.owner == @session_user.working_for
+        owner = @auction.owner
+        viewer = User.get_user(session[:id])
+        redirect '/index' unless owner == viewer.working_for
+        if owner == @session_user.working_for
           if @auction.editable?
             end_date = TimeHandler.parseTime(params[:exp_date], params[:exp_time])
             test_auction = Auction.create(@item, params[:increment], params[:min_price], end_date)
@@ -127,10 +132,15 @@ module Controllers
     post "/auction/:item_id/deactivate" do
       redirect '/index' unless session[:id]
       @auction = Offer.get_offer(params[:item_id])
-      if (@session_user.working_for == @auction.owner)
-        @auction.deactivate
+      unless @auction.nil?
+      owner = @auction.owner
+      viewer = User.get_user(session[:id])
+      redirect '/index' unless owner == viewer.working_for
+        if (@session_user.working_for == @auction.owner)
+          @auction.deactivate
+        end
+        redirect "/home/items"
       end
-      redirect "/home/items"
     end
 
     def has_errors(auction)
