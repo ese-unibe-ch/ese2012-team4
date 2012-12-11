@@ -140,8 +140,17 @@ module Controllers
       end
     end
     def has_errors(user,pw,pw1)
-      validation = catch(:invalid){user.is_valid(pw,pw1)}
+      validation = catch(:invalid){user.is_valid(pw,pw1,false)}
       case validation
+        when :invalid_name then
+          flash[:error] = "User must have a name\n"
+          true
+        when :invalid_email then
+          flash[:error] = "Invalid e-mail\n"
+          true
+        when :already_exists then
+          flash[:error] = "Username already chosen\n"
+          true
         when :no_pw_confirmation then
           flash[:error] = "Password confirmation is required\n"
           true
@@ -153,6 +162,9 @@ module Controllers
           true
         when :no_pw then
           flash[:error] = "Password is required"
+          true
+        when :big_image then
+          flash[:error] = "Image is heavier than 400kB"
           true
         else
           false
