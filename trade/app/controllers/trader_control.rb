@@ -252,7 +252,7 @@ module Controllers
       description = params[:description]
       img_filename = save_image(params[:image_file])
       @session_user.create_organization(name, description, img_filename)
-      flash[:notice] = "Organization #{params[:name]} has been created"
+      flash[:notice] = "Organization has been created"
       redirect "/home"
     end
 

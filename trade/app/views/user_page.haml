@@ -13,7 +13,9 @@
     %a(href="/user/#{@user.id}/image" rel="lightbox" title="#{@user.name}")
       %img(src="/user/#{@user.id}/image" class = "bigpicturebox")
   .ratingtable
-    %p Other traders' happiness with #{@user.name}:
+    %p Other traders' happiness with
+    :escaped
+      #{@user.name}:
     %br
     :javascript
       var data = #{@user.ratings_json};

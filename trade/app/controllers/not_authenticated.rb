@@ -111,7 +111,7 @@ module Controllers
       else
         if id == 0
           session[:id] = user.id
-          flash[:notice] = "Welcome, #{user.name}. You are now logged in"
+          flash[:notice] = "Welcome, to the trading system. You are now logged in"
           redirect "/home"
         else
           session[:id] = user.id
