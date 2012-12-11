@@ -46,23 +46,25 @@ class AuctionTest < Test::Unit::TestCase
     auction = Auction.create(item, increment, initialPrice, 0)
 
     assert(auction.owner == @userA)
-    assert(auction.current_selling_price == 0)
+    #current selling Price is set to min-Price
+    assert(auction.current_selling_price == 5)
 
     assert(auction.valid_bid?(@userB, 10))
 
-    ###### FIRST BID :: Price = nil
+    ###### FIRST BID :: Price = 5
     auction.place_bid(@userB, 10)
     ### AFTER :: Bidders = [10], Price = 5
     assert(auction.current_selling_price == 5)
 
-    assert(!auction.valid_bid?(@userC, 3))
-    assert(!auction.valid_bid?(@userC, 4))
-    assert(auction.valid_bid?(@userC, 5))
+    #valid is current selling price + increment = 7
+    assert(!auction.valid_bid?(@userC, 5))
+    assert(!auction.valid_bid?(@userC, 6))
+    assert(auction.valid_bid?(@userC, 7))
 
     ###### SECOND BID :: Price = 5, Minimal Bid = 5 ######
     auction.place_bid(@userC, 5)
     ### AFTER :: Bidders = [5, 10], Price = 7
-    assert(auction.current_selling_price == 7)
+    assert(auction.current_selling_price == 5)
 
     assert(!auction.valid_bid?(@userC, 5))
     assert(!auction.valid_bid?(@userC, 6))

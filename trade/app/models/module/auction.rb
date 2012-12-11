@@ -4,7 +4,7 @@ module Models
   require_relative('offer')
   class Auction < Offer
 
-    attr_accessor :item, :increment, :min_price, :bids, :current_winner, :current_selling_price
+    attr_accessor :item, :increment, :min_price, :bids, :current_winner, :current_selling_price, :first_bidder
     # [String]: Stores all error messages
 
 
@@ -33,6 +33,7 @@ module Models
       self.currency = item.currency
       self.auction = true
       self.category = item.category
+      self.first_bidder = true
     end
 
 
@@ -119,7 +120,12 @@ module Models
               @current_selling_price = @bids[current_winner]
             end
           else
-            @current_selling_price = bid
+            #check for first bid!!!! current_selling_price is only bid, if not the first buyer
+            if first_bidder
+              first_bidder = false
+            else
+              @current_selling_price = bid
+            end
           end
         else
           #if the bid is below the maximal bid + increment
