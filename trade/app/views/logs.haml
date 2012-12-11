@@ -1,6 +1,14 @@
 %h2 #{@session_user.working_for.name}'s logs
 
 %br
+%p Filter activities
+%form.nomargin(action="/logs/filter" method="POST" )
+  %input(type = "checkbox" name = "add" value = "add_item" checked) Adding Items
+  %input(type = "checkbox" name = "edit" value = "edit_item" checked) Editing Items
+  %input(type = "checkbox" name = "activate" value = "activate_item" checked) Activating Items
+  %input(type = "checkbox" name = "deactivate" value = "deactivate_item" checked) Deactivating Items
+  %input.square(type="submit" value="Filter")
+%br
   %table.usertable
     %thead
       %tr
@@ -8,7 +16,7 @@
           %p.table_header Time
         %td
           %p.table_header Activity
-    - @session_user.working_for.activities.each do |activity|
+    - @logs.each do |activity|
       %tr
         %td
           %p #{activity.time.strftime("%d.%m.%Y<br />%H:%M")}
