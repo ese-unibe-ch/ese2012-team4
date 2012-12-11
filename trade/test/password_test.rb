@@ -3,6 +3,7 @@ require 'rubygems'
 require 'require_relative'
 require_relative('../app/models/utility/password_check')
 require_relative('../app/models/utility/password_reset')
+require_relative('../app/models/module/user')
 
 include Models
 
@@ -30,14 +31,15 @@ class PasswordTest <Test::Unit::TestCase
     assert(PasswordCheck.safe?("123*Z"), "Passwords containing a capital letter and numbers should be safe")
   end
 
-  def test_reset_request
+  def text_reset_creation
     request1 = PasswordReset.created("pw1", "username")
     assert(PasswordReset.request_exists_for_user?("username"))
-    assert(PasswordReset.request_exists_for_id?("pw1"))
-    assert(PasswordReset.getValue("username") == "pw1")
+  end
 
-    request2 = PasswordReset.created("pw2", "username")
-    assert(PasswordReset.getValue("username") == "pw2")
+  def test_reset_request_for_user
+    @user = User.created( "testuser", "password", "test@mail.com" )
+    @user.forgot_password
+    assert(PasswordReset.request_exists_for_user?(@user.name))
   end
 
 end
