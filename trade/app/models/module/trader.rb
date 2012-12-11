@@ -339,16 +339,37 @@ module Models
       watching.delete(trader)
     end
 
-    def get_watching_logs
+    def get_watching_logs(filter = ["add_item", "edit_item", "activate_item", "deactivate_item"])
       watching_logs = Array.new
       watching.each do |trader|
-        trader.activities.each do |a|
-          if(a.topic=="add_item" || a.topic=="edit_item" || a.topic=="activate_item" || a.topic=="deactivate_item")
-            watching_logs.push(a)
-          end
+        trader.get_activities(filter).each do |act|
+          watching_logs.push(act)
         end
+        #trader.activities.each do |a|
+        #  if(a.topic=="add_item" || a.topic=="edit_item" || a.topic=="activate_item" || a.topic=="deactivate_item")
+        #    watching_logs.push(a)
+        #  end
+        #end
       end
       watching_logs.sort{|a,b| b.time <=> a.time}
+    end
+
+
+    # Returns activities of the types given in the filter array.
+    # If the Array is empty, the method returns all activities of this user.
+    def get_activities(filter = Array.new)
+      ret_array = Array.new
+      if filter.size > 0
+        for act in self.activities
+          if filter.include? act.topic
+            ret_array.push(act)
+          end
+        end
+      else
+        ret_array = activities
+      end
+      ret_array.sort{|a,b| b.time <=> a.time}
+
     end
   end
 end
