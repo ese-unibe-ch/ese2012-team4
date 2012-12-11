@@ -248,7 +248,9 @@ module Models
       FileUtils::rm(self.image, :force => true)
       @@traders.delete(self.id)
       @@traders_by_name.delete(self.name.downcase)
-      Offer.get_item_list.delete_if {|k,v| v.owner == self }
+      unless !Offer.get_item_list.empty?
+        Offer.get_item_list.delete_if {|k,v| v.owner == self }
+      end
       self.list_auctions.each{|auction|
         Auction.all_offers.delete(auction)
         self.auctions_list.delete(auction)
