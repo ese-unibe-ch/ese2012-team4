@@ -34,13 +34,14 @@
     %form(method="POST" action="/remove_user_from_watching_list/#{@user.id}")
       %input.square(type="submit" value="remove from watching list")
 
-.lineContainer
-  .textbox.name
-    %p E-Mail:
-  .textbox.value
-    %p
-      :escaped
-        #{@user.e_mail}
+-if(@session_user.eql?(@user))
+  .lineContainer
+    .textbox.name
+      %p E-Mail:
+    .textbox.value
+      %p
+        :escaped
+          #{@user.e_mail}
 
 .lineContainer
   .textbox.name
