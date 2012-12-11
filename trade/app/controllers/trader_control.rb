@@ -266,6 +266,37 @@ module Controllers
     get '/logs' do
       redirect '/index' unless session[:id]
       redirect '/index' unless @session_user.working_for.is_a?(Organization)
+      @logs = @session_user.working_for.get_activities
+      haml :logs
+    end
+
+    post "/logs/filter" do
+      redirect '/index' unless session[:id]
+      filter = Array.new
+      unless params[:edit].nil?
+        filter.push(params[:edit])
+      end
+      unless params[:add].nil?
+        filter.push(params[:add])
+      end
+      unless params[:activate].nil?
+        filter.push(params[:activate])
+      end
+      unless params[:deactivate].nil?
+        filter.push(params[:deactivate])
+      end
+      if filter.empty?
+        redirect "/logs/filtered/none"
+      else
+        redirect "/logs/filtered/#{filter}"
+      end
+    end
+
+    get "/logs/filtered/:filter" do
+      redirect '/index' unless session[:id]
+      puts(params[:filter])
+      # splitting the filter-string, but keeping the split-pattern ("item") and attaching it to the string in front of it
+      @logs = @session_user.working_for.get_activities(params[:filter].split(/(item)/).each_slice(2).map(&:join))
       haml :logs
     end
 
