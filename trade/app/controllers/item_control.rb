@@ -180,7 +180,9 @@ module Controllers
 	    item.category = Category.by_name(params[:category])
 
       if self.has_errors(item)
-        redirect "/home/new"
+        @item = item
+        @supercategory = Category.get_supercategory
+        haml :item_edit, :locals =>{:action => "create", :button => "Create"}
       else
         item = @session_user.create_item(params[:name], Integer(price), Integer(quantity), params[:description], filename)
         @session_user.edit_item(item, params[:name],Integer(params[:price]),Integer(params[:quantity]),params[:currency],params[:description], filename)
@@ -385,6 +387,7 @@ module Controllers
           flash[:error] = "You need to set a Bitcoin wallet in your Profile to accept Bitcoins as payment"
           true
         else
+          flash[:error]= nil
           false
       end
     end

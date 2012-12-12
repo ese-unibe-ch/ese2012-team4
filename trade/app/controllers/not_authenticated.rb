@@ -122,7 +122,7 @@ module Controllers
 
     get '/signup' do
       redirect '/home' unless session[:id].nil?
-      haml :signup
+      haml :signup, :locals => {:name => "", :e_mail => ""}
     end
 
     post '/signup' do
@@ -132,7 +132,7 @@ module Controllers
 
       user = User.created(username, pw, e_mail, description, filename)
       if self.has_errors(user,pw,pw2)
-        redirect "/signup"
+        haml :signup, :locals => {:name => username, :e_mail => e_mail, :description => description}
       else
         user.save
         flash[:notice] = "You are now registered. Please log in"
@@ -167,6 +167,7 @@ module Controllers
           flash[:error] = "Image is heavier than 400kB"
           true
         else
+          flash[:error] = nil
           false
       end
     end
