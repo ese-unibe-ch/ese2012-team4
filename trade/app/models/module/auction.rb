@@ -137,7 +137,7 @@ module Models
           if bid < @bids[current_winner]-increment
             @current_selling_price = bid + increment
           elsif bid < @bids[@current_winner] and bid > @bids[@current_winner] - increment
-            @current_selling_price = bid  # GM : TODO: How to handle the case where winning bid = 100 , bid = 99 and increment = 5?
+            @current_selling_price = bid
           end
         end
 
@@ -145,7 +145,6 @@ module Models
     end
 
     def deactivate
-      # TODO: Not just pushing the item to the list, but merge it with eventually existing items. (like with buying items)
       self.owner.remove_offer(self)
       self.owner.add_offer(self.item)
       @@offers.delete(self)

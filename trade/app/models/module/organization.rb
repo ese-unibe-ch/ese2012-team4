@@ -48,7 +48,6 @@ module Models
     end
 
     def delete_admin(admin)
-      # ToDo: maybe need to move the check for error-handling
       if can_delete_admin?
         self.admin_list.delete(admin)
         admin.admin_of_org_list.delete(self)

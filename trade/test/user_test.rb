@@ -188,7 +188,7 @@ class UserTest < Test::Unit::TestCase
     assert Item.get_all("").include?(item1)
     @owner.delete
     assert (User.available? "testuser")
-    assert !Item.get_all("").include?(item1)
+    assert !Offer.get_item_list.include?(item1)
   end
 
   def test_validation
