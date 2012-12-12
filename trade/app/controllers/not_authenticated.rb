@@ -122,7 +122,7 @@ module Controllers
 
     get '/signup' do
       redirect '/home' unless session[:id].nil?
-      haml :signup, :locals => {:name => "", :e_mail => ""}
+      haml :signup, :locals => {:name => "", :e_mail => "", :description => ""}
     end
 
     post '/signup' do
