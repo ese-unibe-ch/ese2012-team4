@@ -9,25 +9,25 @@ module Models
     # - @param [String] to: e-mail address of the receiver of this mail
     # - @param [String] contents: Content in the mail, without signature and greetings, which is added automatically.
     def self.item_sold(to, contents)
-      self.send_mail("trading.mail@web.de", to, "Your Item has been sold!", contents)
+      self.send_mail("trading.mail2@web.de", to, "Your Item has been sold!", contents)
     end
 
     def self.item_bought(to, item , user)
       body = Content.new(:value => "You have bought the item #{item.name} from the trader #{user.name}.
 To complete the transaction, you need to transfer #{item.price} Bitcoins to #{user.name}'s wallet (#{user.wallet}).")
-      self.send_mail("trading.mail@web.de", to, "Payment information #{item.name}", body)
+      self.send_mail("trading.mail2@web.de", to, "Payment information #{item.name}", body)
     end
 
     def self.reset_pw(to, contents)
-      self.send_mail("trading.mail@web.de", to, "Your password has been reset", contents)
+      self.send_mail("trading.mail2@web.de", to, "Your password has been reset", contents)
     end
 
     def self.new_winner(to, auction)
-      self.send_mail("trading.mail@web.de", to, "Higher bid", "Your bid on auction for #{auction.item.name} has been outbid.")
+      self.send_mail("trading.mail2@web.de", to, "Higher bid", "Your bid on auction for #{auction.item.name} has been outbid.")
     end
 
     def self.bid_over(to, auction)
-      self.send_mail("trading.mail@web.de", to, "Auction won!", "Congratulations, you won the auction for #{auction.item.name}!")
+      self.send_mail("trading.mail2@web.de", to, "Auction won!", "Congratulations, you won the auction for #{auction.item.name}!")
     end
 
     def self.send_personal_message(sender, recipient, subject, content, site_url)
@@ -40,7 +40,7 @@ To complete the transaction, you need to transfer #{item.price} Bitcoins to #{us
       require 'tlsmail'
       require 'time'
 
-      from = 'trading.mail@web.de'
+      from = 'tradingsystem.mail@gmail.com'
       to = receiver
       pw = 'trade1234'
       
@@ -60,7 +60,7 @@ EOF
 puts content
 
       Net::SMTP.enable_tls(OpenSSL::SSL::VERIFY_NONE)
-      Net::SMTP.start('smtp.web.de', 587, 'web.de', from, pw, :login) do |smtp|
+      Net::SMTP.start('smtp.gmail.com', 587, 'gmail.com', from, pw, :login) do |smtp|
         smtp.send_message(content, from, receiver)
       end     
     end
