@@ -190,7 +190,7 @@ module Models
     end
 
     def to_json
-      return "{\"id\": \"#{self.id}\", \"name\": \"#{self.name}\", \"price\": \"#{self.price}\", \"owner\": \"#{self.owner.id}\", \"quantity\": \"#{self.quantity}\", \"description\": \"#{self.description}\" }".to_s
+      return "{\"id\": \"#{self.id}\", \"name\": \"#{self.name}\", \"price\": \"#{self.price}\", \"owner_id\": \"#{self.owner.id}\", \"owner_name\": \"#{self.owner.name}\", \"owner_rating\": \"#{self.owner.rating}\", \"quantity\": \"#{self.quantity}\", \"description\": \"#{self.description}\", \"timestamp\": \"#{self.timestamp}\" }".to_s
     end
 
     def activate

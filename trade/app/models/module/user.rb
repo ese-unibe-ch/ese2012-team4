@@ -7,9 +7,6 @@ require_relative('../utility/password_reset')
 require_relative('trader')
 
 
-# ToDo: move some of these requires to trader
-
-
 module Models
 
   # Represents a user in the System. A user can trade items, therefore it extends Trader

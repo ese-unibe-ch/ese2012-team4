@@ -105,7 +105,10 @@ module Controllers
         @all_items<<items[i] unless items[i].nil?
       end
       @auctions = @user.list_auctions
-      haml :user_page, :locals => {:page => page, :page_count => page_count}
+
+      ratings_json = get_ratings_for @user
+      
+      haml :user_page, :locals => {:page => page, :page_count => page_count, :ratings_json => ratings_json}
     end
     get '/users/:id' do
       redirect "/users/#{params[:id]}/1"
@@ -393,6 +396,31 @@ module Controllers
         else
           false
       end
+    end
+
+    # Returns a json representation of the user's ratings
+    # We removed the need for the json gem (because it requires the
+    # additional DevKit installation on Windows, which is not
+    # allowed in the deliverable). This generates a json-representation
+    # the dirty way
+    def get_ratings_for(user)
+      colors = ['#ff6f31',   # color for bad
+                '#ff9f02',
+                '#ffcf02',
+                '#a4cc02',
+                '#88b131']    # color for good
+
+      values = Array.new(5, 0)  # size, initial value
+      @user.ratings.each do |v|
+        values[v.to_i]+=1       # count number of votes for every rating value
+      end
+      ratings_json = "["                # generate json
+      values.each_with_index do |value, index|
+        entry = "{'data':[["+values[index].to_s+","+(index+1).to_s+"]],'color':'"+colors[index]+"'},"
+        ratings_json = ratings_json + entry
+      end
+      ratings_json = ratings_json + "]"
+      ratings_json
     end
   end
 end

@@ -10,13 +10,34 @@
   function getSuggestions(query){
     $.getJSON('/search/webservice/'+query, function(data) {
       var items = [];
+
+      var table = "<table class='itemtable'><thead><tr><td><p class='table_header'>Name</p></td><td>"+
+        "<p class='table_header'>Picture</p></td><td><p class='table_header'>Price</p></td>"+
+        "<td><p class='table_header'>Qty</p></td><td><p class='table_header'>Seller</p></td>"+
+        "<td><p class='table_header'>Seller rating</p></td><td><p class='table_header'>Buy</p></td>"+
+        "<td><p class='table_header'>Wishlist</p></td></tr></thead>";
     
       $.each(data.results, function(k,v){
-        items.push("<tr><td class='nopadding'><a class='wholly_clickable' href='/item/"+v.id+"'>"+v.name+"</a></td>"+
-          "<td><p>"+v.price+" credits</p></td></tr>");
+        var markup = "<tr title='"+v.description+"'>"+
+          "<td class='nopadding'><a class='wholly_clickable' href='/item/"+v.id+"'>"+v.name+"</a></td>"+
+          "<td><a href='/item/"+v.id+"/image' rel='lightbox' title='"+v.name+"'><img class='smallpicturebox' src='/item/"+v.id+"/image'/></a></td>"+
+          "<td><p>"+v.price+" credits</p></td>"+
+          "<td><p>"+v.quantity+"</p></td>"+
+          "<td><a href='/users/"+v.owner_id+"'>"+v.owner_name+"</a></td>"+
+          "<td><p>"+v.owner_rating+"</p></td>"+
+          "<td class='buyform'>"+
+          "<form action='/buy/"+v.id+"/"+v.timestamp+"' class='nomargin' method='POST'>"+
+          "<input class='tiny' name='quantity' type='text' value='1' />"+
+          "<input class='square rightalign' type='submit' value='Buy' /></form></td><td>"+
+          "<form action='/add_to_wishlist/"+v.id+"' class='nomargin' method='POST'>"+
+          "<input class='square rightalign' type='submit' value='Add to wishlist' /></form>"+
+          "</td></tr>";
+        items.push(markup);
       });
 
-      $("#suggestions").html(items.join(" "));
+      var tableEnd = "</table>";
+
+      $("#suggestions").html(table + items.join(" ") + tableEnd);
     });
   }
 %form.nomargin{:action => "/switch_category", :method =>"POST"}

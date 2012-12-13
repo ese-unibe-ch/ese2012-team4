@@ -248,8 +248,10 @@ module Models
       FileUtils::rm(self.image, :force => true)
       @@traders.delete(self.id)
       @@traders_by_name.delete(self.name.downcase)
-      unless !Offer.get_item_list.empty?
-        Offer.get_item_list.delete_if {|k,v| v.owner == self }
+      unless !self.offers.empty?
+        for offer in self.offers
+          offer.delete
+        end
       end
       self.list_auctions.each{|auction|
         Auction.all_offers.delete(auction)
@@ -271,31 +273,6 @@ module Models
 
     def add_rating(rating)
       self.ratings.push rating
-    end
-
-    # Returns a json representation of the user's ratings
-    # We removed the need for the json gem (because it requires the
-    # additional DevKit installation on Windows, which is not
-    # allowed in the deliverable). This generates a json-representation
-    # the dirty way
-    def ratings_json
-      colors = ['#ff6f31',   # color for bad
-                '#ff9f02',
-                '#ffcf02',
-                '#a4cc02',
-                '#88b131']    # color for good
-
-      values = Array.new(5, 0)  # size, initial value
-      self.ratings.each do |v|
-        values[v.to_i]+=1       # count number of votes for every rating value
-      end
-      data = "["                # generate json
-      values.each_with_index do |value, index|
-        entry = "{'data':[["+values[index].to_s+","+(index+1).to_s+"]],'color':'"+colors[index]+"'},"
-        data = data + entry
-      end
-      data = data + "]"
-      data
     end
 
     # - @return [Integer]: the average rating of the user

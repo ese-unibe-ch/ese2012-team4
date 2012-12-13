@@ -18,7 +18,7 @@
       #{@user.name}:
     %br
     :javascript
-      var data = #{@user.ratings_json};
+      var data = #{ratings_json};
       $(document).ready(function (e) {
         $.plot($("#placeholder"), data, options);
       });
