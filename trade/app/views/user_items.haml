@@ -46,7 +46,7 @@
               %input.square.rightalign.inline(type="submit" value="Restock")
         %td
           %form.nomargin(action="/changestate/#{item.id}/setinactive" method="POST")
-            %input.square(type="submit" value="Set inactive")
+            %input.square(type="submit" value="Take off the store")
 -else
   %h3 No items
 %h2 My Inactive Items
@@ -93,7 +93,7 @@
           %p #{item.quantity}
         %td
           %form.nomargin(action="/changestate/#{item.id}/activation" method="GET")
-            %input.square(type="submit" value="Set active")
+            %input.square(type="submit" value="Put to store")
         %td
           %form.nomargin(action="/auction/#{item.id}/create" method="GET")
             %input.square(type="submit" value="Create Auction")

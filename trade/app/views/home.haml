@@ -21,12 +21,12 @@
     %p #{@session_user.credits}
 .lineContainer
   .textbox.name
-    %p Active items:
+    %p Items in store:
   .textbox.value
     %p #{@session_user.list_items.size}
 .lineContainer
   .textbox.name
-    %p Inactive items
+    %p Unsellable items
   .textbox.value
     %p #{@session_user.list_items_inactive.size}
 %hr.separator
@@ -47,8 +47,8 @@
 %form.nomargin(action="/home/filter" method="POST" )
   %input(type = "checkbox" name = "add" value = "add_item" checked) Adding Items
   %input(type = "checkbox" name = "edit" value = "edit_item" checked) Editing Items
-  %input(type = "checkbox" name = "activate" value = "activate_item" checked) Activating Items
-  %input(type = "checkbox" name = "deactivate" value = "deactivate_item" checked) Deactivating Items
+  %input(type = "checkbox" name = "activate" value = "activate_item" checked) Put items to store
+  %input(type = "checkbox" name = "deactivate" value = "deactivate_item" checked) Take items off the store
   %input.square(type="submit" value="Filter")
 %br
 %table.usertable

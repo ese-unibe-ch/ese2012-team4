@@ -60,10 +60,10 @@
   -if @item.owner.name == @session_user.working_for.name
     -if (@item.is_active?)
       %form.nomargin(action="/changestate/#{@item.id}/setinactive" method="POST")
-        %input.rightalign.square(type="submit" value="Set inactive")
+        %input.rightalign.square(type="submit" value="Take off the store")
     -else
       %form.nomargin(action="/changestate/#{@item.id}/activation" method="GET")
-        %input.rightalign.square(type="submit" value="Set active")
+        %input.rightalign.square(type="submit" value="Put to store")
     -if @item.editable?
       %p
         %form.nomargin(action="/home/edit_item/#{@item.id}" method="GET")
