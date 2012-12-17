@@ -370,8 +370,7 @@ module Controllers
     post '/items/:id/delivered' do
       authenticate!
 
-      items = Models::Holding.get_all.select {|s|
-        s.item.id.to_s.eql?(params[:id].to_s) }
+      items = Models::Holding.find_by_id(params[:id].to_s)
       item = items.first
 
       redirect '/index' unless User.get_user(session[:id]).working_for == item.buyer and !item.locked
@@ -384,8 +383,7 @@ module Controllers
     post '/items/:id/unlock' do
       authenticate!
 
-      items = Models::Holding.get_all.select {|s|
-        s.item.id.to_s.eql?(params[:id].to_s) }
+      items = Models::Holding.find_by_id(params[:id].to_s)
       item = items.first
       redirect '/index' unless User.get_user(session[:id]).working_for == item.seller
       item.locked = false

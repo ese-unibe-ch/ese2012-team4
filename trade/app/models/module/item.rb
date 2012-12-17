@@ -193,6 +193,10 @@ module Models
       return "{\"id\": \"#{self.id}\", \"name\": \"#{self.name}\", \"price\": \"#{self.price}\", \"owner_id\": \"#{self.owner.id}\", \"owner_name\": \"#{self.owner.name}\", \"owner_rating\": \"#{self.owner.rating}\", \"quantity\": \"#{self.quantity}\", \"description\": \"#{self.description}\", \"timestamp\": \"#{self.timestamp}\" }".to_s
     end
 
+    def ==(other)
+      self.name == other.name && self.price == other.price && self.description == other.description
+    end
+
     def activate
       self.active = true
     end

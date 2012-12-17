@@ -42,7 +42,7 @@ class Holding
       else
         item.switch_permanent
       end
-      if !(identical = buyer.list_items_inactive.detect{|i| i.name== item.name and i.price == item.price and i.description==item.description}).nil?
+      if !(identical = buyer.list_items_inactive.detect{|i| i == item}).nil?
         identical.quantity+=quantity
       else
         item.quantity = quantity
@@ -51,7 +51,7 @@ class Holding
       end
     else
       # seller has some items left
-      if !(identical = buyer.list_items_inactive.detect{|i| i.name== item.name and i.price == item.price and i.description==item.description}).nil?
+      if !(identical = buyer.list_items_inactive.detect{|i| i == item}).nil?
         identical.quantity+=quantity
       else
         buyer.create_item(item.name,item.price, quantity, item.description).active = false
@@ -99,6 +99,10 @@ class Holding
       Mailer.item_bought(buyer.e_mail, item, seller)
     end
 
+  end
+
+  def self.find_by_id(id)
+    @@holder.select{|s| s.item.id.eql?(id.to_i) }
   end
 
 end

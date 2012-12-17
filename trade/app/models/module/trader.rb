@@ -86,7 +86,7 @@ module Models
     # - @return [Item]: the created item
     def create_item(name, price, quantity, description="No description available", image="")
       new_item = Item.created( name, price, self.working_for, quantity, description, image)
-      if !(identical = self.working_for.list_items_inactive.detect{|i| i.name== new_item.name and i.price == new_item.price and i.description==new_item.description}).nil?
+      if !(identical = self.working_for.list_items_inactive.detect{|i| i == new_item }).nil?
         identical.quantity += new_item.quantity
       else
         self.working_for.offers.push(new_item)
@@ -164,7 +164,7 @@ module Models
     def activate_item(id)
       item = Offer.get_offer(id)
       return false unless item.owner == self.working_for
-      if !(identical = self.working_for.list_items.detect{|i| i.name== item.name and i.price == item.price and i.description==item.description}).nil?
+      if !(identical = self.working_for.list_items.detect{|i| i == item }).nil?
         identical.quantity+=item.quantity
         item.delete
       else
@@ -197,7 +197,7 @@ module Models
     def deactivate_item(id)
       item = Offer.get_offer(id)
       return false unless item.owner == self.working_for
-      if !(identical = self.list_items_inactive.detect{|i| i.name== item.name and i.price == item.price and i.description==item.description}).nil?
+      if !(identical = self.list_items_inactive.detect{|i| i == item }).nil?
         identical.quantity+=item.quantity
         item.delete
       else
