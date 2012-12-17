@@ -67,7 +67,7 @@ module Controllers
       org = User.get_user(params[:org_id])
       user = User.get_user(params[:user_id])
       redirect '/index' if org.nil? or user.nil? or viewer.nil?
-      redirect "#{back}" unless (!user.organization and org.organization)
+      redirect back unless (!user.organization and org.organization)
       if org.admin_list.include?(viewer)
         if org.member_list.include?(user)
           org.delete_member(user)
@@ -75,7 +75,7 @@ module Controllers
           org.add_member(user)
         end
       end
-      redirect "#{back}"
+      redirect back
     end
 
     post '/setadmin/:org_id/:user_id' do
@@ -84,7 +84,7 @@ module Controllers
       org = User.get_user(params[:org_id])
       user = User.get_user(params[:user_id])
       redirect '/index' if org.nil? or user.nil? or viewer.nil?
-      redirect "#{back}" unless (!user.organization and org.organization)
+      redirect back unless (!user.organization and org.organization)
       if org.admin_list.include?(viewer)
         if org.admin_list.include?(user)
           org.delete_admin(user)
@@ -92,7 +92,7 @@ module Controllers
           org.add_admin(user)
         end
       end
-      redirect "#{back}"
+      redirect back
     end
 
     get '/users/:id/:page' do
@@ -201,7 +201,7 @@ module Controllers
       viewer = User.get_user(session[:id])
       context = Trader.by_name(params[:context])
       viewer.working_for = context
-      redirect "#{back}"
+      redirect back
     end
     
     get '/pending' do
@@ -237,14 +237,14 @@ module Controllers
       redirect '/index' unless session[:id]
       @item = Item.get_offer(params[:itemid])
       @session_user.working_for.remove_from_wishlist(@item)
-      redirect "#{back}"
+      redirect back
     end
 
     post "/add_to_wishlist/:itemid" do
       redirect '/index' unless session[:id]
       @item = Item.get_offer(params[:itemid])
       @session_user.working_for.add_to_wishlist(@item)
-      redirect "#{back}"
+      redirect back
     end
 
     post "/add_to_wishlist/:itemid" do

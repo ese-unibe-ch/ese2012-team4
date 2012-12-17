@@ -263,12 +263,12 @@ module Controllers
         redirect '/index' unless owner == viewer.working_for
         if item.auction
           flash[:error] = "invalid action"
-          redirect "#{back}"
+          redirect back
         end
         item.switch_permanent
         flash[:notice] = "successfully changed status"
       end
-      redirect "#{back}"
+      redirect back
     end
 
     post '/restock/:itemid' do
@@ -279,9 +279,9 @@ module Controllers
         owner = item.owner
         viewer = User.get_user(session[:id])
         redirect '/index' unless owner == viewer.working_for
-        redirect "#{back}" unless item.permanent
+        redirect back unless item.permanent
         item.restock(params[:quantity])
-        redirect "#{back}"
+        redirect back
       end
     end
 
@@ -339,29 +339,29 @@ module Controllers
       id = params[:id]
       unless Item.valid_integer?(params[:quantity])
         flash[:error] = "Please choose a valid quantity of items."
-        redirect "#{back}"
+        redirect back
       end
       quantity = Integer(params[:quantity])
       item = Item.get_offer(id)
       old_owner = item.owner
       if (Integer(params[:timestamp])-item.timestamp)!=0
         flash[:error] = "#{item.name} has been edited while you were buying it"
-        redirect "#{back}"
+        redirect back
       end
       unless item.is_active?
         flash[:error] = "#{item.name} is no longer active."
-        redirect "#{back}"
+        redirect back
       end
 
       if quantity>item.quantity
         flash[:error] = "There are not enough copies of #{item.name} available"
         @session_user.working_for.buy_new_item(item, quantity, @session_user) #for logging
-        redirect "#{back}"
+        redirect back
       end
 
       unless @session_user.working_for.buy_new_item(item, quantity, @session_user)
         flash[:error] = "You don't have enough credits to buy #{quantity} piece/s of #{item.name}"
-        redirect "#{back}"
+        redirect back
       end
       flash[:notice] = "You have bought #{quantity} piece/s of #{item.name}"
       redirect "/pending"
