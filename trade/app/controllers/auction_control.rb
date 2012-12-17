@@ -24,18 +24,26 @@ module Controllers
       @session_user = User.get_user(session[:id])
     end
 
-    get "/auction/:item_id/create" do
+    def authenticate!
       redirect "/index" unless session[:id]
+    end
+
+    get "/auction/:item_id/create" do
+      authenticate!
+
       @item = Item.get_offer(params[:item_id])
       haml :create_auction
     end
 
     get '/auction/:item_id' do
+      authenticate!
+
       redirect "/item/#{params[:item_id]}"
     end
 
     post '/auction/:id/create' do   #TODO: finish refactor here
-      redirect '/index' unless session[:id]
+      authenticate!
+
       id = params[:id]
       owner = Item.get_offer(id).owner
       viewer = User.get_user(session[:id])
@@ -66,6 +74,8 @@ module Controllers
     end
 
     post '/auction/:item_id/bid' do
+      authenticate!
+
       @auction = Offer.get_offer(params[:item_id])
       redirect '/index' unless @auction.auction
       unless @auction.nil?
@@ -96,13 +106,15 @@ module Controllers
     end
 
     get "/auction/:item_id/edit" do
-      redirect "/" unless session[:id]
+      authenticate!
+
       @item = Offer.get_offer(params[:item_id])
       haml :auction_edit
     end
 
     post "/auction/:item_id/edit" do
-      redirect '/index' unless session[:id]
+      authenticate!
+
       @auction = Offer.get_offer(params[:item_id])
       @item = @auction.item
       unless @auction.nil?
@@ -130,7 +142,8 @@ module Controllers
     end
 
     post "/auction/:item_id/deactivate" do
-      redirect '/index' unless session[:id]
+      authenticate!
+
       @auction = Offer.get_offer(params[:item_id])
       unless @auction.nil?
       owner = @auction.owner

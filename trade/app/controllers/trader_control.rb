@@ -24,13 +24,19 @@ module Controllers
       @session_user = User.get_user(session[:id])
     end
 
+    def authenticate!
+      redirect "/index" unless session[:id]
+    end
+
     get '/logout' do
-      redirect '/index' unless session[:id]
+      authenticate!
+
       haml :logout
     end
 
     get '/home' do
-      redirect '/index' unless session[:id]
+      authenticate!
+
       @activities = @session_user.get_watching_logs
       haml :home
     end

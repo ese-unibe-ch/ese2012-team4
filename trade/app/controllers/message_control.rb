@@ -23,14 +23,20 @@ module Controllers
       @session_user = User.get_user(session[:id])
     end
 
+    def authenticate!
+      redirect "/index" unless session[:id]
+    end
+
     get '/message/compose/:recipient_id' do
-      redirect '/index' unless session[:id]
+      authenticate!
+
       @recipient = User.get_user(params[:recipient_id].to_i)
       haml :create_message
     end
 
     post '/message/send' do
-      redirect '/index' unless session[:id]
+      authenticate!
+
       sender = @session_user
       recipient = User.get_user(params[:recipient_id].to_i)
       subject = params[:subject]

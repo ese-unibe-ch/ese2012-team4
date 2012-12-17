@@ -27,20 +27,27 @@ module Controllers
       @session_user = User.get_user(session[:id])
     end
 
+    def authenticate!
+      redirect "/index" unless session[:id]
+    end
+
     get '/search' do
-      redirect '/index' unless session[:id]
+      authenticate!
+
       haml :search
     end
 
     post '/search/query' do
-      redirect '/index' unless session[:id]
+      authenticate!
+
       input = params[:search]
       @@item_map[session[:id]]= Item.search(input,User.get_user(session[:id]).working_for)
       redirect '/search/result/1'
     end
 
     get '/search/webservice/:query' do
-      redirect '/index' unless session[:id]
+      authenticate!
+
       # limit to the first four results
       result = Item.search(params[:query], User.get_user(session[:id]).working_for).slice(0,4)
       result.map!{ |item| item.to_json }
@@ -51,7 +58,8 @@ module Controllers
     end
 
     get '/search/result/:page' do
-      redirect '/index' unless session[:id]
+      authenticate!
+
       redirect '/search' if @@item_map[session[:id]].nil?
       items_per_page = 10
       page = params[:page].to_i
@@ -80,12 +88,14 @@ module Controllers
     end
 
     get '/search/result' do
-      redirect '/index' unless session[:id]
+      authenticate!
+
       redirect '/search/result/1'
     end
 
     get '/home/items/:active/:inactive' do
-      redirect '/index' unless session[:id]
+      authenticate!
+
       items_per_page = 10
       active = params[:active].to_i
       inactive = params[:inactive].to_i
@@ -115,19 +125,22 @@ module Controllers
     end
 
     get '/home/items' do
-      redirect '/index' unless session[:id]
+      authenticate!
+
       redirect '/home/items/1/1'
     end
 
     get '/home/new' do
-      redirect '/index' unless session[:id]
+      authenticate!
+
       @item = Item.created("", "", "", "", "");
       @supercategory = Category.get_supercategory
       haml :item_edit, :locals =>{:action => "create", :button => "Create"}
     end
 
     get '/home/edit_item/:itemid' do
-      redirect '/index' unless session[:id]
+      authenticate!
+
       if Item.get_offer(params[:itemid]).is_owner?(@session_user.working_for.id)
         @item = Item.get_offer(params[:itemid])
         @supercategory = Category.get_supercategory
@@ -138,7 +151,8 @@ module Controllers
     end
 
     get '/items/:page' do
-      redirect '/index' unless session[:id]
+      authenticate!
+
       order_by = params["order_by"] || 'name'
       order_direction = params["order_direction"] || 'asc'
       items_per_page = 10
@@ -156,19 +170,22 @@ module Controllers
     end
 
     get '/items' do
-      redirect '/index' unless session[:id]
+      authenticate!
+
       redirect '/items/1'
     end
 
     get '/item/:itemid' do
-      redirect '/index' unless session[:id]
+      authenticate!
+
       id = params[:itemid]
       @item = Offer.get_offer(id)
       haml :item_page
     end
 
     post '/create' do
-      redirect '/index' unless session[:id]
+      authenticate!
+
       name = params[:name]
       price = params[:price]
       owner = @session_user.working_for
@@ -199,7 +216,8 @@ module Controllers
     end
 
     get "/item/:id/image" do
-      redirect '/index' unless session[:id]
+      authenticate!
+
       path = Item.get_offer(params[:id]).image
       if path == ""
         send_file(File.join(FileUtils::pwd, "public/images/item_pix/placeholder_item.jpg"))
@@ -209,7 +227,8 @@ module Controllers
     end
 
     post '/change/:itemid' do
-      redirect '/index' unless session[:id]
+      authenticate!
+
       filename = save_image(params[:image_file])
       test_item = Item.created(params[:name], params[:price], @session_user.working_for, params[:quantity], params[:description], filename)
       test_item.category = Category.by_name(params[:category])
@@ -235,7 +254,8 @@ module Controllers
     end
 
     post '/permanent/:itemid' do
-      redirect '/index' unless session[:id]
+      authenticate!
+
       item = Offer.get_offer(params[:itemid])
       unless item.nil?
         owner = item.owner
@@ -252,7 +272,8 @@ module Controllers
     end
 
     post '/restock/:itemid' do
-      redirect '/index' unless session[:id]
+      authenticate!
+
       item = Offer.get_offer(params[:itemid])
       unless item.nil?
         owner = item.owner
@@ -265,7 +286,8 @@ module Controllers
     end
 
     get '/changestate/:itemid/activation' do
-      redirect '/index' unless session[:id]
+      authenticate!
+
       if Item.get_offer(params[:itemid]).is_owner?(@session_user.working_for.id)
         @item = Item.get_offer(params[:itemid])
         haml :activation_confirm
@@ -275,7 +297,8 @@ module Controllers
     end
 
     post '/changestate/:id/setactive' do
-      redirect '/index' unless session[:id]
+      authenticate!
+
       id = params[:id]
       item = Item.get_offer(id)
       unless item.nil?
@@ -296,7 +319,8 @@ module Controllers
     end
 
     post '/changestate/:id/setinactive' do
-      redirect '/index' unless session[:id]
+      authenticate!
+
       id = params[:id]
       item = Item.get_offer(id)
       unless item.nil?
@@ -310,7 +334,8 @@ module Controllers
     end
 
     post '/buy/:id/:timestamp' do
-      redirect '/index' unless session[:id]
+      authenticate!
+
       id = params[:id]
       unless Item.valid_integer?(params[:quantity])
         flash[:error] = "Please choose a valid quantity of items."
@@ -343,7 +368,8 @@ module Controllers
     end
 
     post '/items/:id/delivered' do
-      redirect '/index' unless session[:id]
+      authenticate!
+
       items = Models::Holding.get_all.select {|s|
         s.item.id.to_s.eql?(params[:id].to_s) }
       item = items.first
@@ -356,7 +382,8 @@ module Controllers
     end
 
     post '/items/:id/unlock' do
-      redirect '/index' unless session[:id]
+      authenticate!
+
       items = Models::Holding.get_all.select {|s|
         s.item.id.to_s.eql?(params[:id].to_s) }
       item = items.first

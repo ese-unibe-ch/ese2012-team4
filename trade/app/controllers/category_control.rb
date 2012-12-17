@@ -26,15 +26,21 @@ module Controllers
       @session_user = User.get_user(session[:id])
     end
 
+    def authenticate!
+      redirect "/index" unless session[:id]
+    end
+
     get '/new_category' do
-      redirect '/index' unless session[:id]
+      authenticate!
+
       @supercategory = Category.get_supercategory
       haml :create_category
     end
 
     post '/create/category' do
       #ToDo: nice error handling
-      redirect '/index' unless session[:id]
+      authenticate!
+
       supercat = Category.by_name(params[:category])
       unless supercat.nil?
         if supercat.get_names.include? params[:name]
@@ -49,11 +55,13 @@ module Controllers
     end
 
     post '/switch_category' do
+      authenticate!
       redirect "/category/#{params[:category]}/1"
     end
 
     get '/category/:category/:page' do
-      redirect '/index' unless session[:id]
+      authenticate!
+
       order_by = params["order_by"] || 'name'
       order_direction = params["order_direction"] || 'asc'
       items_per_page = 10
