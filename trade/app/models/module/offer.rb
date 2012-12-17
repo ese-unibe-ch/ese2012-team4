@@ -70,7 +70,7 @@ module Models
 
     def delete
       self.owner.remove_offer(self)
-      @@offers["#{self.id}"]=nil
+      @@offers[self.id]=nil
 
     end
 
@@ -96,7 +96,7 @@ module Models
       else
         raise "Duplicated item" if @@offers.has_key? self.id and @@offers[self.id] and @@offers[self.id] != self.item
       end
-      @@offers["#{self.id}"] = self
+      @@offers[self.id] = self
       @@count += 1
     end
 
@@ -122,10 +122,7 @@ module Models
     # - @param [Integer] offerid: The id of the Item to be selected.
     # - @return [Item]: The selected Item.
     def self.get_offer(offerid)
-      if offerid.is_a?(Numeric)
-        offerid = offerid.to_s
-      end
-      return @@offers[offerid]
+      return @@offers[offerid.to_i]
     end
 
   end

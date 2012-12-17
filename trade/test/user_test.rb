@@ -24,25 +24,25 @@ class UserTest < Test::Unit::TestCase
   def test_activate_item
     item = @owner.create_item("testobject", 5, 2)
     assert(!item.is_active?)
-    @owner.activate_item("#{item.id}")
+    @owner.activate_item(item.id)
     assert(item.is_active?)
 
     more_of_same_item = @owner.create_item("testobject", 5, 2)
     assert(!more_of_same_item.is_active?)
-    @owner.activate_item("#{more_of_same_item.id}")
+    @owner.activate_item(more_of_same_item.id)
     assert(item.quantity.eql?(4))
   end
 
   def test_deactivate_item
     item = @owner.create_item("testobject", 5, 2)
-    @owner.activate_item("#{item.id}")
+    @owner.activate_item(item.id)
     assert(item.is_active?)
 
     user1 = User.created("user1", "password1", "user1@mail.com")
     user1.add_to_wishlist(item)
     assert(user1.wishlist.include?(item))
 
-    @owner.deactivate_item("#{item.id}")
+    @owner.deactivate_item(item.id)
     assert(!item.is_active?)
     assert(!user1.wishlist.include?(item))
   end

@@ -33,9 +33,9 @@ class ItemTest < Test::Unit::TestCase
     item2 = Item.created("testobject2", 50, @owner, 1, "bla")
     item2.save
     item3 = @owner.create_item("testobject3", 50, 1)
-    assert(Item.get_offer("#{item1.id}") == item1, "get_item should return the item")
-    assert(Item.get_offer("#{item2.id}") == item2, "get_item should return the item")
-    assert(Item.get_offer("#{item1.id+2}") == item3, "get_item should return the item")
+    assert(Item.get_offer(item1.id) == item1, "get_item should return the item")
+    assert(Item.get_offer(item2.id) == item2, "get_item should return the item")
+    assert(Item.get_offer(item1.id+2) == item3, "get_item should return the item")
   end
 
   # Test static method get_all
@@ -211,7 +211,7 @@ class ItemTest < Test::Unit::TestCase
     item = @owner.create_item('test_item', 20, 1)
     comment_author = User.created('fritz','1234a','fritz@testmail.mail')
     comment = item.comment(comment_author, "This is a comment to the item")
-    assert(Comment.by_id("#{comment.id}").author.eql?(comment_author), "item not correctly saved")
+    assert(Comment.by_id(comment.id).author.eql?(comment_author), "item not correctly saved")
     assert_not_nil(item.head_comments[0], "item should have a head comment at first place")
   end
 

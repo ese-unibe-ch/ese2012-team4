@@ -37,7 +37,7 @@ module Controllers
     get '/reply/:comment_id' do
       authenticate!
 
-      @comment = Comment.by_id(params[:comment_id])
+      @comment = Comment.by_id(params[:comment_id].to_i)
       haml :reply
     end
 
@@ -51,7 +51,7 @@ module Controllers
     post '/answer/:comment_id' do
       authenticate!
 
-      comment = Comment.by_id(params[:comment_id])
+      comment = Comment.by_id(params[:comment_id].to_i)
       @session_user.working_for.answer_comment(comment, params[:reply])
       redirect "/comments/#{comment.correspondent_item.id}"
     end

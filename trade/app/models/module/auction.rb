@@ -51,8 +51,8 @@ module Models
     def is_valid?
       self.errors = ""
       throw :invalid, :invalid_date unless Time.now < self.expiration_date
-      throw :invalid, :invalid_increment unless Item.valid_integer?("#{self.increment}")
-      throw :invalid, :invalid_min_price unless Item.valid_integer?("#{self.min_price}")
+      throw :invalid, :invalid_increment unless Item.valid_integer?(self.increment)
+      throw :invalid, :invalid_min_price unless Item.valid_integer?(self.min_price)
       throw :invalid, :invalid_currency if self.currency == "bitcoins" and (self.owner.wallet.nil? or self.owner.wallet =="")
       #self.errors += "An auction for this item already exists. \n" unless Auction.auction_by_item(item)
       true
@@ -148,14 +148,14 @@ module Models
       self.owner.remove_offer(self)
       self.owner.add_offer(self.item)
       @@offers.delete(self)
-      @@offers["#{self.id}"]=self.item
+      @@offers[self.id]=self.item
     end
 
     def end
       # RB: needs to be done first, because the scheduler has to stop finding it
       self.owner.remove_offer(self)
       @@offers.delete(self)
-      @@offers["#{self.id}"]=self.item
+      @@offers[self.id]=self.item
 
       if bids.length!=0
         @current_winner.credits += bids[@current_winner]

@@ -55,10 +55,10 @@ class ActivityTest < Test::Unit::TestCase
   def test_activate_deactivate_item
     item = @userC.create_item('item', 20, 2, "descr")
     assert @org.activities.size == 1
-    @userC.activate_item(item.id.to_s)
+    @userC.activate_item(item.id)
     assert @org.activities.size == 2
     assert @org.activities[1].to_s == "Vreni activated 'item'"
-    @userC.deactivate_item(item.id.to_s)
+    @userC.deactivate_item(item.id)
     assert @org.activities.size == 3
     assert @org.activities[2].to_s == "Vreni deactivated 'item'"
   end

@@ -64,7 +64,7 @@ module Models
     end
 
     def self.by_id id
-      @@comments[id.to_i]
+      @@comments[id]
     end
 
     # Adds a new Comment to this Comment
