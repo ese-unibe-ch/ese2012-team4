@@ -27,7 +27,7 @@
 %form(method="GET" action="/message/compose/#{@user.id}")
   %input.square(type="submit" value="send message")
 -if(!@session_user.eql?(@user))
-  -if(!@session_user.working_for.watching.include?(@user))
+  -if(!@session_user.watching.include?(@user))
     %form(method="POST" action="/add_user_to_watching_list/#{@user.id}")
       %input.square(type="submit" value="watch this user")
   -else
