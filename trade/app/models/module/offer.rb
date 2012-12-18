@@ -124,6 +124,5 @@ module Models
     def self.get_offer(offerid)
       return @@offers[offerid.to_i]
     end
-
   end
 end

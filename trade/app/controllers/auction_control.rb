@@ -41,7 +41,7 @@ module Controllers
       redirect "/item/#{params[:item_id]}"
     end
 
-    post '/auction/:id/create' do   #TODO: finish refactor here
+    post '/auction/:id/create' do
       authenticate!
 
       id = params[:id]
@@ -49,13 +49,8 @@ module Controllers
       viewer = User.get_user(session[:id])
       redirect '/index' unless owner == viewer.working_for
       item_old = Item.get_offer(id)
-      #if item_old.quantity != 1
-      #  item_old.quantity -= 1
-      #  item_new = item_old.copy(:quantity => 1)
-      #  item_new.save
-      #else
-        item_new = item_old
-      #end
+      item_new = item_old
+
       end_date = TimeHandler.parseTime(params[:exp_date], params[:exp_time])
       new_auction = Auction.create(item_new, params[:increment], params[:min_price], end_date)
       if params[:currency]=="credits" or params[:currency]=="bitcoins"
@@ -157,8 +152,10 @@ module Controllers
     end
 
     def has_errors(auction)
-      validation = catch(:invalid){auction.is_valid?}
-      case validation
+      is_valid_auction = catch(:invalid){auction.is_valid?}
+      case is_valid_auction
+        when true
+          false
         when :invalid_date then
           flash[:error] = "Select a valid End-Date for your auction.\n"
           true
@@ -172,7 +169,8 @@ module Controllers
           flash[:error] = "You need to set a Bitcoin wallet in your Profile to accept Bitcoins as payment"
           true
         else
-          false
+          flash[:error] = "The auction is not valid."
+          true
       end
     end
   end

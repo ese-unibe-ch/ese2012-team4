@@ -38,7 +38,6 @@ module Controllers
     end
 
     post '/create/category' do
-      #ToDo: nice error handling
       authenticate!
 
       supercat = Category.by_name(params[:category])
@@ -74,7 +73,6 @@ module Controllers
         items = items_of_cat.sort{ |a,b| b.send(order_by) <=> a.send(order_by) }
       end
       (items.size%items_per_page)==0? page_count = (items.size/items_per_page).to_i : page_count = (items.size/items_per_page).to_i+1
-      #redirect 'items/1' unless 0<params[:page].to_i and params[:page].to_i<page_count+1
       @items = []
       for i in ((page-1)*items_per_page)..(page*items_per_page)-1
         @items<<items[i] unless items[i].nil?

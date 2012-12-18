@@ -391,8 +391,10 @@ module Controllers
     end
 
     def has_errors(item)
-      validation = catch(:invalid){item.is_valid}
-      case validation
+      is_valid_item = catch(:invalid){item.is_valid}
+      case is_valid_item
+        when true
+          false
         when :invalid_name then
           flash[:error] = "Item must have a name\n"
           true
@@ -412,8 +414,8 @@ module Controllers
           flash[:error] = "You need to set a Bitcoin wallet in your Profile to accept Bitcoins as payment"
           true
         else
-          flash[:error]= nil
-          false
+          flash[:error] = "The item is not valid."
+          true
       end
     end
   end

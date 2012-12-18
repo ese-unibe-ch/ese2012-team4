@@ -373,8 +373,10 @@ module Controllers
     end
 
     def has_errors(user,pw,pw1,check_username_exists)
-      validation = catch(:invalid){user.is_valid(pw,pw1,check_username_exists)}
-      case validation
+      is_valid_user = catch(:invalid){user.is_valid(pw,pw1,check_username_exists)}
+      case is_valid_user
+        when true
+          false
         when :invalid_name then
           flash[:error] = "User must have a name\n"
           true
@@ -400,7 +402,7 @@ module Controllers
           flash[:error] = "Image is heavier than 400kB"
           true
         else
-          false
+          true
       end
     end
 

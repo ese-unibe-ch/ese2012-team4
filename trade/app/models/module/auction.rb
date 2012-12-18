@@ -49,12 +49,10 @@ module Models
     # Controls the auctions's data and adds errors if necessary.
     # - @return: true if there is no invalid data and throws a suitable symbol otherwise.
     def is_valid?
-      self.errors = ""
       throw :invalid, :invalid_date unless Time.now < self.expiration_date
       throw :invalid, :invalid_increment unless Item.valid_integer?(self.increment)
       throw :invalid, :invalid_min_price unless Item.valid_integer?(self.min_price)
       throw :invalid, :invalid_currency if self.currency == "bitcoins" and (self.owner.wallet.nil? or self.owner.wallet =="")
-      #self.errors += "An auction for this item already exists. \n" unless Auction.auction_by_item(item)
       true
     end
 
@@ -108,11 +106,11 @@ module Models
           old_winner = @current_winner
           @current_winner = new_bidder
           unless old_winner.nil?
-            old_winner.credits += @bids[old_winner] unless self.currency=="bitcoins" #SH Gives the money of the previous winner back
+            old_winner.credits += @bids[old_winner] unless self.currency=="bitcoins"
             Mailer.new_winner(old_winner.e_mail, self)
           end
           @bids[new_bidder] = bid
-          @current_winner.credits -= @bids[@current_winner] unless self.currency=="bitcoins" #SH Deduct the money from the current winner
+          @current_winner.credits -= @bids[@current_winner] unless self.currency=="bitcoins"
           if (!old_winner.nil?)
             if @bids[old_winner]+increment <= bid
               @current_selling_price = @bids[old_winner] + self.increment
@@ -140,7 +138,6 @@ module Models
             @current_selling_price = bid
           end
         end
-
       end
     end
 
@@ -152,7 +149,7 @@ module Models
     end
 
     def end
-      # RB: needs to be done first, because the scheduler has to stop finding it
+      # Needs to be done first, because the scheduler has to stop finding it
       self.owner.remove_offer(self)
       @@offers.delete(self)
       @@offers[self.id]=self.item

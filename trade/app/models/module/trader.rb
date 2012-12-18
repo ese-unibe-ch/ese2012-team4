@@ -338,7 +338,6 @@ module Models
       ret_array = Array.new
       if filter.size > 0
         for act in self.activities
-          # Second loop is necessary, because "deactivate_item".include? "activate_item" is true
           filter.each do |f|
             if act.topic == f
               ret_array.push(act)

@@ -64,14 +64,13 @@ module Controllers
     end
 
     get '/pwreset/:id' do
-        if session[:id]
-          flash[:error] = "only one session allowed, please log out of all accounts"
-          redirect "/home"
-        else
-          session["pwrecovery"] = params[:id]
-          haml :pwreset
-        end
-      #end
+      if session[:id]
+        flash[:error] = "only one session allowed, please log out of all accounts"
+        redirect "/home"
+      else
+        session["pwrecovery"] = params[:id]
+        haml :pwreset
+      end
     end
 
     post "/pwreset" do
@@ -140,8 +139,10 @@ module Controllers
       end
     end
     def has_errors(user,pw,pw1)
-      validation = catch(:invalid){user.is_valid(pw,pw1,false)}
-      case validation
+      is_valid_user = catch(:invalid){user.is_valid(pw,pw1,false)}
+      case is_valid_user
+        when true
+          false
         when :invalid_name then
           flash[:error] = "User must have a name\n"
           true
@@ -154,21 +155,21 @@ module Controllers
         when :no_pw_confirmation then
           flash[:error] = "Password confirmation is required\n"
           true
+        when :no_pw then
+          flash[:error] = "Password is required"
+          true
         when :pw_dont_match then
           flash[:error] = "Passwords do not match\n"
           true
         when :pw_not_safe then
           flash[:error] = "Password is not safe\n"
           true
-        when :no_pw then
-          flash[:error] = "Password is required"
-          true
         when :big_image then
           flash[:error] = "Image is heavier than 400kB"
           true
         else
-          flash[:error] = nil
-          false
+          flash[:error] = "The user is not valid."
+          true
       end
     end
   end

@@ -5,7 +5,7 @@ module Models
   # Of course, a comment also has a text.
   # There will be 2 levels of Comments:
   #   - head comments which correspond to an item and do not have a previous comment
-  #   - sub comments  which correspond to an item and a head comment
+  #   - sub comments  which correspond to a head comment
   class Comment
     @@comment_count = 0
     @@comments = []

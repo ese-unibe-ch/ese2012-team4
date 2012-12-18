@@ -22,7 +22,6 @@ class Holding
     holding.buyer = buyer
     holding.quantity = quantity
     holding.locked = true
-    #holding.name = "HOOOOOOOLDING"
 
     @@holder.push(holding)
     holding
@@ -55,13 +54,8 @@ class Holding
         identical.quantity+=quantity
       else
         buyer.create_item(item.name,item.price, quantity, item.description).active = false
-        #item.active = false
-        #buyer.offers.push(item)
       end
     end
-
-    # LD unnoetig seit dem refactoring, glaube ich.
-    # item.quantity-=quantity #deletes original item
 
     @@holder.delete(self) #closes the holding-state
 
