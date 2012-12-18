@@ -146,6 +146,8 @@ class AuctionTest < Test::Unit::TestCase
     assert @userC.credits == 970
 
     auction.end
+    items = Models::Holding.find_by_id(item.id.to_s)
+    items.first.item_received
 
     assert @userA.credits == 1022
     assert @userB.credits == 1000
