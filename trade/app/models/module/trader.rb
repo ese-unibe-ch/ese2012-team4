@@ -309,7 +309,7 @@ module Models
     end
 
     def watch(trader)
-      watching.push(trader) unless trader.eql?(self)
+      watching.push(trader) unless (trader.eql?(self) or watching.include?(trader))
     end
 
     def unwatch(trader)
