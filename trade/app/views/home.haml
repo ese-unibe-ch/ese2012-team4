@@ -45,10 +45,25 @@
 %br
 %p Filter activities
 %form.nomargin(action="/home/filter" method="POST" )
-  %input(type = "checkbox" name = "add" value = "add_item" checked) Adding Items
-  %input(type = "checkbox" name = "edit" value = "edit_item" checked) Editing Items
-  %input(type = "checkbox" name = "activate" value = "activate_item" checked) Put items to store
-  %input(type = "checkbox" name = "deactivate" value = "deactivate_item" checked) Take items off the store
+  -if @checked[0]
+    %input(type = "checkbox" name = "add" value = "add_item" checked) Adding Items
+  -else
+    %input(type = "checkbox" name = "add" value = "add_item") Adding Items
+
+  - if @checked[1]
+    %input(type = "checkbox" name = "edit" value = "edit_item" checked) Editing Items
+  -else
+    %input(type = "checkbox" name = "edit" value = "edit_item") Editing Items
+
+  -if @checked[2]
+    %input(type = "checkbox" name = "activate" value = "activate_item" checked) Activating Items
+  -else
+    %input(type = "checkbox" name = "activate" value = "activate_item") Activating Items
+
+  -if @checked[3]
+    %input(type = "checkbox" name = "deactivate" value = "deactivate_item" checked) Deactivating Items
+  -else
+    %input(type = "checkbox" name = "deactivate" value = "deactivate_item") Deactivating Items
   %input.square(type="submit" value="Filter")
 %br
 %table.usertable

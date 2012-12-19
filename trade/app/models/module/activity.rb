@@ -1,6 +1,7 @@
 require 'rubygems'
 require 'date'
 
+# Stores information about activities in the shop.
 class Activity
   attr_accessor :author, :topic, :subject, :time, :target
 

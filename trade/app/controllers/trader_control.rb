@@ -38,6 +38,7 @@ module Controllers
       authenticate!
 
       @activities = @session_user.get_watching_logs
+      @checked = [true, true, true, true]
       haml :home
     end
 
@@ -285,6 +286,7 @@ module Controllers
       redirect '/index' unless session[:id]
       redirect '/index' unless @session_user.working_for.is_a?(Organization)
       @logs = @session_user.working_for.get_activities
+      @checked = [true, true, true, true]
       haml :logs
     end
 
@@ -312,9 +314,27 @@ module Controllers
 
     get "/logs/filtered/:filter" do
       redirect '/index' unless session[:id]
-      puts(params[:filter])
       # splitting the filter-string, but keeping the split-pattern ("item") and attaching it to the string in front of it
-      @logs = @session_user.working_for.get_activities(params[:filter].split(/(item)/).each_slice(2).map(&:join))
+      filter_array = params[:filter].split(/(item)/).each_slice(2).map(&:join)
+      @logs = @session_user.working_for.get_activities(filter_array)
+      @checked = Array.new
+      @checked[0]= filter_array.include?("add_item")
+      @checked[1]= filter_array.include?("edit_item")
+      # search for "active_item"
+      contains_active = false
+      for entry in filter_array
+        if entry == "activate_item"
+          contains_active = true
+        end
+      end
+      @checked[2]= contains_active
+      contains_deactive = false
+      for entry in filter_array
+        if entry == "deactivate_item"
+          contains_deactive = true
+        end
+      end
+      @checked[3]= contains_deactive
       haml :logs
     end
 
@@ -366,9 +386,27 @@ module Controllers
 
     get "/home/filtered/:filter" do
       redirect '/index' unless session[:id]
-      puts(params[:filter])
       # splitting the filter-string, but keeping the split-pattern ("item") and attaching it to the string in front of it
-      @activities = @session_user.get_watching_logs(params[:filter].split(/(item)/).each_slice(2).map(&:join))
+      filter_array = params[:filter].split(/(item)/).each_slice(2).map(&:join)
+      @activities = @session_user.get_watching_logs(filter_array)
+      @checked = Array.new
+      @checked[0]= filter_array.include?("add_item")
+      @checked[1]= filter_array.include?("edit_item")
+      # search for "active_item"
+      contains_active = false
+      for entry in filter_array
+        if entry == "activate_item"
+          contains_active = true
+        end
+      end
+      @checked[2]= contains_active
+      contains_deactive = false
+      for entry in filter_array
+        if entry == "deactivate_item"
+          contains_deactive = true
+        end
+      end
+      @checked[3]= contains_deactive
       haml :home
     end
 

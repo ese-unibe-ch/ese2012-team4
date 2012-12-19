@@ -2,11 +2,14 @@ module Models
   require 'require_relative'
   require_relative('item')
   require_relative('offer')
+
+  # An Auction for an Item
+  # Traders can place bids on an auction and when the auction is expired, the Trader with the
+  # highest bid will buy the Item.
+  # The current price must be overbidden by at least the increment.
   class Auction < Offer
 
     attr_accessor :item, :increment, :min_price, :bids, :current_winner, :current_selling_price, :first_bidder
-    # [String]: Stores all error messages
-
 
     def self.create(item, increment, min_price, end_time)
       Auction.new(item, increment.to_i, min_price.to_i, end_time)
@@ -60,6 +63,9 @@ module Models
       true
     end
 
+    # Places a bid on this auction
+    # The bidder must have enough money and the bid must be higher than the current priche + the increment
+    # and a bidder can not place lower bids than before.
     def place_bid(bidder, bid)
       return :not_enough_credits if bidder.credits < bid - @bids[bidder]
       return :invalid_bid unless self.valid_bid?(bidder, bid)
@@ -148,6 +154,7 @@ module Models
       @@offers[self.id]=self.item
     end
 
+    # Ends the auction, deactivates and makes the winner buy the item.
     def end
       # Needs to be done first, because the scheduler has to stop finding it
       self.owner.remove_offer(self)
