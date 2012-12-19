@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>item_bought (Models::Mailer)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File app/models/utility/mailer.rb, line 15</span>
+    <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">item_bought</span>(<span class="ruby-identifier">to</span>, <span class="ruby-identifier">item</span> , <span class="ruby-identifier">user</span>)
+      <span class="ruby-identifier">body</span> = <span class="ruby-constant">Content</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">:value</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-node">&quot;You have bought the item #{item.name} from the trader #{user.name}.
+To complete the transaction, you need to transfer #{item.price} Bitcoins to #{user.name}'s wallet (#{user.wallet}).&quot;</span>)
+      <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">send_mail</span>(<span class="ruby-value str">&quot;trading.mail2@web.de&quot;</span>, <span class="ruby-identifier">to</span>, <span class="ruby-node">&quot;Payment information #{item.name}&quot;</span>, <span class="ruby-identifier">body</span>)
+    <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>

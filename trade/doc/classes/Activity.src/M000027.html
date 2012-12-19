@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>to_s (Activity)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File app/models/module/activity.rb, line 27</span>
+  <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">to_s</span>
+    <span class="ruby-identifier">text</span> = <span class="ruby-keyword kw">case</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">topic</span>
+             <span class="ruby-keyword kw">when</span> <span class="ruby-value str">&quot;add_item&quot;</span> <span class="ruby-keyword kw">then</span> <span class="ruby-node">&quot;#{self.author.name} added '#{self.subject.name}' for a price of #{self.subject.price} credits&quot;</span>
+             <span class="ruby-keyword kw">when</span> <span class="ruby-value str">&quot;bid&quot;</span> <span class="ruby-keyword kw">then</span> <span class="ruby-node">&quot;#{self.author.name} placed a bid for #{self.subject.name}&quot;</span>
+             <span class="ruby-keyword kw">when</span> <span class="ruby-value str">&quot;edit_item&quot;</span> <span class="ruby-keyword kw">then</span> <span class="ruby-node">&quot;#{self.author.name} edited '#{self.subject.name}'&quot;</span>
+             <span class="ruby-keyword kw">when</span> <span class="ruby-value str">&quot;activate_item&quot;</span> <span class="ruby-keyword kw">then</span> <span class="ruby-node">&quot;#{self.author.name} activated '#{self.subject.name}'&quot;</span>
+             <span class="ruby-keyword kw">when</span> <span class="ruby-value str">&quot;deactivate_item&quot;</span> <span class="ruby-keyword kw">then</span> <span class="ruby-node">&quot;#{self.author.name} deactivated '#{self.subject.name}'&quot;</span>
+             <span class="ruby-keyword kw">when</span> <span class="ruby-value str">&quot;comment_item&quot;</span> <span class="ruby-keyword kw">then</span> <span class="ruby-node">&quot;#{self.author.name} commented on '#{self.subject.name}'&quot;</span>
+             <span class="ruby-keyword kw">when</span> <span class="ruby-value str">&quot;item_sold_success&quot;</span> <span class="ruby-keyword kw">then</span> <span class="ruby-node">&quot;'#{self.subject.name}' was bought by #{self.author.name} for #{self.subject.price} credits&quot;</span>
+             <span class="ruby-keyword kw">when</span> <span class="ruby-value str">&quot;item_sold_failure&quot;</span> <span class="ruby-keyword kw">then</span> <span class="ruby-node">&quot;'#{self.subject.name}' could not be bought by #{self.author.name} for #{self.subject.price} credits&quot;</span>
+             <span class="ruby-keyword kw">when</span> <span class="ruby-value str">&quot;item_bought_success&quot;</span> <span class="ruby-keyword kw">then</span> <span class="ruby-node">&quot;#{self.author.name} has bought '#{self.subject.name}' for #{self.subject.price} credits&quot;</span>
+             <span class="ruby-keyword kw">when</span> <span class="ruby-value str">&quot;item_bought_failure&quot;</span> <span class="ruby-keyword kw">then</span> <span class="ruby-node">&quot;#{self.author.name} was unable to buy '#{self.subject.name}' for #{self.subject.price} credits&quot;</span>
+
+    <span class="ruby-keyword kw">end</span>
+  <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>

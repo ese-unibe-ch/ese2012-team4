@@ -65,7 +65,9 @@
         <tr class="top-aligned-row">
             <td><strong>Parent:</strong></td>
             <td>
-                Object
+                <a href="Offer.html">
+                Offer
+               </a>
             </td>
         </tr>
         </table>
@@ -81,7 +83,7 @@
     <div id="description">
       <p>
 Represents an item in the shop, stores its data and different states. The
-class stores all <a href="Item.html#M000109">created</a> items in a list.
+class stores all <a href="Item.html#M000206">created</a> items in a list.
 </p>
 
     </div>
@@ -93,25 +95,24 @@ class stores all <a href="Item.html#M000109">created</a> items in a list.
       <h3 class="section-bar">Methods</h3>
 
       <div class="name-list">
-      <a href="#M000125">add_user_to_wishlist</a>&nbsp;&nbsp;
-      <a href="#M000123">comment</a>&nbsp;&nbsp;
-      <a href="#M000110">copy</a>&nbsp;&nbsp;
-      <a href="#M000109">created</a>&nbsp;&nbsp;
-      <a href="#M000122">delete</a>&nbsp;&nbsp;
-      <a href="#M000113">edit</a>&nbsp;&nbsp;
-      <a href="#M000119">editable?</a>&nbsp;&nbsp;
-      <a href="#M000115">expired?</a>&nbsp;&nbsp;
-      <a href="#M000121">get_all</a>&nbsp;&nbsp;
-      <a href="#M000120">get_item</a>&nbsp;&nbsp;
-      <a href="#M000108">get_item_list</a>&nbsp;&nbsp;
-      <a href="#M000114">is_active?</a>&nbsp;&nbsp;
-      <a href="#M000117">is_owner?</a>&nbsp;&nbsp;
-      <a href="#M000111">is_valid</a>&nbsp;&nbsp;
-      <a href="#M000126">remove_user_from_wishlist</a>&nbsp;&nbsp;
-      <a href="#M000112">save</a>&nbsp;&nbsp;
-      <a href="#M000124">search</a>&nbsp;&nbsp;
-      <a href="#M000118">to_s</a>&nbsp;&nbsp;
-      <a href="#M000116">valid_integer?</a>&nbsp;&nbsp;
+      <a href="#M000220">==</a>&nbsp;&nbsp;
+      <a href="#M000221">activate</a>&nbsp;&nbsp;
+      <a href="#M000218">clear_all</a>&nbsp;&nbsp;
+      <a href="#M000216">comment</a>&nbsp;&nbsp;
+      <a href="#M000207">copy</a>&nbsp;&nbsp;
+      <a href="#M000206">created</a>&nbsp;&nbsp;
+      <a href="#M000222">deactivate</a>&nbsp;&nbsp;
+      <a href="#M000209">edit</a>&nbsp;&nbsp;
+      <a href="#M000213">editable?</a>&nbsp;&nbsp;
+      <a href="#M000210">is_active?</a>&nbsp;&nbsp;
+      <a href="#M000208">is_valid</a>&nbsp;&nbsp;
+      <a href="#M000215">restock</a>&nbsp;&nbsp;
+      <a href="#M000217">search</a>&nbsp;&nbsp;
+      <a href="#M000223">seller_rating</a>&nbsp;&nbsp;
+      <a href="#M000214">switch_permanent</a>&nbsp;&nbsp;
+      <a href="#M000219">to_json</a>&nbsp;&nbsp;
+      <a href="#M000212">to_s</a>&nbsp;&nbsp;
+      <a href="#M000211">valid_integer?</a>&nbsp;&nbsp;
       </div>
     </div>
 
@@ -140,99 +141,15 @@ class stores all <a href="Item.html#M000109">created</a> items in a list.
 </td>
         </tr>
         <tr class="top-aligned-row context-row">
-          <td class="context-item-name">description</td>
+          <td class="context-item-name">permanent</td>
           <td class="context-item-value">&nbsp;[RW]&nbsp;</td>
-          <td class="context-item-desc">
-[String]: Detailed description
-
-</td>
-        </tr>
-        <tr class="top-aligned-row context-row">
-          <td class="context-item-name">errors</td>
-          <td class="context-item-value">&nbsp;[RW]&nbsp;</td>
-          <td class="context-item-desc">
-[String]: Stores all error messages
-
-</td>
-        </tr>
-        <tr class="top-aligned-row context-row">
-          <td class="context-item-name">expiration_date</td>
-          <td class="context-item-value">&nbsp;[RW]&nbsp;</td>
-          <td class="context-item-desc">
-[Time]: Stores when the item deactivates automatically
-
-</td>
-        </tr>
-        <tr class="top-aligned-row context-row">
-          <td class="context-item-name">head_comments</td>
-          <td class="context-item-value">&nbsp;[RW]&nbsp;</td>
-          <td class="context-item-desc">
-[<a href="Comment.html">Comment</a>]: Comments on this <a
-href="Item.html">Item</a>
-
-</td>
-        </tr>
-        <tr class="top-aligned-row context-row">
-          <td class="context-item-name">id</td>
-          <td class="context-item-value">&nbsp;[RW]&nbsp;</td>
-          <td class="context-item-desc">
-[Integer]: Identifier
-
-</td>
-        </tr>
-        <tr class="top-aligned-row context-row">
-          <td class="context-item-name">image</td>
-          <td class="context-item-value">&nbsp;[RW]&nbsp;</td>
-          <td class="context-item-desc">
-[String]: The path of an image
-
-</td>
-        </tr>
-        <tr class="top-aligned-row context-row">
-          <td class="context-item-name">name</td>
-          <td class="context-item-value">&nbsp;[RW]&nbsp;</td>
-          <td class="context-item-desc">
-[String]: The item&#8216;s name
-
-</td>
-        </tr>
-        <tr class="top-aligned-row context-row">
-          <td class="context-item-name">owner</td>
-          <td class="context-item-value">&nbsp;[RW]&nbsp;</td>
-          <td class="context-item-desc">
-[<a href="User.html">User</a>]: The item&#8216;s owner
-
-</td>
+          <td class="context-item-desc"></td>
         </tr>
         <tr class="top-aligned-row context-row">
           <td class="context-item-name">price</td>
           <td class="context-item-value">&nbsp;[RW]&nbsp;</td>
           <td class="context-item-desc">
 [Integer]: The price in credits
-
-</td>
-        </tr>
-        <tr class="top-aligned-row context-row">
-          <td class="context-item-name">quantity</td>
-          <td class="context-item-value">&nbsp;[RW]&nbsp;</td>
-          <td class="context-item-desc">
-[Integer]
-
-</td>
-        </tr>
-        <tr class="top-aligned-row context-row">
-          <td class="context-item-name">timestamp</td>
-          <td class="context-item-value">&nbsp;[RW]&nbsp;</td>
-          <td class="context-item-desc">
-[Time]: Time the <a href="Item.html">Item</a> last changed
-
-</td>
-        </tr>
-        <tr class="top-aligned-row context-row">
-          <td class="context-item-name">wishlist_users</td>
-          <td class="context-item-value">&nbsp;[RW]&nbsp;</td>
-          <td class="context-item-desc">
-[Array]: Stores on whose wishlists the item is
 
 </td>
         </tr>
@@ -246,12 +163,26 @@ href="Item.html">Item</a>
     <div id="methods">
       <h3 class="section-bar">Public Class methods</h3>
 
-      <div id="method-M000109" class="method-detail">
-        <a name="M000109"></a>
+      <div id="method-M000218" class="method-detail">
+        <a name="M000218"></a>
 
         <div class="method-heading">
-          <a href="Item.src/M000109.html" target="Code" class="method-signature"
-            onclick="popupCode('Item.src/M000109.html');return false;">
+          <a href="Item.src/M000218.html" target="Code" class="method-signature"
+            onclick="popupCode('Item.src/M000218.html');return false;">
+          <span class="method-name">clear_all</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+        </div>
+      </div>
+
+      <div id="method-M000206" class="method-detail">
+        <a name="M000206"></a>
+
+        <div class="method-heading">
+          <a href="Item.src/M000206.html" target="Code" class="method-signature"
+            onclick="popupCode('Item.src/M000206.html');return false;">
           <span class="method-name">created</span><span class="method-args">( name, price, owner, quantity, description = &quot;&quot;, image = &quot;&quot;)</span>
           </a>
         </div>
@@ -280,85 +211,20 @@ Factory method (constructor) on the class.
 
 </li>
 <li>@return [<a href="Item.html">Item</a>] The <a
-href="Item.html#M000109">created</a> <a href="Item.html">Item</a>.
+href="Item.html#M000206">created</a> <a href="Item.html">Item</a>.
 
 </li>
 </ul>
         </div>
       </div>
 
-      <div id="method-M000121" class="method-detail">
-        <a name="M000121"></a>
+      <div id="method-M000217" class="method-detail">
+        <a name="M000217"></a>
 
         <div class="method-heading">
-          <a href="Item.src/M000121.html" target="Code" class="method-signature"
-            onclick="popupCode('Item.src/M000121.html');return false;">
-          <span class="method-name">get_all</span><span class="method-args">(viewer)</span>
-          </a>
-        </div>
-      
-        <div class="method-description">
-          <ul>
-<li>@param [<a href="User.html">User</a>] viewer: Name of the user whose items
-should not be listed.
-
-</li>
-<li>@return [Array]: Array of all stored Items except those who belong to the
-given viewer.
-
-</li>
-</ul>
-        </div>
-      </div>
-
-      <div id="method-M000120" class="method-detail">
-        <a name="M000120"></a>
-
-        <div class="method-heading">
-          <a href="Item.src/M000120.html" target="Code" class="method-signature"
-            onclick="popupCode('Item.src/M000120.html');return false;">
-          <span class="method-name">get_item</span><span class="method-args">(itemid)</span>
-          </a>
-        </div>
-      
-        <div class="method-description">
-          <p>
-Returns an item by its id.
-</p>
-<ul>
-<li>@param [Integer] itemid: The id of the <a href="Item.html">Item</a> to be
-selected.
-
-</li>
-<li>@return [<a href="Item.html">Item</a>]: The selected <a
-href="Item.html">Item</a>.
-
-</li>
-</ul>
-        </div>
-      </div>
-
-      <div id="method-M000108" class="method-detail">
-        <a name="M000108"></a>
-
-        <div class="method-heading">
-          <a href="Item.src/M000108.html" target="Code" class="method-signature"
-            onclick="popupCode('Item.src/M000108.html');return false;">
-          <span class="method-name">get_item_list</span><span class="method-args">()</span>
-          </a>
-        </div>
-      
-        <div class="method-description">
-        </div>
-      </div>
-
-      <div id="method-M000124" class="method-detail">
-        <a name="M000124"></a>
-
-        <div class="method-heading">
-          <a href="Item.src/M000124.html" target="Code" class="method-signature"
-            onclick="popupCode('Item.src/M000124.html');return false;">
-          <span class="method-name">search</span><span class="method-args">(search_string, user)</span>
+          <a href="Item.src/M000217.html" target="Code" class="method-signature"
+            onclick="popupCode('Item.src/M000217.html');return false;">
+          <span class="method-name">search</span><span class="method-args">(search_string, user, options = {})</span>
           </a>
         </div>
       
@@ -380,12 +246,12 @@ and are visible to the given user.
         </div>
       </div>
 
-      <div id="method-M000116" class="method-detail">
-        <a name="M000116"></a>
+      <div id="method-M000211" class="method-detail">
+        <a name="M000211"></a>
 
         <div class="method-heading">
-          <a href="Item.src/M000116.html" target="Code" class="method-signature"
-            onclick="popupCode('Item.src/M000116.html');return false;">
+          <a href="Item.src/M000211.html" target="Code" class="method-signature"
+            onclick="popupCode('Item.src/M000211.html');return false;">
           <span class="method-name">valid_integer?</span><span class="method-args">(price_string)</span>
           </a>
         </div>
@@ -404,13 +270,13 @@ Checks if a string is a valid price.
 
       <h3 class="section-bar">Public Instance methods</h3>
 
-      <div id="method-M000125" class="method-detail">
-        <a name="M000125"></a>
+      <div id="method-M000220" class="method-detail">
+        <a name="M000220"></a>
 
         <div class="method-heading">
-          <a href="Item.src/M000125.html" target="Code" class="method-signature"
-            onclick="popupCode('Item.src/M000125.html');return false;">
-          <span class="method-name">add_user_to_wishlist</span><span class="method-args">(user)</span>
+          <a href="Item.src/M000220.html" target="Code" class="method-signature"
+            onclick="popupCode('Item.src/M000220.html');return false;">
+          <span class="method-name">==</span><span class="method-args">(other)</span>
           </a>
         </div>
       
@@ -418,12 +284,26 @@ Checks if a string is a valid price.
         </div>
       </div>
 
-      <div id="method-M000123" class="method-detail">
-        <a name="M000123"></a>
+      <div id="method-M000221" class="method-detail">
+        <a name="M000221"></a>
 
         <div class="method-heading">
-          <a href="Item.src/M000123.html" target="Code" class="method-signature"
-            onclick="popupCode('Item.src/M000123.html');return false;">
+          <a href="Item.src/M000221.html" target="Code" class="method-signature"
+            onclick="popupCode('Item.src/M000221.html');return false;">
+          <span class="method-name">activate</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+        </div>
+      </div>
+
+      <div id="method-M000216" class="method-detail">
+        <a name="M000216"></a>
+
+        <div class="method-heading">
+          <a href="Item.src/M000216.html" target="Code" class="method-signature"
+            onclick="popupCode('Item.src/M000216.html');return false;">
           <span class="method-name">comment</span><span class="method-args">(author, text)</span>
           </a>
         </div>
@@ -436,24 +316,24 @@ The <a href="User.html">User</a> who wrote the <a
 href="Comment.html">Comment</a>. -@param [String] text: The text of the <a
 href="Comment.html">Comment</a>. -@return [<a
 href="Comment.html">Comment</a>]: The <a
-href="Item.html#M000109">created</a> <a href="Comment.html">Comment</a>.
+href="Item.html#M000206">created</a> <a href="Comment.html">Comment</a>.
 </p>
         </div>
       </div>
 
-      <div id="method-M000110" class="method-detail">
-        <a name="M000110"></a>
+      <div id="method-M000207" class="method-detail">
+        <a name="M000207"></a>
 
         <div class="method-heading">
-          <a href="Item.src/M000110.html" target="Code" class="method-signature"
-            onclick="popupCode('Item.src/M000110.html');return false;">
+          <a href="Item.src/M000207.html" target="Code" class="method-signature"
+            onclick="popupCode('Item.src/M000207.html');return false;">
           <span class="method-name">copy</span><span class="method-args">( hash = {})</span>
           </a>
         </div>
       
         <div class="method-description">
           <p>
-Creates a <a href="Item.html#M000110">copy</a> of an instance, while
+Creates a <a href="Item.html#M000207">copy</a> of an instance, while
 replacing the instance variables defined in the parameter hash usage:
 my_item.copy(:name =&gt; &quot;Item2&quot;)
 </p>
@@ -479,7 +359,7 @@ my_item.copy(:name =&gt; &quot;Item2&quot;)
 </ul>
 </li>
 <li>@return [<a href="Item.html">Item</a>]: A <a
-href="Item.html#M000110">copy</a> of this <a href="Item.html">Item</a> with
+href="Item.html#M000207">copy</a> of this <a href="Item.html">Item</a> with
 the new variables.
 
 </li>
@@ -487,13 +367,13 @@ the new variables.
         </div>
       </div>
 
-      <div id="method-M000122" class="method-detail">
-        <a name="M000122"></a>
+      <div id="method-M000222" class="method-detail">
+        <a name="M000222"></a>
 
         <div class="method-heading">
-          <a href="Item.src/M000122.html" target="Code" class="method-signature"
-            onclick="popupCode('Item.src/M000122.html');return false;">
-          <span class="method-name">delete</span><span class="method-args">()</span>
+          <a href="Item.src/M000222.html" target="Code" class="method-signature"
+            onclick="popupCode('Item.src/M000222.html');return false;">
+          <span class="method-name">deactivate</span><span class="method-args">()</span>
           </a>
         </div>
       
@@ -501,13 +381,13 @@ the new variables.
         </div>
       </div>
 
-      <div id="method-M000113" class="method-detail">
-        <a name="M000113"></a>
+      <div id="method-M000209" class="method-detail">
+        <a name="M000209"></a>
 
         <div class="method-heading">
-          <a href="Item.src/M000113.html" target="Code" class="method-signature"
-            onclick="popupCode('Item.src/M000113.html');return false;">
-          <span class="method-name">edit</span><span class="method-args">(name, price, quantity, description = &quot;&quot;, image = &quot;&quot;)</span>
+          <a href="Item.src/M000209.html" target="Code" class="method-signature"
+            onclick="popupCode('Item.src/M000209.html');return false;">
+          <span class="method-name">edit</span><span class="method-args">(name, price, quantity, currency, description = &quot;&quot;, image = &quot;&quot;)</span>
           </a>
         </div>
       
@@ -536,12 +416,12 @@ params.
         </div>
       </div>
 
-      <div id="method-M000119" class="method-detail">
-        <a name="M000119"></a>
+      <div id="method-M000213" class="method-detail">
+        <a name="M000213"></a>
 
         <div class="method-heading">
-          <a href="Item.src/M000119.html" target="Code" class="method-signature"
-            onclick="popupCode('Item.src/M000119.html');return false;">
+          <a href="Item.src/M000213.html" target="Code" class="method-signature"
+            onclick="popupCode('Item.src/M000213.html');return false;">
           <span class="method-name">editable?</span><span class="method-args">()</span>
           </a>
         </div>
@@ -550,29 +430,12 @@ params.
         </div>
       </div>
 
-      <div id="method-M000115" class="method-detail">
-        <a name="M000115"></a>
+      <div id="method-M000210" class="method-detail">
+        <a name="M000210"></a>
 
         <div class="method-heading">
-          <a href="Item.src/M000115.html" target="Code" class="method-signature"
-            onclick="popupCode('Item.src/M000115.html');return false;">
-          <span class="method-name">expired?</span><span class="method-args">()</span>
-          </a>
-        </div>
-      
-        <div class="method-description">
-          <p>
-Checks if the chosen expiration date is exceeded
-</p>
-        </div>
-      </div>
-
-      <div id="method-M000114" class="method-detail">
-        <a name="M000114"></a>
-
-        <div class="method-heading">
-          <a href="Item.src/M000114.html" target="Code" class="method-signature"
-            onclick="popupCode('Item.src/M000114.html');return false;">
+          <a href="Item.src/M000210.html" target="Code" class="method-signature"
+            onclick="popupCode('Item.src/M000210.html');return false;">
           <span class="method-name">is_active?</span><span class="method-args">()</span>
           </a>
         </div>
@@ -585,34 +448,12 @@ update the state if the item is expired.
         </div>
       </div>
 
-      <div id="method-M000117" class="method-detail">
-        <a name="M000117"></a>
+      <div id="method-M000208" class="method-detail">
+        <a name="M000208"></a>
 
         <div class="method-heading">
-          <a href="Item.src/M000117.html" target="Code" class="method-signature"
-            onclick="popupCode('Item.src/M000117.html');return false;">
-          <span class="method-name">is_owner?</span><span class="method-args">(username)</span>
-          </a>
-        </div>
-      
-        <div class="method-description">
-          <p>
-Compares a users name to the owners name.
-</p>
-<ul>
-<li>@param [String] username: The name of the user to be compared.
-
-</li>
-</ul>
-        </div>
-      </div>
-
-      <div id="method-M000111" class="method-detail">
-        <a name="M000111"></a>
-
-        <div class="method-heading">
-          <a href="Item.src/M000111.html" target="Code" class="method-signature"
-            onclick="popupCode('Item.src/M000111.html');return false;">
+          <a href="Item.src/M000208.html" target="Code" class="method-signature"
+            onclick="popupCode('Item.src/M000208.html');return false;">
           <span class="method-name">is_valid</span><span class="method-args">()</span>
           </a>
         </div>
@@ -622,50 +463,82 @@ Compares a users name to the owners name.
 Controls the item&#8216;s data and adds errors if necessary.
 </p>
 <ul>
-<li>@return: true if there is no invalid data or false there is.
+<li>@return: true if there is no invalid data and throws a suitable symbol
+otherwise.
 
 </li>
 </ul>
         </div>
       </div>
 
-      <div id="method-M000126" class="method-detail">
-        <a name="M000126"></a>
+      <div id="method-M000215" class="method-detail">
+        <a name="M000215"></a>
 
         <div class="method-heading">
-          <a href="Item.src/M000126.html" target="Code" class="method-signature"
-            onclick="popupCode('Item.src/M000126.html');return false;">
-          <span class="method-name">remove_user_from_wishlist</span><span class="method-args">(user)</span>
-          </a>
-        </div>
-      
-        <div class="method-description">
-        </div>
-      </div>
-
-      <div id="method-M000112" class="method-detail">
-        <a name="M000112"></a>
-
-        <div class="method-heading">
-          <a href="Item.src/M000112.html" target="Code" class="method-signature"
-            onclick="popupCode('Item.src/M000112.html');return false;">
-          <span class="method-name">save</span><span class="method-args">()</span>
+          <a href="Item.src/M000215.html" target="Code" class="method-signature"
+            onclick="popupCode('Item.src/M000215.html');return false;">
+          <span class="method-name">restock</span><span class="method-args">(amount)</span>
           </a>
         </div>
       
         <div class="method-description">
           <p>
-Saves the item to the <a href="Item.html">Item</a>-List
+adds quantity to an item with permanent stock
 </p>
         </div>
       </div>
 
-      <div id="method-M000118" class="method-detail">
-        <a name="M000118"></a>
+      <div id="method-M000223" class="method-detail">
+        <a name="M000223"></a>
 
         <div class="method-heading">
-          <a href="Item.src/M000118.html" target="Code" class="method-signature"
-            onclick="popupCode('Item.src/M000118.html');return false;">
+          <a href="Item.src/M000223.html" target="Code" class="method-signature"
+            onclick="popupCode('Item.src/M000223.html');return false;">
+          <span class="method-name">seller_rating</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+        </div>
+      </div>
+
+      <div id="method-M000214" class="method-detail">
+        <a name="M000214"></a>
+
+        <div class="method-heading">
+          <a href="Item.src/M000214.html" target="Code" class="method-signature"
+            onclick="popupCode('Item.src/M000214.html');return false;">
+          <span class="method-name">switch_permanent</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+changes whether the item is permanent or not
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000219" class="method-detail">
+        <a name="M000219"></a>
+
+        <div class="method-heading">
+          <a href="Item.src/M000219.html" target="Code" class="method-signature"
+            onclick="popupCode('Item.src/M000219.html');return false;">
+          <span class="method-name">to_json</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+        </div>
+      </div>
+
+      <div id="method-M000212" class="method-detail">
+        <a name="M000212"></a>
+
+        <div class="method-heading">
+          <a href="Item.src/M000212.html" target="Code" class="method-signature"
+            onclick="popupCode('Item.src/M000212.html');return false;">
           <span class="method-name">to_s</span><span class="method-args">()</span>
           </a>
         </div>

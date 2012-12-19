@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>get_ratings_for (Controllers::TraderControl)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File app/controllers/trader_control.rb, line 452</span>
+    <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">get_ratings_for</span>(<span class="ruby-identifier">user</span>)
+      <span class="ruby-identifier">colors</span> = [<span class="ruby-value str">'#ff6f31'</span>,   <span class="ruby-comment cmt"># color for bad</span>
+                <span class="ruby-value str">'#ff9f02'</span>,
+                <span class="ruby-value str">'#ffcf02'</span>,
+                <span class="ruby-value str">'#a4cc02'</span>,
+                <span class="ruby-value str">'#88b131'</span>]    <span class="ruby-comment cmt"># color for good</span>
+
+      <span class="ruby-identifier">values</span> = <span class="ruby-constant">Array</span>.<span class="ruby-identifier">new</span>(<span class="ruby-value">5</span>, <span class="ruby-value">0</span>)  <span class="ruby-comment cmt"># size, initial value</span>
+      <span class="ruby-ivar">@user</span>.<span class="ruby-identifier">ratings</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">v</span><span class="ruby-operator">|</span>
+        <span class="ruby-identifier">values</span>[<span class="ruby-identifier">v</span>.<span class="ruby-identifier">to_i</span>]<span class="ruby-operator">+=</span><span class="ruby-value">1</span>       <span class="ruby-comment cmt"># count number of votes for every rating value</span>
+      <span class="ruby-keyword kw">end</span>
+      <span class="ruby-identifier">ratings_json</span> = <span class="ruby-value str">&quot;[&quot;</span>                <span class="ruby-comment cmt"># generate json</span>
+      <span class="ruby-identifier">values</span>.<span class="ruby-identifier">each_with_index</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">value</span>, <span class="ruby-identifier">index</span><span class="ruby-operator">|</span>
+        <span class="ruby-identifier">entry</span> = <span class="ruby-value str">&quot;{'data':[[&quot;</span><span class="ruby-operator">+</span><span class="ruby-identifier">values</span>[<span class="ruby-identifier">index</span>].<span class="ruby-identifier">to_s</span><span class="ruby-operator">+</span><span class="ruby-value str">&quot;,&quot;</span><span class="ruby-operator">+</span>(<span class="ruby-identifier">index</span><span class="ruby-operator">+</span><span class="ruby-value">1</span>).<span class="ruby-identifier">to_s</span><span class="ruby-operator">+</span><span class="ruby-value str">&quot;]],'color':'&quot;</span><span class="ruby-operator">+</span><span class="ruby-identifier">colors</span>[<span class="ruby-identifier">index</span>]<span class="ruby-operator">+</span><span class="ruby-value str">&quot;'},&quot;</span>
+        <span class="ruby-identifier">ratings_json</span> = <span class="ruby-identifier">ratings_json</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">entry</span>
+      <span class="ruby-keyword kw">end</span>
+      <span class="ruby-identifier">ratings_json</span> = <span class="ruby-identifier">ratings_json</span> <span class="ruby-operator">+</span> <span class="ruby-value str">&quot;]&quot;</span>
+      <span class="ruby-identifier">ratings_json</span>
+    <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>

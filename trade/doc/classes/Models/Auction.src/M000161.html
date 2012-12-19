@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>update_current_winner (Models::Auction)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File app/models/module/auction.rb, line 103</span>
+    <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">update_current_winner</span>(<span class="ruby-identifier">new_bidder</span>, <span class="ruby-identifier">bid</span>)
+
+      <span class="ruby-comment cmt"># if you are overbidding yourself...</span>
+      <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@current_winner</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">new_bidder</span>
+        <span class="ruby-identifier">new_bidder</span>.<span class="ruby-identifier">credits</span> <span class="ruby-operator">-=</span> <span class="ruby-identifier">bid</span> <span class="ruby-operator">-</span> <span class="ruby-ivar">@bids</span>[<span class="ruby-identifier">new_bidder</span>] <span class="ruby-keyword kw">unless</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">currency</span><span class="ruby-operator">==</span><span class="ruby-value str">&quot;bitcoins&quot;</span>
+        <span class="ruby-ivar">@bids</span>[<span class="ruby-identifier">new_bidder</span>] = <span class="ruby-identifier">bid</span>
+        <span class="ruby-comment cmt"># no need to change the current selling price</span>
+      <span class="ruby-keyword kw">else</span>
+        <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">bid</span> <span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@bids</span>[<span class="ruby-ivar">@current_winner</span>] <span class="ruby-keyword kw">and</span> <span class="ruby-identifier">bid</span> <span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@current_selling_price</span>
+          <span class="ruby-identifier">old_winner</span> = <span class="ruby-ivar">@current_winner</span>
+          <span class="ruby-ivar">@current_winner</span> = <span class="ruby-identifier">new_bidder</span>
+          <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">old_winner</span>.<span class="ruby-identifier">nil?</span>
+            <span class="ruby-identifier">old_winner</span>.<span class="ruby-identifier">credits</span> <span class="ruby-operator">+=</span> <span class="ruby-ivar">@bids</span>[<span class="ruby-identifier">old_winner</span>] <span class="ruby-keyword kw">unless</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">currency</span><span class="ruby-operator">==</span><span class="ruby-value str">&quot;bitcoins&quot;</span>
+            <span class="ruby-constant">Mailer</span>.<span class="ruby-identifier">new_winner</span>(<span class="ruby-identifier">old_winner</span>.<span class="ruby-identifier">e_mail</span>, <span class="ruby-keyword kw">self</span>)
+          <span class="ruby-keyword kw">end</span>
+          <span class="ruby-ivar">@bids</span>[<span class="ruby-identifier">new_bidder</span>] = <span class="ruby-identifier">bid</span>
+          <span class="ruby-ivar">@current_winner</span>.<span class="ruby-identifier">credits</span> <span class="ruby-operator">-=</span> <span class="ruby-ivar">@bids</span>[<span class="ruby-ivar">@current_winner</span>] <span class="ruby-keyword kw">unless</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">currency</span><span class="ruby-operator">==</span><span class="ruby-value str">&quot;bitcoins&quot;</span>
+          <span class="ruby-keyword kw">if</span> (<span class="ruby-operator">!</span><span class="ruby-identifier">old_winner</span>.<span class="ruby-identifier">nil?</span>)
+            <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@bids</span>[<span class="ruby-identifier">old_winner</span>]<span class="ruby-operator">+</span><span class="ruby-identifier">increment</span> <span class="ruby-operator">&lt;=</span> <span class="ruby-identifier">bid</span>
+              <span class="ruby-ivar">@current_selling_price</span> = <span class="ruby-ivar">@bids</span>[<span class="ruby-identifier">old_winner</span>] <span class="ruby-operator">+</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">increment</span>
+            <span class="ruby-keyword kw">else</span>
+              <span class="ruby-ivar">@current_selling_price</span> = <span class="ruby-ivar">@bids</span>[<span class="ruby-identifier">current_winner</span>]
+            <span class="ruby-keyword kw">end</span>
+          <span class="ruby-keyword kw">else</span>
+            <span class="ruby-comment cmt">#check for first bid!!!! current_selling_price is only bid, if not the first buyer</span>
+            <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">first_bidder</span>
+              <span class="ruby-identifier">first_bidder</span> = <span class="ruby-keyword kw">false</span>
+            <span class="ruby-keyword kw">else</span>
+              <span class="ruby-ivar">@current_selling_price</span> = <span class="ruby-identifier">bid</span>
+            <span class="ruby-keyword kw">end</span>
+          <span class="ruby-keyword kw">end</span>
+        <span class="ruby-keyword kw">else</span>
+          <span class="ruby-comment cmt">#if the bid is below the maximal bid + increment</span>
+          <span class="ruby-ivar">@bids</span>[<span class="ruby-identifier">new_bidder</span>] = <span class="ruby-identifier">bid</span>
+          <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@current_winner</span>.<span class="ruby-identifier">nil?</span> <span class="ruby-keyword kw">and</span> <span class="ruby-identifier">bid</span> <span class="ruby-operator">&gt;=</span> <span class="ruby-identifier">min_price</span>
+            <span class="ruby-ivar">@current_winner</span> = <span class="ruby-identifier">new_bidder</span>
+            <span class="ruby-ivar">@current_selling_price</span> = <span class="ruby-identifier">bid</span>
+          <span class="ruby-keyword kw">end</span>
+          <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">bid</span> <span class="ruby-operator">&lt;</span> <span class="ruby-ivar">@bids</span>[<span class="ruby-identifier">current_winner</span>]<span class="ruby-operator">-</span><span class="ruby-identifier">increment</span>
+            <span class="ruby-ivar">@current_selling_price</span> = <span class="ruby-identifier">bid</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">increment</span>
+          <span class="ruby-keyword kw">elsif</span> <span class="ruby-identifier">bid</span> <span class="ruby-operator">&lt;</span> <span class="ruby-ivar">@bids</span>[<span class="ruby-ivar">@current_winner</span>] <span class="ruby-keyword kw">and</span> <span class="ruby-identifier">bid</span> <span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@bids</span>[<span class="ruby-ivar">@current_winner</span>] <span class="ruby-operator">-</span> <span class="ruby-identifier">increment</span>
+            <span class="ruby-ivar">@current_selling_price</span> = <span class="ruby-identifier">bid</span>
+          <span class="ruby-keyword kw">end</span>
+        <span class="ruby-keyword kw">end</span>
+      <span class="ruby-keyword kw">end</span>
+    <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>

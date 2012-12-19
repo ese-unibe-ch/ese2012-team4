@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>test_validation_password (UserTest)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File test/user_test.rb, line 223</span>
+  <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">test_validation_password</span>
+    <span class="ruby-identifier">assert</span> <span class="ruby-ivar">@owner</span>.<span class="ruby-identifier">is_valid</span>(<span class="ruby-value str">&quot;asdfasdf1&quot;</span>, <span class="ruby-value str">&quot;asdfasdf1&quot;</span>)
+
+    <span class="ruby-identifier">valid</span> = <span class="ruby-identifier">catch</span>(<span class="ruby-identifier">:invalid</span>){<span class="ruby-ivar">@owner</span>.<span class="ruby-identifier">is_valid</span>(<span class="ruby-value str">&quot;asdfasdf1&quot;</span>, <span class="ruby-value str">&quot;asdfasdf&quot;</span>)}
+    <span class="ruby-identifier">assert</span>(<span class="ruby-identifier">valid</span>.<span class="ruby-identifier">eql?</span>(<span class="ruby-identifier">:pw_dont_match</span>))
+
+    <span class="ruby-identifier">valid</span> = <span class="ruby-identifier">catch</span>(<span class="ruby-identifier">:invalid</span>){<span class="ruby-ivar">@owner</span>.<span class="ruby-identifier">is_valid</span>(<span class="ruby-value str">&quot;asdfasdf&quot;</span>, <span class="ruby-value str">&quot;asdfasdf&quot;</span>)}
+    <span class="ruby-identifier">assert</span>(<span class="ruby-identifier">valid</span>.<span class="ruby-identifier">eql?</span>(<span class="ruby-identifier">:pw_not_safe</span>))
+
+    <span class="ruby-identifier">valid</span> = <span class="ruby-identifier">catch</span>(<span class="ruby-identifier">:invalid</span>){<span class="ruby-ivar">@owner</span>.<span class="ruby-identifier">is_valid</span>(<span class="ruby-value str">&quot;asdfasdf1&quot;</span>, <span class="ruby-value str">&quot;&quot;</span>)}
+    <span class="ruby-identifier">assert</span>(<span class="ruby-identifier">valid</span>.<span class="ruby-identifier">eql?</span>(<span class="ruby-identifier">:no_pw_confirmation</span>))
+
+    <span class="ruby-identifier">valid</span> = <span class="ruby-identifier">catch</span>(<span class="ruby-identifier">:invalid</span>){<span class="ruby-ivar">@owner</span>.<span class="ruby-identifier">is_valid</span>(<span class="ruby-value str">&quot;&quot;</span>, <span class="ruby-value str">&quot;asdfasdf1&quot;</span>)}
+    <span class="ruby-identifier">assert</span>(<span class="ruby-identifier">valid</span>.<span class="ruby-identifier">eql?</span>(<span class="ruby-identifier">:pw_dont_match</span>))
+
+    <span class="ruby-identifier">valid</span> = <span class="ruby-identifier">catch</span>(<span class="ruby-identifier">:invalid</span>){<span class="ruby-ivar">@owner</span>.<span class="ruby-identifier">is_valid</span>(<span class="ruby-value str">&quot;asdf&quot;</span>, <span class="ruby-value str">&quot;asdf&quot;</span>)}
+    <span class="ruby-identifier">assert</span>(<span class="ruby-identifier">valid</span>.<span class="ruby-identifier">eql?</span>(<span class="ruby-identifier">:pw_not_safe</span>))
+
+    <span class="ruby-identifier">assert</span> <span class="ruby-ivar">@owner</span>.<span class="ruby-identifier">is_valid</span>(<span class="ruby-value str">&quot;aSdfasdf1&quot;</span>, <span class="ruby-value str">&quot;aSdfasdf1&quot;</span>)
+  <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>

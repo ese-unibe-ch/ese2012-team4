@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>test_addMember_delete_Member (OrganizationTest)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File test/organization_test.rb, line 49</span>
+  <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">test_addMember_delete_Member</span>
+    <span class="ruby-ivar">@member</span> = <span class="ruby-constant">User</span>.<span class="ruby-identifier">created</span>(<span class="ruby-value str">&quot;member&quot;</span>, <span class="ruby-value str">&quot;password&quot;</span>, <span class="ruby-value str">&quot;member@mail.com&quot;</span>)
+    <span class="ruby-identifier">assert</span>(<span class="ruby-operator">!</span><span class="ruby-ivar">@org</span>.<span class="ruby-identifier">member_list</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-ivar">@member</span>))
+    <span class="ruby-ivar">@org</span>.<span class="ruby-identifier">add_member</span>(<span class="ruby-ivar">@member</span>)
+    <span class="ruby-identifier">assert</span>(<span class="ruby-ivar">@org</span>.<span class="ruby-identifier">member_list</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-ivar">@member</span>))
+    <span class="ruby-identifier">assert</span>(<span class="ruby-ivar">@member</span>.<span class="ruby-identifier">organization_list</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-ivar">@org</span>))
+
+    <span class="ruby-ivar">@org</span>.<span class="ruby-identifier">delete_member</span>(<span class="ruby-ivar">@member</span>)
+    <span class="ruby-identifier">assert</span>(<span class="ruby-operator">!</span><span class="ruby-ivar">@org</span>.<span class="ruby-identifier">member_list</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-ivar">@member</span>))
+    <span class="ruby-identifier">assert</span>(<span class="ruby-operator">!</span><span class="ruby-ivar">@member</span>.<span class="ruby-identifier">organization_list</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-ivar">@org</span>))
+  <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>

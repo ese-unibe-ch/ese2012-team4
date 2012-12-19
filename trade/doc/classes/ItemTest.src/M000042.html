@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>test_validation (ItemTest)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File test/item_test.rb, line 168</span>
+  <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">test_validation</span>
+    <span class="ruby-identifier">item</span> = <span class="ruby-ivar">@owner</span>.<span class="ruby-identifier">create_item</span>(<span class="ruby-value str">&quot;testobject&quot;</span>,<span class="ruby-value">50</span>, <span class="ruby-value">10</span>)
+    <span class="ruby-identifier">assert</span>(<span class="ruby-identifier">item</span>.<span class="ruby-identifier">is_valid</span>)
+
+    <span class="ruby-identifier">item</span>.<span class="ruby-identifier">price</span>=<span class="ruby-value str">&quot;string&quot;</span>
+    <span class="ruby-identifier">valid</span> = <span class="ruby-identifier">catch</span>(<span class="ruby-identifier">:invalid</span>){<span class="ruby-identifier">item</span>.<span class="ruby-identifier">is_valid</span>}
+    <span class="ruby-identifier">assert</span>(<span class="ruby-identifier">valid</span>.<span class="ruby-identifier">eql?</span>(<span class="ruby-identifier">:invalid_price</span>))
+    <span class="ruby-identifier">item</span>.<span class="ruby-identifier">price</span> = <span class="ruby-value">50</span>
+    <span class="ruby-identifier">assert</span>(<span class="ruby-identifier">item</span>.<span class="ruby-identifier">is_valid</span>)
+
+    <span class="ruby-identifier">item</span>.<span class="ruby-identifier">quantity</span>=<span class="ruby-value str">&quot;skdlf&quot;</span>
+    <span class="ruby-identifier">valid</span> = <span class="ruby-identifier">catch</span>(<span class="ruby-identifier">:invalid</span>){<span class="ruby-identifier">item</span>.<span class="ruby-identifier">is_valid</span>}
+    <span class="ruby-identifier">assert</span>(<span class="ruby-identifier">valid</span>.<span class="ruby-identifier">eql?</span>(<span class="ruby-identifier">:invalid_quantity</span>))
+    <span class="ruby-identifier">item</span>.<span class="ruby-identifier">quantity</span> = <span class="ruby-value str">&quot;3&quot;</span>
+    <span class="ruby-identifier">assert</span>(<span class="ruby-identifier">item</span>.<span class="ruby-identifier">is_valid</span>)
+
+    <span class="ruby-identifier">item</span>.<span class="ruby-identifier">image</span>=<span class="ruby-constant">FileUtils</span><span class="ruby-operator">::</span><span class="ruby-identifier">pwd</span><span class="ruby-operator">+</span><span class="ruby-value str">&quot;/public/images/user_pix/&quot;</span>
+    <span class="ruby-identifier">valid</span> = <span class="ruby-identifier">catch</span>(<span class="ruby-identifier">:invalid</span>){<span class="ruby-identifier">item</span>.<span class="ruby-identifier">is_valid</span>}
+    <span class="ruby-identifier">assert</span>(<span class="ruby-identifier">valid</span>.<span class="ruby-identifier">eql?</span>(<span class="ruby-identifier">:no_valid_image_file</span>))
+
+    <span class="ruby-identifier">item</span>.<span class="ruby-identifier">image</span>=<span class="ruby-value str">&quot;..fasl&quot;</span>
+    <span class="ruby-identifier">valid</span> = <span class="ruby-identifier">catch</span>(<span class="ruby-identifier">:invalid</span>){<span class="ruby-identifier">item</span>.<span class="ruby-identifier">is_valid</span>}
+    <span class="ruby-identifier">assert</span>(<span class="ruby-identifier">valid</span>.<span class="ruby-identifier">eql?</span>(<span class="ruby-identifier">:no_valid_image_file</span>))
+
+    <span class="ruby-identifier">item</span>.<span class="ruby-identifier">image</span>=<span class="ruby-constant">FileUtils</span><span class="ruby-operator">::</span><span class="ruby-identifier">pwd</span><span class="ruby-operator">+</span><span class="ruby-value str">&quot;../../app/public/images/item_pix/placeholder_item.jpg&quot;</span>
+    <span class="ruby-identifier">assert</span>(<span class="ruby-identifier">item</span>.<span class="ruby-identifier">is_valid</span>)
+
+    <span class="ruby-identifier">item</span>.<span class="ruby-identifier">image</span>=<span class="ruby-value str">&quot;&quot;</span>
+    <span class="ruby-identifier">assert</span>(<span class="ruby-identifier">item</span>.<span class="ruby-identifier">is_valid</span>)
+
+    <span class="ruby-identifier">item</span>.<span class="ruby-identifier">name</span>=<span class="ruby-value str">&quot;     &quot;</span>
+    <span class="ruby-identifier">valid</span> = <span class="ruby-identifier">catch</span>(<span class="ruby-identifier">:invalid</span>){<span class="ruby-identifier">item</span>.<span class="ruby-identifier">is_valid</span>}
+    <span class="ruby-identifier">assert</span>(<span class="ruby-identifier">valid</span>.<span class="ruby-identifier">eql?</span>(<span class="ruby-identifier">:invalid_name</span>))
+
+    <span class="ruby-identifier">item</span>.<span class="ruby-identifier">name</span>=<span class="ruby-value str">&quot;&quot;</span>
+    <span class="ruby-identifier">valid</span> = <span class="ruby-identifier">catch</span>(<span class="ruby-identifier">:invalid</span>){<span class="ruby-identifier">item</span>.<span class="ruby-identifier">is_valid</span>}
+    <span class="ruby-identifier">assert</span>(<span class="ruby-identifier">valid</span>.<span class="ruby-identifier">eql?</span>(<span class="ruby-identifier">:invalid_name</span>))
+
+    <span class="ruby-identifier">item</span>.<span class="ruby-identifier">name</span>=<span class="ruby-value str">&quot;name&quot;</span>
+    <span class="ruby-identifier">assert</span>(<span class="ruby-identifier">item</span>.<span class="ruby-identifier">is_valid</span>)
+  <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>

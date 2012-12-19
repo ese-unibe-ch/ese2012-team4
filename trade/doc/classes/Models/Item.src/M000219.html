@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>to_json (Models::Item)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File app/models/module/item.rb, line 192</span>
+    <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">to_json</span>
+      <span class="ruby-keyword kw">return</span> <span class="ruby-node">&quot;{\&quot;id\&quot;: \&quot;#{self.id}\&quot;, \&quot;name\&quot;: \&quot;#{self.name}\&quot;, \&quot;price\&quot;: \&quot;#{self.price}\&quot;, \&quot;owner_id\&quot;: \&quot;#{self.owner.id}\&quot;, \&quot;owner_name\&quot;: \&quot;#{self.owner.name}\&quot;, \&quot;owner_rating\&quot;: \&quot;#{self.owner.rating}\&quot;, \&quot;quantity\&quot;: \&quot;#{self.quantity}\&quot;, \&quot;description\&quot;: \&quot;#{self.description}\&quot;, \&quot;timestamp\&quot;: \&quot;#{self.timestamp}\&quot; }&quot;</span>.<span class="ruby-identifier">to_s</span>
+    <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>

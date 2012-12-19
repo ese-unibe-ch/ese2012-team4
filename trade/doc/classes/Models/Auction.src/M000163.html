@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>end (Models::Auction)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File app/models/module/auction.rb, line 158</span>
+    <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">end</span>
+      <span class="ruby-comment cmt"># Needs to be done first, because the scheduler has to stop finding it</span>
+      <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">owner</span>.<span class="ruby-identifier">remove_offer</span>(<span class="ruby-keyword kw">self</span>)
+      <span class="ruby-ivar">@@offers</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-keyword kw">self</span>)
+      <span class="ruby-ivar">@@offers</span>[<span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">id</span>]=<span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">item</span>
+
+      <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">bids</span>.<span class="ruby-identifier">length!</span>=<span class="ruby-value">0</span>
+        <span class="ruby-ivar">@current_winner</span>.<span class="ruby-identifier">credits</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">bids</span>[<span class="ruby-ivar">@current_winner</span>]
+
+        <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">item</span>.<span class="ruby-identifier">price</span> = <span class="ruby-ivar">@current_selling_price</span>
+        <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">item</span>.<span class="ruby-identifier">currency</span> = <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">currency</span>
+        <span class="ruby-ivar">@current_winner</span>.<span class="ruby-identifier">buy_new_item</span>(<span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">item</span>,<span class="ruby-value">1</span>, <span class="ruby-ivar">@current_winner</span>)
+        <span class="ruby-constant">Mailer</span>.<span class="ruby-identifier">bid_over</span>(<span class="ruby-ivar">@current_winner</span>.<span class="ruby-identifier">e_mail</span>, <span class="ruby-keyword kw">self</span>)
+      <span class="ruby-keyword kw">else</span>
+        <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">item</span>.<span class="ruby-identifier">deactivate</span>
+        <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">owner</span>.<span class="ruby-identifier">add_offer</span>(<span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">item</span>)
+      <span class="ruby-keyword kw">end</span>
+    <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>

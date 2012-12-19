@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>setup (ActivityTest)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File test/activity_test.rb, line 12</span>
+  <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">setup</span>
+    <span class="ruby-constant">User</span>.<span class="ruby-identifier">clear_all</span>
+    <span class="ruby-ivar">@admin</span> = <span class="ruby-constant">User</span>.<span class="ruby-identifier">created</span>( <span class="ruby-value str">&quot;testuser&quot;</span>, <span class="ruby-value str">&quot;password&quot;</span>, <span class="ruby-value str">&quot;test@mail.com&quot;</span> )
+    <span class="ruby-ivar">@org</span> = <span class="ruby-constant">Organization</span>.<span class="ruby-identifier">created</span>( <span class="ruby-value str">&quot;testorganization&quot;</span>, <span class="ruby-ivar">@admin</span>)
+    <span class="ruby-ivar">@userA</span> = <span class="ruby-constant">User</span>.<span class="ruby-identifier">created</span>(<span class="ruby-value str">&quot;Hans&quot;</span>, <span class="ruby-value str">&quot;hansli&quot;</span>, <span class="ruby-value str">&quot;bla@mail.com&quot;</span>)
+    <span class="ruby-ivar">@userB</span> = <span class="ruby-constant">User</span>.<span class="ruby-identifier">created</span>(<span class="ruby-value str">&quot;Horst&quot;</span>, <span class="ruby-value str">&quot;horstli&quot;</span>, <span class="ruby-value str">&quot;bla1@mail.com&quot;</span>)
+    <span class="ruby-ivar">@userC</span> = <span class="ruby-constant">User</span>.<span class="ruby-identifier">created</span>(<span class="ruby-value str">&quot;Vreni&quot;</span>, <span class="ruby-value str">&quot;vreneli&quot;</span>, <span class="ruby-value str">&quot;bla2@mail.com&quot;</span>)
+    <span class="ruby-ivar">@userD</span> = <span class="ruby-constant">User</span>.<span class="ruby-identifier">created</span>(<span class="ruby-value str">&quot;Penner&quot;</span>, <span class="ruby-value str">&quot;pennerli&quot;</span>, <span class="ruby-value str">&quot;bla3@mail.com&quot;</span>)
+    <span class="ruby-ivar">@userA</span>.<span class="ruby-identifier">credits</span> = <span class="ruby-value">1000</span>
+    <span class="ruby-ivar">@userB</span>.<span class="ruby-identifier">credits</span> = <span class="ruby-value">1000</span>
+    <span class="ruby-ivar">@userC</span>.<span class="ruby-identifier">credits</span> = <span class="ruby-value">1000</span>
+    <span class="ruby-ivar">@userD</span>.<span class="ruby-identifier">credits</span> = <span class="ruby-value">10</span>
+    <span class="ruby-ivar">@org</span>.<span class="ruby-identifier">add_member</span>(<span class="ruby-ivar">@userA</span>)
+    <span class="ruby-ivar">@org</span>.<span class="ruby-identifier">add_member</span>(<span class="ruby-ivar">@userB</span>)
+    <span class="ruby-ivar">@org</span>.<span class="ruby-identifier">add_member</span>(<span class="ruby-ivar">@userC</span>)
+    <span class="ruby-ivar">@userA</span>.<span class="ruby-identifier">working_for</span> = <span class="ruby-ivar">@org</span>
+    <span class="ruby-ivar">@userB</span>.<span class="ruby-identifier">working_for</span> = <span class="ruby-ivar">@org</span>
+    <span class="ruby-ivar">@userC</span>.<span class="ruby-identifier">working_for</span> = <span class="ruby-ivar">@org</span>
+  <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>

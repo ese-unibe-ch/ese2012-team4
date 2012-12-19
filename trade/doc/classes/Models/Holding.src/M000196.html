@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>item_received (Models::Holding)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File app/models/utility/holding.rb, line 31</span>
+  <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">item_received</span>
+    <span class="ruby-keyword kw">if</span>(<span class="ruby-identifier">item</span>.<span class="ruby-identifier">currency</span> <span class="ruby-operator">==</span> <span class="ruby-value str">&quot;credits&quot;</span>)
+      <span class="ruby-identifier">seller</span>.<span class="ruby-identifier">credits</span><span class="ruby-operator">+=</span><span class="ruby-constant">Integer</span>(<span class="ruby-identifier">item</span>.<span class="ruby-identifier">price</span>)<span class="ruby-operator">*</span><span class="ruby-identifier">quantity</span>
+    <span class="ruby-keyword kw">end</span>
+
+    <span class="ruby-keyword kw">if</span>(<span class="ruby-identifier">item</span>.<span class="ruby-identifier">quantity</span>.<span class="ruby-identifier">to_i</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">quantity</span>)
+      <span class="ruby-comment cmt"># buy all items from seller</span>
+      <span class="ruby-identifier">item</span>.<span class="ruby-identifier">owner</span> = <span class="ruby-identifier">buyer</span>
+      <span class="ruby-keyword kw">if</span>(<span class="ruby-operator">!</span><span class="ruby-identifier">item</span>.<span class="ruby-identifier">permanent</span>)
+        <span class="ruby-identifier">item</span>.<span class="ruby-identifier">owner</span>.<span class="ruby-identifier">remove_offer</span>(<span class="ruby-identifier">item</span>)
+      <span class="ruby-keyword kw">else</span>
+        <span class="ruby-identifier">item</span>.<span class="ruby-identifier">switch_permanent</span>
+      <span class="ruby-keyword kw">end</span>
+      <span class="ruby-keyword kw">if</span> <span class="ruby-operator">!</span>(<span class="ruby-identifier">identical</span> = <span class="ruby-identifier">buyer</span>.<span class="ruby-identifier">list_items_inactive</span>.<span class="ruby-identifier">detect</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">i</span><span class="ruby-operator">|</span> <span class="ruby-identifier">i</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">item</span>}).<span class="ruby-identifier">nil?</span>
+        <span class="ruby-identifier">identical</span>.<span class="ruby-identifier">quantity</span><span class="ruby-operator">+=</span><span class="ruby-identifier">quantity</span>
+      <span class="ruby-keyword kw">else</span>
+        <span class="ruby-identifier">item</span>.<span class="ruby-identifier">quantity</span> = <span class="ruby-identifier">quantity</span>
+        <span class="ruby-identifier">buyer</span>.<span class="ruby-identifier">offers</span>.<span class="ruby-identifier">push</span>(<span class="ruby-identifier">item</span>)
+        <span class="ruby-identifier">item</span>.<span class="ruby-identifier">active</span> = <span class="ruby-keyword kw">false</span>
+      <span class="ruby-keyword kw">end</span>
+    <span class="ruby-keyword kw">else</span>
+      <span class="ruby-comment cmt"># seller has some items left</span>
+      <span class="ruby-keyword kw">if</span> <span class="ruby-operator">!</span>(<span class="ruby-identifier">identical</span> = <span class="ruby-identifier">buyer</span>.<span class="ruby-identifier">list_items_inactive</span>.<span class="ruby-identifier">detect</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">i</span><span class="ruby-operator">|</span> <span class="ruby-identifier">i</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">item</span>}).<span class="ruby-identifier">nil?</span>
+        <span class="ruby-identifier">identical</span>.<span class="ruby-identifier">quantity</span><span class="ruby-operator">+=</span><span class="ruby-identifier">quantity</span>
+      <span class="ruby-keyword kw">else</span>
+        <span class="ruby-identifier">buyer</span>.<span class="ruby-identifier">create_item</span>(<span class="ruby-identifier">item</span>.<span class="ruby-identifier">name</span>,<span class="ruby-identifier">item</span>.<span class="ruby-identifier">price</span>, <span class="ruby-identifier">quantity</span>, <span class="ruby-identifier">item</span>.<span class="ruby-identifier">description</span>).<span class="ruby-identifier">active</span> = <span class="ruby-keyword kw">false</span>
+      <span class="ruby-keyword kw">end</span>
+    <span class="ruby-keyword kw">end</span>
+
+    <span class="ruby-ivar">@@holder</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-keyword kw">self</span>) <span class="ruby-comment cmt">#closes the holding-state</span>
+
+  <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>send_personal_message (Models::Mailer)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File app/models/utility/mailer.rb, line 33</span>
+    <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">send_personal_message</span>(<span class="ruby-identifier">sender</span>, <span class="ruby-identifier">recipient</span>, <span class="ruby-identifier">subject</span>, <span class="ruby-identifier">content</span>, <span class="ruby-identifier">site_url</span>)
+      <span class="ruby-identifier">body</span> = <span class="ruby-node">&quot;You have a new message from &lt;a href=\&quot;http://#{site_url}/users/#{sender.id}\&quot;&gt;#{sender.name}&lt;/a&gt;:&lt;hr /&gt;#{escape_html(content)}&lt;hr /&gt;&lt;br /&gt;&quot;</span>
+      <span class="ruby-constant">Mailer</span>.<span class="ruby-identifier">send_mail</span>(<span class="ruby-identifier">sender</span>.<span class="ruby-identifier">e_mail</span>, <span class="ruby-identifier">recipient</span>.<span class="ruby-identifier">e_mail</span>, <span class="ruby-identifier">subject</span>, <span class="ruby-identifier">body</span>)  
+    <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>test_sort_items_by_name (ItemTest)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File test/item_test.rb, line 264</span>
+  <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">test_sort_items_by_name</span>
+    <span class="ruby-identifier">item1</span> = <span class="ruby-ivar">@owner</span>.<span class="ruby-identifier">create_item</span>(<span class="ruby-value str">&quot;a_test_object1&quot;</span>, <span class="ruby-value">50</span>, <span class="ruby-value">1</span>)
+    <span class="ruby-identifier">item1</span>.<span class="ruby-identifier">activate</span>
+    <span class="ruby-identifier">item2</span> = <span class="ruby-ivar">@owner</span>.<span class="ruby-identifier">create_item</span>(<span class="ruby-value str">&quot;b_test_object2&quot;</span>, <span class="ruby-value">30</span>, <span class="ruby-value">1</span>)
+    <span class="ruby-identifier">item2</span>.<span class="ruby-identifier">activate</span>
+
+    <span class="ruby-identifier">items</span> = <span class="ruby-constant">Offer</span>.<span class="ruby-identifier">get_all</span>(<span class="ruby-value str">&quot;&quot;</span>, {<span class="ruby-identifier">:order_by</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'name'</span>, <span class="ruby-identifier">:order_direction</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'asc'</span>})
+    <span class="ruby-identifier">assert</span> <span class="ruby-identifier">items</span>[<span class="ruby-value">0</span>] <span class="ruby-operator">==</span> <span class="ruby-identifier">item1</span>
+    <span class="ruby-identifier">assert</span> <span class="ruby-identifier">items</span>[<span class="ruby-value">1</span>] <span class="ruby-operator">==</span> <span class="ruby-identifier">item2</span>
+    <span class="ruby-identifier">items</span> = <span class="ruby-constant">Offer</span>.<span class="ruby-identifier">get_all</span>(<span class="ruby-value str">&quot;&quot;</span>, {<span class="ruby-identifier">:order_by</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'name'</span>, <span class="ruby-identifier">:order_direction</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'desc'</span>})
+    <span class="ruby-identifier">assert</span> <span class="ruby-identifier">items</span>[<span class="ruby-value">0</span>] <span class="ruby-operator">==</span> <span class="ruby-identifier">item2</span>
+    <span class="ruby-identifier">assert</span> <span class="ruby-identifier">items</span>[<span class="ruby-value">1</span>] <span class="ruby-operator">==</span> <span class="ruby-identifier">item1</span>
+    <span class="ruby-identifier">auct1</span> = <span class="ruby-constant">Auction</span>.<span class="ruby-identifier">create</span>(<span class="ruby-identifier">item1</span>, <span class="ruby-value">5</span>, <span class="ruby-value">20</span>, <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span> <span class="ruby-operator">+</span> <span class="ruby-value">3600</span>)
+    <span class="ruby-identifier">auct1</span>.<span class="ruby-identifier">save</span>
+    <span class="ruby-identifier">auct2</span> = <span class="ruby-constant">Auction</span>.<span class="ruby-identifier">create</span>(<span class="ruby-identifier">item2</span>, <span class="ruby-value">5</span>, <span class="ruby-value">30</span>, <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span> <span class="ruby-operator">+</span> <span class="ruby-value">3600</span>)
+    <span class="ruby-identifier">auct2</span>.<span class="ruby-identifier">save</span>
+    <span class="ruby-identifier">auctions</span> = <span class="ruby-constant">Auction</span>.<span class="ruby-identifier">get_all</span>({<span class="ruby-identifier">:order_by</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'name'</span>, <span class="ruby-identifier">:order_direction</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'asc'</span>})
+
+    <span class="ruby-identifier">assert</span> <span class="ruby-identifier">auctions</span>[<span class="ruby-value">0</span>] <span class="ruby-operator">==</span> <span class="ruby-identifier">auct1</span>
+    <span class="ruby-identifier">assert</span> <span class="ruby-identifier">auctions</span>[<span class="ruby-value">1</span>] <span class="ruby-operator">==</span> <span class="ruby-identifier">auct2</span>
+    <span class="ruby-identifier">auctions</span> = <span class="ruby-constant">Auction</span>.<span class="ruby-identifier">get_all</span>({<span class="ruby-identifier">:order_by</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'name'</span>, <span class="ruby-identifier">:order_direction</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'desc'</span>})
+    <span class="ruby-identifier">puts</span> <span class="ruby-identifier">auctions</span>[<span class="ruby-value">0</span>].<span class="ruby-identifier">name</span>
+    <span class="ruby-comment cmt">#some issues with orders in tests, works fine in app:</span>
+    <span class="ruby-comment cmt">#assert auctions[0] == auct2</span>
+    <span class="ruby-comment cmt">#assert auctions[1] == auct1</span>
+  <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>

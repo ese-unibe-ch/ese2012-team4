@@ -92,10 +92,11 @@ Manages items that are sold, but not yet received by the buyer.
       <h3 class="section-bar">Methods</h3>
 
       <div class="name-list">
-      <a href="#M000105">created</a>&nbsp;&nbsp;
-      <a href="#M000104">get_all</a>&nbsp;&nbsp;
-      <a href="#M000106">itemReceived</a>&nbsp;&nbsp;
-      <a href="#M000107">shipItem</a>&nbsp;&nbsp;
+      <a href="#M000195">created</a>&nbsp;&nbsp;
+      <a href="#M000198">find_by_id</a>&nbsp;&nbsp;
+      <a href="#M000194">get_all</a>&nbsp;&nbsp;
+      <a href="#M000196">item_received</a>&nbsp;&nbsp;
+      <a href="#M000197">ship_item</a>&nbsp;&nbsp;
       </div>
     </div>
 
@@ -126,6 +127,11 @@ Manages items that are sold, but not yet received by the buyer.
           <td class="context-item-desc"></td>
         </tr>
         <tr class="top-aligned-row context-row">
+          <td class="context-item-name">locked</td>
+          <td class="context-item-value">&nbsp;[RW]&nbsp;</td>
+          <td class="context-item-desc"></td>
+        </tr>
+        <tr class="top-aligned-row context-row">
           <td class="context-item-name">name</td>
           <td class="context-item-value">&nbsp;[RW]&nbsp;</td>
           <td class="context-item-desc"></td>
@@ -150,12 +156,12 @@ Manages items that are sold, but not yet received by the buyer.
     <div id="methods">
       <h3 class="section-bar">Public Class methods</h3>
 
-      <div id="method-M000105" class="method-detail">
-        <a name="M000105"></a>
+      <div id="method-M000195" class="method-detail">
+        <a name="M000195"></a>
 
         <div class="method-heading">
-          <a href="Holding.src/M000105.html" target="Code" class="method-signature"
-            onclick="popupCode('Holding.src/M000105.html');return false;">
+          <a href="Holding.src/M000195.html" target="Code" class="method-signature"
+            onclick="popupCode('Holding.src/M000195.html');return false;">
           <span class="method-name">created</span><span class="method-args">(item, seller, buyer, quantity)</span>
           </a>
         </div>
@@ -164,12 +170,26 @@ Manages items that are sold, but not yet received by the buyer.
         </div>
       </div>
 
-      <div id="method-M000104" class="method-detail">
-        <a name="M000104"></a>
+      <div id="method-M000198" class="method-detail">
+        <a name="M000198"></a>
 
         <div class="method-heading">
-          <a href="Holding.src/M000104.html" target="Code" class="method-signature"
-            onclick="popupCode('Holding.src/M000104.html');return false;">
+          <a href="Holding.src/M000198.html" target="Code" class="method-signature"
+            onclick="popupCode('Holding.src/M000198.html');return false;">
+          <span class="method-name">find_by_id</span><span class="method-args">(id)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+        </div>
+      </div>
+
+      <div id="method-M000194" class="method-detail">
+        <a name="M000194"></a>
+
+        <div class="method-heading">
+          <a href="Holding.src/M000194.html" target="Code" class="method-signature"
+            onclick="popupCode('Holding.src/M000194.html');return false;">
           <span class="method-name">get_all</span><span class="method-args">()</span>
           </a>
         </div>
@@ -178,13 +198,13 @@ Manages items that are sold, but not yet received by the buyer.
         </div>
       </div>
 
-      <div id="method-M000107" class="method-detail">
-        <a name="M000107"></a>
+      <div id="method-M000197" class="method-detail">
+        <a name="M000197"></a>
 
         <div class="method-heading">
-          <a href="Holding.src/M000107.html" target="Code" class="method-signature"
-            onclick="popupCode('Holding.src/M000107.html');return false;">
-          <span class="method-name">shipItem</span><span class="method-args">(item, seller, buyer, quantity)</span>
+          <a href="Holding.src/M000197.html" target="Code" class="method-signature"
+            onclick="popupCode('Holding.src/M000197.html');return false;">
+          <span class="method-name">ship_item</span><span class="method-args">(item, seller, buyer, quantity)</span>
           </a>
         </div>
       
@@ -197,13 +217,13 @@ Moves the item from seller to holding
 
       <h3 class="section-bar">Public Instance methods</h3>
 
-      <div id="method-M000106" class="method-detail">
-        <a name="M000106"></a>
+      <div id="method-M000196" class="method-detail">
+        <a name="M000196"></a>
 
         <div class="method-heading">
-          <a href="Holding.src/M000106.html" target="Code" class="method-signature"
-            onclick="popupCode('Holding.src/M000106.html');return false;">
-          <span class="method-name">itemReceived</span><span class="method-args">()</span>
+          <a href="Holding.src/M000196.html" target="Code" class="method-signature"
+            onclick="popupCode('Holding.src/M000196.html');return false;">
+          <span class="method-name">item_received</span><span class="method-args">()</span>
           </a>
         </div>
       

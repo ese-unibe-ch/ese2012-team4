@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>buy_new_item (Models::Trader)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File app/models/module/trader.rb, line 138</span>
+    <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">buy_new_item</span>(<span class="ruby-identifier">item_to_buy</span>, <span class="ruby-identifier">quantity</span>, <span class="ruby-identifier">account</span>)
+      <span class="ruby-keyword kw">return</span> <span class="ruby-keyword kw">false</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">item_to_buy</span>.<span class="ruby-identifier">auction</span>
+      <span class="ruby-identifier">preowner</span> = <span class="ruby-identifier">item_to_buy</span>.<span class="ruby-identifier">owner</span>
+
+      <span class="ruby-keyword kw">if</span> (<span class="ruby-constant">Integer</span>(<span class="ruby-identifier">item_to_buy</span>.<span class="ruby-identifier">price</span><span class="ruby-operator">*</span><span class="ruby-identifier">quantity</span>) <span class="ruby-operator">&gt;</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">credits</span> <span class="ruby-keyword kw">and</span> <span class="ruby-identifier">item_to_buy</span>.<span class="ruby-identifier">currency</span> <span class="ruby-operator">==</span> <span class="ruby-value str">&quot;credits&quot;</span>) <span class="ruby-keyword kw">or</span> <span class="ruby-constant">Integer</span>(<span class="ruby-identifier">item_to_buy</span>.<span class="ruby-identifier">quantity</span>)<span class="ruby-operator">&lt;</span><span class="ruby-identifier">quantity</span>
+        <span class="ruby-constant">Activity</span>.<span class="ruby-identifier">log</span>(<span class="ruby-identifier">account</span>, <span class="ruby-value str">&quot;item_bought_failure&quot;</span>, <span class="ruby-identifier">item_to_buy</span>, <span class="ruby-keyword kw">self</span>)
+        <span class="ruby-constant">Activity</span>.<span class="ruby-identifier">log</span>(<span class="ruby-identifier">account</span>, <span class="ruby-value str">&quot;item_sold_failure&quot;</span>, <span class="ruby-identifier">item_to_buy</span>, <span class="ruby-identifier">preowner</span>)
+        <span class="ruby-keyword kw">return</span> <span class="ruby-keyword kw">false</span>
+      <span class="ruby-keyword kw">end</span>
+
+
+      <span class="ruby-keyword kw">if</span> <span class="ruby-operator">!</span><span class="ruby-identifier">item_to_buy</span>.<span class="ruby-identifier">wishlist_users</span>.<span class="ruby-identifier">empty?</span> <span class="ruby-keyword kw">and</span> <span class="ruby-identifier">item_to_buy</span>.<span class="ruby-identifier">quantity</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">quantity</span> <span class="ruby-keyword kw">and</span> <span class="ruby-operator">!</span><span class="ruby-identifier">item_to_buy</span>.<span class="ruby-identifier">permanent</span>
+        <span class="ruby-identifier">item_to_buy</span>.<span class="ruby-identifier">wishlist_users</span>.<span class="ruby-identifier">each</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">trader</span><span class="ruby-operator">|</span> <span class="ruby-identifier">trader</span>.<span class="ruby-identifier">remove_from_wishlist</span>(<span class="ruby-identifier">item_to_buy</span>); <span class="ruby-identifier">item_to_buy</span>.<span class="ruby-identifier">wishlist_users</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-identifier">trader</span>)}
+      <span class="ruby-keyword kw">end</span>
+
+      <span class="ruby-constant">Holding</span>.<span class="ruby-identifier">ship_item</span>(<span class="ruby-identifier">item_to_buy</span>, <span class="ruby-identifier">item_to_buy</span>.<span class="ruby-identifier">owner</span>, <span class="ruby-keyword kw">self</span>, <span class="ruby-identifier">quantity</span>)
+      <span class="ruby-constant">Activity</span>.<span class="ruby-identifier">log</span>(<span class="ruby-identifier">account</span>, <span class="ruby-value str">&quot;item_bought_success&quot;</span>, <span class="ruby-identifier">item_to_buy</span>, <span class="ruby-keyword kw">self</span>)
+      <span class="ruby-constant">Activity</span>.<span class="ruby-identifier">log</span>(<span class="ruby-identifier">account</span>, <span class="ruby-value str">&quot;item_sold_success&quot;</span>, <span class="ruby-identifier">item_to_buy</span>, <span class="ruby-identifier">preowner</span>)
+      <span class="ruby-constant">Mailer</span>.<span class="ruby-identifier">item_sold</span>(<span class="ruby-identifier">preowner</span>.<span class="ruby-identifier">e_mail</span>, <span class="ruby-node">&quot;Hi #{preowner.name}, \n #{self.name} bought your Item #{item_to_buy.name}.
+        Please Contact him for completing the trade. His E-Mail is: #{self.e_mail}&quot;</span>)
+
+      <span class="ruby-keyword kw">return</span> <span class="ruby-keyword kw">true</span>
+    <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>
